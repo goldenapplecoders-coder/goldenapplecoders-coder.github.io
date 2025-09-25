@@ -6,7 +6,7 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <title>Golden Apple Compilers | Html</title>
+    <title>HTML TESTER</title>
     <style>
         /* CSS for editor */
         body {
@@ -69,7 +69,8 @@
 }
 #i, #backButton{right: 10px;
 }
-        .fas{font-size: 30px; color: #fff100cb; margin-left: 1px;}
+        .fas{font-size: 30px; color: #fff100cb; margin-left: 1px;
+}
         #un{right: 90px;
 }
         #myModal {
@@ -85,12 +86,23 @@
             background-color: #ffffff1b;
         }
         .modal-content {
-            background-color: #ffffff1b;
+            background-color: #ff2bf1;
                     margin: auto;
             padding: 20px;
             border: 1px solid #888;
             width: 96%;
         }
+        .buy, .close{background: #ffffff5a; color: #5cff40; font-size: 20px; height: 5%; font-weight: bolder; width: 40%; border-radius: 3px;  position: fixed; top: 460px;}
+        .buy{right: 200px;}
+        .close{right: 30px;}
+        #pkg{background: #eaeaff28; border: 1px solid #eaeaff57; text-align: center; font-weight: bolder; border-radius: 10px;
+          box-shadow: 0px 0px 10px black; margin-top: 1px;}
+        #crn{position: fixed;
+  right: 150px;
+  top: 115px;
+  font-size: 100px;
+}
+li{font-weight: bolder;}
         </style>
 </head>
 <body>
@@ -99,17 +111,17 @@
 <button id="i" onclick="runCode()"><i class="fas fa-play"></i></button>
     <div id="myModal" class="modal">
         <div class="modal-content">
-<i class="fas fa-crown"></i>
-<h1>𝖈𝖔𝖒𝖕𝖑𝖎𝖊𝖗 𝖕𝖗𝖊𝖒𝖎𝖚𝖒</h1>  <br>
-<blockquote>UPGRADE TO COMPLIER PRO TO ACCES VIEW FROM WEB</blockquote><ul>
-<h2>ᵒᵗʰᵉʳ ᵖʳᵉᵐⁱᵘᵐ ᶠᵉᵃᵗᵘʳᵉˢ</h2>
+<i id="crn" class="fas fa-crown"></i>
+<h1 style="font-size: 40px; text-align: center; color: cyan;">𝖈𝖔𝖒𝖕𝖑𝖎𝖊𝖗 𝖕𝖗𝖊𝖒𝖎𝖚𝖒</h1> <br><br><br> <br>
+<blockquote style="font-weight: bolder: text-align: center;">UPGRADE TO COMPLIER PRO TO ACCES VIEW FROM WEB</blockquote><ul>
+<h2 style="color: red;">ᵒᵗʰᵉʳ ᵖʳᵉᵐⁱᵘᵐ ᶠᵉᵃᵗᵘʳᵉˢ</h2>
 <li>Save file-Html file creator</li>
 <li>Assistant-AI code helper</li>
 <li>Console-Error Check</li>
 </ul><br>
 <div id="pkg">Annual Plan-$5
-<br><sup>5USD</sup></div>
-<div id="pkg">Lifetime Plan-$10<br><sup>10USD</sup></div>
+<br><sup>5USD</sup></div><br>
+<div id="pkg">Lifetime Plan-$10<br><sup>10USD</sup></div><br>
 <button class="buy" onclick="alert('Service will be available soon')">BUY PLAN</button>
             <button onclick="document.getElementById('myModal').style.display='none'" class="close">CONTINUE FREE</button>
 </div>
