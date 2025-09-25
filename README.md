@@ -1,4 +1,5 @@
 # Golden Apple Technologies
+![Golden Apple Technologies Dancing Text](dancing.svg)
 =========================
 
 ## About Us
