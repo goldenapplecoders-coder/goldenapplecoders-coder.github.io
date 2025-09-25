@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>C++ Compiler (Wandbox) — Golden Apple</title>
+
+  <!-- UI fonts & icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+
+  <!-- Ace editor -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.16.0/ace.js"></script>
+
+  <style>
+    :root{
+      --bg:#000;
+      --panel:#071017;
+      --accent:#00e6c6;
+      --muted:#7f8c8d;
+      --card:#081218;
+    }
+    html,body{height:100%;margin:0;background:var(--bg);color:var(--accent);font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial;}
+    .topbar{
+      height:56px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:8px 16px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-bottom:1px solid rgba(255,255,255,0.03);
+    }
+    .brand{
+      display:flex;align-items:center;gap:10px;font-weight:700;color:var(--accent);
+    }
+    .brand .logo{
+      width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#ffd166,#ff7b7b);display:inline-flex;align-items:center;justify-content:center;color:#111;font-weight:900;
+    }
+    .controls{margin-left:auto;display:flex;gap:10px;align-items:center;}
+    .btn{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+      color:var(--accent);
+      padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:600;
+      display:inline-flex;gap:8px;align-items:center;
+    }
+    .btn.secondary{background:transparent;border:1px solid rgba(255,255,255,0.02);color:var(--muted);font-weight:600;}
+    .container{display:flex;height:calc(100% - 56px);}
+    .editorPane{width:62%;min-width:360px;border-right:1px solid rgba(255,255,255,0.03);display:flex;flex-direction:column;}
+    .editorHeader{padding:10px 14px;background:var(--card);display:flex;gap:12px;align-items:center;}
+    .select, .input{background:transparent;border:1px solid rgba(255,255,255,0.03);color:var(--accent);padding:6px 8px;border-radius:6px;}
+    #editor {flex:1;height:100%;background:var(--panel);}
+    .rightPane{flex:1;display:flex;flex-direction:column;}
+    .outputHeader{padding:10px 14px;background:#061018;border-bottom:1px solid rgba(255,255,255,0.03);display:flex;align-items:center;gap:12px;}
+    .outputArea{flex:1;padding:12px;background:#050708;color:#b8ffea;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,monospace;overflow:auto;white-space:pre-wrap;}
+    .small{font-size:12px;color:var(--muted)}
+    .row{display:flex;gap:10px;align-items:center}
+    .spinner{width:18px;height:18px;border-radius:50%;border:2px solid rgba(255,255,255,0.06);border-top-color:var(--accent);animation:spin 1s linear infinite;display:inline-block}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .footerBar{padding:8px 12px;background:#040506;border-top:1px solid rgba(255,255,255,0.02);display:flex;gap:12px;align-items:center;justify-content:space-between;}
+    .split {display:flex;gap:8px;align-items:center}
+    input[type="text"]{background:transparent;border:1px solid rgba(255,255,255,0.03);color:var(--accent);padding:6px 8px;border-radius:6px}
+    .pill {padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.02);color:var(--muted);font-size:12px}
+    .link{color:#6de3ff;text-decoration:underline;cursor:pointer}
+    @media (max-width:900px){
+      .container{flex-direction:column}
+      .editorPane{width:100%;height:50vh}
+      .rightPane{height:50vh}
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand">
+      <div class="logo">GA</div>
+      <div>
+        <div>Golden Apple — C++ Runner</div>
+        <div class="small">Compile C++ using Wandbox (remote) · Browser UI</div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <select id="compilerSelect" class="select" title="Choose compiler">
+        <option value="gcc-12.2.0">GCC 12.2 (gcc-12.2.0)</option>
+        <option value="gcc-11.2.0">GCC 11.2 (gcc-11.2.0)</option>
+        <option value="clang-14.0.0">Clang 14 (clang-14.0.0)</option>
+        <option value="clang-13.0.0">Clang 13 (clang-13.0.0)</option>
+        <option value="msvc-19.28">MSVC (msvc-19.28)</option>
+      </select>
+
+      <div style="width:8px"></div>
+
+      <button id="runBtn" class="btn"><i class="fa-solid fa-play"></i> Run</button>
+      <button id="stopBtn" class="btn secondary"><i class="fa-solid fa-stop"></i> Stop</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <section class="editorPane">
+      <div class="editorHeader">
+        <div class="row">
+          <div class="pill">main.cpp</div>
+          <div class="small">C++ source</div>
+        </div>
+        <div style="margin-left:auto" class="small">Std: <select id="stdSelect" class="select" style="margin-left:8px">
+            <option value="c++17">c++17</option>
+            <option value="c++20">c++20</option>
+            <option value="c++14">c++14</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="editor"></div>
+      <div class="footerBar">
+        <div class="split">
+          <div class="small">Input (stdin):</div>
+          <input type="text" id="stdinInput" placeholder="Optional input for program (single-line)" />
+        </div>
+        <div class="split">
+          <div class="small">Wandbox API</div>
+          <div class="small">Status: <span id="statusText">idle</span></div>
+        </div>
+      </div>
+    </section>
+
+    <aside class="rightPane">
+      <div class="outputHeader">
+        <div style="font-weight:700">Output</div>
+        <div style="margin-left:auto" class="small">Compiler messages and program output</div>
+      </div>
+      <pre id="output" class="outputArea">// Program output will appear here</pre>
+    </aside>
+  </div>
+
+  <script>
+    // Initialize Ace Editor
+    const editor = ace.edit("editor", {
+      mode: "ace/mode/c_cpp",
+      theme: "ace/theme/monokai",
+      fontSize: "14px",
+      showPrintMargin: false,
+      wrap: true,
+      useWorker: false
+    });
+
+    const initialCode = `#include <iostream>
+#include <string>
+
+int main() {
+    std::string name;
+    std::cout << "Enter your name: ";
+    if(!std::getline(std::cin, name)) return 0;
+    std::cout << "Hello, " << name << "!" << std::endl;
+    return 0;
+}
+`;
+    editor.setValue(initialCode, -1);
+
+    // DOM references
+    const runBtn = document.getElementById('runBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    const outputEl = document.getElementById('output');
+    const statusText = document.getElementById('statusText');
+    let controller = null; // abort controller for cancelling fetch
+
+    // Utility: safe log
+    function writeOutput(text) {
+      outputEl.textContent = text;
+    }
+
+    function appendOutput(text) {
+      outputEl.textContent += text;
+      outputEl.scrollTop = outputEl.scrollHeight;
+    }
+
+    // Compile & run via Wandbox API (public remote service)
+    async function compileAndRun() {
+      const code = editor.getValue();
+      const compiler = document.getElementById('compilerSelect').value;
+      const std = document.getElementById('stdSelect').value;
+      const stdin = document.getElementById('stdinInput').value || "";
+
+      // Wandbox JSON payload:
+      const payload = {
+        code: code,
+        compiler: compiler,
+        options: "warning,cpp-runtime",
+        compiler-option: "-std=" + std,
+        runtime-option: "",
+        save: false,
+        stdin: stdin
+      };
+
+      // Update UI
+      statusText.textContent = "compiling...";
+      runBtn.disabled = true;
+      controller = new AbortController();
+      writeOutput("// Sending code to Wandbox...\\n");
+
+      try {
+        const resp = await fetch("https://wandbox.org/api/compile.json", {
+          method: "POST",
+          headers: { "Content-Type": "application/json; charset=utf-8" },
+          body: JSON.stringify(payload),
+          signal: controller.signal
+        });
+
+        if (!resp.ok) {
+          const txt = await resp.text();
+          writeOutput("// Network error: " + resp.status + " — " + txt);
+          return;
+        }
+
+        const json = await resp.json();
+        /*
+          Typical wandbox response fields (may vary):
+          - status (int)
+          - program_output (string)
+          - compiler_output (string)
+          - compiler_error (string)
+          - url (string)
+          - signal (string)
+          - status_text (string)
+        */
+
+        // Clear then display sections
+        writeOutput("");
+
+        // Compiler stdout/stderr and messages
+        if (json.compiler_output && json.compiler_output.trim()) {
+          appendOutput("// Compiler output:\\n");
+          appendOutput(json.compiler_output + "\\n");
+        }
+        if (json.compiler_error && json.compiler_error.trim()) {
+          appendOutput("// Compiler errors/warnings:\\n");
+          appendOutput(json.compiler_error + "\\n");
+        }
+
+        // Program execution output
+        if (json.program_output && json.program_output.trim()) {
+          appendOutput("// Program output:\\n");
+          appendOutput(json.program_output + "\\n");
+        } else {
+          appendOutput("// Program produced no output or it was empty.\\n");
+        }
+
+        // Extra info
+        appendOutput("\\n// Status: " + (json.status_text || json.status || "unknown") + "\\n");
+        if (json.url) {
+          appendOutput("// Remote link: " + json.url + "\\n");
+        }
+
+      } catch (err) {
+        if (err.name === 'AbortError') {
+          writeOutput("// Compilation aborted by user.\\n");
+        } else {
+          writeOutput("// Error: " + (err.message || err) + "\\n");
+        }
+      } finally {
+        statusText.textContent = "idle";
+        runBtn.disabled = false;
+        controller = null;
+      }
+    }
+
+    // Run button handler
+    runBtn.addEventListener('click', () => {
+      writeOutput("// Running...\\n");
+      compileAndRun();
+    });
+
+    // Stop / abort handler
+    stopBtn.addEventListener('click', () => {
+      if (controller) {
+        controller.abort();
+      } else {
+        appendOutput("// Nothing to stop.\\n");
+      }
+    });
+
+    // Keyboard shortcut: Ctrl/Cmd+Enter to run
+    editor.commands.addCommand({
+      name: 'run',
+      bindKey: {win: 'Ctrl-Enter', mac: 'Command-Enter'},
+      exec: function() { runBtn.click(); }
+    });
+
+    // Small helper: save file (download) button by right-click menu not implemented - provide simple function
+    function downloadSource() {
+      const blob = new Blob([editor.getValue()], {type: "text/x-c++src"});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = "main.cpp"; document.body.appendChild(a);
+      a.click(); a.remove(); URL.revokeObjectURL(url);
+    }
+
+    // Expose download on double-click top-left logo (just a convenience)
+    document.querySelector('.logo').addEventListener('dblclick', downloadSource);
+
+    // Initial message
+    writeOutput("// Ready. Edit code and click Run (or Ctrl/Cmd+Enter).\\n");
+  </script>
+</body>
+</html>
