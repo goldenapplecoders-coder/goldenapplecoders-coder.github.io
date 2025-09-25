@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Am Doctor Coddit</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Bootstrap for layout/buttons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome for icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <!-- Prism for code highlighting -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+  <!-- Google Fonts for tech look -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Rajdhani:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #00e6c6;
+      --accent: #ffd700;
+      --background: #18181a;
+      --bubble-ai: #232e3c;
+      --bubble-user: #222c38;
+      --bubble-border: #222c38;
+      --bubble-glow: 0 0 18px #00e6c688;
+      --input-bg: #1a2233;
+    }
+    body {
+      background: var(--background);
+      color: #eee;
+      font-family: 'Rajdhani', 'Orbitron', Arial, sans-serif;
+      min-height: 100vh;
+      margin: 0;
+    }
+    .header {
+      background: #20232a;
+      border-bottom: 2px solid var(--primary);
+      box-shadow: 0 2px 30px #00e6c622;
+      padding: 1.2rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo {
+      font-family: 'Orbitron', 'Rajdhani', sans-serif;
+      font-size: 2rem;
+      color: var(--primary);
+      letter-spacing: 2px;
+      text-shadow: 0 0 8px var(--primary);
+      display: flex; align-items: center; gap: 1rem;
+      font-weight: bold;
+      text-decoration: none;
+      filter: drop-shadow(0 0 12px #00e6c644);
+    }
+    .menu-btn {
+      background: var(--accent);
+      color: #222;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      padding: 0.5rem 1.1rem;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 2px 18px #ffd70033;
+      transition: background 0.2s;
+    }
+    .menu-btn:hover { background: #fffbe6; }
+    .main-content {
+      padding: 2rem;
+      max-width: 900px;
+      margin: auto;
+    }
+    .chatboard {
+      background: #1a2233;
+      border-radius: 16px;
+      box-shadow: 0 0 32px #00e6c611;
+      padding: 2rem 1rem 1rem 1rem;
+      margin-bottom: 2rem;
+      min-height: 500px;
+      max-width: 900px;
+      margin: auto;
+      position: relative;
+      overflow-y: auto;
+    }
+    .chatlist {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .bubble-row {
+      width: 100%;
+      display: flex;
+      align-items: flex-end;
+      gap: 1rem;
+    }
+    .bubble-row.user { justify-content: flex-end; }
+    .bubble-row.ai { justify-content: flex-start; }
+    .bubble-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #243a4a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.9rem;
+      box-shadow: 0 0 10px #00e6c644;
+      color: var(--primary);
+    }
+    .bubble-row.user .bubble-avatar { background: #ffd70044; color: #ffd700; }
+    .bubble {
+      max-width: 68vw;
+      padding: 1.2rem 1.5rem;
+      border-radius: 18px;
+      font-size: 1.13rem;
+      font-family: 'Rajdhani', 'Orbitron', monospace, sans-serif;
+      box-shadow: var(--bubble-glow);
+      position: relative;
+      border: 2px solid var(--bubble-border);
+      word-break: break-word;
+      line-height: 1.6;
+      transition: background 0.2s;
+    }
+    .bubble.ai {
+      background: var(--bubble-ai);
+      color: var(--primary);
+      border-left: 3px solid var(--primary);
+      box-shadow: 0 0 18px #00e6c633;
+    }
+    .bubble.user {
+      background: var(--bubble-user);
+      color: #ffd700;
+      border-right: 3px solid var(--accent);
+      box-shadow: 0 0 18px #ffd70033;
+    }
+    .bubble-meta {
+      font-size: 0.85rem;
+      color: #aaa;
+      margin-top: 0.3rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4em;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: bold;
+      letter-spacing: 0.3px;
+    }
+    /* Input area */
+    .input-row {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+      max-width: 900px;
+      margin: auto;
+    }
+    .code-input {
+      background: var(--input-bg);
+      border: 2px solid var(--primary);
+      color: #fff;
+      font-family: 'Orbitron', 'Rajdhani', monospace;
+      font-size: 1.1rem;
+      font-weight: bold;
+      border-radius: 10px;
+      box-shadow: 0 0 8px #00e6c644;
+      transition: border-color 0.2s;
+      flex: 1;
+      min-height: 44px;
+      padding: 0.8rem 1rem;
+      resize: vertical;
+    }
+    .code-input:focus { border-color: #ffd700; }
+    .btn-deobfuscate, .btn-import, .btn-quit {
+      font-weight: bold;
+      border-radius: 10px;
+      padding: 0.8rem 1.3rem;
+      font-size: 1.08rem;
+      box-shadow: 0 2px 18px #00e6c644;
+      cursor: pointer;
+      border: none;
+      margin-right: 0.5rem;
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn-deobfuscate { background: var(--primary); color: #222;}
+    .btn-deobfuscate:hover { background: #fffbe6; }
+    .btn-import { background: #232e3c; color: #00e6c6; border: 2px solid #00e6c6;}
+    .btn-import:hover { background: #00e6c6; color: #232e3c; }
+    .btn-quit { background: #ffd700; color: #222;}
+    .btn-quit:hover { background: #222; color: #ffd700;}
+    /* Prism code blocks */
+    pre[class*="language-"] {
+      background: #232c44 !important;
+      border-radius: 10px !important;
+      border: 2px solid #00e6c6 !important;
+      font-size: 1rem;
+      color: #00e6c6;
+      margin-top: 0.5rem;
+      padding: 1rem;
+    }
+    /* Modal */
+    .modal { display: none; position: fixed; z-index: 100; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10,10,30,0.92);}
+    .modal-content {
+      background: #232e3c;
+      color: #00e6c6;
+      margin: 10vh auto;
+      padding: 2.8rem 2.2rem;
+      border-radius: 1.3rem;
+      max-width: 420px;
+      box-shadow: 0 0 60px #00e6c644;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+      font-family: 'Rajdhani', 'Orbitron', sans-serif;
+    }
+    .modal-content h2 {
+      font-size: 2rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+      letter-spacing: 1px;
+      text-shadow: 0 0 12px #00e6c6;
+    }
+    .modal-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      width: 100%;
+    }
+    .modal-list li {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.7rem 0 0.7rem 0.2rem;
+      border-bottom: 1px solid #00e6c633;
+      font-size: 1.1rem;
+    }
+    .modal-list li:last-child { border-bottom: none; }
+    .modal-list i { font-size: 1.3rem; color: #00e6c6; }
+    .close-btn {
+      background: #00e6c6;
+      color: #222;
+      border: none;
+      border-radius: 10px;
+      padding: 0.6rem 1.3rem;
+      font-weight: bold;
+      font-size: 1.1rem;
+      margin-top: 1rem;
+      cursor: pointer;
+      box-shadow: 0 2px 18px #00e6c644;
+      transition: background 0.2s;
+    }
+    .close-btn:hover { background: #fffbe6; color: #232e3c; }
+    .show { display: block; }
+    /* Responsive */
+    @media (max-width: 600px) {
+      .main-content, .chatboard, .header { padding: 0.7rem; }
+      .bubble { max-width: 93vw; }
+      .input-row { flex-direction: column; gap: 0.6rem;}
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <a href="#" class="logo"><i class="fas fa-robot"></i> DOCTOR CODDIT</a>
+  </header>
+  <main class="main-content">
+    <section class="chatboard">
+      <div class="chatlist" id="chatList">
+        <!-- Example AI message -->
+        <div class="bubble-row ai">
+          <div class="bubble-avatar"><i class="fas fa-robot"></i></div>
+          <div class="bubble ai">
+            Hello! I'm Mr. Coddit, your Golden Apple AI assistant.<br>
+            <span class="bubble-meta"><i class="fas fa-clock"></i> <span id="first-time"></span></span>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="input-row">
+      <textarea id="inputCode" class="code-input" rows="3" placeholder="Type your code or message here..."></textarea>
+      <button id="processBtn" class="btn-deobfuscate"><i class="fas fa-rocket"></i> Send</button>
+      <label for="fileUpload" class="btn-import">
+        <i class="fas fa-file-upload"></i> Import
+        <input type="file" hidden id="fileUpload" accept=".txt,.js,.html,.css,.json,.xml,.doc,.yml">
+      </label>
+      <button id="quit-button" class="btn-quit" onclick="if(confirm('Are you sure you want to quit?')) { window.close(); }">Exit chat</button>
+    </section>
+  </main>
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <h2><i class="fas fa-crown"></i> Premium Features</h2>
+      <ul class="modal-list">
+        <li><i class="fas fa-file-code"></i> Save file - Html file creator</li>
+        <a href="coder.html"><li><i class="fas fa-robot"></i> Assistant - AI code helper</li></a>
+        <li><i class="fas fa-terminal"></i> Console - Error Check</li>
+        <a href="about.html"><li><i class="fas fa-phone"></i> Contact Golden Apple</li></a>
+      </ul>
+      <button class="close-btn" onclick="hideModal()">Close</button>
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script>
+    // Set initial time for first message
+    document.getElementById('first-time').textContent = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+    const MAX_CHUNK_SIZE = 1500;
+    const API_ENDPOINT = 'https://apis.davidcyriltech.my.id/ai/deepseek-r1';
+
+    let isProcessing = false;
+    const chatList = document.getElementById('chatList');
+    const input = document.getElementById('inputCode');
+    const processBtn = document.getElementById('processBtn');
+    const fileUpload = document.getElementById('fileUpload');
+
+    function addBubble(content, role, isCode=false) {
+      // Create chat bubble row
+      const row = document.createElement('div');
+      row.className = 'bubble-row ' + role;
+
+      // Avatar
+      const avatar = document.createElement('div');
+      avatar.className = 'bubble-avatar';
+      avatar.innerHTML = `<i class="fas fa-${role === 'user' ? 'user' : 'robot'}"></i>`;
+
+      // Bubble
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble ' + role;
+      bubble.innerHTML = isCode
+        ? `<pre><code class="language-${detectLanguage(content)}">${content}</code></pre>`
+        : `${content.replace(/\n/g,'<br>')}`;
+      
+      // Meta
+      const meta = document.createElement('span');
+      meta.className = 'bubble-meta';
+      meta.innerHTML = `<i class="fas fa-clock"></i> ${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}`;
+      bubble.appendChild(meta);
+
+      row.appendChild(avatar);
+      row.appendChild(bubble);
+      chatList.appendChild(row);
+
+      // Scroll to bottom
+      chatList.scrollTop = chatList.scrollHeight;
+      Prism.highlightAllUnder(row);
+    }
+
+    function addProcessingIndicator() {
+      const row = document.createElement('div');
+      row.className = 'bubble-row ai';
+      const avatar = document.createElement('div');
+      avatar.className = 'bubble-avatar';
+      avatar.innerHTML = `<i class="fas fa-robot"></i>`;
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble ai';
+      bubble.innerHTML = `
+        <div class="processing-indicator">
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+          <span class="processing-text">Doctor Coddit is thinking...</span>
+        </div>
+        <span class="bubble-meta"><i class="fas fa-clock"></i> ${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+      `;
+      row.appendChild(avatar);
+      row.appendChild(bubble);
+      chatList.appendChild(row);
+      chatList.scrollTop = chatList.scrollHeight;
+      return bubble.querySelector('.processing-indicator');
+    }
+
+    function updateProcessingText(text) {
+      const indicator = chatList.querySelector('.processing-indicator .processing-text');
+      if(indicator) indicator.textContent = text;
+    }
+
+    function chunkText(text) {
+      const chunks = [];
+      for (let i = 0; i < text.length; i += MAX_CHUNK_SIZE) {
+        chunks.push(text.slice(i, i + MAX_CHUNK_SIZE));
+      }
+      return chunks;
+    }
+
+    async function processChunk(chunk) {
+      const prompt = `Deobfuscate this code chunk and return only clean code:\n\n${chunk}`;
+      const response = await fetch(`${API_ENDPOINT}?text=${encodeURIComponent(prompt)}`);
+      const data = await response.json();
+      return data.success ? data.response.trim() : '';
+    }
+
+    function cleanResponse(response) {
+      return response.replace(/```[\s\S]*?\n/g, '').replace(/```/g, '');
+    }
+
+    function detectLanguage(code) {
+      if (/<html|<!DOCTYPE/i.test(code)) return 'html';
+      if (/\{.*\}/.test(code)) return 'css';
+      return 'javascript';
+    }
+
+    processBtn.addEventListener('click', async () => {
+      if (isProcessing) return;
+      const code = input.value.trim();
+      if (!code) return alert('Please input code to process');
+      isProcessing = true;
+      addBubble(code, 'user', true);
+      const indicator = addProcessingIndicator();
+      try {
+        const chunks = chunkText(code);
+        let fullResponse = '';
+        for (const [index, chunk] of chunks.entries()) {
+          updateProcessingText(`Decoding chunk ${index + 1}/${chunks.length}...`);
+          const response = await processChunk(chunk);
+          fullResponse += response + '\n';
+        }
+        indicator.parentNode.parentNode.remove(); // Remove thinking bubble
+        const cleanCode = cleanResponse(fullResponse);
+        addBubble(cleanCode, 'ai', true);
+      } catch (error) {
+        indicator.parentNode.parentNode.remove();
+        addBubble('⚠️ Error processing code. Please try again.', 'ai');
+      }
+      isProcessing = false;
+    });
+
+    fileUpload.addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      if (file.size > 10 * 1024 * 1024) {
+        alert('File size exceeds 10MB limit');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        input.value = e.target.result;
+        processBtn.click();
+      };
+      reader.readAsText(file);
+    });
+
+    // Modal logic
+    function showModal() { document.getElementById('modal').classList.add('show'); }
+    function hideModal() { document.getElementById('modal').classList.remove('show'); }
+  </script>
+</body>
+</html>
