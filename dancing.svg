@@ -1,104 +1,72 @@
-<svg width="800" height="200" viewBox="0 0 800 200" xmlns="http://www.w3.org/2000/svg">
-  <style>
-    .dancing { font-size: 48px; font-family: 'Arial Black', Arial, sans-serif; fill: #DAA520; }
-  </style>
+<svg width="800" height="120" viewBox="0 0 800 120" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Embed Orbitron font from CDN -->
+    <style type="text/css">
+      @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
+      .orbitron {
+        font-family: 'Orbitron', Arial, sans-serif;
+        font-size: 48px;
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <!-- Black background -->
+  <rect width="800" height="120" fill="black"/>
+  <!-- Typewriter effect using opacity animation for each letter -->
   <g>
-    <!-- Each letter is a separate text element for individual animation -->
-    <text x="40" y="100" class="dancing">
-      <tspan>
-        G
-        <animateTransform attributeName="transform" type="translate" values="0,0; 0,-20; 0,0" dur="1s" repeatCount="indefinite"/>
-      </tspan>
-      <tspan x="80">
-        o
-        <animateTransform attributeName="transform" type="translate" values="0,0; 0,15; 0,0" dur="1.1s" repeatCount="indefinite"/>
-      </tspan>
-      <tspan x="120">
-        l
-        <animateTransform attributeName="transform" type="translate" values="0,0; 0,-15; 0,0" dur="1.2s" repeatCount="indefinite"/>
-      </tspan>
-      <tspan x="160">
-        d
-        <animateTransform attributeName="transform" type="translate" values="0,0; 0,20; 0,0" dur="1.3s" repeatCount="indefinite"/>
-      </tspan>
-      <tspan x="200">
-        e
-        <animateTransform attributeName="transform" type="translate" values="0,0; 0,-20; 0,0" dur="1.4s" repeatCount="indefinite"/>
-      </tspan>
-      <tspan x="240">
-        n
-        <animateTransform attributeName="transform" type="translate" values="0,0; 0,15; 0,0" dur="1.5s" repeatCount="indefinite"/>
-      </tspan>
-      <tspan x="280"> </tspan>
-      <tspan x="320">
-        A
-        <animateTransform attributeName="transform" type="translate" values="0,0; 0,-20; 0,0" dur="1.6s" repeatCount="indefinite"/>
-      </tspan>
-      <tspan x="360">
-        p
-        <animateTransform attributeName="transform" type="translate" values="0,0; 0,20; 0,0" dur="1.7s" repeatCount="indefinite"/>
-      </tspan>
-      <tspan x="400">
-        p
-        <animateTransform attributeName="transform" type="translate" values="0,0; 0,-15; 0,0" dur="1.8s" repeatCount="indefinite"/>
-      </tspan>
-      <tspan x="440">
-        l
-        <animateTransform attributeName="transform" type="translate" values="0,0; 0,15; 0,0" dur="1.9s" repeatCount="indefinite"/>
-      </tspan>
-      <tspan x="480">
-        e
-        <animateTransform attributeName="transform" type="translate" values="0,0; 0,-20; 0,0" dur="2s" repeatCount="indefinite"/>
-      </tspan>
-      <tspan x="520"> </tspan>
-      <tspan x="560">
-        T
-        <animateTransform attributeName="transform" type="translate" values="0,0; 0,20; 0,0" dur="2.1s" repeatCount="indefinite"/>
-      </tspan>
-      <tspan x="600">
-        e
-        <animateTransform attributeName="transform" type="translate" values="0,0; 0,-15; 0,0" dur="2.2s" repeatCount="indefinite"/>
-      </tspan>
-      <tspan x="640">
-        c
-        <animateTransform attributeName="transform" type="translate" values="0,0; 0,15; 0,0" dur="2.3s" repeatCount="indefinite"/>
-      </tspan>
-      <tspan x="680">
-        h
-        <animateTransform attributeName="transform" type="translate" values="0,0; 0,-20; 0,0" dur="2.4s" repeatCount="indefinite"/>
-      </tspan>
-      <tspan x="720">
-        n
-        <animateTransform attributeName="transform" type="translate" values="0,0; 0,20; 0,0" dur="2.5s" repeatCount="indefinite"/>
-      </tspan>
-      <tspan x="760">
-        o
-        <animateTransform attributeName="transform" type="translate" values="0,0; 0,-15; 0,0" dur="2.6s" repeatCount="indefinite"/>
-      </tspan>
-      <tspan x="800">
-        l
-        <animateTransform attributeName="transform" type="translate" values="0,0; 0,15; 0,0" dur="2.7s" repeatCount="indefinite"/>
-      </tspan>
-      <tspan x="840">
-        o
-        <animateTransform attributeName="transform" type="translate" values="0,0; 0,-20; 0,0" dur="2.8s" repeatCount="indefinite"/>
-      </tspan>
-      <tspan x="880">
-        g
-        <animateTransform attributeName="transform" type="translate" values="0,0; 0,20; 0,0" dur="2.9s" repeatCount="indefinite"/>
-      </tspan>
-      <tspan x="920">
-        i
-        <animateTransform attributeName="transform" type="translate" values="0,0; 0,-15; 0,0" dur="3s" repeatCount="indefinite"/>
-      </tspan>
-      <tspan x="960">
-        e
-        <animateTransform attributeName="transform" type="translate" values="0,0; 0,15; 0,0" dur="3.1s" repeatCount="indefinite"/>
-      </tspan>
-      <tspan x="1000">
-        s
-        <animateTransform attributeName="transform" type="translate" values="0,0; 0,-20; 0,0" dur="3.2s" repeatCount="indefinite"/>
-      </tspan>
+    <!-- Golden Apple Technologies -->
+    <text x="40" y="80" class="orbitron">
+      <tspan id="l1" opacity="0">G</tspan>
+      <tspan id="l2" opacity="0">o</tspan>
+      <tspan id="l3" opacity="0">l</tspan>
+      <tspan id="l4" opacity="0">d</tspan>
+      <tspan id="l5" opacity="0">e</tspan>
+      <tspan id="l6" opacity="0">n</tspan>
+      <tspan id="l7" opacity="0"> </tspan>
+      <tspan id="l8" opacity="0">A</tspan>
+      <tspan id="l9" opacity="0">p</tspan>
+      <tspan id="l10" opacity="0">p</tspan>
+      <tspan id="l11" opacity="0">l</tspan>
+      <tspan id="l12" opacity="0">e</tspan>
+      <tspan id="l13" opacity="0"> </tspan>
+      <tspan id="l14" opacity="0">T</tspan>
+      <tspan id="l15" opacity="0">e</tspan>
+      <tspan id="l16" opacity="0">c</tspan>
+      <tspan id="l17" opacity="0">h</tspan>
+      <tspan id="l18" opacity="0">n</tspan>
+      <tspan id="l19" opacity="0">o</tspan>
+      <tspan id="l20" opacity="0">l</tspan>
+      <tspan id="l21" opacity="0">o</tspan>
+      <tspan id="l22" opacity="0">g</tspan>
+      <tspan id="l23" opacity="0">i</tspan>
+      <tspan id="l24" opacity="0">e</tspan>
+      <tspan id="l25" opacity="0">s</tspan>
+      <!-- Animate appearance one by one -->
+      <animate xlink:href="#l1" attributeName="opacity" from="0" to="1" begin="0s" dur="0.08s" fill="freeze"/>
+      <animate xlink:href="#l2" attributeName="opacity" from="0" to="1" begin="0.08s" dur="0.08s" fill="freeze"/>
+      <animate xlink:href="#l3" attributeName="opacity" from="0" to="1" begin="0.16s" dur="0.08s" fill="freeze"/>
+      <animate xlink:href="#l4" attributeName="opacity" from="0" to="1" begin="0.24s" dur="0.08s" fill="freeze"/>
+      <animate xlink:href="#l5" attributeName="opacity" from="0" to="1" begin="0.32s" dur="0.08s" fill="freeze"/>
+      <animate xlink:href="#l6" attributeName="opacity" from="0" to="1" begin="0.40s" dur="0.08s" fill="freeze"/>
+      <animate xlink:href="#l7" attributeName="opacity" from="0" to="1" begin="0.48s" dur="0.08s" fill="freeze"/>
+      <animate xlink:href="#l8" attributeName="opacity" from="0" to="1" begin="0.56s" dur="0.08s" fill="freeze"/>
+      <animate xlink:href="#l9" attributeName="opacity" from="0" to="1" begin="0.64s" dur="0.08s" fill="freeze"/>
+      <animate xlink:href="#l10" attributeName="opacity" from="0" to="1" begin="0.72s" dur="0.08s" fill="freeze"/>
+      <animate xlink:href="#l11" attributeName="opacity" from="0" to="1" begin="0.80s" dur="0.08s" fill="freeze"/>
+      <animate xlink:href="#l12" attributeName="opacity" from="0" to="1" begin="0.88s" dur="0.08s" fill="freeze"/>
+      <animate xlink:href="#l13" attributeName="opacity" from="0" to="1" begin="0.96s" dur="0.08s" fill="freeze"/>
+      <animate xlink:href="#l14" attributeName="opacity" from="0" to="1" begin="1.04s" dur="0.08s" fill="freeze"/>
+      <animate xlink:href="#l15" attributeName="opacity" from="0" to="1" begin="1.12s" dur="0.08s" fill="freeze"/>
+      <animate xlink:href="#l16" attributeName="opacity" from="0" to="1" begin="1.20s" dur="0.08s" fill="freeze"/>
+      <animate xlink:href="#l17" attributeName="opacity" from="0" to="1" begin="1.28s" dur="0.08s" fill="freeze"/>
+      <animate xlink:href="#l18" attributeName="opacity" from="0" to="1" begin="1.36s" dur="0.08s" fill="freeze"/>
+      <animate xlink:href="#l19" attributeName="opacity" from="0" to="1" begin="1.44s" dur="0.08s" fill="freeze"/>
+      <animate xlink:href="#l20" attributeName="opacity" from="0" to="1" begin="1.52s" dur="0.08s" fill="freeze"/>
+      <animate xlink:href="#l21" attributeName="opacity" from="0" to="1" begin="1.60s" dur="0.08s" fill="freeze"/>
+      <animate xlink:href="#l22" attributeName="opacity" from="0" to="1" begin="1.68s" dur="0.08s" fill="freeze"/>
+      <animate xlink:href="#l23" attributeName="opacity" from="0" to="1" begin="1.76s" dur="0.08s" fill="freeze"/>
+      <animate xlink:href="#l24" attributeName="opacity" from="0" to="1" begin="1.84s" dur="0.08s" fill="freeze"/>
+      <animate xlink:href="#l25" attributeName="opacity" from="0" to="1" begin="1.92s" dur="0.08s" fill="freeze"/>
     </text>
   </g>
 </svg>
