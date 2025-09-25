@@ -8,9 +8,6 @@
   <!-- UI fonts & icons -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
 
-  <!-- Ace editor -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.16.0/ace.js"></script>
-
   <style>
     :root{
       --bg:#000;
@@ -48,7 +45,8 @@
     .editorPane{width:62%;min-width:360px;border-right:1px solid rgba(255,255,255,0.03);display:flex;flex-direction:column;}
     .editorHeader{padding:10px 14px;background:var(--card);display:flex;gap:12px;align-items:center;}
     .select, .input{background:transparent;border:1px solid rgba(255,255,255,0.03);color:var(--accent);padding:6px 8px;border-radius:6px;}
-    #editor {flex:1;height:100%;background:var(--panel);}
+    /* Make editor guaranteed to have height so Ace can accept input */
+    #editor {flex:1; min-height:320px; height: calc(100vh - 160px); background:var(--panel);}
     .rightPane{flex:1;display:flex;flex-direction:column;}
     .outputHeader{padding:10px 14px;background:#061018;border-bottom:1px solid rgba(255,255,255,0.03);display:flex;align-items:center;gap:12px;}
     .outputArea{flex:1;padding:12px;background:#050708;color:#b8ffea;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,monospace;overflow:auto;white-space:pre-wrap;}
@@ -66,12 +64,14 @@
       .editorPane{width:100%;height:50vh}
       .rightPane{height:50vh}
     }
+    /* ensure editor textarea-like accessibility */
+    .ace_content { outline: none; }
   </style>
 </head>
 <body>
   <div class="topbar">
     <div class="brand">
-      <div class="logo">GA</div>
+      <div class="logo" title="Double-click to save">GA</div>
       <div>
         <div>Golden Apple — C++ Runner</div>
         <div class="small">Compile C++ using Wandbox (remote) · Browser UI</div>
@@ -109,7 +109,7 @@
         </div>
       </div>
 
-      <div id="editor"></div>
+      <div id="editor">Loading editor…</div>
       <div class="footerBar">
         <div class="split">
           <div class="small">Input (stdin):</div>
@@ -131,18 +131,44 @@
     </aside>
   </div>
 
+  <!-- load Ace with fallback -->
   <script>
-    // Initialize Ace Editor
-    const editor = ace.edit("editor", {
-      mode: "ace/mode/c_cpp",
-      theme: "ace/theme/monokai",
-      fontSize: "14px",
-      showPrintMargin: false,
-      wrap: true,
-      useWorker: false
-    });
+    (function loadAceAndInit() {
+      const aceCdnPrimary = 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.16.0/ace.js';
+      const aceCdnFallback = 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.8.0/ace.js';
 
-    const initialCode = `#include <iostream>
+      function injectScript(src, onload, onerror) {
+        const s = document.createElement('script');
+        s.src = src;
+        s.onload = onload;
+        s.onerror = onerror;
+        s.crossOrigin = "anonymous";
+        document.head.appendChild(s);
+      }
+
+      function initEditor() {
+        try {
+          if (typeof ace === 'undefined') {
+            document.getElementById('editor').textContent = 'Failed to load editor. Check network or try reloading.';
+            console.error('Ace not available');
+            return;
+          }
+
+          // Initialize Ace Editor
+          const editor = ace.edit("editor", {
+            mode: "ace/mode/c_cpp",
+            theme: "ace/theme/monokai",
+            fontSize: "14px",
+            showPrintMargin: false,
+            wrap: true,
+            useWorker: false
+          });
+
+          editor.getSession().setUseWorker(false);
+          editor.setOptions({ readOnly: false, behavioursEnabled: true, wrap: true });
+          editor.renderer.setScrollMargin(8,8,8,8);
+
+          const initialCode = `#include <iostream>
 #include <string>
 
 int main() {
@@ -153,8 +179,57 @@ int main() {
     return 0;
 }
 `;
-    editor.setValue(initialCode, -1);
+          editor.setValue(initialCode, -1);
 
+          // Ensure the editor has focus and is resized after layout
+          setTimeout(() => {
+            try {
+              editor.resize();
+              editor.focus();
+              // Move caret to end
+              editor.selection.moveCursorFileEnd();
+            } catch (e) {
+              console.warn('Editor focus/resize error', e);
+            }
+          }, 50);
+
+          // Expose editor globally for other functions
+          window.GA_ACE_EDITOR = editor;
+
+          // Bind Ctrl/Cmd+Enter to run
+          editor.commands.addCommand({
+            name: 'run',
+            bindKey: {win: 'Ctrl-Enter', mac: 'Command-Enter'},
+            exec: function() { document.getElementById('runBtn').click(); }
+          });
+
+          // Double-click logo to download source
+          document.querySelector('.logo').addEventListener('dblclick', () => {
+            const blob = new Blob([editor.getValue()], {type: "text/x-c++src"});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url; a.download = "main.cpp"; document.body.appendChild(a);
+            a.click(); a.remove(); URL.revokeObjectURL(url);
+          });
+
+        } catch (err) {
+          console.error('Error initializing Ace editor:', err);
+          document.getElementById('editor').textContent = 'Editor initialization error. See console.';
+        }
+      }
+
+      // Try primary, on error try fallback, on error show message
+      injectScript(aceCdnPrimary, initEditor, () => {
+        console.warn('Primary Ace CDN failed, loading fallback');
+        injectScript(aceCdnFallback, initEditor, () => {
+          console.error('Both Ace CDNs failed to load');
+          document.getElementById('editor').textContent = 'Unable to load code editor. Check network or CDN.';
+        });
+      });
+    })();
+  </script>
+
+  <script>
     // DOM references
     const runBtn = document.getElementById('runBtn');
     const stopBtn = document.getElementById('stopBtn');
@@ -174,6 +249,12 @@ int main() {
 
     // Compile & run via Wandbox API (public remote service)
     async function compileAndRun() {
+      const editor = window.GA_ACE_EDITOR;
+      if (!editor) {
+        writeOutput("// Editor not ready. Please wait a moment and try again.\n");
+        return;
+      }
+
       const code = editor.getValue();
       const compiler = document.getElementById('compilerSelect').value;
       const std = document.getElementById('stdSelect').value;
@@ -184,8 +265,8 @@ int main() {
         code: code,
         compiler: compiler,
         options: "warning,cpp-runtime",
-        compiler-option: "-std=" + std,
-        runtime-option: "",
+        "compiler-option": "-std=" + std,
+        "runtime-option": "",
         save: false,
         stdin: stdin
       };
@@ -194,7 +275,7 @@ int main() {
       statusText.textContent = "compiling...";
       runBtn.disabled = true;
       controller = new AbortController();
-      writeOutput("// Sending code to Wandbox...\\n");
+      writeOutput("// Sending code to Wandbox...\n");
 
       try {
         const resp = await fetch("https://wandbox.org/api/compile.json", {
@@ -211,49 +292,39 @@ int main() {
         }
 
         const json = await resp.json();
-        /*
-          Typical wandbox response fields (may vary):
-          - status (int)
-          - program_output (string)
-          - compiler_output (string)
-          - compiler_error (string)
-          - url (string)
-          - signal (string)
-          - status_text (string)
-        */
 
         // Clear then display sections
         writeOutput("");
 
         // Compiler stdout/stderr and messages
         if (json.compiler_output && json.compiler_output.trim()) {
-          appendOutput("// Compiler output:\\n");
-          appendOutput(json.compiler_output + "\\n");
+          appendOutput("// Compiler output:\n");
+          appendOutput(json.compiler_output + "\n");
         }
         if (json.compiler_error && json.compiler_error.trim()) {
-          appendOutput("// Compiler errors/warnings:\\n");
-          appendOutput(json.compiler_error + "\\n");
+          appendOutput("// Compiler errors/warnings:\n");
+          appendOutput(json.compiler_error + "\n");
         }
 
         // Program execution output
         if (json.program_output && json.program_output.trim()) {
-          appendOutput("// Program output:\\n");
-          appendOutput(json.program_output + "\\n");
+          appendOutput("// Program output:\n");
+          appendOutput(json.program_output + "\n");
         } else {
-          appendOutput("// Program produced no output or it was empty.\\n");
+          appendOutput("// Program produced no output or it was empty.\n");
         }
 
         // Extra info
-        appendOutput("\\n// Status: " + (json.status_text || json.status || "unknown") + "\\n");
+        appendOutput("\n// Status: " + (json.status_text || json.status || "unknown") + "\n");
         if (json.url) {
-          appendOutput("// Remote link: " + json.url + "\\n");
+          appendOutput("// Remote link: " + json.url + "\n");
         }
 
       } catch (err) {
         if (err.name === 'AbortError') {
-          writeOutput("// Compilation aborted by user.\\n");
+          writeOutput("// Compilation aborted by user.\n");
         } else {
-          writeOutput("// Error: " + (err.message || err) + "\\n");
+          writeOutput("// Error: " + (err.message || err) + "\n");
         }
       } finally {
         statusText.textContent = "idle";
@@ -264,7 +335,7 @@ int main() {
 
     // Run button handler
     runBtn.addEventListener('click', () => {
-      writeOutput("// Running...\\n");
+      writeOutput("// Running...\n");
       compileAndRun();
     });
 
@@ -273,31 +344,23 @@ int main() {
       if (controller) {
         controller.abort();
       } else {
-        appendOutput("// Nothing to stop.\\n");
+        appendOutput("// Nothing to stop.\n");
       }
     });
 
-    // Keyboard shortcut: Ctrl/Cmd+Enter to run
-    editor.commands.addCommand({
-      name: 'run',
-      bindKey: {win: 'Ctrl-Enter', mac: 'Command-Enter'},
-      exec: function() { runBtn.click(); }
+    // Accessibility: ensure editor gets focus when clicking editor area container
+    document.getElementById('editor').addEventListener('click', () => {
+      const e = window.GA_ACE_EDITOR;
+      if (e) e.focus();
     });
 
-    // Small helper: save file (download) button by right-click menu not implemented - provide simple function
-    function downloadSource() {
-      const blob = new Blob([editor.getValue()], {type: "text/x-c++src"});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url; a.download = "main.cpp"; document.body.appendChild(a);
-      a.click(); a.remove(); URL.revokeObjectURL(url);
-    }
-
-    // Expose download on double-click top-left logo (just a convenience)
-    document.querySelector('.logo').addEventListener('dblclick', downloadSource);
+    // Provide a helpful suggestion if editor is not ready and user tries to run quickly
+    window.addEventListener('beforeunload', () => {
+      // no-op, but reserved for future cleanup
+    });
 
     // Initial message
-    writeOutput("// Ready. Edit code and click Run (or Ctrl/Cmd+Enter).\\n");
+    writeOutput("// Ready. Edit code and click Run (or Ctrl/Cmd+Enter once editor is focused).\n// If you can't type, open DevTools (F12) and check console/network for Ace errors.\n");
   </script>
 </body>
 </html>
