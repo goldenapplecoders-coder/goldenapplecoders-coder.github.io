@@ -1,0 +1,104 @@
+<svg width="800" height="200" viewBox="0 0 800 200" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .dancing { font-size: 48px; font-family: 'Arial Black', Arial, sans-serif; fill: #DAA520; }
+  </style>
+  <g>
+    <!-- Each letter is a separate text element for individual animation -->
+    <text x="40" y="100" class="dancing">
+      <tspan>
+        G
+        <animateTransform attributeName="transform" type="translate" values="0,0; 0,-20; 0,0" dur="1s" repeatCount="indefinite"/>
+      </tspan>
+      <tspan x="80">
+        o
+        <animateTransform attributeName="transform" type="translate" values="0,0; 0,15; 0,0" dur="1.1s" repeatCount="indefinite"/>
+      </tspan>
+      <tspan x="120">
+        l
+        <animateTransform attributeName="transform" type="translate" values="0,0; 0,-15; 0,0" dur="1.2s" repeatCount="indefinite"/>
+      </tspan>
+      <tspan x="160">
+        d
+        <animateTransform attributeName="transform" type="translate" values="0,0; 0,20; 0,0" dur="1.3s" repeatCount="indefinite"/>
+      </tspan>
+      <tspan x="200">
+        e
+        <animateTransform attributeName="transform" type="translate" values="0,0; 0,-20; 0,0" dur="1.4s" repeatCount="indefinite"/>
+      </tspan>
+      <tspan x="240">
+        n
+        <animateTransform attributeName="transform" type="translate" values="0,0; 0,15; 0,0" dur="1.5s" repeatCount="indefinite"/>
+      </tspan>
+      <tspan x="280"> </tspan>
+      <tspan x="320">
+        A
+        <animateTransform attributeName="transform" type="translate" values="0,0; 0,-20; 0,0" dur="1.6s" repeatCount="indefinite"/>
+      </tspan>
+      <tspan x="360">
+        p
+        <animateTransform attributeName="transform" type="translate" values="0,0; 0,20; 0,0" dur="1.7s" repeatCount="indefinite"/>
+      </tspan>
+      <tspan x="400">
+        p
+        <animateTransform attributeName="transform" type="translate" values="0,0; 0,-15; 0,0" dur="1.8s" repeatCount="indefinite"/>
+      </tspan>
+      <tspan x="440">
+        l
+        <animateTransform attributeName="transform" type="translate" values="0,0; 0,15; 0,0" dur="1.9s" repeatCount="indefinite"/>
+      </tspan>
+      <tspan x="480">
+        e
+        <animateTransform attributeName="transform" type="translate" values="0,0; 0,-20; 0,0" dur="2s" repeatCount="indefinite"/>
+      </tspan>
+      <tspan x="520"> </tspan>
+      <tspan x="560">
+        T
+        <animateTransform attributeName="transform" type="translate" values="0,0; 0,20; 0,0" dur="2.1s" repeatCount="indefinite"/>
+      </tspan>
+      <tspan x="600">
+        e
+        <animateTransform attributeName="transform" type="translate" values="0,0; 0,-15; 0,0" dur="2.2s" repeatCount="indefinite"/>
+      </tspan>
+      <tspan x="640">
+        c
+        <animateTransform attributeName="transform" type="translate" values="0,0; 0,15; 0,0" dur="2.3s" repeatCount="indefinite"/>
+      </tspan>
+      <tspan x="680">
+        h
+        <animateTransform attributeName="transform" type="translate" values="0,0; 0,-20; 0,0" dur="2.4s" repeatCount="indefinite"/>
+      </tspan>
+      <tspan x="720">
+        n
+        <animateTransform attributeName="transform" type="translate" values="0,0; 0,20; 0,0" dur="2.5s" repeatCount="indefinite"/>
+      </tspan>
+      <tspan x="760">
+        o
+        <animateTransform attributeName="transform" type="translate" values="0,0; 0,-15; 0,0" dur="2.6s" repeatCount="indefinite"/>
+      </tspan>
+      <tspan x="800">
+        l
+        <animateTransform attributeName="transform" type="translate" values="0,0; 0,15; 0,0" dur="2.7s" repeatCount="indefinite"/>
+      </tspan>
+      <tspan x="840">
+        o
+        <animateTransform attributeName="transform" type="translate" values="0,0; 0,-20; 0,0" dur="2.8s" repeatCount="indefinite"/>
+      </tspan>
+      <tspan x="880">
+        g
+        <animateTransform attributeName="transform" type="translate" values="0,0; 0,20; 0,0" dur="2.9s" repeatCount="indefinite"/>
+      </tspan>
+      <tspan x="920">
+        i
+        <animateTransform attributeName="transform" type="translate" values="0,0; 0,-15; 0,0" dur="3s" repeatCount="indefinite"/>
+      </tspan>
+      <tspan x="960">
+        e
+        <animateTransform attributeName="transform" type="translate" values="0,0; 0,15; 0,0" dur="3.1s" repeatCount="indefinite"/>
+      </tspan>
+      <tspan x="1000">
+        s
+        <animateTransform attributeName="transform" type="translate" values="0,0; 0,-20; 0,0" dur="3.2s" repeatCount="indefinite"/>
+      </tspan>
+    </text>
+  </g>
+</svg>
