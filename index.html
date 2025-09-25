@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>HTML TESTER</title>
+    <style>
+        /* CSS for editor */
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        #inputSection {
+            height: 100vh;
+            width: 100vw;
+        }
+
+        #highlight {
+            position: absolute;
+            width: 100%;
+            height: calc(100vh - 100px);
+            padding: 10px;
+            font-size: 16px;
+            font-family: cursive;
+            white-space: pre-wrap;
+            overflow-wrap: break-word;
+            pointer-events: none;
+        }
+
+        #htmlCode {
+            position: relative;
+            width: 100%;
+            height: calc(1000vh - 100px);
+            padding: 10px;
+            font-size: 16px;
+            font-family: monospace;
+            background-color: black;    color: cyan;
+            caret-color: white;
+            font-weight: bolder;
+        }
+
+        #outputSection {
+            display: none;
+        }
+
+        iframe {
+            width: 100vw;
+            height: calc(1000vh - 50px);
+            border: none;
+        }
+
+#i, #un, #backButton{
+    width: 65px;
+    height: 30px;
+    font-size: 16px;
+    cursor: pointer;
+    background: #146c76a0;
+    position: fixed;
+    top: 10px;
+        border-radius: 10px;
+    z-index: 1000;
+}
+#i, #backButton{right: 10px;
+}
+        .fas{font-size: 30px; color: #fff100cb; margin-left: 1px;}
+        #un{right: 90px;
+}
+        #myModal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            padding-top: 50px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: #ffffff1b;
+        }
+        .modal-content {
+            background-color: #ffffff1b;
+                    margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 96%;
+        }
+        </style>
+</head>
+<body>
+<div id="inputSection">
+<button id="un" onclick="document.getElementById('myModal').style.display='block'"><i class="fas fa-globe"></i></button> 
+<button id="i" onclick="runCode()"><i class="fas fa-play"></i></button>
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+<i class="fas fa-crown"></i>
+<h1>𝖈𝖔𝖒𝖕𝖑𝖎𝖊𝖗 𝖕𝖗𝖊𝖒𝖎𝖚𝖒</h1>  <br>
+<blockquote>UPGRADE TO COMPLIER PRO TO ACCES VIEW FROM WEB</blockquote><ul>
+<h2>ᵒᵗʰᵉʳ ᵖʳᵉᵐⁱᵘᵐ ᶠᵉᵃᵗᵘʳᵉˢ</h2>
+<li>Save file-Html file creator</li>
+<li>Assistant-AI code helper</li>
+<li>Console-Error Check</li>
+</ul><br>
+<div id="pkg">Annual Plan-$5
+<br><sup>5USD</sup></div>
+<div id="pkg">Lifetime Plan-$10<br><sup>10USD</sup></div>
+<button class="buy" onclick="alert('Service will be available soon')">BUY PLAN</button>
+            <button onclick="document.getElementById('myModal').style.display='none'" class="close">CONTINUE FREE</button>
+</div>
+    </div>
+    <div style="position: relative;">
+        <textarea id="htmlCode" oninput="highlightCode()" value=""></textarea>
+        <div id="highlight"></div>
+    </div>
+</div>
+<div id="outputSection" style="display: none;"><button id="backButton" onclick="goBack()"><i class="fas fa-edit"></i></button>
+
+    <iframe id="output"></iframe>
+</div>
+<script>
+ #include <iostream>
+#include <algorithm>
+
+int main() {
+    int n, key;
+    std::cout << "Enter array size: ";
+    std::cin >> n;
+    int arr[100];
+    std::cout << "Enter sorted elements: ";
+    for (int i = 0; i < n; i++) {
+        std::cin >> arr[i];
+    }
+    std::cout << "Enter key to search: ";
+    std::cin >> key;
+    int left = 0, right = n - 1, mid, pos = -1;
+    while (left <= right) {
+        mid = (left + right) / 2;
+        if (arr[mid] == key) {
+            pos = mid;
+            break;
+        } else if (arr[mid] < key)
+            left = mid + 1;
+        else
+            right = mid - 1;
+    }
+    if (pos != -1)
+        std::cout << "Found at position: " << pos << std::endl;
+    else
+        std::cout << "Not found" << std::endl;
+    return 0;
+}
+</script>
+    <script>
+     function runCode() {
+    const htmlCode = document.getElementById('htmlCode').value;
+    const output = document.getElementById('output');
+    const inputSection = document.getElementById('inputSection');
+    const outputSection = document.getElementById('outputSection');
+    inputSection.style.display = 'none';
+    outputSection.style.display = 'block';
+    output.srcdoc = htmlCode;
+}
+
+function goBack() {
+    const output = document.getElementById('output');
+    const inputSection = document.getElementById('inputSection');
+    const outputSection = document.getElementById('outputSection');
+    outputSection.style.display = 'none';
+    inputSection.style.display = 'block';
+}
+
+function highlightCode() {
+    const code = document.getElementById('htmlCode').value;
+    const highlight = document.getElementById('highlight');
+    let highlightedCode = '';
+    const regex = /<(\w+)[^>]*>|<\/(\w+)>/g;
+    let match;
+    let lastIndex = 0;
+    while ((match = regex.exec(code)) !== null) {
+        highlightedCode += code.substring(lastIndex, match.index);
+        highlightedCode += `<span style="color: orange"><${match[1] || match[2]}</span>`;
+        if (match[0].includes('/')) {
+            highlightedCode += '</span>';
+        } else {
+            highlightedCode += match[0].substring(match[1].length + 1).replace('>', '></span>');
+        }
+        lastIndex = match.index + match[0].length;
+    }
+    highlightedCode += code.substring(lastIndex);
+    highlight.innerHTML = highlightedCode;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const initialCode = `<!DOCTYPE HTML>
+<Html lang="en">
+<Head>
+<Meta charset="UTF-8">
+<Title> Hello World </Title>
+</Head>
+<Body>
+<H1>HELLO WORLD</H1>
+<!-- Delete whole text and paste yours or test your code from here -->
+
+</Body>
+</Html>`;
+    document.getElementById('htmlCode').value = initialCode;
+    highlightCode();
+    document.getElementById('htmlCode').focus();
+    document.getElementById('htmlCode').setSelectionRange(initialCode.length - 15, initialCode.length - 15);
+});
+
+const buttons = document.querySelectorAll('button');
+
+buttons.forEach(button => {
+    let offsetX, offsetY;
+
+    button.addEventListener('mousedown', (e) => {
+        const rect = button.getBoundingClientRect();
+        offsetX = e.clientX - rect.left;
+        offsetY = e.clientY - rect.top;
+
+        button.style.position = 'fixed';
+        button.style.left = `${e.clientX - offsetX}px`;
+        button.style.top = `${e.clientY - offsetY}px`;
+
+        document.addEventListener('mousemove', moveHandler);
+        document.addEventListener('mouseup', upHandler);
+    });
+
+    const moveHandler = (e) => {
+        button.style.left = `${e.clientX - offsetX}px`;
+                button.style.top = `${e.clientY - offsetY}px`;
+    };
+
+    const upHandler = () => {
+        document.removeEventListener('mousemove', moveHandler);
+        document.removeEventListener('mouseup', upHandler);
+    };
+});
+</script>
+</body>
+</html>
