@@ -1,0 +1,1401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gᴏʟᴅᴇɴ Aᴘᴘʟᴇ Tᴇᴄʜɴᴏʟᴏɢɪᴇs</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="golden.css">
+</head>
+<body data-theme="dark">
+    <div class="bg-animation" id="bgAnimation">
+        <div class="bg-gradient"></div>
+    </div>
+
+    <!-- Enhanced Header -->
+    <header class="header" id="header">
+        <nav class="nav">
+            <a href="#" class="logo" onclick="showPage('home')">
+                <i class="fas fa-apple-alt"></i>
+                <span>GOLDEN APPLE</span>
+            </a>
+            <div class="nav-actions">
+                <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
+                    <i class="fas fa-apple-alt" id="themeIcon"></i>
+                </button>
+                <div class="hamburger" onclick="toggleMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Enhanced Slide Menu -->
+    <div class="menu-overlay" onclick="closeMenu()"></div>
+    <div class="slide-menu">
+        <div class="menu-header">Help & About</span>
+            <button class="menu-close" onclick="closeMenu()">&times;</button>
+        </div>
+        <ul class="menu-items" id="menuItems">
+            <!-- Menu items populated by JavaScript -->
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Home Page -->
+        <div id="home" class="page active">
+            <!-- Connection Status -->
+            <div class="connection-status" id="connectionStatus">
+                <div class="connection-indicator connected" id="connectionIndicator"></div>
+                <span id="connectionText">Connected to servers</span>
+                <div style="margin-left: auto;">
+                    <i class="fas fa-server"></i>
+                    <span id="serverCount">0</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2></i>Golden Apple Technologies Services</h2>
+                    <p>
+Hello Developers! I'm excited about the innovative projects we're working on. Collaboration and learning are key in our team. Let's build something amazing together in the Golden Apple Tech ecosystem.</p>
+                </div>
+
+                <!-- Enhanced Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <!-- Updated to show "Servers Left" instead of "Active Servers" -->
+                        <span class="stat-number" id="totalBots">99+</span>
+                        <span class="stat-label">Subscribers</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">100%</span>
+                        <span class="stat-label">Security</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">Icii</span>
+                        <span class="stat-label">Developer</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">100%</span>
+                        <span class="stat-label">Secure</span>
+                    </div>
+                </div>
+
+                <!-- Enhanced Pairing Form -->
+                <form hidden id="pairingForm" >
+                    <div class="form-group">
+                        <label class="form-label" for="phoneNumber">
+                            <i class="fab fa-telegram"></i> Phone Number
+                        </label>
+                        <input type="text" id="phoneNumber" class="form-input" placeholder="e.g., 2348133229716" required>
+                        <small style="color: var(--text-muted); margin-top: 0.75rem; display: block; font-size: 0.9rem;">
+                            <i class="fas fa-info-circle"></i> Format: Numbers only • No + or 0 at start • International format
+                        </small>
+                    </div>
+
+                    <!-- Enhanced Captcha -->
+                    <div class="captcha-container">
+                        <div class="captcha-question" id="captchaQuestion">What is 5 + 3?</div>
+                        <input type="number" id="captchaInput" class="captcha-input" placeholder="Enter answer" required>
+                    </div>
+
+                    <button type="submit" id="submitBtn" class="btn btn-full">
+                        <i class="fas fa-code"></i> Generate Pairing Code
+                    </button>
+                </form>
+
+                <!-- Progress Bar -->
+                <div class="progress-bar" id="progressBr" style="display: none;" hidden>
+                    <div class="progress-fill" id="progressFill" style="width: 0%;" hidden></div>
+                </div>
+
+                <div id="result" class="result" hidden></div>
+                <div id="loginWarning" class="result warning" style="display: none;" hidden>
+                    <i class="fas fa-exclamation-triangle"></i>
+                    You can only pair one bot without logging in. Please <a href="#" onclick="openModal('loginModal')" style="color: var(--primary); text-decoration: underline;">login</a> to pair additional bots.
+                </div>
+
+                <!-- Enhanced User History -->
+                <div id="userHistory" class="user-history" style="display: none;">
+                    <h3 style="color: var(--primary); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem;">
+                        <i class="fas fa-history"></i> Your Bot History
+                    </h3>
+                    <div id="historyList">
+                        <!-- History items populated by JavaScript -->
+                    </div>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; text-align: center; margin-top: 1.5rem; padding: 1rem; background: var(--bg-glass); border-radius: var(--radius-sm);">
+                        <i class="fas fa-info-circle"></i> You cannot pair a new bot with the same device until you delete the current session.
+                    </p>
+                </div>
+            </div> 
+            <!-- Enhanced Features Card -->               
+
+            <div class="card">
+                <div class="card-header">
+                    <h2><starss="fas fa-heart"></i>GOLDEN APPLE FEATURES</h2>
+                   <p>Keep In Touch With Us And Unlock More Features for Free</p>
+                </div>
+                <div class="features-grid">
+                <a href="qrcode.html"><span class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-qrcode"></i></div>
+                        <div class="feature-text">QR CODE GENERATOR</div>
+                    </span>
+                    </a><a href="barcode.html"><div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-barcode"></i></div>
+                        <div class="feature-text">BAR CODE GENERATOR</div>
+                    </div>
+                    </a><a href="smart.html"><div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-laptop"></i></div>
+                        <div class="feature-text">SMART HOME AUTOMATION</div>
+                    </div>
+                    </a><a href="vr.html"><div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-vr-cardboard"></i></div>
+                        <div class="feature-text">CONNECT TO VIRTUAL REALITY HEADSETS</div>
+                    </div>
+                    </a><a href="joystick.html"><div class="feature-card">
+                        <div class="feature-icon"><i class="fab fa-bluetooth"></i></div>
+                        <div class="feature-text">BLUETOOTH JOYSTICK</div>
+                    </div>
+                    </a><a href="bible.html"><div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-book-bible"></i></div>
+                        <div class="feature-text">BIBLE SEARCH</div>
+                    </div>
+                    </a><a href="quran.html"><div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-quran"></i></div>
+                        <div class="feature-text">QUR'AN SEARCH</div>
+                    </div>
+                    </a><a href="image it.html"><div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-image"></i></div>
+                        <div class="feature-text">DR IMAGE IT</div>
+                    </div>
+                    </a><a href="iAM.html"><div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-code"></i></div>
+                        <div class="feature-text">LEARN CODING</div>
+                    </div>
+                    </a><a href="t2s.html"><div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-music"></i></div>
+                        <div class="feature-text">TEXT TO SPEECH ENGINE</div>
+                    </div>
+                    </a><a href="live.html"><div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-video"></i></div>
+                        <div class="feature-text">LIVE STREAMING</div>
+                    </div>
+                    </a><a href="games.html"><div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-gamepad"></i></div>
+                        <div class="feature-text">ONLINE GAMES</div>
+                    </div>
+                
+                    </a><a href="mediafire.html"><div class="feature-card">
+                        <div class="feature-icon"><i class=fas fa-fireflame"></i></div>
+                        <div class="feature-text">MEDIAFIRE DOWNLOADER</div>
+                    </div>
+                    </a><a href="soundcloud.html"><div class="feature-card">
+                        <div class="feature-icon"><i class="fab fa-soundcloud"></i></div>
+                        <div class="feature-text">SOUNDCLOUD DOWNLOADER</div>
+                    </div>
+                    </a><a href="Tt.html"><div class="feature-card">
+                        <div class="feature-icon"><i class="fab fa-tiktok"></i></div>
+                        <div class="feature-text">TIKTOK DOWNLOADER</div>
+                        </div>
+                    </a><a href="enhancer.html"><div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-star"></i></div>
+                        <div class="feature-text">PHOTO ENHANCER</div>
+                        </div>
+                    </a><a href="imdb.html"><div class="feature-card">
+                        <div class="feature-icon"><i class="fab fa-imdb"></i></div>
+                        <div class="feature-text">DISCOVER IMDB MOVIES</div>
+                        </div>
+                    </a><a href="lyrics.html"><div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-microphone"></i></div>
+                        <div class="feature-text">LYRICS SEARCH</div>
+                        </div>
+                    </a><a href="movies.html"><div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-play"></i></div>
+                        <div class="feature-text">DISCOVER NEW MOVIES</div>
+                        </div>
+                    </a><a href="s2t.html"><div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-font"></i></div>
+                        <div class="feature-text">SPEECH TO TEXT ENGINE</div>
+                        </div>
+                    </a><a href="weather.html"><div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-cloud"></i></div>
+                        <div class="feature-text">WEATHER FORECAST SEARCH</div>
+                        </div>
+                    </a><a href="drive.html"><div class="feature-card">
+                        <div class="feature-icon"><i class="fab fa-google-drive"></i></div>
+                        <div class="feature-text">GOOGLE DRIVE DOWNLOADER</div>
+                        </div>
+                    </a><a href="playstore.html"><div class="feature-card">
+                        <div class="feature-icon"><i class="fab fa-google-play"></i></div>
+                        <div class="feature-text">PLAY STORE DOWNLOADER</div>
+                        </div>
+                    </a><a href="ytmp4.html"><div class="feature-card">
+                        <div class="feature-icon"><i class="fab fa-youtube"></i></div>
+                    </span>
+                    </a><a href="barcode.html"><div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-barcode"></i></div>
+                        <div class="feature-text">BAR CODE GENERATOR</div>
+                    </div>
+                    </a><a href="smart.html"><div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-laptop"></i></div>
+                        <div class="feature-text">SMART HOME AUTOMATION</div>
+                    </div>
+                    </a><a href="vr.html"><div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-vr-cardboard"></i></div>
+                        <div class="feature-text">CONNECT TO VIRTUAL REALITY HEADSETS</div>
+                    </div>
+                    </a><a href="joystick.html"><div class="feature-card">
+                        <div class="feature-icon"><i class="fab fa-bluetooth"></i></div>
+                        <div class="feature-text">BLUETOOTH JOYSTICK</div>
+                    </div>
+                    </a><a href="bible.html"><div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-book-bible"></i></div>
+                        <div class="feature-text">BIBLE SEARCH</div>
+                    </div>
+                    </a><a href="quran.html"><div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-quran"></i></div>
+                        <div class="feature-text">QUR'AN SEARCH</div>
+                    </div>
+                    </a><a href="image it.html"><div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-image"></i></div>
+                        <div class="feature-text">DR IMAGE IT</div>
+                    </div>
+                    </a><a href="iAM.html"><div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-code"></i></div>
+                        <div class="feature-text">LEARN CODING</div>
+                    </div>
+                    </a><a href="t2s.html"><div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-music"></i></div>
+                        <div class="feature-text">TEXT TO SPEECH ENGINE</div>
+                    </div>
+                    </a><a href="live.html"><div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-video"></i></div>
+                        <div class="feature-text">LIVE STREAMING</div>
+                    </div>
+                    </a><a href="games.html"><div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-gamepad"></i></div>
+                        <div class="feature-text">ONLINE GAMES</div>
+                    </div>
+                
+                    </a><a href="mediafire.html"><div class="feature-card">
+                        <div class="feature-icon"><i class=fas fa-fireflame"></i></div>
+                        <div class="feature-text">MEDIAFIRE DOWNLOADER</div>
+                    </div>
+                    </a><a href="soundcloud.html"><div class="feature-card">
+                        <div class="feature-icon"><i class="fab fa-soundcloud"></i></div>
+                        <div class="feature-text">SOUNDCLOUD DOWNLOADER</div>
+
+                    </div>
+                    </a><a href="Tt.html"><div class="feature-card">
+                        <div class="feature-icon"><i class="fab fa-tiktok"></i></div>
+                        <div class="feature-text">TIKTOK DOWNLOADER</div>
+                        </div>
+                    </a><a href="enhancer.html"><div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-star"></i></div>
+                        <div class="feature-text">PHOTO ENHANCER</div>
+                        </div>
+                    </a><a href="imdb.html"><div class="feature-card">
+                        <div class="feature-icon"><i class="fab fa-imdb"></i></div>
+                        <div class="feature-text">DISCOVER IMDB MOVIES</div>
+                        </div>
+                    </a><a href="lyrics.html"><div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-microphone"></i></div>
+                        <div class="feature-text">LYRICS SEARCH</div>
+                        </div>
+                    </a><a href="movies.html"><div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-play"></i></div>
+                        <div class="feature-text">DISCOVER NEW MOVIES</div>
+                        </div>
+                    </a><a href="s2t.html"><div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-font"></i></div>
+                        <div class="feature-text">SPEECH TO TEXT ENGINE</div>
+                        </div>
+                    </a><a href="weather.html"><div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-cloud"></i></div>
+                        <div class="feature-text">WEATHER FORECAST SEARCH</div>
+                        </div>
+                    </a><a href="drive.html"><div class="feature-card">
+                        <div class="feature-icon"><i class="fab fa-google-drive"></i></div>
+                        <div class="feature-text">GOOGLE DRIVE DOWNLOADER</div>
+                        </div>
+                    </a><a href="playstore.html"><div class="feature-card">
+                        <div class="feature-icon"><i class="fab fa-google-play"></i></div>
+                        <div class="feature-text">PLAY STORE DOWNLOADER</div>
+                        </div>
+                    </a><a href="ytmp4.html"><div class="feature-card">
+                        <div class="feature-icon"><i class="fab fa-youtube"></i></div>
+                        <div class="feature-text">YOUTUBE MP4 DOWNLOADER </div>
+                        </div>
+                    </a><a href="location.html"><div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-location"></i></div>
+                        <div class="feature-text">LOCATION ENGINE</div>
+                        </div>
+            </div>
+        <br>
+
+        <!-- Dashboard Page -->
+        <div id="dashboard" class="page">
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-tachometer-alt"></i> Dashboard</h2>
+                    <p style="color: var(--text-gray);">Your bot management dashboard</p>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-number" id="userBots">0</span>
+                        <span class="stat-label">Your Bots</span>
+                    </div>
+                    <div class="stat-card">
+                        <!-- Updated dashboard bot counter -->
+                        <span class="stat-number bot-counter" id="totalBotsCount">0/800</span>
+                        <span class="stat-label">Total Active</span>
+                    </div>
+                </div>
+                <p style="color: var(--text-gray); text-align: center; margin-top: 2rem;">
+                    <i class="fas fa-info-circle"></i> For privacy reasons, you can only see the total number of active bots.
+                </p>
+            </div>
+        </div>
+
+        <!-- How to Use Page -->
+        <div id="how-to-use" class="page">
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-question-circle"></i> How to Use</h2>
+                    <p style="color: var(--text-gray);">Step-by-step guide to pair your WhatsApp bot</p>
+                </div>
+                
+                <!-- Video placeholder -->
+                <div style="background: var(--dark-card); border-radius: 12px; padding: 2rem; text-align: center; margin-bottom: 2rem; border: 1px solid var(--border);">
+                    <i class="fab fa-youtube" style="font-size: 3rem; color: #ff0000; margin-bottom: 1rem;"></i>
+                    <h3 style="margin-bottom: 1rem;">Tutorial Video</h3>
+                    <p style="color: var(--text-gray); margin-bottom: 1rem;">Watch our comprehensive tutorial</p>
+                    <a href="https://t.me/cyber_xph/174" class="btn" style="background: #ff0000;">
+                        <i class="fab fa-youtube"></i> Watch Tutorial
+                    </a>
+                </div>
+
+                <ol style="padding-left: 1.5rem; line-height: 2; color: var(--text-gray);">
+                    <li><strong style="color: var(--text-light);">Enter your phone number</strong> - Use international format without + or leading 0</li>
+                    <li><strong style="color: var(--text-light);">Solve the captcha</strong> - Complete the simple math problem</li>
+                    <li><strong style="color: var(--text-light);">Click "Generate Pairing Code"</strong> - Wait for the 8-digit code</li>
+                    <li><strong style="color: var(--text-light);">Open WhatsApp</strong> - Go to Settings on your phone</li>
+                    <li><strong style="color: var(--text-light);">Navigate to Linked Devices</strong> - Find this option in WhatsApp settings</li>
+                    <li><strong style="color: var(--text-light);">Enter the pairing code</strong> - Input the 8-digit code you received</li>
+                    <li><strong style="color: var(--text-light);">Your bot is now active!</strong> - Enjoy all the premium features</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- About Page -->
+        <div id="about" class="page">
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-info-circle"></i> About Us</h2>
+                    <p style="color: var(--text-gray);">More About Golden Apple Technologies</p>
+                </div>
+                
+                <div style="text-align: center; margin-bottom: 3rem; line-height: 1.8; color: var(--text-gray);">
+                    <p>WhiteHouse V1 PAIR is a premium WhatsApp bot pairing service that provides secure, reliable, and feature-rich bot connections. Our advanced system ensures 24/7 uptime with multiple server redundancy and cutting-edge security protocols.</p>
+                    <br>
+                    <p>We specialize in delivering high-quality WhatsApp automation solutions that don't require external hosting, making it accessible for everyone to enjoy premium bot features with ease.</p>
+                    <br>
+                    <p>Our mission is to democratize WhatsApp automation by providing powerful, user-friendly tools that enhance communication and productivity for individuals and businesses worldwide.</p>
+                </div>
+
+                <!-- Removed team member cards from about page -->
+            </div>
+        </div>
+
+        <!-- API Site Page -->
+        <div id="api-site" class="page">
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-code"></i> API Documentation</h2>
+                    <p style="color: var(--text-gray);">Developer resources and API endpoints</p>
+                </div>
+                <div style="text-align: center; padding: 3rem; color: var(--text-gray);">
+                    <i class="fas fa-tools" style="font-size: 3rem; margin-bottom: 1rem; color: var(--primary);"></i>
+                    <h3 style="margin-bottom: 1rem;">API Documentation</h3>
+                    <p style="margin-bottom: 2rem;">Access our comprehensive API documentation and developer resources.</p>
+                    <!-- Added go to page button -->
+                    <a href="https://api-dash.WhiteHousetech.space" class="go-to-page-btn">
+                        <i class="fas fa-external-link-alt"></i> Go to API Site
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Update Site Page -->
+        <div id="update-site" class="page">
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-sync-alt"></i> Updates & Changelog</h2>
+                    <p style="color: var(--text-gray);">Latest updates and improvements</p>
+                </div>
+                <div style="text-align: center; padding: 3rem; color: var(--text-gray);">
+                    <i class="fas fa-newspaper" style="font-size: 3rem; margin-bottom: 1rem; color: var(--primary);"></i>
+                    <h3 style="margin-bottom: 1rem;">Stay Updated</h3>
+                    <p style="margin-bottom: 2rem;">Get the latest updates, changelog, and announcements.</p>
+                    <!-- Added go to page button -->
+                    <a href="https://www.WhiteHousetech.space" class="go-to-page-btn">
+                        <i class="fas fa-external-link-alt"></i> Go to Update Site
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Developers Page -->
+        <!-- Enhanced Developers Page with better styling -->
+        <div id="developers" class="page">
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-laptop-code"></i> Meet Our Development Team</h2>
+                    <p style="color: var(--text-gray);">The talented individuals behind WhiteHouse Bot</p>
+                </div>
+                
+                <!-- Fixed team grid to be properly centered -->
+                <div class="team-grid" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 2rem; padding: 2rem; max-width: 1200px; margin: 0 auto;">
+                    <div class="team-card" style="background: var(--card-bg); border-radius: 20px; padding: 2rem; text-align: center; border: 1px solid var(--border); transition: all 0.3s ease; position: relative; overflow: hidden; flex: 0 1 300px; min-width: 280px;">
+                        <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #00d4ff, #0099cc);"></div>
+                        <div class="team-avatar" style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #00d4ff, #0099cc); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 2rem; color: white; cursor: pointer; transition: transform 0.3s ease;" onclick="openImageModal('founder')">
+                            <i class="fas fa-crown"></i>
+                        </div>
+                        <div class="team-name" style="font-size: 1.5rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem;">WhiteHouse</div>
+                        <div class="team-role" style="color: #00d4ff; font-weight: 600; margin-bottom: 1rem; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">Founder & CEO</div>
+                        <p style="color: var(--text-gray); margin-bottom: 1.5rem; line-height: 1.6; font-size: 0.95rem;">
+                            Visionary leader and tech entrepreneur with expertise in WhatsApp automation and bot development. Leading the future of messaging technology.
+                        </p>
+                        <div style="display: flex; gap: 1rem; justify-content: center; margin-bottom: 1.5rem;">
+                            <div style="text-align: center;">
+                                <div style="font-size: 1.2rem; font-weight: 700; color: var(--text-primary);">5+</div>
+                                <div style="font-size: 0.8rem; color: var(--text-gray);">Years Exp</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 1.2rem; font-weight: 700; color: var(--text-primary);">1000+</div>
+                                <div style="font-size: 0.8rem; color: var(--text-gray);">Projects</div>
+                            </div>
+                        </div>
+                        <a href="https://wa.me/2349125042727" class="contact-btn" style="display: inline-flex; align-items: center; gap: 0.5rem; background: linear-gradient(135deg, #25d366, #128c7e); color: white; padding: 0.75rem 1.5rem; border-radius: 50px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; border: none; cursor: pointer;">
+                            <i class="fab fa-whatsapp"></i> Contact on WhatsApp
+                        </a>
+                    </div>
+
+                    <div class="team-card" style="background: var(--card-bg); border-radius: 20px; padding: 2rem; text-align: center; border: 1px solid var(--border); transition: all 0.3s ease; position: relative; overflow: hidden; flex: 0 1 300px; min-width: 280px;">
+                        <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #ff6b6b, #ee5a24);"></div>
+                        <div class="team-avatar" style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #ff6b6b, #ee5a24); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 2rem; color: white; cursor: pointer; transition: transform 0.3s ease;" onclick="openImageModal('assistant')">
+                           <i class="fas fa-code"></i>
+                        </div>
+                        <div class="team-name" style="font-size: 1.5rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem;">BADBOI</div>
+                        <div class="team-role" style="color: #ff6b6b; font-weight: 600; margin-bottom: 1rem; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">Assistant Developer</div>
+                        <p style="color: var(--text-gray); margin-bottom: 1.5rem; line-height: 1.6; font-size: 0.95rem;">
+                            Skilled developer specializing in backend systems and API integrations. Expert in creating robust and scalable solutions.
+                        </p>
+                        <div style="display: flex; gap: 1rem; justify-content: center; margin-bottom: 1.5rem;">
+                            <div style="text-align: center;">
+                                <div style="font-size: 1.2rem; font-weight: 700; color: var(--text-primary);">3+</div>
+                                <div style="font-size: 0.8rem; color: var(--text-gray);">Years Exp</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 1.2rem; font-weight: 700; color: var(--text-primary);">500+</div>
+                                <div style="font-size: 0.8rem; color: var(--text-gray);">APIs Built</div>
+                            </div>
+                        </div>
+                        <a href="https://wa.me/2349136616989" class="contact-btn" style="display: inline-flex; align-items: center; gap: 0.5rem; background: linear-gradient(135deg, #25d366, #128c7e); color: white; padding: 0.75rem 1.5rem; border-radius: 50px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; border: none; cursor: pointer;">
+                            <i class="fab fa-whatsapp"></i> Contact on WhatsApp
+                        </a>
+                    </div>
+
+                    <div class="team-card" style="background: var(--card-bg); border-radius: 20px; padding: 2rem; text-align: center; border: 1px solid var(--border); transition: all 0.3s ease; position: relative; overflow: hidden; flex: 0 1 300px; min-width: 280px;">
+                        <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #feca57, #ff9ff3);"></div>
+                        <div class="team-avatar" style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #feca57, #ff9ff3); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 2rem; color: white; cursor: pointer; transition: transform 0.3s ease;" onclick="openImageModal('topgee')">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="team-name" style="font-size: 1.5rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem;">StarTech</div>
+                        <div class="team-role" style="color: #feca57; font-weight: 600; margin-bottom: 1rem; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">Top Gee</div>
+                        <p style="color: var(--text-gray); margin-bottom: 1.5rem; line-height: 1.6; font-size: 0.95rem;">
+                            Technical expert and system architect responsible for infrastructure design. Master of system optimization and performance.
+                        </p>
+                        <div style="display: flex; gap: 1rem; justify-content: center; margin-bottom: 1.5rem;">
+                            <div style="text-align: center;">
+                                <div style="font-size: 1.2rem; font-weight: 700; color: var(--text-primary);">4+</div>
+                                <div style="font-size: 0.8rem; color: var(--text-gray);">Years Exp</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 1.2rem; font-weight: 700; color: var(--text-primary);">99.9%</div>
+                                <div style="font-size: 0.8rem; color: var(--text-gray);">Uptime</div>
+                            </div>
+                        </div>
+                        <a href="https://wa.me/256791728084" class="contact-btn" style="display: inline-flex; align-items: center; gap: 0.5rem; background: linear-gradient(135deg, #25d366, #128c7e); color: white; padding: 0.75rem 1.5rem; border-radius: 50px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; border: none; cursor: pointer;">
+                            <i class="fab fa-whatsapp"></i> Contact on WhatsApp
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Added development stats and technologies section -->
+                <div style="margin-top: 3rem; padding: 2rem; background: var(--card-bg); border-radius: 20px; border: 1px solid var(--border);">
+                    <h3 style="text-align: center; margin-bottom: 2rem; color: var(--text-primary);">
+                        <i class="fas fa-chart-line"></i> Development Statistics
+                    </h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem;">
+                        <div style="text-align: center; padding: 1.5rem; background: rgba(0, 212, 255, 0.1); border-radius: 15px; border: 1px solid rgba(0, 212, 255, 0.2);">
+                            <div style="font-size: 2.5rem; font-weight: 700; color: #00d4ff; margin-bottom: 0.5rem;">10,000+</div>
+                            <div style="color: var(--text-gray); font-size: 0.9rem;">Active Users</div>
+                        </div>
+                        <div style="text-align: center; padding: 1.5rem; background: rgba(37, 211, 102, 0.1); border-radius: 15px; border: 1px solid rgba(37, 211, 102, 0.2);">
+                            <div style="font-size: 2.5rem; font-weight: 700; color: #25d366; margin-bottom: 0.5rem;">100%</div>
+                            <div style="color: var(--text-gray); font-size: 0.9rem;">Secure</div>
+                        </div>
+                        <div style="text-align: center; padding: 1.5rem; background: rgba(255, 107, 107, 0.1); border-radius: 15px; border: 1px solid rgba(255, 107, 107, 0.2);">
+                            <div style="font-size: 2.5rem; font-weight: 700; color: #ff6b6b; margin-bottom: 0.5rem;">Icii</div>
+                            <div style="color: var(--text-gray); font-size: 0.9rem;">Developer</div>
+                        </div>
+                        <div style="text-align: center; padding: 1.5rem; background: rgba(254, 202, 87, 0.1); border-radius: 15px; border: 1px solid rgba(254, 202, 87, 0.2);">
+                            <div style="font-size: 2.5rem; font-weight: 700; color: #feca57; margin-bottom: 0.5rem;">99+</div>
+                            <div style="color: var(--text-gray); font-size: 0.9rem;">Subscribers</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- About Page -->
+        <div id="about" class="page">
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-info-circle"></i> About Us</h2>
+                    <p style="color: var(--text-gray);">Learn more about Golden Apple Technologies</p>
+                </div>
+                
+                <div style="text-align: center; margin-bottom: 3rem; line-height: 1.8; color: var(--text-gray);">
+<p>𝒘𝒆𝒍𝒄𝒐𝒎𝒆 𝒕𝒐 𝒕𝒉𝒆 𝒈𝒐𝒍𝒅𝒆𝒏 𝒂𝒑𝒑𝒍𝒆 𝒅𝒆𝒗𝒆𝒍𝒐𝒑𝒆𝒓𝒔' 𝒕𝒆𝒂𝒎 𝒄𝒐𝒎𝒎𝒖𝒏𝒊𝒕𝒚! 𝒘𝒆'𝒓𝒆 𝒂 𝒈𝒓𝒐𝒖𝒑 𝒐𝒇 𝒑𝒂𝒔𝒔𝒊𝒐𝒏𝒂𝒕𝒆 𝒔𝒐𝒇𝒕𝒘𝒂𝒓𝒆 𝒅𝒆𝒗𝒆𝒍𝒐𝒑𝒆𝒓𝒔, 𝒅𝒆𝒔𝒊𝒈𝒏𝒆𝒓𝒔, 𝒂𝒏𝒅 𝒕𝒆𝒄𝒉 𝒆𝒏𝒕𝒉𝒖𝒔𝒊𝒂𝒔𝒕𝒔 𝒘𝒐𝒓𝒌𝒊𝒏𝒈 𝒕𝒐𝒈𝒆𝒕𝒉𝒆𝒓 𝒕𝒐 𝒃𝒖𝒊𝒍𝒅 𝒊𝒏𝒏𝒐𝒗𝒂𝒕𝒊𝒗𝒆 𝒔𝒐𝒍𝒖𝒕𝒊𝒐𝒏𝒔. 𝒑𝒂𝒓𝒕 𝒐𝒇 𝒕𝒉𝒆 𝒈𝒐𝒍𝒅𝒆𝒏 𝒂𝒑𝒑𝒍𝒆 𝒕𝒆𝒄𝒉 𝒄𝒐𝒎𝒎𝒖𝒏𝒊𝒕𝒚, 𝒘𝒆 𝒇𝒐𝒄𝒖𝒔 𝒐𝒏 𝒄𝒐𝒍𝒍𝒂𝒃𝒐𝒓𝒂𝒕𝒊𝒐𝒏, 𝒍𝒆𝒂𝒓𝒏𝒊𝒏𝒈, 𝒂𝒏𝒅 𝒔𝒉𝒂𝒓𝒊𝒏𝒈 𝒊𝒏 𝒔𝒐𝒇𝒕𝒘𝒂𝒓𝒆 𝒅𝒆𝒗𝒆𝒍𝒐𝒑𝒎𝒆𝒏𝒕.
+</p>
+                    <br>
+                    <p>We specialize in delivering high-quality WhatsApp automation solutions that don't require external hosting, making it accessible for everyone to enjoy premium bot features with ease.</p>
+                    <br>
+                    <p>Our mission is to democratize WhatsApp automation by providing powerful, user-friendly tools that enhance communication and productivity for individuals and businesses worldwide.</p>
+                </div>
+
+                <!-- Removed team member cards from about page -->
+            </div>
+        </div>
+
+        <!-- Admin Panel -->
+        <div id="adminPanel" class="admin-panel">
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-gift"></i>  AVAILABLE OFFERS</h2>
+                    <button onclick="document.getElementById('offerS').style.display='block'" class="btn" style="margin-top: 1rem;" id="offerView">
+                        <i class="fas fa-eye"></i><span onclick="document.getElementById('offerView').style.display='none'">VIEW OFFERS</span>
+                    </button>
+                     <span id="offerS" hidden>
+            <button onclick="document.getElementById('offerS').style.display='none'" class="btn"><span onclick="document.getElementById('offerView').style.display='inline-block'">CLOSE</span></button>
+        </span>
+                <div id="sessionsGrid" class="sessions-grid">
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Enhanced Modals -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal('loginModal')">&times;</button>
+            <div class="card-header">
+                <h2>Login to your Golden Apple Account</h2>
+                <p>Keep your Projects Stored and safe</p>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label class="form-label" for="loginUsername">Username</label>
+                    <input type="text" id="loginUsername" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" class="form-input" required>
+                </div>
+                <button type="submit" class="btn btn-full">
+                    <i class="fas fa-sign-in-alt"></i> Login
+</button>
+<br><br><p style="text-align: center;">Don't have account<p><br>
+ <button type="submit" onclick="app.openModal(\'signupModal\'); app.closeMenu();" class="btn btn-full"><I class="fas fa-user-plus"></I>Sign Up </button>   </form>
+        </div>
+    </div>
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal('signupModal')">&times;</button>
+            <div class="card-header">
+                <h2><i class="fas fa-user-plus"></i> Sign Up</h2>
+                <p>CONNECT TO MILLIONS OF CODERS</p>
+            </div>
+            <form id="signupForm">
+                <div class="form-group">
+                    <label class="form-label" for="signupUsername">Username</label>
+                    <input type="text" id="signupUsername" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="signupEmail">Email</label>
+                    <input type="email" id="signupEmail" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="signupPassword">Password</label>
+                    <input type="password" id="signupPassword" class="form-input" required>
+                </div>
+                <button type="submit" class="btn btn-full">
+                    <i class="fas fa-user-plus"></i> Create Account
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>        class PairingApp {
+            constructor() {
+                this.isSubmitting = false;
+                this.isLoggedIn = false;
+                this.isAdmin = false;
+                this.pairCount = 0;
+                this.captchaAnswer = 0;
+                this.currentPage = 'home';
+                this.deviceId = '';
+                this.userHistory = [];
+                this.connectionStatus = 'connected';
+                this.serverHealth = {};
+                this.theme = localStorage.getItem('goldenapple_theme') || 'dark';
+                
+                this.init();
+            }
+
+            init() {
+                this.generateCaptcha();
+                this.generateDeviceId();
+                this.loadUserSession();
+                this.loadTotalBots();
+                this.loadUserHistory();
+                this.createParticles();
+                this.updateMenuItems();
+                this.initTheme();
+                this.initEventListeners();
+                this.startHealthChecks();
+                this.initScrollEffects();
+            }
+
+            initTheme() {
+                document.body.setAttribute('data-theme', this.theme);
+                const themeIcon = document.getElementById('themeIcon');
+
+
+                themeIcon.className = this.theme === 'dark' ? 'fas fa-sun' : 'fas fa-apple-alt';
+            }
+
+            toggleTheme() {
+                this.theme = this.theme === 'dark' ? 'light' : 'dark';
+                localStorage.setItem('goldenapple_theme', this.theme);
+                this.initTheme();
+                this.showToast(`Theme switch success`, 'success');
+            }
+
+            initScrollEffects() {
+                const header = document.getElementById('header');
+                let lastScrollY = window.scrollY;
+
+                window.addEventListener('scroll', () => {
+                    const currentScrollY = window.scrollY;
+                    
+                    if (currentScrollY > 50) {
+                        header.classList.add('scrolled');
+                    } else {
+                        header.classList.remove('scrolled');
+                    }
+                    
+                    lastScrollY = currentScrollY;
+                });
+            }
+
+            generateDeviceId() {
+                let stored = localStorage.getItem('goldenapple_device_id');
+                if (!stored) {
+                    stored = 'device_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
+                    localStorage.setItem('goldenapple_device_id', stored);
+                }
+                this.deviceId = stored;
+            }
+
+            createParticles() {
+                const bgAnimation = document.getElementById('bgAnimation');
+                const particleCount = window.innerWidth < 768 ? 15 : 30;
+                
+                for (let i = 0; i < particleCount; i++) {
+                    const particle = document.createElement('div');
+                    const size = Math.random() > 0.7 ? 'large' : Math.random() > 0.4 ? 'medium' : 'small';
+                    particle.className = `particle ${size}`;
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.top = Math.random() * 100 + '%';
+                    particle.style.animationDelay = Math.random() * 8 + 's';
+                    particle.style.animationDuration = (6 + Math.random() * 4) + 's';
+                    bgAnimation.appendChild(particle);
+                }
+            }
+
+            generateCaptcha() {
+                const num1 = Math.floor(Math.random() * 10) + 1;
+                const num2 = Math.floor(Math.random() * 10) + 1;
+                this.captchaAnswer = num1 + num2;
+                document.getElementById('captchaQuestion').textContent = `What is ${num1} + ${num2}?`;
+            }
+
+            loadUserSession() {
+                const savedUser = localStorage.getItem('goldenapple_user');
+                const savedPairCount = localStorage.getItem('goldenapple_pair_count') || '0';
+                
+                if (savedUser) {
+                    const user = JSON.parse(savedUser);
+                    this.isLoggedIn = true;
+                    this.isAdmin = user.username === '@iciiWhite';
+                    this.pairCount = parseInt(savedPairCount);
+                    
+                    this.updateMenuItems();
+                }
+            }
+
+
+            async loadTotalBots() {
+                try {
+                    this.updateConnectionStatus('connecting', 'Fetching server count...');
+                    
+                    const controller = new AbortController();
+                    const timeout = setTimeout(() => controller.abort(), 8000); // 8 second timeout
+                    
+                    const response = await fetch('/sessions', {
+                        signal: controller.signal
+                    });
+                    clearTimeout(timeout);
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        const total = data.total || 0;
+                        const serversLeft = data.activeServers || 0; // This now represents servers left from backend
+                        const serverStats = data.serverStats || {};
+                        
+                        document.getElementById('totalBots').textContent = `${serversLeft}`;
+                        
+                        // Cache the result
+                        localStorage.setItem('goldenapple_bot_count', JSON.stringify({ 
+                            total, 
+                            serversLeft, // Updated cache key
+                            serverStats 
+                        }));
+                        localStorage.setItem('goldenapple_bot_count_time', Date.now().toString());
+                        
+                        this.updateConnectionStatus('connected', 
+                            `${serverStats.detectedServers || 0} servers detected • ${serversLeft} servers left`
+                        );
+                    }
+                } catch (error) {
+                    console.error('Error loading server count:', error);
+                    document.getElementById('totalBots').textContent = '99+';
+                    this.updateConnectionStatus('disconnected', 'Fetching Updates...');
+                }
+            }
+
+            updateConnectionStatus(status, message) {
+                const indicator = document.getElementById('connectionIndicator');
+                const text = document.getElementById('connectionText');
+                
+                indicator.className = `connection-indicator ${status}`;
+                text.textContent = message;
+                this.connectionStatus = status;
+            }
+
+            startHealthChecks() {
+                // Check server health every 30 seconds
+                setInterval(() => {
+                    this.loadTotalBots();
+                    this.checkServerHealth();
+                }, 30000);
+            }
+
+            async checkServerHealth() {
+                try {
+                    const response = await fetch('/server-status');
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        const serverCount = document.getElementById('serverCount');
+                        serverCount.textContent = `${data.summary.healthyServers}/${data.summary.totalServers}`;
+                        
+                        this.serverHealth = data.servers;
+                    }
+                } catch (error) {
+                    console.error('Error checking server health:', error);
+                }
+            }
+
+            loadUserHistory() {
+                const stored = localStorage.getItem('goldenapple_user_history');
+                if (stored) {
+                    this.userHistory = JSON.parse(stored);
+                    this.updateHistoryDisplay();
+                }
+            }
+
+            saveUserHistory() {
+                localStorage.setItem('goldenapple_user_history', JSON.stringify(this.userHistory));
+            }
+
+            updateHistoryDisplay() {
+                const historySection = document.getElementById('userHistory');
+                const historyList = document.getElementById('historyList');
+                
+                if (this.userHistory.length > 0) {
+                    historySection.style.display = 'block';
+                    historyList.innerHTML = this.userHistory.map(item => `
+                        <div class="history-item">
+                            <div class="history-info">
+                                <div class="history-phone">${item.phoneNumber}</div>
+                                <div class="history-status">
+                                    <div class="status-indicator ${item.status}"></div>
+                                    ${item.status === 'active' ? 'Running' : 'Inactive'} • Paired ${new Date(item.timestamp).toLocaleDateString()}
+                                </div>
+                            </div>
+                            <div class="history-actions">
+                                <button onclick="app.deleteUserSession('${item.phoneNumber}')" class="delete-btn">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    historySection.style.display = 'none';
+                }
+            }
+
+            async deleteUserSession(phoneNumber) {
+                if (!confirm('Are you sure you want to delete this session? This will remove it from all servers.')) return;
+                
+                try {
+                    this.showToast('Deleting session...', 'info');
+                    
+                    const controller = new AbortController();
+                    const timeout = setTimeout(() => controller.abort(), 20000); // 20 second timeout for deletion
+                    
+                    const response = await fetch(`/session/${phoneNumber}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Admin-Auth': this.isAdmin ? 'WhiteHouse:LoveIcii' : '',
+                            'X-Force-Delete': 'true' // Force delete header for backend
+                        },
+                        signal: controller.signal
+                    });
+                    
+                    clearTimeout(timeout);
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        // Remove from local history
+                        this.userHistory = this.userHistory.filter(item => item.phoneNumber !== phoneNumber);
+                        this.saveUserHistory();
+                        this.updateHistoryDisplay();
+                        
+                        // Refresh bot count to show updated available bots
+                        localStorage.removeItem('goldenapple_bot_count'); // Clear cache
+                        this.loadTotalBots();
+                        
+                        if (data.serversDeleted && data.serversDeleted.length > 0) {
+                            this.showToast(`Session deleted successfully from ${data.serversDeleted.length} server(s)`, 'success');
+                        } else {
+                            this.showToast('Session removed from frontend (backend session may not have been found)', 'success');
+                        }
+                        
+                        // Load updated history from server
+                        this.loadSessionHistory(phoneNumber);
+                    } else {
+                        this.userHistory = this.userHistory.filter(item => item.phoneNumber !== phoneNumber);
+                        this.saveUserHistory();
+                        this.updateHistoryDisplay();
+                        
+                        this.showToast('Session removed from frontend. Backend deletion may have failed.', 'warning');
+                    }
+                } catch (error) {
+                    console.error('Error deleting session:', error);
+                    
+                    this.userHistory = this.userHistory.filter(item => item.phoneNumber !== phoneNumber);
+                    this.saveUserHistory();
+                    this.updateHistoryDisplay();
+                    
+                    if (error.name === 'AbortError') {
+                        this.showToast('Delete request timed out. Session removed from frontend.', 'warning');
+                    } else {
+                        this.showToast('Session removed from frontend. Backend deletion may have failed.', 'warning');
+                    }
+                }
+            }
+
+            getStatusColor(action) {
+                const colors = {
+                    'deployment_started': '#feca57',
+                    'deployment_success': '#25d366',
+                    'deployment_failed': '#ff6b6b',
+                    'deletion_started': '#ff9ff3',
+                    'deletion_success': '#25d366',
+                    'deletion_failed': '#ff6b6b',
+                    'duplicate_cleared': '#00d4ff',
+                    'cleanup_scheduled': '#a55eea',
+                    'session_cleaned': '#ff7675',
+                    'deletion_error': '#fd79a8'
+                };
+                return colors[action] || '#6c757d';
+            }
+
+            formatAction(action) {
+                const formats = {
+                    'deployment_started': 'Deployment Started',
+                    'deployment_success': 'Deployment Successful',
+                    'deployment_failed': 'Deployment Failed',
+                    'deletion_started': 'Deletion Started',
+                    'deletion_success': 'Session Deleted',
+                    'deletion_failed': 'Deletion Failed',
+                    'duplicate_cleared': 'Duplicate Cleared',
+                    'cleanup_scheduled': 'Auto-Cleanup Scheduled',
+                    'session_cleaned': 'Session Auto-Cleaned',
+                    'deletion_error': 'Deletion Error'
+                };
+                return formats[action] || action.replace('_', ' ').toUpperCase();
+            }
+
+            async loadSessionHistory(phoneNumber) {
+                try {
+                    const response = await fetch(`/history/${phoneNumber}`);
+                    const data = await response.json();
+                    
+                    if (data.success && data.history.length > 0) {
+                        // Update the history display with server data
+                        const historySection = document.getElementById('historySection');
+                        const historyList = document.getElementById('historyList');
+                        
+                        if (historySection && historyList) {
+                            historySection.style.display = 'block';
+                            
+                            historyList.innerHTML = data.history.map(item => `
+                                <div class="history-item" style="padding: 1rem; background: var(--card-bg); border-radius: 10px; border: 1px solid var(--border); margin-bottom: 1rem;">
+                                    <div class="history-info">
+                                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                            <div class="status-indicator ${this.getStatusColor(item.action)}" style="width: 8px; height: 8px; border-radius: 50%; background: ${this.getStatusColor(item.action)};"></div>
+                                            <div style="font-weight: 600; color: var(--text-primary);">${this.formatAction(item.action)}</div>
+                                            <div style="font-size: 0.8rem; color: var(--text-gray);">${new Date(item.timestamp).toLocaleString()}</div>
+                                        </div>
+                                        <div style="color: var(--text-gray); font-size: 0.9rem;">${item.details}</div>
+                                    </div>
+                                </div>
+                            `).join('');
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error loading session history:', error);
+                }
+            }
+
+            async generatePairingCode() {
+                const phoneNumber = document.getElementById('phoneNumber').value.trim();
+                
+                if (!phoneNumber) {
+                    this.showToast('Please enter a phone number', 'error');
+                    return;
+                }
+
+                // Clear cache to get fresh data after pairing
+                localStorage.removeItem('goldenapple_bot_count');
+                
+                this.showProgress(true, 0);
+                
+                const progressInterval = setInterval(() => {
+                    const currentProgress = parseInt(document.querySelector('.progress-fill').style.width) || 0;
+                    if (currentProgress < 90) {
+                        this.showProgress(true, currentProgress + Math.random() * 10);
+                    }
+                }, 200);
+
+                try {
+                    const controller = new AbortController();
+                    const timeout = setTimeout(() => controller.abort(), 60000); // 60 second timeout
+                    
+                    const response = await fetch('/request-pairing', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ 
+                            phoneNumber,
+                            deviceId: this.deviceId,
+                            username: this.isLoggedIn ? JSON.parse(localStorage.getItem('goldenapple_user')).username : null
+                        }),
+                        signal: controller.signal
+                    });
+
+                    clearTimeout(timeout);
+                    const data = await response.json();
+                    
+                    clearInterval(progressInterval);
+                    this.showProgress(true, 100);
+                    
+                    setTimeout(() => {
+                        this.showProgress(false);
+                        
+                        if (data.success) {
+                            document.getElementById('pairingCode').textContent = data.pairingCode;
+                            document.getElementById('pairingResult').style.display = 'block';
+                            
+                            // Add to user history
+                            this.addToUserHistory(phoneNumber, 'active');
+                            
+                            // Load session history
+                            this.loadSessionHistory(phoneNumber);
+                            
+                            // Refresh bot count
+                            this.loadTotalBots();
+                            
+                            let message = `Pairing code generated successfully! Server: ${data.serverInfo?.serverUsed}`;
+                            if (data.duplicatesRemoved > 0) {
+                                message += ` (${data.duplicatesRemoved} duplicate(s) removed)`;
+                            }
+                            
+                            this.showToast(message, 'success');
+                        } else {
+                            this.showToast(data.error, 'error');
+                        }
+                    }, 500);
+                } catch (error) {
+                    clearInterval(progressInterval);
+                    this.showProgress(false);
+                    
+                    if (error.name === 'AbortError') {
+                        this.showToast('Request timed out. Please try again.', 'error');
+                    } else {
+                        this.showToast('Failed to generate pairing code. Please try again.', 'error');
+                    }
+                }
+            }
+
+            addToUserHistory(phoneNumber, status) {
+                const existingIndex = this.userHistory.findIndex(item => item.phoneNumber === phoneNumber);
+                if (existingIndex !== -1) {
+                    this.userHistory[existingIndex].status = status;
+                    this.userHistory[existingIndex].timestamp = Date.now();
+                } else {
+                    this.userHistory.push({
+                        phoneNumber: phoneNumber,
+                        timestamp: Date.now(),
+                        status: status,
+                        deviceId: this.deviceId
+                    });
+                }
+                this.saveUserHistory();
+                this.updateHistoryDisplay();
+            }
+
+            showProgress(show, progress = 0) {
+                const progressBar = document.getElementById('progressBar');
+                const progressFill = document.getElementById('progressFill');
+                
+                if (show) {
+                    progressBar.style.display = 'block';
+                    progressFill.style.width = progress + '%';
+                } else {
+                    progressBar.style.display = 'none';
+                }
+            }
+
+            async submitPairingForm(e) {
+                e.preventDefault();
+                
+                if (this.isSubmitting) return;
+                
+                const phoneNumber = document.getElementById('phoneNumber').value.trim();
+                const captchaInput = parseInt(document.getElementById('captchaInput').value);
+                const submitBtn = document.getElementById('submitBtn');
+                
+                if (captchaInput !== this.captchaAnswer) {
+                    this.showResult('<i class="fas fa-times"></i> Incorrect captcha answer. Please try again.', 'error');
+                    this.generateCaptcha();
+                    document.getElementById('captchaInput').value = '';
+                    return;
+                }
+
+                const hasActiveSession = this.userHistory.some(item => item.status === 'active');
+                if (!this.isLoggedIn && hasActiveSession) {
+                    document.getElementById('loginWarning').style.display = 'block';
+                    return;
+                }
+
+                this.isSubmitting = true;
+                submitBtn.innerHTML = '<div class="spinner"></div> Generating...';
+                submitBtn.disabled = true;
+                
+                // Show progress animation
+                this.showProgress(true, 0);
+                let progress = 0;
+                const progressInterval = setInterval(() => {
+                    progress += Math.random() * 15;
+                    if (progress > 90) progress = 90;
+                    this.showProgress(true, progress);
+                }, 200);
+
+                try {
+                    const response = await fetch('/request-pairing', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ 
+                            phoneNumber,
+                            deviceId: this.deviceId,
+                            username: this.isLoggedIn ? JSON.parse(localStorage.getItem('goldenapple_user')).username : null
+                        })
+                    });
+
+                    const data = await response.json();
+                    
+                    clearInterval(progressInterval);
+                    this.showProgress(true, 100);
+                    
+                    setTimeout(() => {
+                        this.showProgress(false);
+                        
+                        if (data.success) {
+                            this.showResult(`
+                                <div style="text-align: center;">
+                                    <i class="fas fa-check-circle" style="font-size: 3rem; color: var(--success); margin-bottom: 1.5rem; display: block;"></i>
+                                    <h3 style="margin-bottom: 1.5rem; font-size: 1.5rem;">Pairing Code Generated!</h3>
+                                    <div style="background: var(--bg-glass); padding: 2rem; border-radius: var(--radius); margin: 1.5rem 0; border: 2px solid var(--success); backdrop-filter: var(--blur);">
+                                        <div style="font-size: 3rem; font-weight: 800; letter-spacing: 0.3em; color: var(--success); font-family: 'JetBrains Mono', monospace; text-shadow: 0 0 20px rgba(16, 185, 129, 0.3);">${data.pairingCode}</div>
+                                    </div>
+                                    <button onclick="app.copyCode('${data.pairingCode}')" class="btn" style="margin: 1rem 0.5rem;">
+                                        <i class="fas fa-copy"></i> Copy Code
+                                    </button>
+                                    <button onclick="app.showQRCode('${data.pairingCode}')" class="btn btn-secondary" style="margin: 1rem 0.5rem;">
+                                        <i class="fas fa-qrcode"></i> Show QR
+                                    </button>
+                                    <p style="margin-top: 1.5rem; color: var(--text-muted); font-size: 1rem; line-height: 1.6;">
+                                        <i class="fas fa-info-circle"></i> Enter this code in WhatsApp → Settings → Linked Devices → Link a Device
+                                    </p>
+                                </div>
+                            `, 'success');
+
+                            const historyItem = {
+                                phoneNumber: phoneNumber,
+                                timestamp: Date.now(),
+                                status: 'active',
+                                deviceId: this.deviceId
+                            };
+                            
+                            this.userHistory.push(historyItem);
+                            this.saveUserHistory();
+                            this.updateHistoryDisplay();
+
+                            if (!this.isLoggedIn) {
+                                this.pairCount++;
+                                localStorage.setItem('goldenapple_pair_count', this.pairCount.toString());
+                            }
+
+                            document.getElementById('pairingForm').reset();
+                            this.generateCaptcha();
+                            this.loadTotalBots();
+                            
+                            this.showToast('Pairing code generated successfully!', 'success');
+                        } else {
+                            this.showResult(`<i class="fas fa-exclamation-triangle"></i> ${data.error}`, 'error');
+                            this.showToast(data.error, 'error');
+                        }
+                    }, 500);
+                } catch (error) {
+                    clearInterval(progressInterval);
+                    this.showProgress(false);
+                    this.showResult('<i class="fas fa-exclamation-triangle"></i> Network error. Please try again.', 'error');
+                    this.showToast('Network error. Please try again.', 'error');
+                } finally {
+                    this.isSubmitting = false;
+                    submitBtn.innerHTML = '<i class="fas fa-code"></i> Generate Pairing Code';
+                    submitBtn.disabled = false;
+                }
+            }
+
+            showQRCode(code) {
+                // For demonstration - in real implementation, generate actual QR code
+                this.showToast('QR Code feature - Coming soon!', 'info');
+            }
+
+            copyCode(code) {
+                navigator.clipboard.writeText(code).then(() => {
+                    this.showToast('Code copied to clipboard!', 'success');
+                }).catch(() => {
+                    this.showToast('Failed to copy code', 'error');
+                });
+            }
+
+            showResult(message, type) {
+                const result = document.getElementById('result');
+                result.innerHTML = message;
+                result.className = `result ${type}`;
+                result.style.display = 'block';
+                
+                setTimeout(() => {
+                    result.style.display = 'none';
+                }, 15000);
+            }
+
+            showToast(message, type) {
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                toast.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'exclamation-triangle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'}"></i>
+                        <span>${message}</span>
+                    </div>
+                `;
+                
+                document.body.appendChild(toast);
+                
+                setTimeout(() => toast.classList.add('show'), 100);
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    setTimeout(() => document.body.removeChild(toast), 400);
+                }, 4000);
+            }
+
+            toggleMenu() {
+                const hamburger = document.querySelector('.hamburger');
+                const menuOverlay = document.querySelector('.menu-overlay');
+                const slideMenu = document.querySelector('.slide-menu');
+                
+                hamburger.classList.toggle('active');
+                menuOverlay.classList.toggle('active');
+                slideMenu.classList.toggle('active');
+            }
+
+            closeMenu() {
+                const hamburger = document.querySelector('.hamburger');
+                const menuOverlay = document.querySelector('.menu-overlay');
+                const slideMenu = document.querySelector('.slide-menu');
+                
+                hamburger.classList.remove('active');
+                menuOverlay.classList.remove('active');
+                slideMenu.classList.remove('active');
+            }
+
+            updateMenuItems() {
+                const menuItems = document.getElementById('menuItems');
+                let menuHTML = '';
+
+                if (this.isLoggedIn) {
+                    menuHTML += '<li><a href="#" onclick="app.showPage(\'dashboard\'); app.closeMenu();"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>';
+                    menuHTML += '<li><a href="#" onclick="app.showPage(\'api-site\'); app.closeMenu();"><i class="fas fa-code"></i> API Documentation</a></li>';
+                    menuHTML += '<li><a href="Aboutme.html"  app.closeMenu();"><i class="fas fa-laptop-code"></i> Officials</a></li>';
+                    menuHTML += '<li><a href="#" onclick="app.showPage(\'about\'); app.closeMenu();"><i class="fas fa-info-circle"></i> About</a></li>';
+                    menuHTML += '<li><a href="#" onclick="app.showPage(\'how-to-use\'); app.closeMenu();"><i class="fas fa-question-circle"></i> How to Use</a></li>';
+                    
+                    if (this.isAdmin) {
+                        menuHTML += '<li><a href="#" onclick="app.showAdminPanel(); app.closeMenu();"><i class="fas fa-user-shield"></i> Admin Panel</a></li>';
+                    }
+                    
+                    menuHTML += '<li><a href="#" onclick="app.logout(); app.closeMenu();"><i class="fas fa-sign-out-alt"></i> Logout</a></li>';
+                } else {
+                    menuHTML += '<li><a href="#" onclick="app.openModal(\'signupModal\'); app.closeMenu();"><i class="fas fa-user-plus"></i> Sign Up</a></li>';
+                    menuHTML += '<li><a href="#" onclick="app.openModal(\'loginModal\'); app.closeMenu();"><i class="fas fa-sign-in-alt"></i> Login</a></li>';
+                    menuHTML += '<li><a href="#" onclick="app.showPage(\'api-site\'); app.closeMenu();"><i class="fas fa-code"></i> Whatsapp Channel</a></li>';
+                    menuHTML += '<li><a href="Aboutme.html"><i class="fas fa-laptop-code"></i> Officials</a></li>';
+                    menuHTML += '<li><a href="#" onclick="app.showPage(\'about\'); app.closeMenu();"><i class="fas fa-info-circle"></i> About</a></li>';
+                    menuHTML += '<li><a href="#" onclick="app.showPage(\'how-to-use\'); app.closeMenu();"><i class="fas fa-question-circle"></i> Feedback</a></li>';
+                }
+
+                menuItems.innerHTML = menuHTML;
+            }
+
+            showPage(pageId) {
+                const pages = document.querySelectorAll('.page');
+                pages.forEach(page => page.classList.remove('active'));
+                
+                document.getElementById(pageId).classList.add('active');
+                this.currentPage = pageId;
+            }
+
+            openModal(modalId) {
+                document.getElementById(modalId).style.display = 'flex';
+            }
+
+            closeModal(modalId) {
+                document.getElementById(modalId).style.display = 'none';
+            }
+
+            logout() {
+                localStorage.removeItem('goldenapple_user');
+                localStorage.removeItem('goldenapple_pair_count');
+                this.isLoggedIn = false;
+                this.isAdmin = false;
+                this.pairCount = 0;
+                
+                this.updateMenuItems();
+                this.showPage('home');
+                this.showToast('Logged out successfully', 'success');
+            }
+
+            initEventListeners() {
+                // Form submissions
+                document.getElementById('pairingForm').addEventListener('submit', (e) => this.submitPairingForm(e));
+                
+                // Phone number formatting
+                document.getElementById('phoneNumber').addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/\D/g, '');
+                    e.target.value = value;
+                });
+
+                // Modal close on outside click
+                window.addEventListener('click', function(e) {
+                    if (e.target.classList.contains('modal')) {
+                        e.target.style.display = 'none';
+                    }
+                });
+
+                // Keyboard shortcuts
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') {
+                        this.closeMenu();
+                        document.querySelectorAll('.modal').forEach(modal => {
+                            modal.style.display = 'none';
+                        });
+                    }
+                });
+            }
+        }
+
+        // Global functions for backward compatibility
+        function toggleTheme() { app.toggleTheme(); }
+        function toggleMenu() { app.toggleMenu(); }
+        function closeMenu() { app.closeMenu(); }
+        function showPage(pageId) { app.showPage(pageId); }
+
+        function openModal(modalId) { app.openModal(modalId); }
+        function closeModal(modalId) { app.closeModal(modalId); }
+
+        // Initialize app when DOM is loaded
+        let app;
+        document.addEventListener('DOMContentLoaded', function() {
+            app = new PairingApp();
+        });
+    </script>
+    <!-- Begin of Chaport Live Chat code -->
+<script type="text/javascript">
+(function(w,d,v3){
+w.chaportConfig = {
+appId : '68bf038bf3751e07e73ca3e0'
+};
+
+if(w.chaport)return;v3=w.chaport={};v3._q=[];v3._l={};v3.q=function(){v3._q.push(arguments)};v3.on=function(e,fn){if(!v3._l[e])v3._l[e]=[];v3._l[e].push(fn)};var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://app.chaport.com/javascripts/insert.js';var ss=d.getElementsByTagName('script')[0];ss.parentNode.insertBefore(s,ss)})(window, document);
+</script>
+<!-- End of Chaport Live Chat code --> 
+</script>
+</body>
+</html>
