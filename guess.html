@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guess the Number • Golden Apple Gamers</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Rajdhani', sans-serif;
+      background: #0f1117;
+      color: #fff;
+      margin: 0;
+      padding: 2rem;
+      text-align: center;
+    }
+    h1 {
+      color: #ffd700;
+      margin-bottom: 1rem;
+    }
+    .game-box {
+      background: #1a1c24;
+      padding: 2rem;
+      border-radius: 1rem;
+      max-width: 600px;
+      margin: auto;
+      box-shadow: 0 0 12px #ffd70033;
+    }
+    .riddle {
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+    }
+    input {
+      padding: 0.6rem;
+      width: 60%;
+      border-radius: 8px;
+      border: none;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+    button {
+      padding: 0.6rem 1.2rem;
+      background: #ffd700;
+      color: #000;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 0.5rem;
+    }
+    button:hover {
+      background: #ffea70;
+    }
+    .message {
+      font-size: 1.1rem;
+      margin-top: 1rem;
+    }
+    .counter {
+      margin-bottom: 1rem;
+      font-size: 1rem;
+      color: #ccc;
+    }
+  </style>
+</head>
+<body>
+  <h1>🧠 Guess the Number</h1>
+  <div class="game-box">
+    <div class="counter" id="counter">Question 1 of 40</div>
+    <div class="riddle" id="riddle">Loading...</div>
+    <input type="number" id="guessInput" placeholder="Enter your guess" />
+    <br />
+    <button onclick="checkGuess()">Submit</button>
+    <button onclick="nextQuestion()">Next</button>
+    <div class="message" id="message"></div>
+  </div>
+
+  <script>
+    const riddles = [
+      "I'm thinking of a number, it sums up with 5 to make 20.",
+      "I'm thinking of a number, it's 2 times its square.",
+      "I'm thinking of a number, when doubled becomes 18.",
+      "I'm thinking of a number, subtracting 7 gives 3.",
+      "I'm thinking of a number, its square is 49.",
+      "I'm thinking of a number, it's half of 100.",
+      "I'm thinking of a number, adding 10 gives 25.",
+      "I'm thinking of a number, it's divisible by 3 and equals 21.",
+      "I'm thinking of a number, its cube is 8.",
+      "I'm thinking of a number, it's 5 more than 12.",
+      "I'm thinking of a number, it's the square root of 81.",
+      "I'm thinking of a number, tripled equals 30.",
+      "I'm thinking of a number, it's 4 less than 20.",
+      "I'm thinking of a number, its square is 100.",
+      "I'm thinking of a number, it's the result of 7 × 3.",
+      "I'm thinking of a number, it's 1 more than a dozen.",
+      "I'm thinking of a number, it's the average of 10 and 20.",
+      "I'm thinking of a number, it's the remainder when 25 is divided by 4.",
+      "I'm thinking of a number, it's 10 less than 50.",
+      "I'm thinking of a number, it's the product of 6 and 2.",
+      "I'm thinking of a number, it's the square root of 144.",
+      "I'm thinking of a number, it's 3 more than 17.",
+      "I'm thinking of a number, it's 2 less than 30.",
+      "I'm thinking of a number, it's 5 times 5.",
+      "I'm thinking of a number, it's the cube root of 27.",
+      "I'm thinking of a number, it's 100 divided by 4.",
+      "I'm thinking of a number, it's 9 more than 11.",
+      "I'm thinking of a number, it's 3 times 7.",
+      "I'm thinking of a number, it's the square of 6.",
+      "I'm thinking of a number, it's 8 less than 40.",
+      "I'm thinking of a number, it's 2 more than 98.",
+      "I'm thinking of a number, it's the result of 12 ÷ 3.",
+      "I'm thinking of a number, it's 1 less than 100.",
+      "I'm thinking of a number, it's 4 times 4.",
+      "I'm thinking of a number, it's 20% of 50.",
+      "I'm thinking of a number, it's the square root of 25.",
+      "I'm thinking of a number, it's 3 less than 60.",
+      "I'm thinking of a number, it's 6 × 6.",
+      "I'm thinking of a number, it's 10 more than 33.",
+      "I'm thinking of a number, it's 2 × 15."
+    ];
+
+    const answers = [
+      15, 0.5, 9, 10, 7, 50, 15, 21, 2, 17,
+      9, 10, 16, 10, 21, 13, 15, 1, 40, 12,
+      12, 20, 28, 25, 3, 25, 20, 21, 36, 32,
+      100, 4, 99, 16, 10, 5, 57, 36, 43, 30
+    ];
+
+    let currentIndex = 0;
+    let attempts = 0;
+
+    function loadRiddle() {
+      document.getElementById("riddle").textContent = riddles[currentIndex];
+      document.getElementById("counter").textContent = `Question ${currentIndex + 1} of ${riddles.length}`;
+      document.getElementById("message").textContent = "";
+      document.getElementById("guessInput").value = "";
+      attempts = 0;
+    }
+
+    function checkGuess() {
+      const input = document.getElementById("guessInput").value;
+      const guess = parseFloat(input);
+      const correct = answers[currentIndex];
+      const message = document.getElementById("message");
+      attempts++;
+
+      if (isNaN(guess)) {
+        message.textContent = "⚠️ Please enter a valid number.";
+        message.style.color = "#ff4c4c";
+        return;
+      }
+
+      if (guess === correct) {
+        message.textContent = `✅ Correct! You solved it in ${attempts} attempt${attempts > 1 ? 's' : ''}.`;
+        message.style.color = "#00c896";
+      } else {
+        message.textContent = "❌ Incorrect. Try again.";
+        message.style.color = "#ffd700";
+      }
+    }
+
+    function nextQuestion() {
+      currentIndex++;
+      if (currentIndex >= riddles.length) {
+        document.getElementById("riddle").textContent = "🎉 You've completed all 40 riddles!";
+        document.getElementById("counter").textContent = "";
+        document.getElementById("guessInput").disabled = true;
+        document.getElementById("message").textContent = "";
+        return;
+      }
+      loadRiddle();
+    }
+
+    loadRiddle();
+  </script>
+</body>
+</html>
