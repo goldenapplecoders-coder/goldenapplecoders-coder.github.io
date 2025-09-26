@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Golden Apple TTS Engine</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #f8f9fa, #e0eafc);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    h1 {
+      color: #2c3e50;
+      margin-bottom: 10px;
+    }
+
+    .container {
+      background-color: #ffffff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      width: 90%;
+      max-width: 600px;
+      text-align: center;
+    }
+
+    textarea {
+      width: 100%;
+      height: 150px;
+      padding: 15px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      resize: none;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 12px 24px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background-color: #3498db;
+      color: white;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+
+    .home-button {
+      margin-top: 15px;
+      background-color: #2ecc71;
+    }
+
+    .home-button:hover {
+      background-color: #27ae60;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Golden Apple TTS Engine</h1>
+    <p>Enter your text below and click "Speak" to hear it aloud.</p>
+    <textarea id="textInput" placeholder="Type your message here..."></textarea>
+    <br />
+    <button onclick="speakText()">Speak</button>
+    <br />
+    <button class="home-button" onclick="location.href='Golden.html'">Home</button>
+  </div>
+
+  <script>
+    function speakText() {
+      const text = document.getElementById('textInput').value;
+      if (text.trim() === '') {
+        alert('Please enter some text to speak.');
+        return;
+      }
+
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-US';
+      speechSynthesis.speak(utterance);
+    }
+  </script>
+</body>
+</html>
