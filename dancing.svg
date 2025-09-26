@@ -1,72 +1,92 @@
-<svg width="800" height="120" viewBox="0 0 800 120" xmlns="http://www.w3.org/2000/svg">
+<!--
+  Scalable, single-file SVG logo for Golden Apple Technologies
+  - Portable SVG: drop into <img src="data:image/svg+xml;utf8,..."> or inline <svg> in HTML
+  - Uses currentColor where appropriate; supports CSS variable overrides
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240" role="img" aria-labelledby="gatTitle gatDesc">
+  <title id="gatTitle">Golden Apple Technologies</title>
+  <desc id="gatDesc">Stylized golden apple with subtle circuit traces and a modern sans wordmark</desc>
+
   <defs>
-    <!-- Embed Orbitron font from CDN -->
-    <style type="text/css">
-      @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
-      .orbitron {
-        font-family: 'Orbitron', Arial, sans-serif;
-        font-size: 48px;
-        fill: #fff;
-      }
-    </style>
+    <!-- Brand palette: --gold, --accent, --seed -->
+    <linearGradient id="g-grad" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#FFD166"/>
+      <stop offset="0.5" stop-color="#FFB347"/>
+      <stop offset="1" stop-color="#FF9F1C"/>
+    </linearGradient>
+
+    <linearGradient id="leaf-grad" x1="0" x2="1">
+      <stop offset="0" stop-color="#7BD389"/>
+      <stop offset="1" stop-color="#2BB673"/>
+    </linearGradient>
+
+    <filter id="soft-shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="8" stdDeviation="14" flood-color="#07203a" flood-opacity="0.35"/>
+    </filter>
+
+    <mask id="cutout">
+      <!-- white = visible, black = hidden -->
+      <rect width="100%" height="100%" fill="white" />
+      <!-- central cut for highlight detail -->
+      <circle cx="120" cy="110" r="58" fill="black" opacity="0.06"/>
+    </mask>
+
+    <!-- Circuit trace stroke -->
+    <linearGradient id="trace-grad" x1="0" x2="1">
+      <stop offset="0" stop-color="#ffd166"/>
+      <stop offset="1" stop-color="#fff6e0"/>
+    </linearGradient>
   </defs>
-  <!-- Black background -->
-  <rect width="800" height="120" fill="black"/>
-  <!-- Typewriter effect using opacity animation for each letter -->
+
+  <!-- Background soft circle -->
+  <circle cx="120" cy="120" r="110" fill="rgba(3,17,34,0.06)"/>
+
+  <!-- Apple body -->
+  <g transform="translate(0,6)" filter="url(#soft-shadow)">
+    <path d="M120 40
+             C152 40 180 66 180 96
+             C180 128 150 160 120 176
+             C90 160 60 128 60 96
+             C60 66 88 40 120 40 Z"
+          fill="url(#g-grad)" stroke="#ECD08A" stroke-width="1.2" />
+
+    <!-- subtle glossy highlight -->
+    <path d="M88 62
+             C102 54 130 54 146 66
+             C150 74 140 82 130 86
+             C116 78 98 76 88 62 Z"
+          fill="rgba(255,255,255,0.18)" opacity="0.9" mask="url(#cutout)"/>
+  </g>
+
+  <!-- Leaf -->
+  <g transform="translate(0,2)">
+    <path d="M150 28
+             C158 18 172 16 180 26
+             C174 28 164 34 154 40
+             C148 32 146 30 150 28 Z"
+          fill="url(#leaf-grad)" stroke="#1E7A4B" stroke-width="1"/>
+    <path d="M158 28 C162 26 170 26 174 30" stroke="rgba(255,255,255,0.25)" stroke-width="1" fill="none"/>
+  </g>
+
+  <!-- Circuit traces (stylized) -->
+  <g fill="none" stroke="url(#trace-grad)" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+    <path d="M120 92 L120 122 L140 138" opacity="0.95"/>
+    <circle cx="140" cy="138" r="3" fill="#FFF6E0" stroke="none"/>
+    <path d="M110 102 L92 122 L80 138" opacity="0.9"/>
+    <circle cx="80" cy="138" r="3" fill="#FFF6E0" stroke="none"/>
+    <path d="M120 78 L102 64" opacity="0.85"/>
+    <circle cx="102" cy="64" r="2.5" fill="#FFF6E0" stroke="none"/>
+  </g>
+
+  <!-- Small tech node accents -->
   <g>
-    <!-- Golden Apple Technologies -->
-    <text x="40" y="80" class="orbitron">
-      <tspan id="l1" opacity="0">G</tspan>
-      <tspan id="l2" opacity="0">o</tspan>
-      <tspan id="l3" opacity="0">l</tspan>
-      <tspan id="l4" opacity="0">d</tspan>
-      <tspan id="l5" opacity="0">e</tspan>
-      <tspan id="l6" opacity="0">n</tspan>
-      <tspan id="l7" opacity="0"> </tspan>
-      <tspan id="l8" opacity="0">A</tspan>
-      <tspan id="l9" opacity="0">p</tspan>
-      <tspan id="l10" opacity="0">p</tspan>
-      <tspan id="l11" opacity="0">l</tspan>
-      <tspan id="l12" opacity="0">e</tspan>
-      <tspan id="l13" opacity="0"> </tspan>
-      <tspan id="l14" opacity="0">T</tspan>
-      <tspan id="l15" opacity="0">e</tspan>
-      <tspan id="l16" opacity="0">c</tspan>
-      <tspan id="l17" opacity="0">h</tspan>
-      <tspan id="l18" opacity="0">n</tspan>
-      <tspan id="l19" opacity="0">o</tspan>
-      <tspan id="l20" opacity="0">l</tspan>
-      <tspan id="l21" opacity="0">o</tspan>
-      <tspan id="l22" opacity="0">g</tspan>
-      <tspan id="l23" opacity="0">i</tspan>
-      <tspan id="l24" opacity="0">e</tspan>
-      <tspan id="l25" opacity="0">s</tspan>
-      <!-- Animate appearance one by one -->
-      <animate xlink:href="#l1" attributeName="opacity" from="0" to="1" begin="0s" dur="0.08s" fill="freeze"/>
-      <animate xlink:href="#l2" attributeName="opacity" from="0" to="1" begin="0.08s" dur="0.08s" fill="freeze"/>
-      <animate xlink:href="#l3" attributeName="opacity" from="0" to="1" begin="0.16s" dur="0.08s" fill="freeze"/>
-      <animate xlink:href="#l4" attributeName="opacity" from="0" to="1" begin="0.24s" dur="0.08s" fill="freeze"/>
-      <animate xlink:href="#l5" attributeName="opacity" from="0" to="1" begin="0.32s" dur="0.08s" fill="freeze"/>
-      <animate xlink:href="#l6" attributeName="opacity" from="0" to="1" begin="0.40s" dur="0.08s" fill="freeze"/>
-      <animate xlink:href="#l7" attributeName="opacity" from="0" to="1" begin="0.48s" dur="0.08s" fill="freeze"/>
-      <animate xlink:href="#l8" attributeName="opacity" from="0" to="1" begin="0.56s" dur="0.08s" fill="freeze"/>
-      <animate xlink:href="#l9" attributeName="opacity" from="0" to="1" begin="0.64s" dur="0.08s" fill="freeze"/>
-      <animate xlink:href="#l10" attributeName="opacity" from="0" to="1" begin="0.72s" dur="0.08s" fill="freeze"/>
-      <animate xlink:href="#l11" attributeName="opacity" from="0" to="1" begin="0.80s" dur="0.08s" fill="freeze"/>
-      <animate xlink:href="#l12" attributeName="opacity" from="0" to="1" begin="0.88s" dur="0.08s" fill="freeze"/>
-      <animate xlink:href="#l13" attributeName="opacity" from="0" to="1" begin="0.96s" dur="0.08s" fill="freeze"/>
-      <animate xlink:href="#l14" attributeName="opacity" from="0" to="1" begin="1.04s" dur="0.08s" fill="freeze"/>
-      <animate xlink:href="#l15" attributeName="opacity" from="0" to="1" begin="1.12s" dur="0.08s" fill="freeze"/>
-      <animate xlink:href="#l16" attributeName="opacity" from="0" to="1" begin="1.20s" dur="0.08s" fill="freeze"/>
-      <animate xlink:href="#l17" attributeName="opacity" from="0" to="1" begin="1.28s" dur="0.08s" fill="freeze"/>
-      <animate xlink:href="#l18" attributeName="opacity" from="0" to="1" begin="1.36s" dur="0.08s" fill="freeze"/>
-      <animate xlink:href="#l19" attributeName="opacity" from="0" to="1" begin="1.44s" dur="0.08s" fill="freeze"/>
-      <animate xlink:href="#l20" attributeName="opacity" from="0" to="1" begin="1.52s" dur="0.08s" fill="freeze"/>
-      <animate xlink:href="#l21" attributeName="opacity" from="0" to="1" begin="1.60s" dur="0.08s" fill="freeze"/>
-      <animate xlink:href="#l22" attributeName="opacity" from="0" to="1" begin="1.68s" dur="0.08s" fill="freeze"/>
-      <animate xlink:href="#l23" attributeName="opacity" from="0" to="1" begin="1.76s" dur="0.08s" fill="freeze"/>
-      <animate xlink:href="#l24" attributeName="opacity" from="0" to="1" begin="1.84s" dur="0.08s" fill="freeze"/>
-      <animate xlink:href="#l25" attributeName="opacity" from="0" to="1" begin="1.92s" dur="0.08s" fill="freeze"/>
-    </text>
+    <rect x="132" y="96" width="6" height="6" rx="1.2" fill="#FBF0D6" opacity="0.95"/>
+    <rect x="76" y="112" width="5" height="5" rx="1" fill="#FBF0D6" opacity="0.95"/>
+  </g>
+
+  <!-- Wordmark: Golden Apple Technologies -->
+  <g transform="translate(20,200)">
+    <text x="0" y="0" font-family="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial" font-size="18" font-weight="700" fill="#EDE7CF">Golden Apple</text>
+    <text x="0" y="20" font-family="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial" font-size="12" fill="#AAB8C6">Technologies</text>
   </g>
 </svg>
