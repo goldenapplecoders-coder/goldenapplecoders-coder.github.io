@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>C++ Programming Course • iAM Scholar</title>
+  <meta name="description" content="iAM Scholar — C++ programming track by Golden Apple Technologies. Learn object-oriented programming, memory management, and modern C++ development." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:#0a1024;
+      --card:#0c162c;
+      --accent:#005eff;
+      --accent-2:#00c896;
+      --muted:#9aa8b6;
+      --radius:12px;
+      --max-width:1180px;
+      --shadow: 0 10px 36px rgba(0,0,0,0.6);
+      --sidebar-min:260px;
+      --sidebar-max:360px;
+      --gap:18px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body {
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      background: linear-gradient(180deg,var(--bg),#021224);
+      color:#eaf2ff;
+      padding:28px;
+      display:flex;
+      justify-content:center;
+    }
+    .wrap{width:100%;max-width:var(--max-width)}
+    header{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+    .logo {
+      width:56px;height:56px;border-radius:12px;
+      display:grid;place-items:center;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      font-weight:800;color:white;font-size:20px;
+      box-shadow:var(--shadow)
+    }
+    h1{margin:0;font-size:26px}
+    .meta{color:var(--muted);margin-top:6px;margin-bottom:18px}
+    .card {
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.007));
+      padding:22px;border-radius:var(--radius);
+      border:1px solid rgba(255,255,255,0.04);
+      box-shadow:var(--shadow)
+    }
+    .grid {
+      display:grid;
+      grid-template-columns: 1fr minmax(var(--sidebar-min), var(--sidebar-max));
+      gap:var(--gap);align-items:start
+    }
+    @media(max-width:900px){.grid{grid-template-columns:1fr}.sidebar{order:2}}
+
+    .module{margin-bottom:14px;padding:14px;border-radius:10px;background:rgba(255,255,255,0.01);border:1px solid rgba(255,255,255,0.02)}
+    .module h3{margin:0 0 8px 0}
+    .desc{color:var(--muted);margin-bottom:10px}
+    .topics{display:grid;gap:8px}
+    .topic{padding:10px;border-radius:8px;background:rgba(255,255,255,0.015);border:1px solid rgba(255,255,255,0.015);font-size:14px}
+    .example{margin-top:12px;padding:12px;border-radius:8px;background:#041227;border:1px solid rgba(255,255,255,0.02);overflow:auto}
+    pre{background:transparent;color:inherit;margin:0;font-size:13px;white-space:pre-wrap;word-break:break-word}
+
+    .toc{background:rgba(255,255,255,0.03);padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.02);max-height:72vh;overflow:auto}
+    .toc a{display:block;padding:8px;border-radius:8px;color:var(--muted);font-size:14px;text-decoration:none}
+    .toc a:hover{background:linear-gradient(90deg, rgba(0,94,255,0.06), rgba(0,200,150,0.03));color:white}
+
+    .cta{display:inline-block;padding:10px 14px;border-radius:10px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#021022;font-weight:700;margin-top:12px;text-decoration:none}
+    .muted{color:var(--muted);font-size:13px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo" aria-hidden="true">C++</div>
+      <div>
+        <h1>C++ Programming • iAM Scholar</h1>
+        <div class="meta">Object-oriented programming, memory management, and modern C++ development</div>
+      </div>
+    </header>
+
+    <div class="card">
+      <div class="grid">
+        <main>
+          <p><strong>Course overview</strong>: Learn C++ from the ground up — covering syntax, classes, memory, templates, STL, file I/O, and modern C++ features. Ideal for aspiring software engineers, game developers, and systems programmers.</p>
+
+          <!-- Modules -->
+          <section class="module" id="m1">
+            <h3>Module 1 — C++ Basics</h3>
+            <div class="desc">Setup, syntax, and compiling your first program.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — Installing a compiler and writing Hello World</div>
+              <div class="topic"><strong>Lesson 2</strong> — Data types, variables, and operators</div>
+              <div class="topic"><strong>Lesson 3</strong> — Input/output with cin/cout</div>
+              <div class="topic"><strong>Lesson 4</strong> — Comments, formatting, and naming conventions</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Compile and run basic C++ programs with standard I/O.</div>
+            <div class="example"><pre>#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+  cout &lt;&lt; "Hello, iAM Scholar!" &lt;&lt; endl;
+  return 0;
+}</pre></div>
+          </section>
+
+          <section class="module" id="m2">
+            <h3>Module 2 — Control Flow & Functions</h3>
+            <div class="desc">Conditionals, loops, and reusable functions.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — if, else, switch-case</div>
+              <div class="topic"><strong>Lesson 2</strong> — for, while, and do-while loops</div>
+              <div class="topic"><strong>Lesson 3</strong> — Declaring and calling functions</div>
+              <div class="topic"><strong>Lesson 4</strong> — Function overloading and default arguments</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Control program logic and write reusable code blocks.</div>
+          </section>
+
+          <section class="module" id="m3">
+            <h3>Module 3 — Object-Oriented Programming</h3>
+            <div class="desc">Classes, objects, inheritance, and encapsulation.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — Defining classes and creating objects</div>
+              <div class="topic"><strong>Lesson 2</strong> — Constructors, destructors, and access modifiers</div>
+              <div class="topic"><strong>Lesson 3</strong> — Inheritance and polymorphism</div>              <div class="topic"><strong>Lesson 4</strong> — Virtual functions and abstract classes</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Build modular, reusable, and extensible programs using OOP principles.</div>
+          </section>
+
+          <section class="module" id="m4">
+            <h3>Module 4 — Memory Management</h3>
+            <div class="desc">Pointers, dynamic memory, and smart pointers.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — Pointer basics and memory addresses</div>
+              <div class="topic"><strong>Lesson 2</strong> — Dynamic allocation with new/delete</div>
+              <div class="topic"><strong>Lesson 3</strong> — Memory leaks and dangling pointers</div>
+              <div class="topic"><strong>Lesson 4</strong> — Smart pointers: uniqueptr, sharedptr, weak_ptr</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Manage memory safely and efficiently in C++ programs.</div>
+          </section>
+
+          <section class="module" id="m5">
+            <h3>Module 5 — Templates and Generic Programming</h3>
+            <div class="desc">Write reusable and type-safe code using templates.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — Function templates and type deduction</div>
+              <div class="topic"><strong>Lesson 2</strong> — Class templates and specialization</div>
+              <div class="topic"><strong>Lesson 3</strong> — Variadic templates and parameter packs</div>
+              <div class="topic"><strong>Lesson 4</strong> — Template metaprogramming basics</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Build flexible and reusable components using C++ templates.</div>
+          </section>
+
+          <section class="module" id="m6">
+            <h3>Module 6 — The Standard Template Library (STL)</h3>
+            <div class="desc">Explore STL containers, algorithms, and iterators.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — Vectors, lists, sets, maps, and stacks</div>
+              <div class="topic"><strong>Lesson 2</strong> — Iterators and range-based loops</div>
+              <div class="topic"><strong>Lesson 3</strong> — STL algorithms: sort, find, transform</div>
+              <div class="topic"><strong>Lesson 4</strong> — Lambda expressions and functional patterns</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Use STL to write efficient and expressive code.</div>
+          </section>
+
+          <section class="module" id="m7">
+            <h3>Module 7 — File I/O and Streams</h3>
+            <div class="desc">Read and write files using C++ streams.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — Using fstream, ifstream, and ofstream</div>
+              <div class="topic"><strong>Lesson 2</strong> — Reading and writing text and binary files</div>
+              <div class="topic"><strong>Lesson 3</strong> — Stream formatting and manipulators</div>
+              <div class="topic"><strong>Lesson 4</strong> — Error handling and file validation</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Persist and retrieve data using file operations.</div>
+          </section>
+
+          <section class="module" id="m8">
+            <h3>Module 8 — Modern C++ Features</h3>
+            <div class="desc">Explore features from C++11 to C++20.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — auto, nullptr, and range-based for loops</div>
+              <div class="topic"><strong>Lesson 2</strong> — Move semantics and rvalue references</div>
+              <div class="topic"><strong>Lesson 3</strong> — std::function, std::optional, and std::variant</div>
+              <div class="topic"><strong>Lesson 4</strong> — Concepts and coroutines (C++20)</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Write modern, expressive, and efficient C++ code.</div>
+          </section>
+
+          <section class="module" id="m9">
+            <h3>Module 9 — Debugging, Testing & Tooling</h3>
+            <div class="desc">Use tools to debug, test, and maintain            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — Debugging with gdb, Valgrind, and sanitizers</div>
+              <div class="topic"><strong>Lesson 2</strong> — Writing unit tests with Google Test</div>
+              <div class="topic"><strong>Lesson 3</strong> — Build systems: Makefiles, CMake, and Ninja</div>
+              <div class="topic"><strong>Lesson 4</strong> — Static analysis, linters, and code formatters</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Maintain high-quality C++ codebases with modern tooling and testing practices.</div>
+          </section>
+
+          <section class="module" id="m10">
+            <h3>Module 10 — Capstone Project</h3>
+            <div class="desc">Design and build a complete C++ application using all learned concepts.</div>
+            <div class="topics">
+              <div class="topic"><strong>Project brief</strong> — Build a console-based or GUI application (e.g., task manager, file parser, mini game engine)</div>
+              <div class="topic"><strong>Deliverables</strong> — Source code, documentation, test suite, and demo video</div>
+              <div class="topic"><strong>Assessment</strong> — Code structure, use of OOP/STL/templates, testing, performance, and presentation</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Apply all concepts in a real-world C++ project and showcase your skills.</div>
+            <div class="example"><pre>// Sample class
+
+include &lt;iostream&gt;
+using namespace std;
+
+class Student {
+public:
+  string name;
+  int age;
+  void greet() {
+    cout &lt;&lt; "Hi, I'm " &lt;&lt; name &lt;&lt; " and I'm " &lt;&lt; age &lt;&lt; " years old." &lt;&lt; endl;
+  }
+};
+
+int main() {
+  Student s = {"Golden", 22};
+  s.greet();
+  return 0;
+}</pre></div>
+          </section>
+        </main>
+
+        <aside class="sidebar">
+          <nav class="toc">
+            <strong style="display:block;margin-bottom:8px">Contents</strong>
+            <a href="#m1">Module 1 — Basics</a>
+            <a href="#m2">Module 2 — Control Flow</a>
+            <a href="#m3">Module 3 — OOP</a>
+            <a href="#m4">Module 4 — Memory</a>
+            <a href="#m5">Module 5 — Templates</a>
+            <a href="#m6">Module 6 — STL</a>
+            <a href="#m7">Module 7 — File I/O</a>
+            <a href="#m8">Module 8 — Modern C++</a>
+            <a href="#m9">Module 9 — Tooling</a>
+            <a href="#m10">Module 10 — Capstone</a>
+            <div style="margin-top:12px;border-top:1px solid rgba(255,255,255,0.02);padding-top:10px">
+              <div class="muted">Course length</div>
+              <div style="font-weight:700;margin-top:6px">10 modules • ~100–140 hours</div>
+              <div class="muted" style="margin-top:8px">Assessment</div>
+              <div style="font-size:14px;margin-top:6px">Labs, code reviews, quizzes, final capstone</div>
+              <a class="cta" href="#m10">View capstone brief</a>
+            </div>
+          </nav>
+        </aside>
+      </div>
+
+      <div style="margin-top:18px;color:var(--muted);font-size:13px">
+        <strong>Delivery</strong>: Short lessons, hands-on labs, code reviews, and a final capstone. Students receive starter code, rubrics, and walkthroughs.
+      </div>
+    </div>
+
+    <footer style="margin-top:18px;color:var(--muted);text-align:center">
+      <div>iAM Scholar • Golden Apple Technologies</div>
+    </footer>
+  </div>
+</body>
+</html>
