@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Word Scramble • Golden Apple Gamers</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Rajdhani', sans-serif;
+      background: #0f1117;
+      color: #fff;
+      margin: 0;
+      padding: 2rem;
+      text-align: center;
+    }
+    h1 {
+      color: #ffd700;
+      margin-bottom: 1rem;
+    }
+    .game-box {
+      background: #1a1c24;
+      padding: 2rem;
+      border-radius: 1rem;
+      max-width: 500px;
+      margin: auto;
+      box-shadow: 0 0 12px #ffd70033;
+    }
+    .scrambled {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      letter-spacing: 0.2rem;
+      color: #00c896;
+    }
+    input {
+      padding: 0.6rem;
+      width: 80%;
+      border-radius: 8px;
+      border: none;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+    button {
+      padding: 0.6rem 1.2rem;
+      background: #ffd700;
+      color: #000;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 0.5rem;
+    }
+    button:hover {
+      background: #ffea70;
+    }
+    .message {
+      margin-top: 1rem;
+      font-size: 1.1rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>🔤 Word Scramble</h1>
+  <div class="game-box">
+    <div class="scrambled" id="scrambledWord">Loading...</div>
+    <input type="text" id="userInput" placeholder="Unscramble the word" />
+    <br />
+    <button onclick="checkAnswer()">Submit</button>
+    <button onclick="nextWord()">Next Word</button>
+    <div class="message" id="message"></div>
+  </div>
+
+  <script>
+    const words = ["banana", "keyboard", "elephant", "puzzle", "golden", "apple", "scramble", "coding", "uganda", "scholar",
+  "network", "python", "laptop", "browser", "teacher", "student", "logic", "matrix", "rocket", "planet",
+  "signal", "server", "mobile", "energy", "module", "object", "syntax", "binary", "secure", "cipher",
+  "hacker", "mentor", "school", "cloud", "engine", "vector", "button", "screen", "design", "memory"];
+    let currentWord = "";
+
+    function shuffle(word) {
+      return word.split('').sort(() => Math.random() - 0.5).join('');
+    }
+
+    function nextWord() {
+      document.getElementById("message").textContent = "";
+      const randomIndex = Math.floor(Math.random() * words.length);
+      currentWord = words[randomIndex];
+      document.getElementById("scrambledWord").textContent = shuffle(currentWord);
+      document.getElementById("userInput").value = "";
+    }
+
+    function checkAnswer() {
+      const input = document.getElementById("userInput").value.trim().toLowerCase();
+      const message = document.getElementById("message");
+      if (input === currentWord) {
+        message.textContent = "✅ Correct! Well done.";
+        message.style.color = "#00c896";
+      } else {
+        message.textContent = "❌ Try again!";
+        message.style.color = "#ff4c4c";
+      }
+    }
+
+    nextWord();
+  </script>
+</body>
+</html>
