@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Python Course • iAM Scholar</title>
+  <meta name="description" content="Comprehensive Python syllabus for iAM Scholar — Golden Apple Technologies powered school." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#071029;
+      --card:#072033;
+      --accent:#7c3aed;
+      --accent-2:#06b6d4;
+      --muted:#98a6b4;
+      --glass-border: rgba(255,255,255,0.04);
+      --radius:12px;
+      --pad:20px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      background: linear-gradient(180deg,var(--bg),#031023);
+      color:#eaf2ff;
+      padding:28px;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+    .wrap{max-width:980px;margin:0 auto}
+    a{color:inherit;text-decoration:none}
+    header{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+    .logo{width:56px;height:56px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),var(--accent-2));font-weight:800;color:white;font-size:20px}
+    h1{margin:0;font-size:26px}
+    .meta{color:var(--muted);margin-top:6px;margin-bottom:18px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:22px;border-radius:var(--radius);border:1px solid var(--glass-border)}
+    .row{display:flex;gap:18px}
+    .col{flex:1}
+    .sidebar{width:280px;flex:0 0 280px}
+    .toc{background:rgba(255,255,255,0.01);padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.02);max-height:72vh;overflow:auto}
+    .toc a{display:block;padding:8px;border-radius:8px;color:var(--muted);font-size:14px}
+    .toc a:hover{background:linear-gradient(90deg, rgba(124,58,237,0.06), rgba(6,182,212,0.03));color:white}
+    .lesson-list{display:grid;gap:12px;margin-top:14px}
+    .module{padding:14px;border-radius:10px;background:rgba(255,255,255,0.01);border:1px solid rgba(255,255,255,0.02)}
+    .module h3{margin:0 0 8px 0}
+    .module .desc{color:var(--muted);margin-bottom:10px}
+    .topics{display:grid;gap:8px}
+    .topic{padding:10px;border-radius:8px;background:rgba(255,255,255,0.015);border:1px solid rgba(255,255,255,0.015);font-size:14px}
+    .sub{color:var(--muted);font-size:13px;margin-top:8px}
+    .cta{display:inline-block;padding:10px 14px;border-radius:10px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white;font-weight:600;margin-top:16px}
+    .muted{color:var(--muted);font-size:13px}
+    footer{margin-top:18px;color:var(--muted);font-size:13px;text-align:center}
+
+    /* Responsive */
+    @media (max-width:900px){
+      .row{flex-direction:column}
+      .sidebar{width:100%;flex:0 0 auto}
+    }
+    pre{background:#031128;padding:12px;border-radius:8px;overflow:auto}
+    table{width:100%;border-collapse:collapse;margin-top:8px}
+    table th, table td{padding:8px;border-bottom:1px solid rgba(255,255,255,0.03);text-align:left;font-size:13px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo" aria-hidden="true">iS</div>
+      <div>
+        <h1>Python • iAM Scholar</h1>
+        <div class="meta">Beginner → Intermediate → Advanced • Data, Web, Automation • Project-driven curriculum</div>
+      </div>
+    </header>
+
+    <div class="card">
+      <div class="row">
+        <div class="col">
+          <p><strong>Course overview</strong>: A complete, hands-on Python program that starts with fundamentals and progresses to web development, data science, automation, and production-ready practices. Each module contains lessons, practical exercises, guided projects, and assessment rubrics.</p>
+
+          <div class="lesson-list" id="modules">
+            <!-- Module 1 -->
+            <section class="module" id="m1">
+              <h3>Module 1 — Getting Started with Python</h3>
+              <div class="desc">Set up your environment, understand Python basics, and write your first programs.</div>
+              <div class="topics">
+                <div class="topic"><strong>Lesson 1</strong> — Installing Python and tools: CPython vs PyPy, pip, IDEs (VS Code), virtual environments (venv)</div>
+                <div class="topic"><strong>Lesson 2</strong> — REPL, scripts, running programs, file structure</div>
+                <div class="topic"><strong>Lesson 3</strong> — Basic syntax: variables, primitive types (int, float, bool, str), printing and formatting</div>
+                <div class="topic"><strong>Lesson 4</strong> — Control flow: if, elif, else, truthy/falsy values</div>
+              </div>
+              <div class="sub"><strong>Outcomes</strong>: Install toolchain, run scripts, write simple programs; understand interpreter basics.</div>
+            </section>
+
+            <!-- Module 2 -->
+            <section class="module" id="m2">
+              <h3>Module 2 — Data Structures and Core Language</h3>
+              <div class="desc">Master Python built-in containers and core idioms used in real projects.</div>
+              <div class="topics">
+                <div class="topic"><strong>Lesson 1</strong> — Lists and list methods, slicing, list comprehensions</div>
+                <div class="topic"><strong>Lesson 2</strong> — Tuples and namedtuples</div>
+                <div class="topic"><strong>Lesson 3</strong> — Dictionaries and dict methods, default dict, ordering</div>
+                <div class="topic"><strong>Lesson 4</strong> — Sets and set operations</div>
+                <div class="topic"><strong>Lesson 5</strong> — Strings, formatting methods, regex basics</div>
+              </div>
+              <div class="sub"><strong>Outcomes</strong>: Choose appropriate data structures, manipulate collections, use comprehensions and basic regex.</div>
+            </section>
+
+            <!-- Module 3 -->
+            <section class="module" id="m3">
+              <h3>Module 3 — Functions, Modules, and Packages</h3>
+              <div class="desc">Write modular, reusable code and learn packaging basics.</div>
+              <div class="topics">
+                <div class="topic"><strong>Lesson 1</strong> — Defining functions, arguments, return values, docstrings</div>
+                <div class="topic"><strong>Lesson 2</strong> — Scope, closures, lambdas, higher-order functions</div>
+                <div class="topic"><strong>Lesson 3</strong> — Modules and packages, __name__ == "__main__", import patterns</div>
+                <div class="topic"><strong>Lesson 4</strong> — Virtual environments, pip, requirements.txt, Poetry intro</div>
+              </div>
+              <div class="sub"><strong>Outcomes</strong>: Build modular code, publish/use packages locally, manage dependencies.</div>
+            </section>
+
+            <!-- Module 4 -->
+            <section class="module" id="m4">
+              <h3>Module 4 — Error Handling, Testing, and Debugging</h3>
+              <div class="desc">Make robust programs using exceptions, unit tests, and debugger tools.</div>
+              <div class="topics">
+                <div class="topic"><strong>Lesson 1</strong> — Exceptions, try/except/else/finally, custom exceptions</div>
+                <div class="topic"><strong>Lesson 2</strong> — Logging, assertions, defensive programming</div>
+                <div class="topic"><strong>Lesson 3</strong> — Unit testing with unittest and pytest fundamentals</div>
+                <div class="topic"><strong>Lesson 4</strong> — Debugging with VS Code and pdb; test-driven development (TDD) basics</div>
+              </div>
+              <div class="sub"><strong>Outcomes</strong>: Write tests, debug effectively, and handle runtime errors gracefully.</div>
+            </section>
+
+            <!-- Module 5 -->
+            <section class="module" id="m5">
+              <h3>Module 5 — Object-Oriented Programming</h3>
+              <div class="desc">Design classes and use OOP patterns for maintainable code.</div>
+              <div class="topics">
+                <div class="topic"><strong>Lesson 1</strong> — Classes, instances, attributes, methods</div>
+                <div class="topic"><strong>Lesson 2</strong> — Inheritance, composition, method overriding</div>
+                <div class="topic"><strong>Lesson 3</strong> — Special methods (__init__, __repr__, __str__, __eq__)</div>
+                <div class="topic"><strong>Lesson 4</strong> — Dataclasses and typing for classes</div>
+              </div>
+              <div class="sub"><strong>Outcomes</strong>: Model real-world problems using classes; use dataclasses for concise data models.</div>
+            </section>
+
+            <!-- Module 6 -->
+            <section class="module" id="m6">
+              <h3>Module 6 — Functional Tools and Concurrency</h3>
+              <div class="desc">Explore functional helpers and concurrency models for modern Python.</div>
+              <div class="topics">
+                <div class="topic"><strong>Lesson 1</strong> — map, filter, reduce, itertools, functools</div>
+                <div class="topic"><strong>Lesson 2</strong> — Generators, yield, generator expressions</div>
+                <div class="topic"><strong>Lesson 3</strong> — Threading and multiprocessing basics</div>
+                <div class="topic"><strong>Lesson 4</strong> — Asyncio: coroutines, event loop, async/await, practical examples</div>
+              </div>
+              <div class="sub"><strong>Outcomes</strong>: Use functional constructs and choose the right concurrency model for tasks.</div>
+            </section>
+
+            <!-- Module 7 -->
+            <section class="module" id="m7">
+              <h3>Module 7 — File I/O, CSV, JSON, and Working with APIs</h3>
+              <div class="desc">Read/write files and interact with remote services.</div>
+              <div class="topics">
+                <div class="topic"><strong>Lesson 1</strong> — File operations, context managers, pathlib</div>
+                <div class="topic"><strong>Lesson 2</strong> — CSV handling, JSON parsing and serialization</div>
+                <div class="topic"><strong>Lesson 3</strong> — Requests, working with REST APIs, status codes and error handling</div>
+                <div class="topic"><strong>Lesson 4</strong> — Consuming and paginating APIs, rate limiting strategies</div>
+              </div>
+              <div class="sub"><strong>Outcomes</strong>: Build ETL scripts and integrate with external APIs reliably.</div>
+            </section>
+
+            <!-- Module 8 -->
+            <section class="module" id="m8">
+              <h3>Module 8 — Web Development with Flask (and intro to FastAPI)</h3>
+              <div class="desc">Create web apps and APIs using Flask; overview of FastAPI for async APIs.</div>
+              <div class="topics">
+                <div class="topic"><strong>Lesson 1</strong> — HTTP basics, routes, request/response lifecycle</div>
+                <div class="topic"><strong>Lesson 2</strong> — Templates with Jinja2, static assets, form handling</div>
+                <div class="topic"><strong>Lesson 3</strong> — REST API design, JSON responses, input validation</div>
+                <div class="topic"><strong>Lesson 4</strong> — FastAPI intro: pydantic models, automatic docs, async endpoints</div>
+              </div>
+              <div class="sub"><strong>Outcomes</strong>: Deploy a Flask app and build production-ready APIs with FastAPI basics.</div>
+            </section>
+
+            <!-- Module 9 -->
+            <section class="module" id="m9">
+              <h3>Module 9 — Data Analysis and Visualization</h3>
+              <div class="desc">Use pandas, NumPy, and visualization tools to analyze data and tell stories.</div>
+              <div class="topics">
+                <div class="topic"><strong>Lesson 1</strong> — NumPy arrays, vectorized operations</div>
+                <div class="topic"><strong>Lesson 2</strong> — pandas DataFrame operations, grouping, joins</div>
+                <div class="topic"><strong>Lesson 3</strong> — Data cleaning, missing data strategies</div>
+                <div class="topic"><strong>Lesson 4</strong> — Visualization with Matplotlib and Seaborn; storytelling</div>
+              </div>
+              <div class="sub"><strong>Outcomes</strong>: Prepare and visualize real datasets; extract insights and summaries.</div>
+            </section>
+
+            <!-- Module 10 -->
+            <section class="module" id="m10">
+              <h3>Module 10 — Machine Learning Fundamentals</h3>
+              <div class="desc">Intro to supervised learning and practical ML workflows.</div>
+              <div class="topics">
+                <div class="topic"><strong>Lesson 1</strong> — Scikit-learn basics: train/test split, pipelines</div>
+                <div class="topic"><strong>Lesson 2</strong> — Linear models, decision trees, evaluation metrics</div>
+                <div class="topic"><strong>Lesson 3</strong> — Feature engineering and model selection</div>
+                <div class="topic"><strong>Lesson 4</strong> — Saving models, simple deployment patterns</div>
+              </div>
+              <div class="sub"><strong>Outcomes</strong>: Build and evaluate simple ML models and understand deployment considerations.</div>
+            </section>
+
+            <!-- Module 11 -->
+            <section class="module" id="m11">
+              <h3>Module 11 — DevOps, Packaging, and Deployment</h3>
+              <div class="desc">Prepare code for production and automate deployments.</div>
+              <div class="topics">
+                <div class="topic"><strong>Lesson 1</strong> — Packaging with setuptools and Poetry</div>
+                <div class="topic"><strong>Lesson 2</strong> — CI/CD basics with GitHub Actions (tests, lint, build)</div>
+                <div class="topic"><strong>Lesson 3</strong> — Dockerizing Python apps; multi-stage builds</div>
+                <div class="topic"><strong>Lesson 4</strong> — Monitoring, basic observability, and environment variables</div>
+              </div>
+              <div class="sub"><strong>Outcomes</strong>: Ship Python apps with reproducibility and CI/CD pipelines.</div>
+            </section>
+
+            <!-- Module 12 -->
+            <section class="module" id="m12">
+              <h3>Module 12 — Security, Performance, and Best Practices</h3>
+              <div class="desc">Harden applications and write efficient code with industry best practices.</div>
+              <div class="topics">
+                <div class="topic"><strong>Lesson 1</strong> — Secure coding: input validation, avoiding injection, auth basics</div>
+                <div class="topic"><strong>Lesson 2</strong> — Profiling and optimizing code; caching strategies</div>
+                <div class="topic"><strong>Lesson 3</strong> — Type hints, static analysis (mypy, flake8), and linting</div>
+                <div class="topic"><strong>Lesson 4</strong> — Licensing, open-source etiquette, code review practices</div>
+              </div>
+              <div class="sub"><strong>Outcomes</strong>: Produce secure, maintainable, and performant Python software.</div>
+            </section>
+
+            <!-- Final Project -->
+            <section class="module" id="final">
+              <h3>Final Capstone Project</h3>
+              <div class="desc">Design and ship a full-stack Python product combining modules learned.</div>
+              <div class="topics">
+                <div class="topic"><strong>Project choices</strong> — Data dashboard (Flask/FastAPI + pandas + charts); Web app with auth and DB; Automation pipeline that scrapes, transforms, and stores data.</div>
+                <div class="topic"><strong>Deliverables</strong> — Source code, README, tests, CI config, Dockerfile, deployment link, short demo video</div>
+                <div class="topic"><strong>Assessment</strong> — Code quality, tests, documentation, design decisions, and live demo</div>
+              </div>
+              <div class="sub"><strong>Outcomes</strong>: Real-world experience shipping a production-like Python service and portfolio-ready artifact.</div>
+            </section>
+          </div>
+        </div>
+
+        <aside class="sidebar">
+          <div class="toc" aria-label="Course contents">
+            <strong style="display:block;margin-bottom:8px">Course contents</strong>
+            <a href="#m1">Module 1 — Getting Started</a>
+            <a href="#m2">Module 2 — Data Structures</a>
+            <a href="#m3">Module 3 — Functions & Packages</a>
+            <a href="#m4">Module 4 — Testing & Debugging</a>
+            <a href="#m5">Module 5 — Object-Oriented Programming</a>
+            <a href="#m6">Module 6 — Concurrency</a>
+            <a href="#m7">Module 7 — I/O & APIs</a>
+            <a href="#m8">Module 8 — Web Development</a>
+            <a href="#m9">Module 9 — Data Analysis</a>
+            <a href="#m10">Module 10 — Machine Learning</a>
+            <a href="#m11">Module 11 — DevOps & Deployment</a>
+            <a href="#m12">Module 12 — Security & Best Practices</a>
+            <a href="#final">Final Capstone Project</a>
+
+            <div style="margin-top:12px;border-top:1px solid rgba(255,255,255,0.02);padding-top:10px">
+              <div class="muted">Course length</div>
+              <div style="font-weight:700;margin-top:6px">12 modules • ~120–160 hours</div>
+              <div class="muted" style="margin-top:8px">Assessment</div>
+              <div style="font-size:14px;margin-top:6px">Quizzes, projects, peer review, final capstone</div>
+              <a class="cta" href="#final" style="display:inline-block">View capstone brief</a>
+            </div>
+          </div>
+
+          <div style="margin-top:14px" class="card">
+            <div style="font-weight:700">Resources included</div>
+            <ul style="margin:8px 0 0 18px;color:var(--muted)">
+              <li>Code examples and starter repos</li>
+              <li>Project rubrics and grading templates</li>
+              <li>Cheat sheets and quick reference guides</li>
+              <li>Recorded walkthroughs and assignment briefs</li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <footer>
+      <div>iAM Scholar • Golden Apple Technologies</div>
+    </footer>
+  </div>
+</body>
+</html>
