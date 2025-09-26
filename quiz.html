@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz Game • Golden Apple Gamers</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Rajdhani', sans-serif;
+      background: #0f1117;
+      color: #fff;
+      margin: 0;
+      padding: 2rem;
+      text-align: center;
+    }
+    h1 {
+      color: #ffd700;
+      margin-bottom: 1rem;
+    }
+    .quiz-box {
+      background: #1a1c24;
+      padding: 2rem;
+      border-radius: 1rem;
+      max-width: 600px;
+      margin: auto;
+      box-shadow: 0 0 12px #ffd70033;
+    }
+    .question {
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+    }
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .options button {
+      padding: 0.6rem 1rem;
+      background: #333;
+      color: #fff;
+      border: 2px solid #ffd700;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .options button:hover {
+      background: #ffd700;
+      color: #000;
+    }
+    .feedback {
+      font-size: 1.1rem;
+      margin-top: 1rem;
+    }
+    .next-btn {
+      margin-top: 1.5rem;
+      padding: 0.6rem 1.2rem;
+      background: #ffd700;
+      color: #000;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>🧠 Quiz Challenge</h1>
+  <div class="quiz-box">
+    <div class="question" id="question">Loading question...</div>
+    <div class="options" id="options"></div>
+    <div class="feedback" id="feedback"></div>
+    <button class="next-btn" onclick="nextQuestion()">Next Question</button>
+  </div>
+
+  <script>
+    const quizData = [
+  {
+    question: "Which language is used for web styling?",
+    options: ["HTML", "Python", "CSS", "Java"],
+    answer: 2
+  },
+  {
+    question: "Which planet is known as the Red Planet?",
+    options: ["Earth", "Mars", "Venus", "Jupiter"],
+    answer: 1
+  },
+  {
+    question: "What does CPU stand for?",
+    options: ["Central Processing Unit", "Computer Power Unit", "Control Panel Utility", "Core Performance Unit"],
+    answer: 0
+  },
+  {
+    question: "What is the square root of 64?",
+    options: ["6", "8", "10", "12"],
+    answer: 1
+  },
+  {
+    question: "Which gas do plants absorb from the atmosphere?",
+    options: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"],
+    answer: 2
+  },
+  {
+    question: "Which element has the chemical symbol 'O'?",
+    options: ["Osmium", "Oxygen", "Oxide", "Organium"],
+    answer: 1
+  },
+  {
+    question: "Which programming language is known for its snake logo?",
+    options: ["Java", "C++", "Python", "Ruby"],
+    answer: 2
+  },
+  {
+    question: "What is 15 × 3?",
+    options: ["45", "30", "50", "60"],
+    answer: 0
+  },
+  {
+    question: "Which organ pumps blood throughout the body?",
+    options: ["Lungs", "Brain", "Heart", "Liver"],
+    answer: 2
+  },
+  {
+    question: "Which planet is closest to the Sun?",
+    options: ["Venus", "Earth", "Mercury", "Mars"],
+    answer: 2
+  },
+  {
+    question: "What does HTML stand for?",
+    options: ["HyperText Markup Language", "HighText Machine Language", "HyperTool Multi Language", "None of the above"],
+    answer: 0
+  },
+  {
+    question: "Which shape has three sides?",
+    options: ["Square", "Triangle", "Circle", "Rectangle"],
+    answer: 1
+  },
+  {
+    question: "Which number is a prime?",
+    options: ["4", "6", "9", "7"],
+    answer: 3
+  },
+  {
+    question: "Which tool is used to inspect web elements?",
+    options: ["Debugger", "Compiler", "Browser DevTools", "Terminal"],
+    answer: 2
+  },
+  {
+    question: "What is the boiling point of water in Celsius?",
+    options: ["90°C", "100°C", "120°C", "80°C"],
+    answer: 1
+  },
+  {
+    question: "Which planet has rings?",
+    options: ["Mars", "Saturn", "Venus", "Earth"],
+    answer: 1
+  },
+  {
+    question: "Which device stores data permanently?",
+    options: ["RAM", "CPU", "Hard Drive", "Cache"],
+    answer: 2
+  },
+  {
+    question: "Which continent is the largest by area?",
+    options: ["Africa", "Asia", "Europe", "North America"],
+    answer: 1
+  },
+  {
+    question: "What is 12 ÷ 3?",
+    options: ["4", "3", "6", "5"],
+    answer: 0
+  },
+  {
+    question: "Which color is made by mixing red and blue?",
+    options: ["Green", "Purple", "Orange", "Brown"],
+    answer: 1
+  },
+  {
+    question: "Which unit measures electric current?",
+    options: ["Volt", "Watt", "Ampere", "Ohm"],
+    answer: 2
+  },
+  {
+    question: "Which planet is known for its Great Red Spot?",
+    options: ["Mars", "Jupiter", "Neptune", "Saturn"],
+    answer: 1
+  },
+  {
+    question: "Which part of the computer handles calculations?",
+    options: ["Monitor", "Keyboard", "CPU", "Mouse"],
+    answer: 2
+  },
+  {
+    question: "What is the result of 9 × 9?",
+    options: ["81", "72", "99", "90"],
+    answer: 0
+  },
+  {
+    question: "Which shape has no corners?",
+    options: ["Triangle", "Square", "Circle", "Hexagon"],
+    answer: 2
+  },
+  {
+    question: "Which language is used to structure web pages?",
+    options: ["CSS", "JavaScript", "HTML", "SQL"],
+    answer: 2
+  },
+  {
+    question: "Which planet is known for its icy rings?",
+    options: ["Uranus", "Saturn", "Neptune", "Venus"],
+    answer: 1
+  },
+  {
+    question: "What is the result of 100 ÷ 4?",
+    options: ["20", "25", "30", "40"],
+    answer: 1
+  },
+  {
+    question: "Which device converts sound into electrical signals?",
+    options: ["Speaker", "Microphone", "Monitor", "Camera"],
+    answer: 1
+  },
+  {
+    question: "Which number is even?",
+    options: ["13", "17", "22", "19"],
+    answer: 2
+  }];
+
+    let currentIndex = 0;
+
+    function loadQuestion() {
+      const q = quizData[currentIndex];
+      document.getElementById("question").textContent = q.question;
+      const optionsDiv = document.getElementById("options");
+      optionsDiv.innerHTML = "";
+      document.getElementById("feedback").textContent = "";
+
+      q.options.forEach((opt, i) => {
+        const btn = document.createElement("button");
+        btn.textContent = opt;
+        btn.onclick = () => checkAnswer(i);
+        optionsDiv.appendChild(btn);
+      });
+    }
+
+    function checkAnswer(selected) {
+      const correct = quizData[currentIndex].answer;
+      const feedback = document.getElementById("feedback");
+      if (selected === correct) {
+        feedback.textContent = "✅ Correct!";
+        feedback.style.color = "#00c896";
+      } else {
+        feedback.textContent = "❌ Incorrect. Try again!";
+        feedback.style.color = "#ff4c4c";
+      }
+    }
+
+    function nextQuestion() {
+      currentIndex = (currentIndex + 1) % quizData.length;
+      loadQuestion();
+    }
+
+    loadQuestion();
+  </script>
+</body>
+</html>
