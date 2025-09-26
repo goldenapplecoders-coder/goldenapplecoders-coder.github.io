@@ -1,64 +1,118 @@
-# Golden Apple Technologies
+<!-- Golden Apple Technologies README -->
+# Golden Apple Technologies 🍏✨
+
 ![Golden Apple Technologies](dancing.svg)
-=========================
+
+[![Website](https://img.shields.io/badge/Website-live-06b6d4)](#)
+[![Teams](https://img.shields.io/badge/Team-Experienced-orange)](#)
+[![Stack](https://img.shields.io/badge/Stack-Modern-blueviolet)](#)
+[![Contact](https://img.shields.io/badge/Contact-info%40goldenappletech.com-8b5cf6)](#contact)
+
+---
 
 ## About Us
-------------
+Golden Apple Technologies is a creative engineering studio based in Kampala, Uganda. We build clean, fast, and beautiful web experiences — from marketing sites and e-commerce shops to full-stack web applications and developer tooling. Our team blends design thinking with engineering rigor to deliver solutions that scale.
 
-Golden Apple Technologies is a team of expert web developers dedicated to creating innovative and user-friendly web solutions. Our team of skilled professionals has years of experience in designing, developing, and deploying websites and web applications that meet the needs of our clients.
+Why choose us?
+- Human-centered interfaces that convert and delight
+- Production-ready code, automated tests, and smooth deployments
+- Clear communication and collaborative project delivery
 
-## Our Mission
--------------
+---
 
-Our mission is to provide high-quality web development services that exceed our clients' expectations. We strive to understand our clients' needs and goals, and work tirelessly to deliver solutions that meet and exceed those expectations.
+## Quick Highlights
+- ⚡ Fast, accessible, SEO-friendly frontends  
+- 🔒 Secure, tested backends and APIs  
+- 🎨 Polished UI/UX and brand-forward design systems  
+- 🚀 CI/CD, Docker, and cloud-ready deployments
 
-## Our Services
---------------
+---
 
-* **Web Design**: We create visually appealing and user-friendly website designs that reflect our clients' brand and values.
-* **Web Development**: We develop custom web applications and websites using the latest technologies and frameworks.
-* **E-commerce Solutions**: We create e-commerce solutions that enable our clients to sell their products and services online.
-* **Content Management Systems**: We develop custom content management systems that enable our clients to manage their website content easily.
+## Services
+We help companies ship features and build products.
 
-           
------------
+- Web Design — brand-led UI, prototypes, and design systems  
+- Frontend Development — HTML5, CSS3, modern JavaScript, React/Vue/Angular  
+- Backend Development — Node.js, Django, Laravel, REST & GraphQL APIs  
+- E‑commerce — storefronts, payments, product catalogs, order flows  
+- CMS & Content — WordPress, headless CMS, editorial workflows  
+- DevOps & Cloud — containers, CI/CD, observability and hosting
 
-Our team consists of experienced web developers, designers, and project managers who are passionate about delivering high-quality web solutions. Our team members have expertise in a range of technologies, including:
+---
 
-* **Front-end development**: HTML5, CSS3, JavaScript, React, Angular, Vue.js
-* **Back-end development**: PHP, Python, Ruby, Node.js, Laravel, Django, Ruby on Rails
-* **Databases**: MySQL, MongoDB, PostgreSQL
-* **Content management systems**: WordPress, Drupal, Joomla
+## Featured Technologies
+| Frontend | Backend | DevOps | Data |
+|---|---|---:|---|
+| HTML5; CSS3; Tailwind; React; Vue | Node.js; Django; Laravel; Java | Docker; GitHub Actions; CI/CD | PostgreSQL; MongoDB; Redis |
 
-                
-----------------
+---
 
-We have worked on a range of projects, from simple websites to complex web applications. Some of our notable projects include:
+## Projects & Case Studies
+- **Retail E‑commerce** — custom storefront, inventory sync, payment integration  
+- **Healthcare Portal** — secure auth, role-based dashboards, reporting  
+- **Non‑profit Redesign** — accessible, mobile-first site and donation flow
 
-* **Project 1**: A custom e-commerce solution for a retail client
-* **Project 2**: A web application for a healthcare client
-* **Project 3**: A website redesign for a non-profit organization
+(Ask for demo links and technical write-ups)
 
-                 
-------------------
+---
 
-* **Expertise**: Our team has years of experience in web development and design.
-* **Communication**: We prioritize communication and collaboration with our clients.
-* **Quality**: We are committed to delivering high-quality web solutions that meet our clients' needs.
-* **Innovation**: We stay up-to-date with the latest technologies and trends in web development.
+## Course & Training Work
+We run iAM Scholar — practical developer tracks and bootcamps:
+- HTML & CSS, JavaScript, TypeScript, UI/UX, Backend, DevOps
+- Project-driven curriculum, labs, rubrics, and capstone projects
 
-## Get in Touch
-----------------
+---
 
-If you're interested in learning more about our services or would like to discuss a project, please don't hesitate to contact us.
+## Why we stand out
+- Expertise: senior engineers who mentor and teach  
+- Communication: clear milestones, regular demos, and docs  
+- Quality: automated tests, code reviews, and performance checks  
+- Innovation: product-minded engineering and rapid prototyping
 
-* **Email**: [info@goldenappletech.com](mailto:goldenapplecoders@gmail.com)
-* **Phone**: +256 791 728 084
-* **Address**: Golden Apple Technologies, Kampala, Uganda
+---
 
-## Follow Us
--------------
+## Brand & Design
+To keep a consistent brand:
+- Primary color: #FFD166 (gold)
+- Accent: #06B6D4 (teal)
+- Neutral: #071026 (deep navy)
+- Typography: Inter, system UI stacks
 
-* **Twitter**: @GoldenAppleTech
-* **Facebook**: @GoldenAppleTechnologies
-* **LinkedIn**: @GoldenAppleTechnologies
+Add the SVG logo `dancing.svg` in this repo for best results.
+
+---
+
+## Get in touch
+We’d love to hear about your project.
+
+- ✉️ Email: info@goldenappletech.com  
+- ☎️ Phone: +256 791 728 084  
+- 📍 Address: Golden Apple Technologies, Kampala, Uganda
+
+Or open an issue / discussion on this repo and tag `team:ops`.
+
+---
+
+## Follow us
+[Twitter](https://twitter.com/GoldenAppleTech) • [Facebook](https://facebook.com/GoldenAppleTechnologies) • [LinkedIn](https://linkedin.com/company/GoldenAppleTechnologies)
+
+---
+
+## Want to work with us?
+1. Share a short brief (goals, timeline, budget)  
+2. We’ll schedule a 30‑minute discovery call  
+3. Prototype → MVP → Launch with milestones and reviews
+
+---
+
+## Contribute / Careers
+We hire engineers, designers, and mentors. Open roles and internship opportunities listed in the `careers/` folder. Submit a CV and portfolio to info@goldenappletech.com.
+
+---
+
+## License
+This repo content is available under the MIT License. See LICENSE for details.
+
+---
+
+> Golden Apple Technologies — engineering that feels like craft. 🍏
