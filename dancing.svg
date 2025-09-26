@@ -1,92 +1,85 @@
-<!--
-  Scalable, single-file SVG logo for Golden Apple Technologies
-  - Portable SVG: drop into <img src="data:image/svg+xml;utf8,..."> or inline <svg> in HTML
-  - Uses currentColor where appropriate; supports CSS variable overrides
+<!-- Golden.svg
+     Scalable logo for Golden Apple Technologies
+     - Drop this file as Golden.svg in your repo and use inline or as <img src="Golden.svg">
+     - Colors use a warm gold gradient with subtle circuit traces for a tech feel
 -->
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240" role="img" aria-labelledby="gatTitle gatDesc">
-  <title id="gatTitle">Golden Apple Technologies</title>
-  <desc id="gatDesc">Stylized golden apple with subtle circuit traces and a modern sans wordmark</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" width="320" height="320" role="img" aria-labelledby="title desc">
+  <title id="title">Golden Apple Technologies</title>
+  <desc id="desc">A stylized golden apple with circuit traces and a clean wordmark.</desc>
 
   <defs>
-    <!-- Brand palette: --gold, --accent, --seed -->
-    <linearGradient id="g-grad" x1="0" x2="1" y1="0" y2="1">
+    <linearGradient id="goldGrad" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#FFD166"/>
-      <stop offset="0.5" stop-color="#FFB347"/>
+      <stop offset="0.45" stop-color="#FFB347"/>
       <stop offset="1" stop-color="#FF9F1C"/>
     </linearGradient>
 
-    <linearGradient id="leaf-grad" x1="0" x2="1">
-      <stop offset="0" stop-color="#7BD389"/>
+    <linearGradient id="leafGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#66D687"/>
       <stop offset="1" stop-color="#2BB673"/>
     </linearGradient>
 
-    <filter id="soft-shadow" x="-50%" y="-50%" width="200%" height="200%">
-      <feDropShadow dx="0" dy="8" stdDeviation="14" flood-color="#07203a" flood-opacity="0.35"/>
+    <filter id="softShadow" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000" flood-opacity="0.28"/>
     </filter>
 
-    <mask id="cutout">
-      <!-- white = visible, black = hidden -->
-      <rect width="100%" height="100%" fill="white" />
-      <!-- central cut for highlight detail -->
-      <circle cx="120" cy="110" r="58" fill="black" opacity="0.06"/>
+    <mask id="shineMask">
+      <rect width="100%" height="100%" fill="white"/>
+      <path d="M92 86 C120 56, 200 56, 222 92 C196 78, 136 84, 92 86 Z" fill="black" opacity="0.06"/>
     </mask>
 
-    <!-- Circuit trace stroke -->
-    <linearGradient id="trace-grad" x1="0" x2="1">
-      <stop offset="0" stop-color="#ffd166"/>
-      <stop offset="1" stop-color="#fff6e0"/>
-    </linearGradient>
+    <style type="text/css"><![CDATA[
+      .apple-body { fill: url(#goldGrad); stroke: #E6B86B; stroke-width:1.2; }
+      .apple-leaf { fill: url(#leafGrad); stroke: #1E7A4B; stroke-width:0.8; }
+      .trace { fill: none; stroke: #FFF6E0; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; opacity:0.95 }
+      .dot { fill: #FFF6E0; }
+      .wordmark { font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial; fill:#0B1220; font-weight:700; }
+      .subword { font-size:12px; fill:#6F8190; font-weight:600; }
+    ]]></style>
   </defs>
 
-  <!-- Background soft circle -->
-  <circle cx="120" cy="120" r="110" fill="rgba(3,17,34,0.06)"/>
+  <!-- soft backdrop circle -->
+  <circle cx="160" cy="140" r="124" fill="rgba(3,17,34,0.06)"/>
 
-  <!-- Apple body -->
-  <g transform="translate(0,6)" filter="url(#soft-shadow)">
-    <path d="M120 40
-             C152 40 180 66 180 96
-             C180 128 150 160 120 176
-             C90 160 60 128 60 96
-             C60 66 88 40 120 40 Z"
-          fill="url(#g-grad)" stroke="#ECD08A" stroke-width="1.2" />
+  <!-- apple group -->
+  <g transform="translate(0,0)" filter="url(#softShadow)">
+    <!-- body -->
+    <path class="apple-body" d="M160 46
+      C198 46 228 74 228 112
+      C228 150 192 186 160 204
+      C128 186 92 150 92 112
+      C92 74 122 46 160 46 Z" />
 
-    <!-- subtle glossy highlight -->
-    <path d="M88 62
-             C102 54 130 54 146 66
-             C150 74 140 82 130 86
-             C116 78 98 76 88 62 Z"
-          fill="rgba(255,255,255,0.18)" opacity="0.9" mask="url(#cutout)"/>
+    <!-- glossy highlight (masked) -->
+    <path d="M116 74 C136 60 188 60 208 80 C212 92 200 98 188 104 C166 90 140 86 116 74 Z"
+          fill="rgba(255,255,255,0.18)" mask="url(#shineMask)"/>
+
+    <!-- leaf -->
+    <path class="apple-leaf" d="M200 34
+      C210 22 228 20 238 32
+      C230 36 216 44 204 50
+      C198 40 196 36 200 34 Z" />
+
+    <path d="M210 30 C216 28 226 28 230 32" stroke="rgba(255,255,255,0.22)" stroke-width="1.1" fill="none"/>
+
+    <!-- circuit traces -->
+    <g class="trace" stroke-width="2">
+      <path d="M160 110 L160 138 L184 156" />
+      <circle class="dot" cx="184" cy="156" r="3.2" />
+      <path d="M148 122 L130 142 L114 158" />
+      <circle class="dot" cx="114" cy="158" r="3.2" />
+      <path d="M160 96 L144 80" />
+      <circle class="dot" cx="144" cy="80" r="2.6" />
+    </g>
+
+    <!-- small tech accents -->
+    <rect x="196" y="112" width="6" height="6" rx="1.2" fill="#FFF6E0" opacity="0.96"/>
+    <rect x="102" y="132" width="5" height="5" rx="1" fill="#FFF6E0" opacity="0.96"/>
   </g>
 
-  <!-- Leaf -->
-  <g transform="translate(0,2)">
-    <path d="M150 28
-             C158 18 172 16 180 26
-             C174 28 164 34 154 40
-             C148 32 146 30 150 28 Z"
-          fill="url(#leaf-grad)" stroke="#1E7A4B" stroke-width="1"/>
-    <path d="M158 28 C162 26 170 26 174 30" stroke="rgba(255,255,255,0.25)" stroke-width="1" fill="none"/>
-  </g>
-
-  <!-- Circuit traces (stylized) -->
-  <g fill="none" stroke="url(#trace-grad)" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-    <path d="M120 92 L120 122 L140 138" opacity="0.95"/>
-    <circle cx="140" cy="138" r="3" fill="#FFF6E0" stroke="none"/>
-    <path d="M110 102 L92 122 L80 138" opacity="0.9"/>
-    <circle cx="80" cy="138" r="3" fill="#FFF6E0" stroke="none"/>
-    <path d="M120 78 L102 64" opacity="0.85"/>
-    <circle cx="102" cy="64" r="2.5" fill="#FFF6E0" stroke="none"/>
-  </g>
-
-  <!-- Small tech node accents -->
-  <g>
-    <rect x="132" y="96" width="6" height="6" rx="1.2" fill="#FBF0D6" opacity="0.95"/>
-    <rect x="76" y="112" width="5" height="5" rx="1" fill="#FBF0D6" opacity="0.95"/>
-  </g>
-
-  <!-- Wordmark: Golden Apple Technologies -->
-  <g transform="translate(20,200)">
-    <text x="0" y="0" font-family="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial" font-size="18" font-weight="700" fill="#EDE7CF">Golden Apple</text>
-    <text x="0" y="20" font-family="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial" font-size="12" fill="#AAB8C6">Technologies</text>
+  <!-- wordmark -->
+  <g transform="translate(34,266)" aria-hidden="true">
+    <text class="wordmark" x="0" y="0" font-size="26">Golden Apple</text>
+    <text class="subword" x="0" y="18">Technologies</text>
   </g>
 </svg>
