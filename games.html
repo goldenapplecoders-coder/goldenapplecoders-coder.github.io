@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Golden Apple Gamers • Online Games</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Rajdhani', sans-serif;
+      background: #0f1117;
+      color: #fff;
+      margin: 0;
+      padding: 2rem;
+    }
+    h1 {
+      text-align: center;
+      font-size: 2rem;
+      color: #ffd700;
+      margin-bottom: 2rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      max-width: 1000px;
+      margin: auto;
+    }
+    .card {
+      background: #1a1c24;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      text-align: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 0 12px #ffd70055;
+    }
+    .card i {
+      font-size: 2rem;
+      color: #ffd700;
+      margin-bottom: 0.5rem;
+    }
+    .card h2 {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+    .card p {
+      font-size: 0.95rem;
+      color: #ccc;
+    }
+    .card a {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      background: #ffd700;
+      color: #000;
+      font-weight: bold;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .card a:hover {
+      background: #ffea70;
+    }
+  </style>
+</head>
+<body>
+  <h1><i class="fas fa-gamepad"></i> Golden Apple Gamers</h1>
+  <div class="grid">
+    <div class="card">
+      <i class="fas fa-puzzle-piece"></i>
+      <h2>Jigsaw Puzzles</h2>
+      <p>Piece together beautiful images and challenge your brain.</p>
+      <a href="jigsaw.html">Play Now</a>
+    </div>
+    <div class="card">
+      <i class="fas fa-spell-check"></i>
+      <h2>Word Scramble</h2>
+      <p>Unscramble letters to form words and boost your vocabulary.</p>
+      <a href="scramble.html">Play Now</a>
+    </div>
+    <div class="card">
+      <i class="fas fa-question-circle"></i>
+      <h2>Quiz</h2>
+      <p>Test your knowledge across multiple categories and levels.</p>
+      <a href="quiz.html">Play Now</a>
+    </div>
+    <div class="card">
+      <i class="fas fa-dice"></i>
+      <h2>Guess the Number</h2>
+      <p>Can you guess the secret number? Try your luck and logic!</p>
+      <a href="guess.html">Play Now</a>
+    </div>
+    <div class="card">
+      <i class="fas fa-circle"></i>
+      <h2>Bubble Shooter</h2>
+      <p>Pop matching bubbles and clear the board in this arcade classic.</p>
+      <a href="bubble.html">Play Now</a>
+    </div>
+  </div>
+</body>
+</html>
