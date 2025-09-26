@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jigsaw Puzzle • Golden Apple Gamers</title>
+  <style>
+    body {
+      font-family: 'Rajdhani', sans-serif;
+      background: #0f1117;
+      color: #fff;
+      margin: 0;
+      padding: 2rem;
+      text-align: center;
+    }
+    h1 {
+      color: #ffd700;
+      margin-bottom: 1rem;
+    }
+    .puzzle-container {
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
+      grid-template-rows: repeat(3, 100px);
+      gap: 4px;
+      margin: auto;
+      width: max-content;
+      margin-top: 2rem;
+    }
+    .tile {
+      width: 100px;
+      height: 100px;
+      background-image: url('bird.jpg');
+      background-size: 300px 300px;
+      border: 2px solid #222;
+      cursor: grab;
+    }
+    .tile.dragging {
+      opacity: 0.5;
+    }
+    .tile.correct {
+      border-color: #00c896;
+    }
+    button {
+      margin-top: 2rem;
+      padding: 0.6rem 1.2rem;
+      background: #ffd700;
+      color: #000;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>🧩 Jigsaw Puzzle</h1>
+  <p>Drag and drop the tiles to complete the image.</p>
+  <div class="puzzle-container" id="puzzle"></div>
+  <button onclick="shuffleTiles()">Shuffle Again</button>
+
+  <script>
+    const puzzle = document.getElementById('puzzle');
+    let positions = [];
+
+    function createTiles() {
+      puzzle.innerHTML = '';
+      positions = [];
+      for (let i = 0; i < 9; i++) {
+        const x = (i % 3) * -100;
+        const y = Math.floor(i / 3) * -100;
+        const tile = document.createElement('div');
+        tile.className = 'tile';
+        tile.style.backgroundPosition = `${x}px ${y}px`;
+        tile.setAttribute('data-index', i);
+        tile.draggable = true;
+        puzzle.appendChild(tile);
+        positions.push(i);
+      }
+      enableDrag();
+    }
+
+    function shuffleTiles() {
+      const tiles = Array.from(puzzle.children);
+      const shuffled = [...tiles].sort(() => Math.random() - 0.5);
+      shuffled.forEach(tile => puzzle.appendChild(tile));
+    }
+
+    function enableDrag() {
+      let dragged;
+
+      puzzle.addEventListener('dragstart', e => {
+        dragged = e.target;
+        dragged.classList.add('dragging');
+      });
+
+      puzzle.addEventListener('dragend', e => {
+        dragged.classList.remove('dragging');
+      });
+
+      puzzle.addEventListener('dragover', e => {
+        e.preventDefault();
+        const target = e.target;
+        if (target.classList.contains('tile') && target !== dragged) {
+          puzzle.insertBefore(dragged, target.nextSibling);
+        }
+      });
+    }
+
+    createTiles();
+  </script>
+</body>
+</html>
