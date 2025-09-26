@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>PHP Programming Course • iAM Scholar</title>
+  <meta name="description" content="iAM Scholar — PHP track by Golden Apple Technologies. Learn dynamic web development, server-side scripting, and database integration with PHP." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo" aria-hidden="true">PHP</div>
+      <div>
+        <h1>PHP Programming • iAM Scholar</h1>
+        <div class="meta">Dynamic web development, server-side scripting, and database integration with PHP</div>
+      </div>
+    </header>
+
+    <div class="card">
+      <div class="grid">
+        <main>
+          <p><strong>Course overview</strong>: Learn PHP from the ground up — covering syntax, forms, sessions, databases, and MVC architecture. Ideal for aspiring web developers, backend engineers, and CMS builders.</p>
+
+          <!-- Modules -->
+          <section class="module" id="m1">
+            <h3>Module 1 — PHP Basics</h3>
+            <div class="desc">Setup, syntax, and writing your first PHP script.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — Installing PHP and setting up a local server</div>
+              <div class="topic"><strong>Lesson 2</strong> — Variables, data types, and operators</div>
+              <div class="topic"><strong>Lesson 3</strong> — Echo, print, and basic output</div>
+              <div class="topic"><strong>Lesson 4</strong> — Comments and code structure</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Run basic PHP scripts and understand server-side execution.</div>
+            <div class="example"><pre>&lt;?php
+echo "Hello, iAM Scholar!";
+?&gt;</pre></div>
+          </section>
+
+          <section class="module" id="m2">
+            <h3>Module 2 — Control Structures & Functions</h3>
+            <div class="desc">Conditionals, loops, and reusable functions.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — if, else, switch-case</div>
+              <div class="topic"><strong>Lesson 2</strong> — for, while, and foreach loops</div>
+              <div class="topic"><strong>Lesson 3</strong> — Declaring and calling functions</div>
+              <div class="topic"><strong>Lesson 4</strong> — Parameters, return values, and scope</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Control logic and reuse code effectively.</div>
+          </section>
+
+          <section class="module" id="m3">
+            <h3>Module 3 — Forms and User Input</h3>
+            <div class="desc">Handle form data and validate user input.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — GET vs POST methods</div>
+              <div class="topic"><strong>Lesson 2</strong> — $GET, $POST, and $_REQUEST</div>
+              <div class="topic"><strong>Lesson 3</strong> — Input validation and sanitization</div>
+              <div class="topic"><strong>Lesson 4</strong> — Error handling and feedback</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Build interactive forms and process user data securely.</div>
+          </section>
+
+          <section class="module" id="m4">
+            <h3>Module 4 — Sessions and Cookies</h3>
+            <div class="desc">Manage user sessions and persistent data.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — Starting and destroying sessions</div>
+              <div class="topic"><strong>Lesson 2</strong> — $SESSION and $COOKIE usage</div>
+              <div class="topic"><strong>Lesson 3</strong> — Authentication basics</div>
+              <div class="topic"><strong>Lesson 4</strong> — Security tips for session management</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Create login systems and manage user state.</div>
+          </section>
+
+          <section class="module" id="m5">
+            <h3>Module 5 — PHP and MySQL</h3>
+            <div class="desc">Connect PHP to databases and perform CRUD operations.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — Connecting to MySQL with mysqli and PDO</div>
+              <div class="topic"><strong>Lesson 2</strong> — SELECT, INSERT, UPDATE, DELETE queries</div>
+              <div class="topic"><strong>Lesson 3</strong> — Prepared statements and SQL injection prevention</div>
+              <div class="topic"><strong>Lesson 4</strong> — Displaying database results in HTML</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Build dynamic web apps with persistent data.</div>
+          </section>
+
+          <section class="module" id="m6">
+            <h3>Module 6 — MVC and Capstone</h3>
+            <div class="desc">Organize code using MVC and complete a final project.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — Introduction to MVC architecture</div>
+              <div class="topic"><strong>Lesson 2</strong> — Building a simple MVC framework</div>
+              <div class="topic"><strong>Lesson 3</strong> — Routing and controllers</div>
+              <div class="topic"><strong>Lesson 4</strong> — Capstone: design, build, and present</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Deliver a structured PHP web application and showcase your skills.</div>
+            <div class="example"><pre>// Sample route
+if ($_GET['page'] == 'home') {
+  include 'controllers/HomeController.php';
+}</pre></div>
+          </section>
+        </main>
+
+        <aside class="sidebar">
+          <nav class="toc">
+            <strong style="display:block;margin-bottom:8px">Contents</strong>
+            <a href="#m1">Module 1 — Basics</a>
+            <a href="#m2">Module 2 — Control Flow</a>
+            <a href="#m3">Module 3 — Forms</a>
+            <a href="#m4">Module 4 — Sessions</a>
+            <a href="#m5">Module 5 — MySQL</a>
+            <a href="#m6">Module 6 — Capstone</a>
+            <div style="margin-top:12px;border-top:1px solid rgba(255,255,255,0.02);padding-top:10px">
+              <div class="muted">Course length</div>
+              <div style="font-weight:700;margin-top:6px">6 modules • ~60–100 hours</div>
+              <div class="muted" style="margin-top:8px">Assessment</div>
+              <div style="font-size:14px;margin-top:6px">Labs, code reviews, final capstone</div>
+              <a class="cta" href="#m6">View capstone brief</a>
+            </div>
+          </nav>
+        </aside>
+      </div>
+
+      <div style="margin-top:18px;color:var(--muted);font-size:13px">
+        <strong>Delivery</strong>: Short lessons, hands-on labs, code reviews, and a final capstone. Students receive starter code, walkthroughs, and deployment guides.
+      </div>
+    </div>
+
+    <footer style="margin-top:18px;color:var(--muted);text-align:center">
+      <div>iAM Scholar • Golden Apple Technologies</div>
+    </footer>
+  </div>
+</body>
+</html>
