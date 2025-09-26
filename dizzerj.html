@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mugeni Justus Francis — Co-Director, Golden Apple Technologies</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Tailwind (for utility helpers) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google font chosen to approximate a clean square/tech look -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg-color: #704214; /* poo brown background per design pref */
+      --card-bg: rgba(255,255,255,0.06);
+      --accent: #ffd166;
+      --muted: rgba(255,255,255,0.8);
+      --glass: rgba(255,255,255,0.04);
+    }
+
+    html,body{
+      height:100%;
+      background: linear-gradient(180deg, var(--bg-color) 0%, #5a3210 100%);
+      color: white;
+      font-family: 'Roboto Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    .container-lg {
+      max-width:1100px;
+    }
+
+    /* Card look */
+    .panel {
+      background: var(--card-bg);
+      border-radius:12px;
+      padding:20px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+      border: 1px solid rgba(255,255,255,0.04);
+      backdrop-filter: blur(6px);
+    }
+
+    /* Square/tech icon avatar */
+    .avatar {
+      width:96px;
+      height:96px;
+      display:inline-grid;
+      place-items:center;
+      border-radius:12px;
+      background:linear-gradient(135deg, rgba(255,255,255,0.06), rgba(0,0,0,0.08));
+      border:1px solid rgba(255,255,255,0.06);
+    }
+
+    h1,h2,h3,h4{
+      font-weight:700;
+      letter-spacing:0.5px;
+    }
+
+    a.contact-btn{
+      background:var(--accent);
+      color:#2b2b2b;
+      font-weight:700;
+      border-radius:10px;
+      padding:10px 14px;
+      display:inline-block;
+      text-decoration:none;
+    }
+
+    .skill-pill {
+      background:var(--glass);
+      padding:8px 10px;
+      border-radius:8px;
+      margin:6px 6px 6px 0;
+      display:inline-block;
+      font-weight:600;
+      color:var(--muted);
+      border:1px solid rgba(255,255,255,0.03);
+    }
+
+    /* Project card */
+    .project {
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.03));
+      padding:12px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.03);
+    }
+
+    /* small responsive tweaks */
+    @media (max-width:768px){
+      .avatar { width:80px;height:80px;border-radius:10px; }
+      .panel { padding:16px; }
+    }
+
+    /* subtle link hover */
+    a.icon-link { color:var(--muted); text-decoration:none; }
+    a.icon-link:hover{ color:var(--accent); text-decoration: none; transform:translateY(-2px); }
+
+    /* footer */
+    footer { opacity:0.9; font-size:0.9rem; }
+  </style>
+</head>
+<body>
+  <main class="d-flex align-items-center min-vh-100">
+    <div class="container-lg mx-auto px-3">
+      <div class="row g-4">
+        <!-- Header / Hero -->
+        <div class="col-12">
+          <div class="d-flex justify-content-between align-items-start panel">
+            <div class="d-flex gap-3 align-items-center">
+              <div class="avatar" title="GitHub avatar">
+                <!-- Inline GitHub-style icon (simple mark) -->
+                <svg width="56" height="56" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="color:var(--muted)">
+                  <path d="M12 .5C5.73.5.93 5.3.93 11.57c0 4.77 3.09 8.81 7.38 10.24.54.1.74-.24.74-.53 0-.26-.01-1-.01-1.96-3.01.65-3.65-1.45-3.65-1.45-.5-1.27-1.22-1.61-1.22-1.61-.99-.68.08-.67.08-.67 1.1.08 1.68 1.13 1.68 1.13.98 1.67 2.58 1.19 3.21.91.1-.71.38-1.19.69-1.47-2.4-.27-4.93-1.2-4.93-5.33 0-1.18.42-2.14 1.11-2.89-.11-.27-.48-1.36.11-2.84 0 0 .9-.29 2.95 1.11A10.2 10.2 0 0112 6.84c.91.01 1.83.12 2.69.35 2.04-1.41 2.95-1.11 2.95-1.11.59 1.48.22 2.57.11 2.84.69.75 1.11 1.71 1.11 2.89 0 4.14-2.54 5.05-4.96 5.32.39.33.74.98.74 1.98 0 1.43-.01 2.58-.01 2.93 0 .29.2.63.75.53 4.28-1.43 7.37-5.47 7.37-10.24C23.07 5.3 18.27.5 12 .5z"/>
+                </svg>
+              </div>
+
+              <div>
+                <h1 class="mb-1">Mugeni Justus Francis</h1>
+                <div class="text-muted" style="color:var(--muted)">Co-Director — Golden Apple Technologies</div>
+                <div class="mt-2" style="color:var(--muted); font-size:0.95rem">
+                  Downtown kid turned tech co-director. Mentored by Nathan, CEO of Golden Apple Technologies. Now a trusted advisor and builder.
+                </div>
+              </div>
+            </div>
+
+            <div class="text-end d-flex flex-column align-items-end gap-2">
+              <div>
+                <a class="contact-btn" href="mailto:goldenapplecoders@gmail.com">Email</a>
+              </div>
+              <div style="color:var(--muted); font-size:0.92rem">
+                <strong>Location</strong><br/>
+                Kampala, Uganda
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Two-column content -->
+        <div class="col-lg-7">
+          <div class="panel">
+            <h2>About</h2>
+            <p style="color:var(--muted)">
+              I'm a downtown boy who grew up hustling and learning by doing. Trained in programming by Nathan, CEO of Golden Apple Technologies, I'm now Co-Director and a go-to mentor for teammates and students. I build secure web experiences, produce music, and ship projects that solve real problems.
+            </p>
+
+            <hr class="my-3" style="border-color: rgba(255,255,255,0.04)">
+
+            <h3>Skills</h3>
+            <div class="mt-2">
+              <span class="skill-pill">Web Development</span>
+              <span class="skill-pill">Network Security</span>
+              <span class="skill-pill">C++</span>
+              <span class="skill-pill">Python</span>
+              <span class="skill-pill">Music production</span>
+              <span class="skill-pill">HTML</span>
+              <span class="skill-pill">CSS</span>
+              <span class="skill-pill">JavaScript</span>
+              <span class="skill-pill">Bootstrap</span>
+              <span class="skill-pill">Tailwind</span>
+            </div>
+
+            <hr class="my-3" style="border-color: rgba(255,255,255,0.04)">
+
+            <h3>Tools & Meta</h3>
+            <p style="color:var(--muted)">Golden Apple Codemind (Meta tool) — VOL 23.0; common stack includes VS Code, Git, Docker, Linux shell, Node.js, PostgreSQL.</p>
+
+            <hr class="my-3" style="border-color: rgba(255,255,255,0.04)">
+
+            <h3>Projects</h3>
+            <div class="d-flex flex-column gap-2 mt-2">
+              <div class="project">
+                <div class="d-flex justify-content-between align-items-start">
+                  <div>
+                    <strong>Infinity</strong>
+                    <div style="color:var(--muted)">A modular web platform and experiment series built with JavaScript, Python APIs, and hardened for network security.</div>
+                  </div>
+                  <div style="color:var(--muted); font-size:0.9rem">Active</div>
+                </div>
+              </div>
+
+              <div class="project">
+                <div class="d-flex justify-content-between align-items-start">
+                  <div>
+                    <strong>Javascripter (Golden Apple Tool v6.2)</strong>
+                    <div style="color:var(--muted)">Best Web protection tool entry — 2020; security tooling for client-side detection and lightweight hardening.</div>
+                  </div>
+                  <div style="color:var(--muted); font-size:0.9rem">2020</div>
+                </div>
+              </div>
+            </div>
+
+            <hr class="my-3" style="border-color: rgba(255,255,255,0.04)">
+
+            <h3>Achievements</h3>
+            <ul style="color:var(--muted); padding-left:1rem">
+              <li><strong>Student of the Year</strong> — SSEMU High School</li>
+              <li><strong>Best Web Protection Tool</strong> — Javascripter (Golden Apple Tool v6.2), 2020</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="col-lg-5">
+          <div class="panel">
+            <h2>Contact</h2>
+            <div class="mt-2" style="color:var(--muted)">
+              <strong>Email</strong><br/>
+              <a href="mailto:goldenapplecoders@gmail.com" class="icon-link">goldenapplecoders@gmail.com</a>
+            </div>
+
+            <div class="mt-3" style="color:var(--muted)">
+              <strong>Phone</strong><br/>
+              <a href="tel:+256757864543" class="icon-link">+256 757 864543</a>
+            </div>
+
+            <div class="mt-3" style="color:var(--muted)">
+              <strong>Role</strong><br/>
+              Co-Director, Golden Apple Technologies
+            </div>
+
+            <hr class="my-3" style="border-color: rgba(255,255,255,0.04)">
+
+            <h3>Quick Links</h3>
+            <div class="d-flex flex-column gap-2 mt-2">
+              <a class="project d-flex justify-content-between align-items-center" href="#" onclick="event.preventDefault()">
+                <div><strong>Resume</strong><div style="color:var(--muted)">Download or view your resume</div></div>
+                <div style="color:var(--muted)">PDF</div>
+              </a>
+
+              <a class="project d-flex justify-content-between align-items-center" href="#" onclick="event.preventDefault()">
+                <div><strong>GitHub</strong><div style="color:var(--muted)">Repo collection & activity</div></div>
+                <div style="color:var(--muted)">@mugeni</div>
+              </a>
+
+              <a class="project d-flex justify-content-between align-items-center" href="#" onclick="event.preventDefault()">
+                <div><strong>LinkedIn</strong><div style="color:var(--muted)">Professional profile</div></div>
+                <div style="color:var(--muted)">/in/mugeni</div>
+              </a>
+            </div>
+
+            <hr class="my-3" style="border-color: rgba(255,255,255,0.04)">
+
+            <h3>Availability</h3>
+            <p style="color:var(--muted)">Open to mentoring, security audits, freelance web work, and collaborations on music-tech projects.</p>
+
+            <div class="text-center mt-3">
+              <a class="contact-btn" href="mailto:goldenapplecoders@gmail.com">Get in touch</a>
+            </div>
+          </div>
+
+          <div class="mt-3 panel">
+            <h3>Personal note</h3>
+            <p style="color:var(--muted); margin-bottom:0">
+              Downtown roots shaped my hustle. I combine street-born grit with disciplined engineering to ship dependable tools and teach others to do the same.
+            </p>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="col-12">
+          <footer class="panel d-flex justify-content-between align-items-center">
+            <div>
+              <strong style="font-size:0.95rem">Mugeni Justus Francis</strong>
+              <div style="color:var(--muted)">Co-Director • Golden Apple Technologies</div>
+            </div>
+            <div style="text-align:right; color:var(--muted)">
+              <div>Phone: <a class="icon-link" href="tel:+256757864543">+256 757 864543</a></div>
+              <div>Email: <a class="icon-link" href="mailto:goldenapplecoders@gmail.com">goldenapplecoders@gmail.com</a></div>
+            </div>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Optional JS (Bootstrap bundle) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // Small enhancement: automatically convert phone to tel for many formats (keeps markup light)
+    (function(){
+      // Keep this tiny and safe; no external calls
+      document.querySelectorAll('a[href^="tel:"]').forEach(a=>{
+        a.addEventListener('click', ()=>{ /* native dial handled by device */ });
+      });
+    })();
+  </script>
+</body>
+</html>
