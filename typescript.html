@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>TypeScript Course • iAM Scholar</title>
+  <meta name="description" content="iAM Scholar — TypeScript track by Golden Apple Technologies. Strongly-typed JavaScript for reliable apps." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    :root{
+      --bg:#071026;
+      --card:#081730;
+      --accent:#2062d6;
+      --accent-2:#00bcd4;
+      --muted:#97a6b6;
+      --glass: rgba(255,255,255,0.03);
+      --glass-border: rgba(255,255,255,0.04);
+      --radius:12px;
+      --max-width:1180px;
+      --shadow: 0 10px 36px rgba(0,0,0,0.6);
+      --sidebar-min:260px;
+      --sidebar-max:360px;
+      --gap:18px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      background: linear-gradient(180deg,var(--bg),#021224);
+      color:#eaf2ff;
+      padding:28px;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      justify-content:center;
+    }
+    .wrap{width:100%;max-width:var(--max-width)}
+    header{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+    .logo{width:56px;height:56px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),var(--accent-2));font-weight:800;color:white;font-size:18px;box-shadow:var(--shadow)}
+    .logo .icon{font-size:22px;color:white}
+    h1{margin:0;font-size:26px}
+    .meta{color:var(--muted);margin-top:6px;margin-bottom:18px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.007));padding:22px;border-radius:var(--radius);border:1px solid var(--glass-border);box-shadow:var(--shadow)}
+    .grid{display:grid;grid-template-columns: 1fr minmax(var(--sidebar-min), var(--sidebar-max));gap:var(--gap);align-items:start}
+    @media(max-width:1100px){ .grid{grid-template-columns: 1fr minmax(220px, 320px)} }
+    @media(max-width:900px){ .grid{grid-template-columns:1fr} .sidebar{order:2} }
+
+    .module{margin-bottom:14px;padding:14px;border-radius:10px;background:rgba(255,255,255,0.01);border:1px solid rgba(255,255,255,0.02);width:100%}
+    .module h3{margin:0 0 8px 0}
+    .desc{color:var(--muted);margin-bottom:10px}
+    .topics{display:grid;gap:8px}
+    .topic{padding:10px;border-radius:8px;background:rgba(255,255,255,0.015);border:1px solid rgba(255,255,255,0.015);font-size:14px;overflow-wrap:break-word}
+    .example{margin-top:12px;padding:12px;border-radius:8px;background:#04112b;border:1px solid rgba(255,255,255,0.02);overflow:auto}
+    pre{background:transparent;color:inherit;margin:0;font-size:13px;white-space:pre-wrap;word-break:break-word}
+
+    .toc{background:var(--glass);padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.02);max-height:72vh;overflow:auto}
+    .toc a{display:block;padding:8px;border-radius:8px;color:var(--muted);font-size:14px;text-decoration:none}
+    .toc a:hover{background:linear-gradient(90deg, rgba(32,98,214,0.06), rgba(0,188,212,0.03));color:white}
+
+    .cta{display:inline-block;padding:10px 14px;border-radius:10px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white;font-weight:700;margin-top:12px;text-decoration:none}
+    .muted{color:var(--muted);font-size:13px}
+    table{width:100%;border-collapse:collapse;margin-top:8px}
+    table th, table td{padding:8px;border-bottom:1px solid rgba(255,255,255,0.03);text-align:left;font-size:13px}
+
+    /* ensure widths fit container */
+    .module, .example, pre { max-width:100% }
+
+    @media (max-width:720px){
+      .logo{width:48px;height:48px}
+      .logo .icon{font-size:20px}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo" aria-hidden="true">
+        <!-- TypeScript has no official Font Awesome brand; use TS custom inline SVG for accurate brand -->
+        <svg class="icon" width="26" height="26" viewBox="0 0 256 256" aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg">
+          <rect width="256" height="256" rx="48" fill="#007ACC"></rect>
+          <path d="M86 86h84v18H106v66H86z" fill="#fff"></path>
+          <path d="M170 170h18v-84h-18z" fill="#fff" opacity="0.9"></path>
+          <text x="64" y="148" font-family="Inter, Arial" font-size="72" font-weight="700" fill="#fff" style="letter-spacing:2">TS</text>
+        </svg>
+      </div>
+      <div>
+        <h1>TypeScript • iAM Scholar</h1>
+        <div class="meta">Typed JavaScript for safer, scalable applications — types, tooling, and modern patterns</div>
+      </div>
+    </header>
+
+    <div class="card" role="main" aria-labelledby="course-title">
+      <div class="grid">
+        <main>
+          <h2 id="course-title" style="margin-top:0">Course overview</h2>
+          <p class="muted"><strong>Summary</strong>: Practical TypeScript training covering types, compiler options, tooling, advanced type-level programming, frameworks, testing, and migration strategies from JavaScript. Hands-on labs, projects, and best practices for large codebases.</p>
+
+          <!-- Module 1 -->
+          <section class="module" id="m1">
+            <h3>Module 1 — Getting Started with TypeScript</h3>
+            <div class="desc">Install toolchain, configure tsconfig, and understand the TypeScript workflow.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — Installing TypeScript, tsc, ts-node, and editor setup</div>
+              <div class="topic"><strong>Lesson 2</strong> — tsconfig.json basics: target, module, strict, rootDir/outDir</div>
+              <div class="topic"><strong>Lesson 3</strong> — TypeScript vs JavaScript: benefits and tradeoffs</div>
+              <div class="topic"><strong>Lesson 4</strong> — Compiling, source maps, and debugging TS code</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Compile TS projects, configure editor tooling, and run TS code locally.</div>
+          </section>
+
+          <!-- Module 2 -->
+          <section class="module" id="m2">
+            <h3>Module 2 — Basic Types and Type Annotations</h3>
+            <div class="desc">Primitive and composite types; annotate functions and variables.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — Primitives: number, string, boolean, null, undefined</div>
+              <div class="topic"><strong>Lesson 2</strong> — Arrays, tuples, enums</div>
+              <div class="topic"><strong>Lesson 3</strong> — Any, unknown, never, void — when to use</div>
+              <div class="topic"><strong>Lesson 4</strong> — Function types, optional and default params, rest parameters</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Apply basic types and avoid unsafe any usage.</div>
+            <div class="example"><pre>// example
+function add(a: number, b: number): number {
+  return a + b;
+}</pre></div>
+          </section>
+
+          <!-- Module 3 -->
+          <section class="module" id="m3">
+            <h3>Module 3 — Advanced Types and Type Operators</h3>
+            <div class="desc">Mapped types, conditional types, union/intersection, type inference techniques.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — Union and intersection types; discriminated unions</div>
+<div class="topic"><strong>Lesson 2</strong> — Type guards, instanceof, in, custom guards</div>
+              <div class="topic"><strong>Lesson 3</strong> — Mapped types and keyof, Record, Partial, Required</div>
+              <div class="topic"><strong>Lesson 4</strong> — Conditional types and type inference patterns</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Express complex type relationships and improve API ergonomics.</div>
+          </section>
+
+          <!-- Module 4 -->
+          <section class="module" id="m4">
+            <h3>Module 4 — Generics and Reusable Types</h3>
+            <div class="desc">Design generic utilities and reusable abstractions with type safety.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — Function and class generics; generic constraints</div>
+              <div class="topic"><strong>Lesson 2</strong> — Default type parameters and overload patterns</div>
+              <div class="topic"><strong>Lesson 3</strong> — Utility types and composing generics (ReturnType, InstanceType)</div>
+              <div class="topic"><strong>Lesson 4</strong> — Practical patterns: typed factories and builders</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Build flexible, type-safe libraries and utilities.</div>
+          </section>
+
+          <!-- Module 5 -->
+          <section class="module" id="m5">
+            <h3>Module 5 — Working with DOM, Browser APIs, and JSX</h3>
+            <div class="desc">Type the DOM, events, and TypeScript in React and JSX contexts.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — DOM typings: HTMLElement, Event types, querySelector generics</div>
+              <div class="topic"><strong>Lesson 2</strong> — Typing fetch responses and async data</div>
+              <div class="topic"><strong>Lesson 3</strong> — React + TypeScript: props, state, refs, and hooks typing</div>
+              <div class="topic"><strong>Lesson 4</strong> — JSX intrinsic elements and custom element typings</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Safely interact with the browser and type React components.</div>
+          </section>
+
+          <!-- Module 6 -->
+          <section class="module" id="m6">
+            <h3>Module 6 — Tooling, Linters and Formatting</h3>
+            <div class="desc">Integrate TypeScript with build tools, linters, and editors for a smooth developer experience.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — ESLint + TypeScript integration and rule configuration</div>
+              <div class="topic"><strong>Lesson 2</strong> — Prettier, format-on-save, and editor integrations</div>
+              <div class="topic"><strong>Lesson 3</strong> — ts-node, ts-jest, and debugging TypeScript in Node and browsers</div>
+              <div class="topic"><strong>Lesson 4</strong> — Path mapping, module resolution, and monorepo considerations</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Maintain consistent style, reliable builds, and productive tooling.</div>
+          </section>
+
+          <!-- Module 7 -->
+          <section class="module" id="m7">
+            <h3>Module 7 — Server-side TypeScript with Node</h3>
+            <div class="desc">Type Node.js apps, databases, and API contracts using TypeScript.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — tsconfig for Node, ESM vs CommonJS, runtime choices</div>
+              <div class="topic"><strong>Lesson 2</strong> — Typing database models and ORMs (Prisma / TypeORM)</div>
+              <div class="topic"><strong>Lesson 3</strong> — Typed API contracts with OpenAPI, zod, io-ts</div>
+              <div class="topic"><strong>Lesson 4</strong> — Server testing, typed mocks, and fixtures</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Deliver typed backend services with clear contracts and tests.</div>
+          </section>
+
+          <!-- Module 8 -->
+          <section class="module" id="m8">
+            <h3>Module 8 — Advanced Type System Techniques</h3>
+            <div class="desc">Type-level programming patterns used by libraries and frameworks.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — Recursive and distributive conditional types</div>
+              <div class="topic"><strong>Lesson 2</strong> — Template literal types and branded types</div>
+              <div class="topic"><strong>Lesson 3</strong> — Declarative APIs: typed builders and DSLs</div>
+              <div class="topic"><strong>Lesson 4</strong> — Authoring declaration files (.d.ts) and ambient modules</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Read and author advanced type signatures and library types.</div>
+          </section>
+
+          <!-- Module 9 -->
+          <section class="module" id="m9">
+            <h3>Module 9 — Migrating from JavaScript to TypeScript</h3>
+            <div class="desc">Practical, low-risk strategies to adopt TypeScript incrementally.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — Incremental adoption: allowJs, checkJs, and skipLibCheck</div>
+              <div class="topic"><strong>Lesson 2</strong> — Typing third-party libraries and writing declaration files</div>
+              <div class="topic"><strong>Lesson 3</strong> — Contract-first migration: interfaces, tests, and feature flags</div>
+              <div class="topic"><strong>Lesson 4</strong> — Using codemods and automation to reduce manual work</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Plan and execute a safe migration at any scale.</div>
+          </section>
+
+          <!-- Module 10 -->
+          <section class="module" id="m10">
+            <h3>Module 10 — Testing, CI and Production Patterns</h3>
+            <div class="desc">Testing strategies, runtime validation, and CI integration for TypeScript projects.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — Unit and integration testing with Jest and ts-jest</div>
+              <div class="topic"><strong>Lesson 2</strong> — Property-based testing and typed fixtures</div>
+              <div class="topic"><strong>Lesson 3</strong> — Runtime validation with zod/io-ts and narrowing strategies</div>
+              <div class="topic"><strong>Lesson 4</strong> — CI pipelines, type-check gates, and monitoring type drift</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Ship TypeScript projects with strong test coverage and CI safeguards.</div>
+
+            <div class="example" aria-hidden="false">
+              <pre>// Generic utility example
+function identity<T>(value: T): T {
+  return value;
+}
+
+type Result<T> = { ok: true; value: T } | { ok: false; error: string };</pre>
+            </div>
+          </section>
+
+          <!-- Final Project -->
+          <section class="module" id="final">
+            <h3>Capstone Project — Type-Safe Fullstack App</h3>
+            <div class="desc">Design and ship a fullstack application with end-to-end types: API contracts, DB models, and frontend types.</div>
+            <div class="topics">
+              <div class="topic"><strong>Project brief</strong> — Build a small product (task manager, notes app) with typed API, typed DB layer, and React + TypeScript frontend</div>
+              <div class="topic"><strong>Deliverables</strong> — Repo, CI, tests, typed contracts, deployment link, demo video</div>
+              <div class="topic"><strong>Assessment</strong> — Type coverage, pragmatic API design, tests, documentation, and demo</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Portfolio-ready, production-oriented TypeScript application.</div>
+          </section>
+        </main>
+
+        <aside class="sidebar" role="complementary">
+          <nav class="toc" aria-label="Course contents">
+            <strong style="display:block;margin-bottom:8px">Contents</strong>
+            <a href="#m1">Module 1 — Getting Started</a>
+            <a href="#m2">Module 2 — Basic Types</a>
+            <a href="#m3">Module 3 — Advanced Types</a>
+            <a href="#m4">Module 4 — Generics</a>
+            <a href="#m5">Module 5 — DOM & JSX</a>
+            <a href="#m6">Module 6 — Tooling</a>
+            <a href="#m7">Module 7 — Server-side</a>
+            <a href="#m8">Module 8 — Advanced Types</a>
+            <a href="#m9">Module 9 — Migration</a>
+            <a href="#m10">Module 10 — Testing & CI</a>
+            <a href="#final">Capstone</a>
+
+            <div style="margin-top:12px;border-top:1px solid rgba(255,255,255,0.02);padding-top:10px">
+              <div class="muted">Course length</div>
+              <div style="font-weight:700;margin-top:6px">10 modules • ~80–120 hours</div>
+              <div class="muted" style="margin-top:8px">Assessment</div>
+              <div style="font-size:14px;margin-top:6px">Labs, typed exercises, code reviews, final capstone</div>
+              <a class="cta" href="#final" style="display:inline-block">View capstone brief</a>
+            </div>
+          </nav>
+
+          <div style="margin-top:14px" class="card" aria-hidden="false">
+            <div style="font-weight:700">Included resources</div>
+            <ul style="margin:8px 0 0 18px;color:var(--muted)">
+              <li>Starter repos and TS utility library</li>
+              <li>tsconfig presets and recommended rules</li>
+              <li>Migration checklist and codemods</li>
+              <li>Testing examples and CI templates</li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+
+      <div style="margin-top:18px;color:var(--muted);font-size:13px">
+        <strong>Delivery</strong>: Short lessons, hands-on labs, code reviews, and a final capstone. Progress and completion can be tracked client-side for demo purposes.
+      </div>
+    </div>
+
+    <footer style="margin-top:18px;color:var(--muted);text-align:center">
+      <div>iAM Scholar • Golden Apple Technologies</div>
+    </footer>
+  </div>
+</body>
+</html>
