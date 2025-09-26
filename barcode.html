@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Golden Apple Technologies Barcode Generator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: #f8f9fa;
+      font-family: 'Montserrat', Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background: #fff;
+      margin-top: 60px;
+      padding: 30px 40px;
+      border-radius: 16px;
+      box-shadow: 0 2px 18px rgba(0,0,0,0.11);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+    h1 {
+      color: #2d7d46;
+      font-size: 2rem;
+      margin-bottom: 18px;
+    }
+    label {
+      font-size: 1.1rem;
+      color: #333;
+      margin-bottom: 6px;
+      display: block;
+      font-weight: 600;
+    }
+    input[type="text"] {
+      padding: 10px;
+      width: 85%;
+      border: 1px solid #c7c7c7;
+      border-radius: 8px;
+      font-size: 1rem;
+      margin-bottom: 18px;
+      outline: none;
+      transition: border 0.2s;
+    }
+    input[type="text"]:focus {
+      border: 1.5px solid #2d7d46;
+    }
+    button {
+      background: #2d7d46;
+      color: #fff;
+      border: none;
+      padding: 10px 28px;
+      font-size: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      margin-bottom: 16px;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background: #226135;
+    }
+    #barcode {
+      margin: 22px auto 16px auto;
+      display: block;
+      background: #f3f3f3;
+      padding: 12px;
+      border-radius: 8px;
+    }
+    .home-btn {
+      display: inline-block;
+      margin-top: 16px;
+      background: #c9a245;
+      color: #fff;
+      padding: 8px 22px;
+      border-radius: 8px;
+      font-weight: 600;
+      text-decoration: none;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.10);
+      transition: background 0.2s;
+    }
+    .home-btn:hover {
+      background: #a58732;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Barcode Generator</h1>
+    <form id="barcodeForm" onsubmit="generateBarcode(); return false;">
+      <label for="barcodeInput">Enter Barcode Value:</label>
+      <input type="text" id="barcodeInput" placeholder="e.g. GAT-2025-001" required>
+      <br>
+      <button type="submit">Generate</button>
+    </form>
+    <svg id="barcode"></svg>
+    <a href="Golden.html" class="home-btn">Home</a>
+  </div>
+
+  <!-- JsBarcode CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode/dist/JsBarcode.all.min.js"></script>
+  <script>
+    function generateBarcode() {
+      var value = document.getElementById("barcodeInput").value;
+      JsBarcode("#barcode", value, {
+        format: "CODE128",
+        lineColor: "#2d7d46",
+        width: 2.2,
+        height: 80,
+        displayValue: true,
+        fontSize: 20,
+        margin: 8
+      });
+    }
+  </script>
+</body>
+</html>
