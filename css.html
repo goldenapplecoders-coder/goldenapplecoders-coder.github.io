@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>CSS Course • iAM Scholar</title>
+  <meta name="description" content="iAM Scholar — CSS track by Golden Apple Technologies. Practical modules, examples, projects, and best practices." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    :root{
+      --bg: #061226;
+      --card: #07162a;
+      --accent: #0ea5a4;
+      --accent-2: #7c3aed;
+      --muted: #98a6b4;
+      --glass: rgba(255,255,255,0.03);
+      --glass-border: rgba(255,255,255,0.04);
+      --radius:12px;
+      --max-width:1180px;
+      --shadow: 0 8px 36px rgba(0,0,0,0.6);
+      --gap:18px;
+      --sidebar-min:260px;
+      --sidebar-max:360px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      background: linear-gradient(180deg,var(--bg),#02121b);
+      color:#eaf2ff;
+      padding:28px;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      justify-content:center;
+    }
+
+    .wrap{width:100%;max-width:var(--max-width)}
+    header{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+    .logo{width:56px;height:56px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),var(--accent-2));font-weight:800;color:#021022;font-size:18px;box-shadow:var(--shadow)}
+    .logo .fab{font-size:22px;color:white}
+
+    h1{margin:0;font-size:26px}
+    .meta{color:var(--muted);margin-top:6px;margin-bottom:18px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.007));padding:22px;border-radius:var(--radius);border:1px solid var(--glass-border);box-shadow:var(--shadow)}
+
+    .grid{display:grid;grid-template-columns: 1fr minmax(var(--sidebar-min), var(--sidebar-max));gap:var(--gap);align-items:start}
+    @media(max-width:1100px){ .grid{grid-template-columns: 1fr minmax(220px, 320px)} }
+    @media(max-width:900px){ .grid{grid-template-columns:1fr} .sidebar{order:2} }
+
+    .module{margin-bottom:14px;padding:14px;border-radius:10px;background:rgba(255,255,255,0.01);border:1px solid rgba(255,255,255,0.02);width:100%}
+    .module h3{margin:0 0 8px 0}
+    .desc{color:var(--muted);margin-bottom:10px}
+    .topics{display:grid;gap:8px}
+    .topic{padding:10px;border-radius:8px;background:rgba(255,255,255,0.015);border:1px solid rgba(255,255,255,0.015);font-size:14px;overflow-wrap:break-word}
+    .example{margin-top:12px;padding:12px;border-radius:8px;background:#041227;border:1px solid rgba(255,255,255,0.02);overflow:auto}
+    pre{background:transparent;color:inherit;margin:0;font-size:13px;white-space:pre-wrap;word-break:break-word}
+
+    .toc{background:var(--glass);padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.02);max-height:72vh;overflow:auto}
+    .toc a{display:block;padding:8px;border-radius:8px;color:var(--muted);font-size:14px;text-decoration:none}
+    .toc a:hover{background:linear-gradient(90deg, rgba(14,165,164,0.06), rgba(124,58,237,0.03));color:white}
+
+    .cta{display:inline-block;padding:10px 14px;border-radius:10px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#021022;font-weight:700;margin-top:12px;text-decoration:none}
+    .muted{color:var(--muted);font-size:13px}
+    table{width:100%;border-collapse:collapse;margin-top:8px}
+    table th, table td{padding:8px;border-bottom:1px solid rgba(255,255,255,0.03);text-align:left;font-size:13px}
+
+    / card constrains to wrap /
+    .module, .example, pre { max-width:100% }
+
+    / small screens /
+    @media (max-width:720px){
+      .module{padding:12px}
+      .logo{width:48px;height:48px}
+    }
+
+    / small utility /
+    .muted-brief{color:var(--muted);font-size:14px;margin-top:6px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo" aria-hidden="true"><i class="fab fa-css3-alt" title="CSS3"></i></div>
+      <div>
+        <h1>CSS • iAM Scholar</h1>
+        <div class="meta">Practical CSS: layout systems, responsive design, components, performance, and design systems</div>
+      </div>
+    </header>
+
+    <div class="card" role="main" aria-labelledby="course-title">
+      <div class="grid">
+        <main>
+          <h2 id="course-title" style="margin-top:0">Course overview</h2>
+          <p class="muted-brief"><strong>Summary</strong>: Focused CSS curriculum teaching selectors and specificity, modern layout with Flexbox and Grid, responsive patterns, component styling, CSS variables and theming, accessibility, performance, and building a small design system. Hands-on exercises, code examples, and a capstone.</p>
+
+          <!-- Module 1 -->
+          <section class="module" id="m1">
+            <h3>Module 1 — CSS Fundamentals</h3>
+            <div class="desc">Selectors, cascade, specificity, inheritance, and the box model.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — Selectors & combinators, specificity table</div>
+              <div class="topic"><strong>Lesson 2</strong> — Cascade, origin, importance, inheritance</div>
+              <div class="topic"><strong>Lesson 3</strong> — Box model: content, padding, border, margin; box-sizing</div>
+              <div class="topic"><strong>Lesson 4</strong> — Unit types: px, em, rem, %, vw/vh, relative sizing</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Predict selector behavior, control layout primitives, size responsively.</div>
+            <div class="example"><pre>/ specificity example /
+
+header nav .link { color: red; } / high specificity /
+.button { padding: 0.75rem 1rem; }</pre></div>
+          </section>
+
+          <!-- Module 2 -->
+          <section class="module" id="m2">
+            <h3>Module 2 — Visual Formatting & Typography</h3>
+            <div class="desc">Control visual flow and create readable typography systems.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — Display types, inline vs block, flow layout</div>
+              <div class="topic"><strong>Lesson 2</strong> — Typography: font stacks, metrics, rhythm, vertical spacing</div>
+              <div class="topic"><strong>Lesson 3</strong> — Color systems, contrast, and accessible palettes</div>
+              <div class="topic"><strong>Lesson 4</strong> — Images, icons, SVG use and optimization</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Build readable, accessible typographic systems and visual hierarchy.</div>
+          </section>
+
+          <!-- Module 3 -->
+          <section class="module" id="m3">
+            <h3>Module 3 — Layout with Flexbox</h3>
+            <div class="desc">Design one-dimensional layouts and responsive components with Flexbox.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — Flex container properties: flex-direction, wrap, gap</div>
+              <div class="topic"><strong>Lesson 2</strong> — Alignment: justify-content, align-items, align-self</div>
+              <div class="topic"><strong>Lesson 3</strong> — Flex children: flex-grow, flex-shrink, flex-basis</div>
+              <div class="topic"><strong>Lesson 4</strong> — Practical patterns: navs, toolbars, responsive stacks</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Build resilient horizontal and vertical component layouts.</div>
+            <div class="example"><pre>.row { display:flex; gap:1rem; align-items:center; }</pre></div>
+          </section>
+
+          <!-- Module 4 -->
+          <section class="module" id="m4">
+            <h3>Module 4 — Grid Layout</h3>
+            <div class="desc">Two-dimensional layouts, grid template, areas, and responsive grids.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — Grid fundamentals: tracks, gutters, explicit vs implicit</div>
+              <div class="topic"><strong>Lesson 2</strong> — Template areas, repeat(), minmax(), auto-fit/auto-fill</div>
+              <div class="topic"><strong>Lesson 3</strong> — Responsive grid patterns and masonry-like layouts</div>
+              <div class="topic"><strong>Lesson 4</strong> — Combining Grid and Flexbox effectively</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Solve complex layouts with Grid and fallback strategies.</div>
+            <div class="example"><pre>.grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:1rem; }</pre></div>
+          </section>
+
+          <!-- Module 5 -->
+          <section class="module" id="m5">
+            <h3>Module 5 — Responsive Design Patterns</h3>
+            <div class="desc">Mobile-first, breakpoints, fluid design, responsive images and media queries.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — Mobile-first approach and progressive enhancement</div>
+              <div class="topic"><strong>Lesson 2</strong> — Responsive images: srcset, picture, sizes</div>
+              <div class="topic"><strong>Lesson 3</strong> — Container queries overview and practical use</div>
+              <div class="topic"><strong>Lesson 4</strong> — Designing for slow networks and low-spec devices</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Build fluid interfaces that adapt gracefully to devices and network conditions.</div>
+          </section>
+
+          <!-- Module 6 -->
+          <section class="module" id="m6">
+            <h3>Module 6 — CSS Variables, Theming & Design Tokens</h3>
+            <div class="desc">Create reusable tokens, theme systems, and runtime theming with custom properties.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — Declaring and scoping custom properties</div>
+              <div class="topic"><strong>Lesson 2</strong> — Theming patterns and dark mode strategies</div>
+              <div class="topic"><strong>Lesson 3</strong> — Design tokens and mapping to CSS variables</div>
+              <div class="topic"><strong>Lesson 4</strong> — Runtime theming with JS and prefers-color-scheme</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Build consistent, themeable UI systems with variables and tokens.</div>
+            <div class="example"><pre>:root { --bg: #041224; --brand: #0ea5a4; }</pre></div>
+          </section>
+
+          <!-- Module 7 -->
+          <section class="module" id="m7">
+            <h3>Module 7 — Animations and Motion</h3>
+            <div class="desc">Transitions, keyframe animations, performance-friendly motion, and reduced-motion support.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — CSS transitions and transition timing functions</div>
+              <div class="topic"><strong>Lesson 2</strong> — Keyframes and complex choreographies</div>
+              <div class="topic"><strong>Lesson 3</strong> — Transform, opacity, and composite-only properties</div>
+              <div class="topic"><strong>Lesson 4</strong> — prefers-reduced-motion and accessible motion design</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Create performant animations that respect user preferences.</div>
+            <div class="example"><pre>@media (prefers-reduced-motion: reduce) { .anim { animation: none !important; } }</pre></div>
+          </section>
+
+          <!-- Module 8 -->
+          <section class="module" id="m8">
+            <h3>Module 8 — Component Styling & Scoping</h3>
+            <div class="desc">Patterns for reusable components: BEM, utility-first, CSS modules, shadow DOM basics.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — Naming conventions: BEM and alternatives</div>
+              <div class="topic"><strong>Lesson 2</strong> — Utility vs semantic CSS tradeoffs</div>
+              <div class="topic"><strong>Lesson 3</strong> — Scoped styling: CSS modules and shadow DOM</div>
+              <div class="topic"><strong>Lesson 4</strong> — Component accessibility patterns</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Ship reusable, accessible components with predictable styling boundaries.</div>
+          </section>
+
+          <!-- Module 9 -->
+          <section class="module" id="m9">
+            <h3>Module 9 — Performance, Critical CSS & Delivery</h3>
+            <div class="desc">Optimize CSS for fast rendering and minimal blocking, critical CSS strategies.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — Critical rendering path and minimizing render-blocking CSS</div>
+              <div class="topic"><strong>Lesson 2</strong> — Splitting CSS, code-splitting, and async loading</div>
+              <div class="topic"><strong>Lesson 3</strong> — Minification, purging unused CSS, and cache strategies</div>
+              <div class="topic"><strong>Lesson 4</strong> — Using tools: Lighthouse, WebPageTest, CSS coverage</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Improve initial paint and runtime performance by optimizing CSS delivery.</div>
+          </section>
+
+          <!-- Module 10 -->
+          <section class="module" id="m10">
+            <h3>Module 10 — Design System Capstone</h3>
+            <div class="desc">Build a mini design system: tokens, components, docs, and a pattern library.</div>
+            <div class="topics">
+              <div class="topic"><strong>Project brief</strong> — Produce a small design system with tokens, buttons, forms, and responsive layout components</div>
+              <div class="topic"><strong>Deliverables</strong> — Token JSON, CSS variable mapping, component examples, documentation site</div>
+              <div class="topic"><strong>Assessment</strong> — Consistency, accessibility, responsive behavior, and documentation quality</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Create a reusable design system ready for integration into projects.</div>
+            <a class="cta" href="#final">View capstone checklist</a>
+          </section>
+
+          <!-- Capstone brief -->
+          <section class="module" id="final">
+            <h3>Capstone — Design System</h3>
+            <div class="desc">Ship a small but complete design system and documentation site.</div>
+            <div class="topics">
+              <div class="topic"><strong>Scope</strong> — Colors, typography scale, spacing tokens, button variants, form components, responsive grid</div>
+              <div class="topic"><strong>Deliverables</strong> — JSON token file, stylesheet, component demos, documentation site (static)</div>
+              <div class="topic"><strong>Grading</strong> — Token completeness, component accessibility, responsive behavior, docs clarity</div>
+            </div>
+          </section>
+        </main>
+
+        <aside class="sidebar" role="complementary">
+          <nav class="toc" aria-label="Course contents">
+            <strong style="display:block;margin-bottom:8px">Course contents</strong>
+            <a href="#m1">Module 1 — Fundamentals</a>
+            <a href="#m2">Module 2 — Typography & Visual</a>
+            <a href="#m3">Module 3 — Flexbox</a>
+            <a href="#m4">Module 4 — Grid</a>
+            <a href="#m5">Module 5 — Responsive</a>
+            <a href="#m6">Module 6 — Variables & Theming</a>
+            <a href="#m7">Module 7 — Animations</a>
+            <a href="#m8">Module 8 — Component Styling</a>
+            <a href="#m9">Module 9 — Performance</a>
+            <a href="#m10">Module 10 — Capstone</a>
+            <a href="#final">Capstone Brief</a>
+
+            <div style="margin-top:12px;border-top:1px solid rgba(255,255,255,0.02);padding-top:10px">
+              <div class="muted">Course length</div>
+              <div style="font-weight:700;margin-top:6px">10 modules • ~60–100 hours</div>
+              <div class="muted" style="margin-top:8px">Assessment</div>
+              <div style="font-size:14px;margin-top:6px">Quizzes, component labs, design system capstone</div>
+            </div>
+          </nav>
+
+          <div style="margin-top:14px" class="card" aria-hidden="false">
+            <div style="font-weight:700">Included resources</div>
+            <ul style="margin:8px 0 0 18px;color:var(--muted)">
+              <li>Component starter kits</li>
+              <li>Token JSON and CSS variable examples</li>
+              <li>Performance checklist and tooling guides</li>
+              <li>Design system documentation template</li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+
+      <div style="margin-top:18px;color:var(--muted);font-size:13px">
+        <strong>How this course is delivered</strong>: Mix of short video lessons, guided labs, code reviews, quizzes, and a final capstone. Learners get starter repos, rubrics, and example solutions.
+      </div>
+    </div>
+
+    <footer style="margin-top:18px;color:var(--muted);text-align:center">
+      <div>iAM Scholar • Golden Apple Technologies</div>
+    </footer>
+  </div>
+</body>
+</html>
