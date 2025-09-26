@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>iAM Scholar by Golden Apple Technologies</title>
+
+  <!-- Inter font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome (brands) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <style>
+    :root{
+      --bg:#0f1724; --muted:#9aa4b2; --accent:#7c3aed; --accent-2:#06b6d4;
+      --glass-border: rgba(255,255,255,0.08); --radius:14px; --shadow: 0 6px 30px rgba(2,6,23,0.6);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      background:
+        radial-gradient(1200px 600px at 10% 10%, rgba(124,58,237,0.12), transparent),
+        radial-gradient(900px 400px at 90% 90%, rgba(6,182,212,0.08), transparent),
+        var(--bg);
+      color:#e6eef6;padding:36px;display:flex;align-items:flex-start;justify-content:center;
+    }
+
+    .container{width:100%;max-width:1200px}
+    header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:20px}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{width:56px;height:56px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),var(--accent-2));font-weight:800;color:white;font-size:20px}
+    h1{margin:0;font-size:20px}
+    .subtitle{margin:0;color:var(--muted);font-size:13px;margin-top:2px}
+
+    /* Controls layout: search on top, filters below */
+    .controls{display:flex;flex-direction:column;gap:10px;align-items:flex-end}
+    .search{background:rgba(255,255,255,0.04);border:1px solid var(--glass-border);padding:10px 12px;border-radius:12px;display:flex;gap:8px;align-items:center;min-width:260px;box-shadow: var(--shadow)}
+    .search input{background:transparent;border:0;outline:0;color:inherit;font-size:14px;width:100%}
+    .filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:flex-end}
+    .chip{background:transparent;border:1px dashed rgba(255,255,255,0.06);color:var(--muted);padding:8px 10px;border-radius:999px;font-size:13px;cursor:pointer}
+    .chip[data-active="true"]{background:linear-gradient(90deg, rgba(124,58,237,0.12), rgba(6,182,212,0.06));border:1px solid rgba(255,255,255,0.06);color:var(--accent-2);transform:translateY(-2px);box-shadow:0 6px 20px rgba(7,11,30,0.5)}
+
+    .grid{display:grid;grid-template-columns: repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-top:14px}
+
+    /* Remove default link styling, keep focus */
+    a { text-decoration: none; color: inherit; }
+    a.card{background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));border-radius:var(--radius);padding:18px;border:1px solid var(--glass-border);backdrop-filter: blur(8px) saturate(120%);box-shadow: var(--shadow);transition: transform .22s, box-shadow .18s;display:flex;flex-direction:column;gap:12px;min-height:140px}
+    a.card:hover, a.card:focus{transform: translateY(-8px) scale(1.01);box-shadow: 0 18px 60px rgba(2,6,23,0.75)}
+    a.card:focus{outline: none; box-shadow: 0 0 0 4px rgba(124,58,237,0.14), 0 18px 60px rgba(2,6,23,0.75)}
+
+    .card-top{display:flex;gap:12px;align-items:center}
+    .lang-icon{width:56px;height:56px;border-radius:12px;display:grid;place-items:center;font-weight:700;font-size:20px;background:linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.85));box-shadow: inset 0 6px 18px rgba(255,255,255,0.25)}
+    .lang-icon i { font-size:24px; color:#0b1220; }
+    .card h3{margin:0;font-size:16px;color:white}
+    .card p{margin:0;color:var(--muted);font-size:13px}
+    .meta{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:8px}
+    .btn{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white;padding:8px 12px;border-radius:11px;font-weight:600;font-size:13px;display:inline-flex;gap:8px;align-items:center}
+
+    footer{margin-top:22px;color:var(--muted);font-size:13px;display:flex;justify-content:space-between;align-items:center}
+
+    @media (max-width:900px){ header{flex-direction:column;align-items:flex-start} .controls{align-items:stretch} }
+    @media (max-width:640px){ body{padding:18px} .search{min-width:140px} }
+  </style>
+</head>
+<body>
+  <div class="container" role="application" aria-label="iAM Scholar menu">
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden="true">iS</div>
+        <div>
+          <h1>iAM Scholar</h1>
+          <div class="subtitle">A Golden Apple Technologies powered school</div>
+        </div>
+      </div>
+
+      <div class="controls" role="search" aria-label="Search languages and filters">
+        <div class="search" title="Search languages">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="1.5"/></svg>
+          <input id="search" type="search" placeholder="Search languages or topics" aria-label="Search languages" />
+        </div>
+
+        <div class="filters" role="toolbar" aria-label="Filter languages">
+          <button class="chip" data-filter="all" data-active="true">All</button>
+          <button class="chip" data-filter="beginner">Beginner</button>
+          <button class="chip" data-filter="web">Web</button>
+          <button class="chip" data-filter="systems">Systems</button>
+          <button class="chip" data-filter="data">Data</button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section id="grid" class="grid" aria-live="polite">
+        <!-- Cards injected by JS -->
+      </section>
+
+      <footer>
+        <div>Choose a course to open its syllabus and lessons</div>
+        <div style="color:var(--muted)">Golden Apple Technologies • iAM Scholar</div>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    // 20+ languages. Use fab where Font Awesome brand exists; otherwise use a tidy SVG fallback.
+    const languages = [
+      {name:'Python', type:'fab', class:'fa-python', desc:'Data, automation, web', file:'python.html'},
+      {name:'JavaScript', type:'fab', class:'fa-js-square', desc:'Frontend & backend', file:'javascript.html'},
+      {name:'HTML', type:'fab', class:'fa-html5', desc:'Markup', file:'html.html'},
+      {name:'CSS', type:'fab', class:'fa-css3-alt', desc:'Styling', file:'css.html'},
+      {name:'TypeScript', type:'fab', class:'fa-js', desc:'Typed JS', file:'typescript.html'},
+      {name:'Java', type:'fab', class:'fa-java', desc:'Enterprise & Android', file:'java.html'},
+      {name:'Kotlin', type:'fab', class:'fa-korvue', desc:'Modern JVM & Android', file:'kotlin.html'},
+      {name:'C', type:'fallback', svg:'<svg width="28" height="28" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><rect width="64" height="64" rx="8" fill="#2563EB"/><text x="50%" y="55%" font-size="28" text-anchor="middle" fill="#EFF6FF" font-family="Inter, Arial" font-weight="800">C</text></svg>', desc:'Systems programming', file:'c.html'},
+      {name:'C++', type:'fallback', svg:'<svg width="28" height="28" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><rect width="64" height="64" rx="8" fill="#0EA5A4"/><text x="50%" y="54%" font-size="22" text-anchor="middle" fill="#031022" font-family="Inter, Arial" font-weight="900">C++</text></svg>', desc:'Performance & games', file:'cpp.html'},
+      {name:'C#', type:'fallback', svg:'<svg width="28" height="28" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><rect width="64" height="64" rx="8" fill="#7C3AED"/><text x="50%" y="55%" font-size="20" text-anchor="middle" fill="#EFF6FF" font-family="Inter, Arial" font-weight="800">C#</text></svg>', desc:'.NET apps', file:'csharp.html'},
+      {name:'Go', type:'fab', class:'fa-gofore', desc:'Cloud & microservices', file:'go.html'},
+      {name:'Rust', type:'fallback', svg:'<svg width="28" height="28" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><rect width="64" height="64" rx="8" fill="#1F2937"/><text x="50%" y="55%" font-size="18" text-anchor="middle" fill="#E6EEF6" font-family="Inter, Arial" font-weight="800">rust</text></svg>', desc:'Memory-safe systems', file:'rust.html'},
+      {name:'PHP', type:'fab', class:'fa-php', desc:'Server-side web', file:'php.html'},
+      {name:'SQL', type:'fab', class:'fa-database', desc:'Databases', file:'sql.html'},
+      {name:'Ruby', type:'fab', class:'fa-gem', desc:'Web & scripting', file:'ruby.html'},
+      {name:'Swift', type:'fab', class:'fa-swift', desc:'iOS & macOS', file:'swift.html'},
+      {name:'Dart', type:'fab', class:'fa-dart', desc:'Flutter apps', file:'dart.html'},
+      {name:'R', type:'fallback', svg:'<svg width="28" height="28" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><rect width="64" height="64" rx="8" fill="#0EA5A4"/><text x="50%" y="55%" font-size="20" text-anchor="middle" fill="#031022" font-family="Inter, Arial" font-weight="800">R</text></svg>', desc:'Statistics & ML', file:'r.html'},
+      {name:'Scala', type:'fallback', svg:'<svg width="28" height="28" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><rect width="64" height="64" rx="8" fill="#EF4444"/><text x="50%" y="55%" font-size="16" text-anchor="middle" fill="#FFF6EE" font-family="Inter, Arial" font-weight="800">Scala</text></svg>', desc:'JVM & big data', file:'scala.html'},
+      {name:'Bash', type:'fab', class:'fa-terminal', desc:'Shell scripting', file:'bash.html'},
+      {name:'Lua', type:'fallback', svg:'<svg width="28" height="28" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><rect width="64" height="64" rx="8" fill="#111827"/><text x="50%" y="55%" font-size="18" text-anchor="middle" fill="#A78BFA" font-family="Inter, Arial" font-weight="800">Lua</text></svg>', desc:'Embeddable scripting', file:'lua.html'},
+      {name:'Perl', type:'fallback', svg:'<svg width="28" height="28" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><rect width="64" height="64" rx="8" fill="#0F1724"/><text x="50%" y="55%" font-size="16" text-anchor="middle" fill="#9AA4B2" font-family="Inter, Arial" font-weight="800">Perl</text></svg>', desc:'Text processing', file:'perl.html'}
+    ];
+
+    const grid = document.getElementById('grid');
+    const search = document.getElementById('search');
+    const chips = Array.from(document.querySelectorAll('.chip'));
+
+    function buildIcon(lang){
+      if(lang.type === 'fab' && lang.class){
+        // Use Font Awesome brand icon. If icon class doesn't exist in the FA release you load, browser will ignore but fallback remains neat.
+        return `<i class="fab ${lang.class}" aria-hidden="true"></i>`;
+      }
+      if(lang.type === 'fallback' && lang.svg){
+        return lang.svg;
+      }
+      // initials fallback
+      const initials = lang.name.split(' ').map(s=>s[0]).slice(0,2).join('').toUpperCase();
+      return `<div style="font-weight:800;font-size:18px;color:#0b1220">${initials}</div>`;
+    }
+
+    function createCard(lang){
+      const a = document.createElement('a');
+      a.href = lang.file;
+      a.className = 'card';
+      a.setAttribute('aria-label', `${lang.name} course link`);
+      a.innerHTML = `
+        <div class="card-top">
+          <div class="lang-icon" aria-hidden="true">${buildIcon(lang)}</div>
+          <div>
+            <h3>${lang.name}</h3>
+            <p>${lang.desc || ''}</p>
+          </div>
+        </div>
+        <div class="meta">
+          <div style="color:var(--muted);font-size:12px">${lang.desc || ''}</div>
+          <div><span class="btn">Open</span></div>
+        </div>
+      `;
+      return a;
+    }
+
+    function render(list){
+      grid.innerHTML = '';
+      if(list.length === 0){
+        grid.innerHTML = '<div style="color:var(--muted);padding:12px;border-radius:12px;background:rgba(255,255,255,0.02)">No matches</div>';
+        return;
+      }
+      for(const l of list) grid.appendChild(createCard(l));
+    }
+
+    // initial render
+    render(languages);
+
+    // search
+    search.addEventListener('input', e=>{
+      const q = e.target.value.trim().toLowerCase();
+      const activeFilter = chips.find(c=>c.dataset.active==='true')?.dataset.filter || 'all';
+      filterAndRender(q, activeFilter);
+    });
+
+    // filters
+    chips.forEach(chip=>{
+      chip.addEventListener('click', ()=>{
+        chips.forEach(c=>c.dataset.active='false');
+        chip.dataset.active='true';
+        const q = search.value.trim().toLowerCase();
+        filterAndRender(q, chip.dataset.filter);
+      });
+    });
+
+    function filterAndRender(query, filter){
+      const out = languages.filter(l=>{
+        const hay = [l.name, l.desc].join(' ').toLowerCase();
+        const matchesQuery = hay.includes(query);
+        const matchesFilter = filter === 'all' || (filter === 'beginner' && hay.includes('beginner')) || (filter === 'web' && hay.includes('web')) || (filter === 'systems' && hay.includes('systems')) || (filter === 'data' && hay.includes('data'));
+        return matchesQuery && matchesFilter;
+      });
+      render(out);
+    }
+
+    // Quick-focus shortcut Ctrl/Cmd+F
+    document.addEventListener('keydown', e=>{
+      if(e.key === 'f' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); search.focus(); }
+    });
+  </script>
+</body>
+</html>
