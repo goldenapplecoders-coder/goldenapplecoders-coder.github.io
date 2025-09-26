@@ -1,118 +1,166 @@
-<!-- Golden Apple Technologies README -->
-# Golden Apple Technologies 🍏✨
+# Golden Apple Technologies 🍏✨  
+**Crafted Code. Bold Design. Ethical Innovation.**
 
 ![Golden Apple Technologies](dancing.svg)
 
-[![Website](https://img.shields.io/badge/Website-live-06b6d4)](#)
-[![Teams](https://img.shields.io/badge/Team-Experienced-orange)](#)
-[![Stack](https://img.shields.io/badge/Stack-Modern-blueviolet)](#)
+[![Website](https://img.shields.io/badge/Website-live-06b6d4)](#)  
+[![Teams](https://img.shields.io/badge/Team-Experienced-orange)](#)  
+[![Stack](https://img.shields.io/badge/Stack-Modern-blueviolet)](#)  
 [![Contact](https://img.shields.io/badge/Contact-info%40goldenappletech.com-8b5cf6)](#contact)
 
 ---
 
-## About Us
-Golden Apple Technologies is a creative engineering studio based in Kampala, Uganda. We build clean, fast, and beautiful web experiences — from marketing sites and e-commerce shops to full-stack web applications and developer tooling. Our team blends design thinking with engineering rigor to deliver solutions that scale.
+## 🍏 Who We Are
+Golden Apple Technologies is a creative engineering studio based in Kampala, Uganda. We design and build digital experiences that feel like craft — blending code, design, and education into tools that empower.
 
-Why choose us?
-- Human-centered interfaces that convert and delight
-- Production-ready code, automated tests, and smooth deployments
-- Clear communication and collaborative project delivery
+We’re not just developers. We’re mentors, artists, hackers, and educators.
 
 ---
 
-## Quick Highlights
-- ⚡ Fast, accessible, SEO-friendly frontends  
-- 🔒 Secure, tested backends and APIs  
-- 🎨 Polished UI/UX and brand-forward design systems  
-- 🚀 CI/CD, Docker, and cloud-ready deployments
+## ✨ Our Philosophy
+- **Design like storytellers** — every pixel has purpose  
+- **Code like architects** — scalable, secure, and elegant  
+- **Teach like mentors** — we build minds, not just products  
+- **Think like hackers** — curious, ethical, and bold
 
 ---
 
-## Services
-We help companies ship features and build products.
-
-- Web Design — brand-led UI, prototypes, and design systems  
-- Frontend Development — HTML5, CSS3, modern JavaScript, React/Vue/Angular  
-- Backend Development — Node.js, Django, Laravel, REST & GraphQL APIs  
-- E‑commerce — storefronts, payments, product catalogs, order flows  
-- CMS & Content — WordPress, headless CMS, editorial workflows  
-- DevOps & Cloud — containers, CI/CD, observability and hosting
+## 🧠 What We Build
+- ✨ Brand-led websites that convert  
+- 🛒 E-commerce platforms with custom flows  
+- 🧬 Portals for healthcare, education, and nonprofits  
+- 🧰 Developer tools and internal dashboards  
+- 🎓 Digital schools and bootcamp platforms
 
 ---
 
-## Featured Technologies
-| Frontend | Backend | DevOps | Data |
-|---|---|---:|---|
-| HTML5; CSS3; Tailwind; React; Vue | Node.js; Django; Laravel; Java | Docker; GitHub Actions; CI/CD | PostgreSQL; MongoDB; Redis |
+## 🛠️ Our Stack
+| Area | Tools & Frameworks |
+|------|---------------------|
+| **Frontend** | HTML5, CSS3, Tailwind, React, Vue, Angular |
+| **Backend** | Node.js, Django, Laravel, Java, Python |
+| **DevOps** | Docker, GitHub Actions, CI/CD, Nginx |
+| **Data** | PostgreSQL, MongoDB, Redis |
+| **CMS** | WordPress, Strapi, Headless CMS |
+| **Design** | Figma, Adobe XD, Inter, custom SVGs |
 
 ---
 
-## Projects & Case Studies
-- **Retail E‑commerce** — custom storefront, inventory sync, payment integration  
-- **Healthcare Portal** — secure auth, role-based dashboards, reporting  
-- **Non‑profit Redesign** — accessible, mobile-first site and donation flow
-
-(Ask for demo links and technical write-ups)
-
----
-
-## Course & Training Work
-We run iAM Scholar — practical developer tracks and bootcamps:
-- HTML & CSS, JavaScript, TypeScript, UI/UX, Backend, DevOps
-- Project-driven curriculum, labs, rubrics, and capstone projects
+## 🧪 Engineering Craft
+- ✅ Automated testing (unit, integration, E2E)  
+- ✅ Git workflows, code reviews, and CI pipelines  
+- ✅ Performance audits and accessibility checks  
+- ✅ API-first architecture with REST & GraphQL  
+- ✅ Cloud-native deployments (DigitalOcean, Vercel, Netlify)
 
 ---
 
-## Why we stand out
-- Expertise: senior engineers who mentor and teach  
-- Communication: clear milestones, regular demos, and docs  
-- Quality: automated tests, code reviews, and performance checks  
-- Innovation: product-minded engineering and rapid prototyping
+## 🎨 Design System
+- **Primary Color**: `#FFD166` (Golden)  
+- **Accent Color**: `#06B6D4` (Teal)  
+- **Neutral Base**: `#071026` (Deep Navy)  
+- **Typography**: Inter, system UI stack  
+- **Iconography**: Custom SVGs, minimalist line art  
+- **Motion**: Subtle transitions, scroll reveals, hover states
 
 ---
 
-## Brand & Design
-To keep a consistent brand:
-- Primary color: #FFD166 (gold)
-- Accent: #06B6D4 (teal)
-- Neutral: #071026 (deep navy)
-- Typography: Inter, system UI stacks
+## 📚 iAM Scholar — Our Education Arm
+Golden Apple runs **iAM Scholar**, a digital school for developers:
+- 20+ languages and frameworks  
+- Menu-driven UI with brand icons  
+- Ethical hacking, DevOps, and full-stack tracks  
+- Capstone projects, rubrics, and mentorship
 
-Add the SVG logo `dancing.svg` in this repo for best results.
+> Want to join? Visit [iAM Scholar](#) or email scholar@goldenappletech.com
 
 ---
 
-## Get in touch
-We’d love to hear about your project.
+## 🧑‍🎓 Student Challenges & Labs
+We design hands-on labs and challenges:
+- 🔐 Ethical hacking simulations  
+- 🧩 JavaScript puzzles and UI rebuilds  
+- 🧠 Backend logic and API design  
+- 🎨 CSS art and animation labs  
+- 🧱 DevOps pipelines and container orchestration
 
+---
+
+## 🧑‍💻 Meet the Team
+We’re a collective of:
+- Senior engineers who teach and mentor  
+- Designers who think in systems and stories  
+- Creators who blend tech with music, art, and culture  
+- Students who become leaders
+
+> Want to join? Check `careers/team.md`
+
+---
+
+## 📦 Featured Projects
+| Project | Description | Tech |
+|--------|-------------|------|
+| **Codemind VOL 23.0** | Meta tool for student challenges | HTML, JS, Python |
+| **Da Dizz Muxic Store** | Music store with downloads, videos, and gallery | Laravel, Vue |
+| **Infinity School UI** | Menu-driven digital school interface | Tailwind, React |
+| **Cyber Security Campaign** | Posters, branding, and course launch | Figma, Illustrator |
+
+---
+
+## 📈 Our Process
+1. **Discovery** — goals, timeline, budget  
+2. **Design Sprint** — wireframes, prototypes, feedback  
+3. **Build** — agile sprints, demos, reviews  
+4. **Launch** — deploy, monitor, optimize  
+5. **Educate** — docs, training, handoff
+
+---
+
+## 🧭 Roadmap
+- 🔜 Launch iAM Scholar v1.0  
+- 🔜 Expand Codemind with AI grading  
+- 🔜 Release Golden Apple Design System  
+- 🔜 Open-source our student challenge templates  
+- 🔜 Host Golden Hack — our first student hackathon
+
+---
+
+## 🧑‍🎤 Culture & Creativity
+We believe in:
+- 🎤 Music as tech inspiration (Dizzer J vibes)  
+- 🎨 Posters that teach and provoke  
+- 🧠 Mentorship that transforms  
+- 💡 Ideas that challenge norms
+
+---
+
+## 🧩 Contribute
+We welcome:
+- Designers with a hacker’s mindset  
+- Engineers who love teaching  
+- Students who want to build real things  
+- Creators who blend tech and art
+
+> Submit your CV and portfolio to info@goldenappletech.com
+
+---
+
+## 📜 License
+This repo is MIT licensed. See `LICENSE.md`.
+
+---
+
+## 💬 Contact Us
 - ✉️ Email: info@goldenappletech.com  
 - ☎️ Phone: +256 791 728 084  
-- 📍 Address: Golden Apple Technologies, Kampala, Uganda
-
-Or open an issue / discussion on this repo and tag `team:ops`.
-
----
-
-## Follow us
-[Twitter](https://twitter.com/GoldenAppleTech) • [Facebook](https://facebook.com/GoldenAppleTechnologies) • [LinkedIn](https://linkedin.com/company/GoldenAppleTechnologies)
+- 📍 Kampala, Uganda  
+- 🧵 GitHub Discussions: tag `team:ops`
 
 ---
 
-## Want to work with us?
-1. Share a short brief (goals, timeline, budget)  
-2. We’ll schedule a 30‑minute discovery call  
-3. Prototype → MVP → Launch with milestones and reviews
+## 🌐 Socials
+[Twitter](https://twitter.com/GoldenAppleTech) • [Facebook](https://facebook.com/GoldenAppleTechnologies) • [LinkedIn](https://linkedin.com/company/GoldenAppleTechnologies) • [Instagram](#)
 
 ---
 
-## Contribute / Careers
-We hire engineers, designers, and mentors. Open roles and internship opportunities listed in the `careers/` folder. Submit a CV and portfolio to info@goldenappletech.com.
-
----
-
-## License
-This repo content is available under the MIT License. See LICENSE for details.
-
----
-
-> Golden Apple Technologies — engineering that feels like craft. 🍏
+> Golden Apple Technologies — where code meets culture. 🍏
