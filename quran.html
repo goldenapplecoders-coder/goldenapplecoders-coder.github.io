@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Golden Apple Online Quran</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #f0f4f8, #d9e2ec);
+      display: flex;
+      justify-content: center;
+      padding: 40px 0;
+    }
+
+    .container {
+      background: #fff;
+      max-width: 800px;
+      width: 90%;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      padding: 24px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #1f3a5f;
+      margin-bottom: 24px;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+
+    select, button {
+      padding: 10px 16px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid #ccd6dd;
+      cursor: pointer;
+    }
+
+    button {
+      background-color: #0077b6;
+      color: #fff;
+      border: none;
+      transition: background-color 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #005f8d;
+    }
+
+    .home-button {
+      background-color: #2a9d8f;
+    }
+
+    .home-button:hover {
+      background-color: #20806e;
+    }
+
+    .ayah-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .ayah-item {
+      padding: 16px;
+      border-bottom: 1px solid #e1e8ed;
+    }
+
+    .arabic {
+      font-size: 24px;
+      direction: rtl;
+      color: #0a2540;
+      margin-bottom: 8px;
+    }
+
+    .translation {
+      font-size: 16px;
+      color: #334e68;
+      margin-bottom: 8px;
+    }
+
+    audio {
+      width: 100%;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Golden Apple Online Quran</h1>
+    <div class="controls">
+      <select id="surahSelect">
+        <option value="">Select a Surah</option>
+      </select>
+      <button onclick="loadSurah()">Load Surah</button>
+      <button class="home-button" onclick="location.href='Golden.html'">Home</button>
+    </div>
+    <ul id="ayahContainer" class="ayah-list"></ul>
+  </div>
+
+  <script>
+    // Load Surah list
+    fetch('https://api.alquran.cloud/v1/surah')
+      .then(res => res.json())
+      .then(data => {
+        const select = document.getElementById('surahSelect');
+        data.data.forEach(surah => {
+          const option = document.createElement('option');
+          option.value = surah.number;
+          option.textContent = `${surah.number}. ${surah.englishName}`;
+          select.appendChild(option);
+        });
+      });
+
+    // Load selected Surah
+    function loadSurah() {
+      const surahId = document.getElementById('surahSelect').value;
+      if (!surahId) return;
+
+      const arabicURL = `https://api.alquran.cloud/v1/surah/${surahId}/ar.alafasy`;
+      const englishURL = `https://api.alquran.cloud/v1/surah/${surahId}/en.asad`;
+
+      Promise.all([
+        fetch(arabicURL).then(res => res.json()),
+        fetch(englishURL).then(res => res.json())
+      ]).then(([arabicData, englishData]) => {
+        const ayahContainer = document.getElementById('ayahContainer');
+        ayahContainer.innerHTML = '';
+
+        arabicData.data.ayahs.forEach((ayah, index) => {
+          const englishAyah = englishData.data.ayahs[index];
+          const li = document.createElement('li');
+          li.className = 'ayah-item';
+          li.innerHTML = `
+            <div class="arabic">${ayah.text}</div>
+            <div class="translation">${englishAyah.text}</div>
+            <audio controls src="${ayah.audio}"></audio>
+          `;
+          ayahContainer.appendChild(li);
+        });
+      });
+    }
+  </script>
+</body>
+</html>
