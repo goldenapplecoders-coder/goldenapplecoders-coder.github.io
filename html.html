@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>HTML & CSS Course • iAM Scholar</title>
+  <meta name="description" content="iAM Scholar — HTML & CSS track by Golden Apple Technologies. Hands-on syllabus, modules, lessons, and projects." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome for brand icon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <style>
+    :root{
+      --bg:#071022;
+      --card:#07162a;
+      --accent:#ef4444;
+      --accent-2:#06b6d4;
+      --muted:#98a6b4;
+      --glass: rgba(255,255,255,0.03);
+      --glass-border: rgba(255,255,255,0.04);
+      --radius:12px;
+      --max-width:1180px;
+      --shadow: 0 8px 36px rgba(0,0,0,0.6);
+      --sidebar-min:260px;
+      --sidebar-max:360px;
+      --gap:18px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      background: linear-gradient(180deg,var(--bg),#031023);
+      color:#eaf2ff;
+      padding:28px;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      justify-content:center;
+    }
+
+    .wrap{width:100%;max-width:var(--max-width)}
+    header{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+    / Logo now uses Font Awesome brand icon /
+    .logo{
+      width:56px;height:56px;border-radius:12px;display:grid;place-items:center;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      font-weight:800;color:#ffffff;font-size:22px;
+      box-shadow:var(--shadow);
+    }
+    .logo .fab{font-size:26px;color:white}
+
+    h1{margin:0;font-size:26px}
+    .meta{color:var(--muted);margin-top:6px;margin-bottom:18px}
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.007));
+      padding:22px;border-radius:var(--radius);border:1px solid var(--glass-border);box-shadow:var(--shadow)
+    }
+
+    / Grid: main content + sidebar with controlled min/max width /
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr minmax(var(--sidebar-min), var(--sidebar-max));
+      gap:var(--gap);
+      align-items:start;
+    }
+
+    @media(max-width:1100px){
+      .grid{grid-template-columns: 1fr minmax(220px, 320px)}
+    }
+    @media(max-width:900px){
+      .grid{grid-template-columns:1fr}
+      .sidebar{order:2}
+    }
+
+    .toc{background:var(--glass);padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.02);max-height:72vh;overflow:auto}
+    .toc a{display:block;padding:8px;border-radius:8px;color:var(--muted);font-size:14px;text-decoration:none}
+    .toc a:hover{background:linear-gradient(90deg, rgba(239,68,68,0.06), rgba(6,182,212,0.03));color:white}
+
+    / Ensure modules and topics never exceed container width /
+    .module{
+      margin-bottom:14px;padding:14px;border-radius:10px;
+      background:rgba(255,255,255,0.01);border:1px solid rgba(255,255,255,0.02);
+      width:100%;
+      overflow:visible;
+      word-wrap:break-word;
+    }
+    .module h3{margin:0 0 8px 0}
+    .desc{color:var(--muted);margin-bottom:10px}
+    .topics{display:grid;gap:8px}
+    .topic{
+      padding:10px;border-radius:8px;background:rgba(255,255,255,0.015);
+      border:1px solid rgba(255,255,255,0.015);font-size:14px;
+      width:100%;
+      overflow-wrap:break-word;
+      word-break:break-word;
+      white-space:normal;
+    }
+
+    pre{background:#021224;padding:12px;border-radius:8px;overflow:auto;font-size:13px;max-width:100%}
+    .example{margin-top:12px;padding:12px;border-radius:8px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.008));border:1px solid rgba(255,255,255,0.02);max-width:100%;overflow:auto}
+    .cta{display:inline-block;padding:10px 14px;border-radius:10px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#071022;font-weight:700;margin-top:12px;text-decoration:none}
+    .muted{color:var(--muted);font-size:13px}
+    table{width:100%;border-collapse:collapse;margin-top:8px}
+    table th, table td{padding:8px;border-bottom:1px solid rgba(255,255,255,0.03);text-align:left;font-size:13px}
+
+    / Sidebar card sizing and scroll safety /
+    .sidebar .card{margin-top:14px;padding:14px;max-width:100%;box-sizing:border-box}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo" aria-hidden="true"><i class="fab fa-html5" title="HTML5"></i></div>
+      <div>
+        <h1>HTML & CSS • iAM Scholar</h1>
+        <div class="meta">Markup, semantics, responsive styling, layouts, accessibility, and modern CSS</div>
+      </div>
+    </header>
+
+    <div class="card">
+      <div class="grid">
+        <main>
+          <p><strong>Course overview</strong>: Practical HTML and CSS curriculum that teaches semantic markup, responsive layout techniques, accessibility, modern CSS (Flexbox, Grid), animations, and component styling. Each module contains lessons, code examples, small projects, and a capstone site build.</p>
+
+          <!-- Module 1 -->
+          <section class="module" id="m1">
+            <h3>Module 1 — Foundations of HTML</h3>
+            <div class="desc">Structure pages with semantic markup and understand the document tree.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — HTML syntax, elements, attributes, and the DOM tree</div>
+              <div class="topic"><strong>Lesson 2</strong> — Document structure: head, body, meta, title, charset</div>
+              <div class="topic"><strong>Lesson 3</strong> — Semantic elements: header, nav, main, article, section, aside, footer</div>
+              <div class="topic"><strong>Lesson 4</strong> — HTML forms: input types, labels, validation, accessibility considerations</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Create accessible, semantic HTML pages and a basic form</div>
+            <div class="example">
+              <pre>&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;title&gt;Sample&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;header&gt;&lt;h1&gt;Site Title&lt;/h1&gt;&lt;/header&gt;
+    &lt;main&gt;&lt;article&gt;&lt;p&gt;Content&lt;/p&gt;&lt;/article&gt;&lt;/main&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</pre>
+            </div>
+          </section>
+
+          <!-- Module 2 -->
+          <section class="module" id="m2">
+            <h3>Module 2 — Core CSS and Styling</h3>
+            <div class="desc">Selectors, specificity, the cascade, colors, units, box model.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — CSS syntax, selectors, combinators, specificity rules</div>
+              <div class="topic"><strong>Lesson 2</strong> — Box model: margin, border, padding, content; box-sizing</div>
+              <div class="topic"><strong>Lesson 3</strong> — Units, colors, typography and responsive font sizing</div>
+              <div class="topic"><strong>Lesson 4</strong> — Developer tools, debugging layout and styles</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Style pages with maintainable CSS and debug layout issues</div>
+            <div class="example">
+              <pre>/ example /
+.container { max-width:1200px; margin:0 auto; padding:1rem; }
+.card { background:#fff; border-radius:8px; box-shadow:0 6px 18px rgba(2,6,23,0.4); }</pre>
+            </div>
+          </section>
+
+          <!-- Module 3 -->
+          <section class="module" id="m3">
+            <h3>Module 3 — Layout: Flexbox and Grid</h3>
+            <div class="desc">Responsive layouts using modern CSS layout systems.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — Flexbox: axis concepts, alignment, wrapping</div>
+              <div class="topic"><strong>Lesson 2</strong> — Grid: tracks, areas, template, auto-placement</div>
+              <div class="topic"><strong>Lesson 3</strong> — Combining Grid and Flexbox for complex UIs</div>
+              <div class="topic"><strong>Lesson 4</strong> — Responsive breakpoints, mobile-first patterns</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Build responsive, accessible layouts without floats</div>
+            <div class="example">
+              <pre>.grid { display:grid; grid-template-columns: 1fr 320px; gap:1rem; }
+@media (max-width:900px){ .grid{grid-template-columns:1fr;} }</pre>
+            </div>
+          </section>
+
+          <!-- Module 4 -->
+          <section class="module" id="m4">
+            <h3>Module 4 — Responsive Design & Mobile First</h3>
+            <div class="desc">Designing UI that scales across devices and network conditions.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — Viewport meta and mobile-first CSS</div>
+              <div class="topic"><strong>Lesson 2</strong> — Fluid layouts, clamp(), min(), max()</div>
+              <div class="topic"><strong>Lesson 3</strong> — Responsive images: srcset, picture, lazy loading</div>
+              <div class="topic"><strong>Lesson 4</strong> — Progressive enhancement and graceful degradation</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Build performant pages for mobile and desktop users</div>
+          </section>
+
+          <!-- Remaining modules can follow same structure -->
+        </main>
+
+        <aside class="sidebar">
+          <nav class="toc" aria-label="Course contents">
+            <strong style="display:block;margin-bottom:8px">Course contents</strong>
+            <a href="#m1">Module 1 — Foundations of HTML</a>
+            <a href="#m2">Module 2 — Core CSS</a>
+            <a href="#m3">Module 3 — Flexbox & Grid</a>
+            <a href="#m4">Module 4 — Responsive Design</a>
+            <a href="#m5">Module 5 — Accessibility</a>
+            <a href="#m6">Module 6 — Component Styling</a>
+            <a href="#m7">Module 7 — Animations</a>
+            <a href="#m8">Module 8 — Advanced Grid</a>
+            <a href="#m9">Module 9 — Performance & SEO</a>
+            <a href="#m10">Module 10 — Capstone</a>
+
+            <div style="margin-top:12px;border-top:1px solid rgba(255,255,255,0.02);padding-top:10px">
+              <div class="muted">Course length</div>
+              <div style="font-weight:700;margin-top:6px">10 modules • ~60–100 hours</div>
+              <div class="muted" style="margin-top:8px">Assessment</div>
+              <div style="font-size:14px;margin-top:6px">Quizzes, practical exercises, capstone site review</div>
+            </div>
+          </nav>
+
+          <div style="margin-top:14px" class="card">
+            <div style="font-weight:700">Included resources</div>
+            <ul style="margin:8px 0 0 18px;color:var(--muted)">
+              <li>Starter templates and components</li>
+              <li>Accessible UI checklist</li>
+              <li>Performance and SEO checklist</li>
+              <li>Design tokens and CSS variable examples</li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <footer style="margin-top:18px;color:var(--muted);text-align:center">
+      <div>iAM Scholar • Golden Apple Technologies</div>
+    </footer>
+  </div>
+</body>
+</html>
