@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>JavaScript Course • iAM Scholar</title>
+  <meta name="description" content="iAM Scholar — JavaScript track by Golden Apple Technologies. Complete syllabus, modules, lessons, and projects." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#071029;
+      --card:#072033;
+      --accent:#f6b042;
+      --accent-2:#06b6d4;
+      --muted:#98a6b4;
+      --glass-border: rgba(255,255,255,0.04);
+      --radius:12px;
+      --pad:20px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      background: linear-gradient(180deg,var(--bg),#031023);
+      color:#eaf2ff;
+      padding:28px;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+    .wrap{max-width:980px;margin:0 auto}
+    a{color:inherit;text-decoration:none}
+    header{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+    .logo{width:56px;height:56px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),var(--accent-2));font-weight:800;color:#071022;font-size:20px}
+    h1{margin:0;font-size:26px}
+    .meta{color:var(--muted);margin-top:6px;margin-bottom:18px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:22px;border-radius:var(--radius);border:1px solid var(--glass-border)}
+    .row{display:flex;gap:18px}
+    .col{flex:1}
+    .sidebar{width:280px;flex:0 0 280px}
+    .toc{background:rgba(255,255,255,0.01);padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.02);max-height:72vh;overflow:auto}
+    .toc a{display:block;padding:8px;border-radius:8px;color:var(--muted);font-size:14px}
+    .toc a:hover{background:linear-gradient(90deg, rgba(246,176,66,0.06), rgba(6,182,212,0.03));color:white}
+    .lesson-list{display:grid;gap:12px;margin-top:14px}
+    .module{padding:14px;border-radius:10px;background:rgba(255,255,255,0.01);border:1px solid rgba(255,255,255,0.02)}
+    .module h3{margin:0 0 8px 0}
+    .module .desc{color:var(--muted);margin-bottom:10px}
+    .topics{display:grid;gap:8px}
+    .topic{padding:10px;border-radius:8px;background:rgba(255,255,255,0.015);border:1px solid rgba(255,255,255,0.015);font-size:14px}
+    .sub{color:var(--muted);font-size:13px;margin-top:8px}
+    .cta{display:inline-block;padding:10px 14px;border-radius:10px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#071022;font-weight:700;margin-top:16px}
+    .muted{color:var(--muted);font-size:13px}
+    footer{margin-top:18px;color:var(--muted);font-size:13px;text-align:center}
+
+    pre{background:#031128;padding:12px;border-radius:8px;overflow:auto}
+    table{width:100%;border-collapse:collapse;margin-top:8px}
+    table th, table td{padding:8px;border-bottom:1px solid rgba(255,255,255,0.03);text-align:left;font-size:13px}
+
+    @media (max-width:900px){
+      .row{flex-direction:column}
+      .sidebar{width:100%;flex:0 0 auto}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo" aria-hidden="true">JS</div>
+      <div>
+        <h1>JavaScript • iAM Scholar</h1>
+        <div class="meta">From fundamentals to modern frameworks, tooling, and production patterns — project-driven curriculum</div>
+      </div>
+    </header>
+
+    <div class="card">
+      <div class="row">
+        <div class="col">
+          <p><strong>Course overview</strong>: Learn JavaScript language fundamentals, modern ES features, DOM and browser APIs, Node.js backend, testing, build tooling, React basics, and deployable projects. Each module contains lessons, exercises, and a project.</p>
+
+          <div class="lesson-list" id="modules">
+            <!-- Module 1 -->
+            <section class="module" id="m1">
+              <h3>Module 1 — JavaScript Fundamentals</h3>
+              <div class="desc">Core language building blocks and runtime behavior</div>
+              <div class="topics">
+                <div class="topic"><strong>Lesson 1</strong> — History and ecosystem; where JS runs</div>
+                <div class="topic"><strong>Lesson 2</strong> — Syntax, variables (let/const/var), primitive types</div>
+                <div class="topic"><strong>Lesson 3</strong> — Operators, expressions, template literals</div>
+                <div class="topic"><strong>Lesson 4</strong> — Control flow: if/else, switch, loops</div>
+              </div>
+              <div class="sub"><strong>Outcomes</strong>: Write basic scripts, understand scoping and runtime quirks.</div>
+            </section>
+
+            <!-- Module 2 -->
+            <section class="module" id="m2">
+              <h3>Module 2 — Functions, Scope, and Closures</h3>
+              <div class="desc">Function patterns, lexical scope, and closures in practical use</div>
+              <div class="topics">
+                <div class="topic"><strong>Lesson 1</strong> — Function declarations, expressions, arrow functions</div>
+                <div class="topic"><strong>Lesson 2</strong> — Closures and private state</div>
+                <div class="topic"><strong>Lesson 3</strong> — Hoisting and block scope</div>
+                <div class="topic"><strong>Lesson 4</strong> — The arguments object and rest/spread</div>
+              </div>
+              <div class="sub"><strong>Outcomes</strong>: Build reusable functions and control scope safely.</div>
+            </section>
+
+            <!-- Module 3 -->
+            <section class="module" id="m3">
+              <h3>Module 3 — Objects, Prototypes, and Classes</h3>
+              <div class="desc">Object model, prototypes and modern class syntax</div>
+              <div class="topics">
+                <div class="topic"><strong>Lesson 1</strong> — Object literals, property descriptors</div>
+                <div class="topic"><strong>Lesson 2</strong> — Prototype chain and inheritance</div>
+                <div class="topic"><strong>Lesson 3</strong> — ES6 classes, super, static methods</div>
+                <div class="topic"><strong>Lesson 4</strong> — Object immutability and patterns</div>
+              </div>
+              <div class="sub"><strong>Outcomes</strong>: Model domain entities and inheritance patterns in JS.</div>
+            </section>
+
+            <!-- Module 4 -->
+            <section class="module" id="m4">
+              <h3>Module 4 — Asynchronous JavaScript</h3>
+              <div class="desc">Callbacks, promises, async/await and concurrency patterns</div>
+              <div class="topics">
+                <div class="topic"><strong>Lesson 1</strong> — Event loop, microtasks vs macrotasks</div>
+                <div class="topic"><strong>Lesson 2</strong> — Promises and chaining</div>
+                <div class="topic"><strong>Lesson 3</strong> — async/await and error handling</div>
+                <div class="topic"><strong>Lesson 4</strong> — Parallelism, throttling, debouncing</div>
+              </div>
+              <div class="sub"><strong>Outcomes</strong>: Write robust async code and reason about concurrency in the browser and Node.</div>
+            </section>
+
+            <!-- Module 5 -->
+            <section class="module" id="m5">
+              <h3>Module 5 — DOM, Events and Browser APIs</h3>
+              <div class="desc">Manipulate the DOM, handle events, and use browser-provided APIs</div>
+              <div class="topics">
+                <div class="topic"><strong>Lesson 1</strong> — DOM traversal and manipulation</div>
+                <div class="topic"><strong>Lesson 2</strong> — Event delegation, propagation, custom events</div>
+                <div class="topic"><strong>Lesson 3</strong> — Web APIs: Fetch, Storage, History, Geolocation</div>
+                <div class="topic"><strong>Lesson 4</strong> — Accessibility basics and progressive enhancement</div>
+              </div>
+              <div class="sub"><strong>Outcomes</strong>: Build interactive, accessible UIs with vanilla JS.</div>
+            </section>
+
+            <!-- Module 6 -->
+            <section class="module" id="m6">
+              <h3>Module 6 — Modern ES and Tooling</h3>
+              <div class="desc">Modern language features and developer tooling workflow</div>
+              <div class="topics">
+                <div class="topic"><strong>Lesson 1</strong> — ES6+ features: destructuring, modules, optional chaining</div>
+                <div class="topic"><strong>Lesson 2</strong> — Modules, bundlers (Rollup, Webpack, Vite) basics</div>
+                <div class="topic"><strong>Lesson 3</strong> — Transpilation with Babel, polyfills, browser support</div>
+                <div class="topic"><strong>Lesson 4</strong> — Linters, formatters, and editor integration (ESLint, Prettier)</div>
+              </div>
+              <div class="sub"><strong>Outcomes</strong>: Set up modern build pipelines and write portable ES code.</div>
+            </section>
+
+            <!-- Module 7 -->
+            <section class="module" id="m7">
+              <h3>Module 7 — Node.js and Backend Fundamentals</h3>
+              <div class="desc">Server-side JavaScript, HTTP, file I/O, and npm ecosystem</div>
+              <div class="topics">
+                <div class="topic"><strong>Lesson 1</strong> — Node runtime, REPL, module resolution</div>
+                <div class="topic"><strong>Lesson 2</strong> — Building servers with native http and Express</div>
+                <div class="topic"><strong>Lesson 3</strong> — Working with databases (MongoDB / PostgreSQL) and ORMs</div>
+                <div class="topic"><strong>Lesson 4</strong> — Authentication patterns, sessions and JWT</div>
+              </div>
+              <div class="sub"><strong>Outcomes</strong>: Build and deploy simple APIs and full-stack apps using Node.js.</div>
+            </section>
+
+            <!-- Module 8 -->
+            <section class="module" id="m8">
+              <h3>Module 8 — Testing, Debugging and Quality</h3>
+              <div class="desc">Write unit and integration tests, debug, and measure quality</div>
+              <div class="topics">
+                <div class="topic"><strong>Lesson 1</strong> — Testing fundamentals with Jest or Mocha</div>
+                <div class="topic"><strong>Lesson 2</strong> — DOM testing with Testing Library</div>
+                <div class="topic"><strong>Lesson 3</strong> — Debugging in Chrome and VS Code; performance profiling</div>
+                <div class="topic"><strong>Lesson 4</strong> — Code coverage, CI integration and healthy pipelines</div>
+              </div>
+              <div class="sub"><strong>Outcomes</strong>: Ship reliable code with tests and automated checks.</div>
+            </section>
+
+            <!-- Module 9 -->
+            <section class="module" id="m9">
+              <h3>Module 9 — React Basics</h3>
+              <div class="desc">Component-driven UI using React core patterns</div>
+              <div class="topics">
+                <div class="topic"><strong>Lesson 1</strong> — React components, JSX, props and state</div>
+                <div class="topic"><strong>Lesson 2</strong> — Hooks: useState, useEffect, custom hooks</div>
+                <div class="topic"><strong>Lesson 3</strong> — Routing with React Router and code splitting</div>
+                <div class="topic"><strong>Lesson 4</strong> — State management patterns (context, reducers)</div>
+              </div>
+              <div class="sub"><strong>Outcomes</strong>: Build SPA components and manage state predictably.</div>
+            </section>
+
+            <!-- Module 10 -->
+            <section class="module" id="m10">
+              <h3>Module 10 — Advanced Frontend Patterns</h3>
+              <div class="desc">Performance, accessibility, progressive web apps, and advanced UX patterns</div>
+              <div class="topics">
+                <div class="topic"><strong>Lesson 1</strong> — Web performance optimization and critical rendering path</div>
+                <div class="topic"><strong>Lesson 2</strong> — Service Workers and PWAs</div>
+                <div class="topic"><strong>Lesson 3</strong> — Accessibility deep dive (ARIA, testing, semantics)</div>
+                <div class="topic"><strong>Lesson 4</strong> — Advanced patterns: micro-frontends, module federation overview</div>
+              </div>
+              <div class="sub"><strong>Outcomes</strong>: Build high-performance, accessible, and resilient frontends.</div>
+            </section>
+
+            <!-- Module 11 -->
+            <section class="module" id="m11">
+              <h3>Module 11 — Build and Deployment</h3>
+              <div class="desc">Prepare apps for production and deploy to modern platforms</div>
+              <div class="topics">
+                <div class="topic"><strong>Lesson 1</strong> — Bundling strategies, caching and long-term caching</div>
+                <div class="topic"><strong>Lesson 2</strong> — Docker for frontend and backend apps</div>
+                <div class="topic"><strong>Lesson 3</strong> — CI/CD pipelines (GitHub Actions), environment management</div>
+                <div class="topic"><strong>Lesson 4</strong> — Serving strategies and CDNs</div>
+              </div>
+              <div class="sub"><strong>Outcomes</strong>: Deploy apps with repeatable pipelines and monitoring readiness.</div>
+            </section>
+
+            <!-- Final Project -->
+            <section class="module" id="final">
+              <h3>Capstone Project</h3>
+              <div class="desc">End-to-end project that ties together frontend, backend, testing, and deployment</div>
+              <div class="topics">
+                <div class="topic"><strong>Project ideas</strong> — Single page app with Node API and DB; Real-time chat app; Data dashboard with interactive charts</div>
+                <div class="topic"><strong>Deliverables</strong> — Source code, tests, CI config, Dockerfile, README, demo video</div>
+                <div class="topic"><strong>Assessment</strong> — Code quality, tests, UX, deployability and presentation</div>
+              </div>
+              <div class="sub"><strong>Outcomes</strong>: Portfolio-ready full-stack JavaScript application.</div>
+            </section>
+          </div>
+        </div>
+
+        <aside class="sidebar">
+          <div class="toc" aria-label="Course contents">
+            <strong style="display:block;margin-bottom:8px">Contents</strong>
+            <a href="#m1">Module 1 — Fundamentals</a>
+            <a href="#m2">Module 2 — Functions & Scope</a>
+            <a href="#m3">Module 3 — Objects & Classes</a>
+            <a href="#m4">Module 4 — Asynchrony</a>
+            <a href="#m5">Module 5 — DOM & Browser APIs</a>
+            <a href="#m6">Module 6 — ES & Tooling</a>
+            <a href="#m7">Module 7 — Node.js</a>
+            <a href="#m8">Module 8 — Testing</a>
+            <a href="#m9">Module 9 — React</a>
+            <a href="#m10">Module 10 — Advanced Frontend</a>
+            <a href="#m11">Module 11 — Deployment</a>
+            <a href="#final">Capstone Project</a>
+
+            <div style="margin-top:12px;border-top:1px solid rgba(255,255,255,0.02);padding-top:10px">
+              <div class="muted">Course length</div>
+              <div style="font-weight:700;margin-top:6px">11 modules • ~120 hours</div>
+              <div class="muted" style="margin-top:8px">Assessment</div>
+              <div style="font-size:14px;margin-top:6px">Quizzes, coding assignments, peer reviews, final capstone</div>
+              <a class="cta" href="#final" style="display:inline-block">View capstone brief</a>
+            </div>
+          </div>
+
+          <div style="margin-top:14px" class="card">
+            <div style="font-weight:700">Included resources</div>
+            <ul style="margin:8px 0 0 18px;color:var(--muted)">
+              <li>Starter repos and code samples</li>
+              <li>Assignment briefs and rubrics</li>
+              <li>Recorded walkthroughs and demos</li>
+              <li>Cheat sheets for ES features and APIs</li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <footer>
+      <div>iAM Scholar • Golden Apple Technologies</div>
+    </footer>
+  </div>
+</body>
+</html>
