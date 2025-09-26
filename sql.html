@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SQL Programming Course • iAM Scholar</title>
+  <meta name="description" content="iAM Scholar — SQL track by Golden Apple Technologies. Learn relational databases, queries, joins, and data manipulation with SQL." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo" aria-hidden="true">SQL</div>
+      <div>
+        <h1>SQL Programming • iAM Scholar</h1>
+        <div class="meta">Relational databases, queries, joins, and data manipulation with SQL</div>
+      </div>
+    </header>
+
+    <div class="card">
+      <div class="grid">
+        <main>
+          <p><strong>Course overview</strong>: Learn SQL from fundamentals to advanced querying — covering schema design, joins, subqueries, indexing, and transactions. Ideal for data analysts, backend developers, and anyone working with relational databases.</p>
+
+          <!-- Modules -->
+          <section class="module" id="m1">
+            <h3>Module 1 — SQL Basics</h3>
+            <div class="desc">Introduction to databases and basic SQL syntax.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — What is SQL and how databases work</div>
+              <div class="topic"><strong>Lesson 2</strong> — SELECT, FROM, WHERE clauses</div>
+              <div class="topic"><strong>Lesson 3</strong> — Filtering, sorting, and limiting results</div>
+              <div class="topic"><strong>Lesson 4</strong> — SQL comments and formatting</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Query and filter data from a single table.</div>
+            <div class="example"><pre>SELECT name, age FROM students WHERE age &gt; 18;</pre></div>
+          </section>
+
+          <section class="module" id="m2">
+            <h3>Module 2 — Data Manipulation</h3>
+            <div class="desc">Insert, update, and delete records in a database.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — INSERT INTO and VALUES</div>
+              <div class="topic"><strong>Lesson 2</strong> — UPDATE and SET clauses</div>
+              <div class="topic"><strong>Lesson 3</strong> — DELETE FROM and WHERE</div>
+              <div class="topic"><strong>Lesson 4</strong> — Best practices for safe data changes</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Modify data in relational tables securely.</div>
+          </section>
+
+          <section class="module" id="m3">
+            <h3>Module 3 — Table Design and Relationships</h3>
+            <div class="desc">Create tables and define relationships between them.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — CREATE TABLE and column types</div>
+              <div class="topic"><strong>Lesson 2</strong> — PRIMARY KEY and FOREIGN KEY</div>
+              <div class="topic"><strong>Lesson 3</strong> — Normalization and schema design</div>
+              <div class="topic"><strong>Lesson 4</strong> — ALTER TABLE and constraints</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Design normalized schemas with relational integrity.</div>
+          </section>
+
+          <section class="module" id="m4">
+            <h3>Module 4 — Joins and Subqueries</h3>
+            <div class="desc">Combine data from multiple tables using joins and subqueries.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — INNER JOIN, LEFT JOIN, RIGHT JOIN</div>
+              <div class="topic"><strong>Lesson 2</strong> — CROSS JOIN and self joins</div>
+              <div class="topic"><strong>Lesson 3</strong> — Subqueries in SELECT and WHERE</div>
+              <div class="topic"><strong>Lesson 4</strong> — EXISTS and IN clauses</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Write complex queries across multiple tables.</div>
+          </section>
+
+          <section class="module" id="m5">
+            <h3>Module 5 — Aggregation and Grouping</h3>
+            <div class="desc">Summarize and group data using aggregate functions.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — COUNT, SUM, AVG, MIN, MAX</div>
+              <div class="topic"><strong>Lesson 2</strong> — GROUP BY and HAVING clauses</div>
+              <div class="topic"><strong>Lesson 3</strong> — Combining aggregates with joins</div>
+              <div class="topic"><strong>Lesson 4</strong> — Window functions overview</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Analyze and summarize data efficiently.</div>
+          </section>
+
+          <section class="module" id="m6">
+            <h3>Module 6 — Transactions and Indexing</h3>
+            <div class="desc">Control data integrity and optimize performance.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — BEGIN, COMMIT, ROLLBACK</div>
+              <div class="topic"><strong>Lesson 2</strong> — ACID properties and isolation levels</div>
+              <div class="topic"><strong>Lesson 3</strong> — CREATE INDEX and performance tips</div>
+              <div class="topic"><strong>Lesson 4</strong> — Capstone: design, query, and optimize</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Build reliable and performant SQL applications.</div>
+            <div class="example"><pre>BEGIN;
+UPDATE accounts SET balance = balance - 100 WHERE id = 1;
+UPDATE accounts SET balance = balance + 100 WHERE id = 2;
+COMMIT;</pre></div>
+          </section>
+        </main>
+
+        <aside class="sidebar">
+          <nav class="toc">
+            <strong style="display:block;margin-bottom:8px">Contents</strong>
+            <a href="#m1">Module 1 — Basics</a>
+            <a href="#m2">Module 2 — Data Manipulation</a>
+            <a href="#m3">Module 3 — Table Design</a>
+            <a href="#m4">Module 4 — Joins</a>
+            <a href="#m5">Module 5 — Aggregation</a>
+            <a href="#m6">Module 6 — Transactions</a>
+            <div style="margin-top:12px;border-top:1px solid rgba(255,255,255,0.02);padding-top:10px">
+              <div class="muted">Course length</div>
+              <div style="font-weight:700;margin-top:6px">6 modules • ~60–100 hours</div>
+              <div class="muted" style="margin-top:8px">Assessment</div>
+              <div style="font-size:14px;margin-top:6px">Labs, query reviews, final capstone</div>
+              <a class="cta" href="#m6">View capstone brief</a>
+            </div>
+          </nav>
+        </aside>
+      </div>
+
+      <div style="margin-top:18px;color:var(--muted);font-size:13px">
+        <strong>Delivery</strong>: Short lessons, hands-on labs, query reviews, and a final capstone. Students receive sample datasets, walkthroughs, and optimization guides.
+      </div>
+    </div>
+
+    <footer style="margin-top:18px;color:var(--muted);text-align:center">
+      <div>iAM Scholar • Golden Apple Technologies</div>
+    </footer>
+  </div>
+</body>
+</html>
