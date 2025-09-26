@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Kotlin Course • iAM Scholar</title>
+  <meta name="description" content="iAM Scholar — Kotlin track by Golden Apple Technologies. Modern JVM and multiplatform development with Kotlin." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#071028;
+      --card:#08152b;
+      --accent:#7f52ff;
+      --accent-2:#ff4300;
+      --muted:#98a6b4;
+      --glass: rgba(255,255,255,0.03);
+      --glass-border: rgba(255,255,255,0.04);
+      --radius:12px;
+      --max-width:1180px;
+      --shadow: 0 10px 36px rgba(0,0,0,0.6);
+      --sidebar-min:260px;
+      --sidebar-max:360px;
+      --gap:18px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      background: linear-gradient(180deg,var(--bg),#031225);
+      color:#eaf2ff;
+      padding:28px;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      justify-content:center;
+    }
+    .wrap{width:100%;max-width:var(--max-width)}
+    header{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+    .logo{width:56px;height:56px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),var(--accent-2));font-weight:800;color:white;font-size:18px;box-shadow:var(--shadow)}
+    .logo svg{width:30px;height:30px}
+    h1{margin:0;font-size:26px}
+    .meta{color:var(--muted);margin-top:6px;margin-bottom:18px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.007));padding:22px;border-radius:var(--radius);border:1px solid var(--glass-border);box-shadow:var(--shadow)}
+    .grid{display:grid;grid-template-columns: 1fr minmax(var(--sidebar-min), var(--sidebar-max));gap:var(--gap);align-items:start}
+    @media(max-width:1100px){ .grid{grid-template-columns: 1fr minmax(220px, 320px)} }
+    @media(max-width:900px){ .grid{grid-template-columns:1fr} .sidebar{order:2} }
+
+    .module{margin-bottom:14px;padding:14px;border-radius:10px;background:rgba(255,255,255,0.01);border:1px solid rgba(255,255,255,0.02);width:100%}
+    .module h3{margin:0 0 8px 0}
+    .desc{color:var(--muted);margin-bottom:10px}
+    .topics{display:grid;gap:8px}
+    .topic{padding:10px;border-radius:8px;background:rgba(255,255,255,0.015);border:1px solid rgba(255,255,255,0.015);font-size:14px;overflow-wrap:break-word}
+    .example{margin-top:12px;padding:12px;border-radius:8px;background:#04112b;border:1px solid rgba(255,255,255,0.02);overflow:auto}
+    pre{background:transparent;color:inherit;margin:0;font-size:13px;white-space:pre-wrap;word-break:break-word}
+
+    .toc{background:var(--glass);padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.02);max-height:72vh;overflow:auto}
+    .toc a{display:block;padding:8px;border-radius:8px;color:var(--muted);font-size:14px;text-decoration:none}
+    .toc a:hover{background:linear-gradient(90deg, rgba(127,82,255,0.06), rgba(255,67,0,0.03));color:white}
+
+    .cta{display:inline-block;padding:10px 14px;border-radius:10px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white;font-weight:700;margin-top:12px;text-decoration:none}
+    .muted{color:var(--muted);font-size:13px}
+    table{width:100%;border-collapse:collapse;margin-top:8px}
+    table th, table td{padding:8px;border-bottom:1px solid rgba(255,255,255,0.03);text-align:left;font-size:13px}
+
+    / ensure widths fit container /
+    .module, .example, pre { max-width:100% }
+
+    @media (max-width:720px){
+      .logo{width:48px;height:48px}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo" aria-hidden="true" title="Kotlin">
+        <!-- Minimal Kotlin mark (inline SVG) -->
+        <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+          <defs>
+            <linearGradient id="k1" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#7f52ff"/>
+              <stop offset="1" stop-color="#ff4300"/>
+            </linearGradient>
+          </defs>
+          <rect width="48" height="48" rx="8" fill="url(#k1)"/>
+          <path d="M14 36 L34 12 L34 36 Z" fill="#fff" opacity="0.95"/>
+          <rect x="12" y="12" width="8" height="24" fill="#fff" opacity="0.08"/>
+        </svg>
+      </div>
+      <div>
+        <h1>Kotlin • iAM Scholar</h1>
+        <div class="meta">Modern JVM and multiplatform development — concise, safe, and interoperable Kotlin.</div>
+      </div>
+    </header>
+
+    <div class="card" role="main" aria-labelledby="course-title">
+      <div class="grid">
+        <main>
+          <h2 id="course-title" style="margin-top:0">Course overview</h2>
+          <p class="muted"><strong>Summary</strong>: Practical Kotlin program covering language fundamentals, coroutines, JVM interop, Android basics, Kotlin Multiplatform, testing, and production patterns. Hands-on labs and a capstone project.</p>
+
+          <!-- Module 1 -->
+          <section class="module" id="m1">
+            <h3>Module 1 — Kotlin Basics</h3>
+            <div class="desc">Syntax, types, null-safety, and basic control flow.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — Variables (val/var), basic types, type inference</div>
+              <div class="topic"><strong>Lesson 2</strong> — Null safety: ?, !!, ?: and safe calls</div>
+              <div class="topic"><strong>Lesson 3</strong> — Control flow: if, when, loops, expressions</div>
+              <div class="topic"><strong>Lesson 4</strong> — Functions, top-level functions, default/ named params</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Write idiomatic Kotlin with null-safety and concise syntax.</div>
+          </section>
+
+          <!-- Module 2 -->
+          <section class="module" id="m2">
+            <h3>Module 2 — Object-Oriented & Functional Kotlin</h3>
+            <div class="desc">Data classes, sealed classes, interfaces, and functional helpers.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — Data classes, copy, equals, toString</div>
+              <div class="topic"><strong>Lesson 2</strong> — Sealed classes and ADTs for safe modeling</div>
+              <div class="topic"><strong>Lesson 3</strong> — Extension functions and properties</div>
+              <div class="topic"><strong>Lesson 4</strong> — Higher-order functions and collection operations</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Model domains clearly and use Kotlin's functional features.</div>
+          </section>
+
+          <!-- Module 3 -->
+          <section class="module" id="m3">
+            <h3>Module 3 — Coroutines and Asynchrony</h3>
+            <div class="desc">Structured concurrency with coroutines, flows, and common patterns.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — Coroutine basics: launch, async, runBlocking</div>
+              <div class="topic"><strong>Lesson 2</strong> — Dispatchers, coroutine scope, and cancellation</div>
+              <div class="topic"><strong>Lesson 3</strong> — Flows: cold vs hot streams, operators</div>
+              <div class="topic"><strong>Lesson 4</strong> — Error handling and testing coroutines</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Implement efficient, cancellable async code using coroutines and flows.</div>
+          </section>
+
+          <!-- Module 4 -->
+          <section class="module" id="m4">
+            <h3>Module 4 — JVM Interop & Tooling</h3>
+            <div class="desc">Kotlin on the JVM, interop with Java, Gradle/Kotlin DSL and build tooling.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — Java interop: @JvmStatic, @JvmOverloads, nullability mapping</div>
+              <div class="topic"><strong>Lesson 2</strong> — Build with Gradle Kotlin DSL and project structure</div>
+              <div class="topic"><strong>Lesson 3</strong> — Reflection, annotations, and kapt</div>
+              <div class="topic"><strong>Lesson 4</strong> — Debugging, REPL and scripting with Kotlin</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Integrate Kotlin into JVM ecosystems and build toolchains with Gradle.</div>
+          </section>
+
+          <!-- Module 5 -->
+          <section class="module" id="m5">
+            <h3>Module 5 — Kotlin Multiplatform & Android Basics</h3>
+            <div class="desc">Share code across platforms and get started with Android Kotlin development.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — Kotlin Multiplatform concepts and project layout</div>
+              <div class="topic"><strong>Lesson 2</strong> — Sharing business logic across JVM/JS/Native</div>
+              <div class="topic"><strong>Lesson 3</strong> — Android basics: Activities, Jetpack Compose intro</div>
+              <div class="topic"><strong>Lesson 4</strong> — Multiplatform testing and platform-specific bindings</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Create reusable multiplatform modules and basic Android UIs with Compose.</div>
+          </section>
+
+          <!-- Module 6 -->
+          <section class="module" id="m6">
+            <h3>Module 6 — Persistence & Networking</h3>
+            <div class="desc">Database access, serialization, and HTTP clients for Kotlin apps.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — Exposed/Room/SQLDelight basics for persistence</div>
+              <div class="topic"><strong>Lesson 2</strong> — Serialization with kotlinx.serialization and Moshi/Gson</div>
+              <div class="topic"><strong>Lesson 3</strong> — Ktor and Retrofit for HTTP clients and servers</div>
+              <div class="topic"><strong>Lesson 4</strong> — Caching and offline patterns</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Build resilient data layers and networked features.</div>
+          </section>
+
+          <!-- Module 7 -->
+          <section class="module" id="m7">
+            <h3>Module 7 — Testing & Quality</h3>
+            <div class="desc">Unit and integration testing, mocking, and CI for Kotlin projects.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — JUnit 5 with Kotlin, assertions and fixtures</div>
+              <div class="topic"><strong>Lesson 2</strong> — MockK for mocking and behavior verification</div>
+              <div class="topic"><strong>Lesson 3</strong> — Instrumented Android tests and Robolectric</div>
+              <div class="topic"><strong>Lesson 4</strong> — CI pipelines and quality gates for Kotlin projects</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Ensure reliability with tests and continuous integration.</div>
+          </section>
+
+          <!-- Module 8 -->
+          <section class="module" id="m8">
+            <h3>Module 8 — Advanced Patterns & Performance</h3>
+            <div class="desc">Performance, memory, DSLs, and advanced language features.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — Inline functions, reified generics, and performance tips</div>
+              <div class="topic"><strong>Lesson 2</strong> — Writing Kotlin DSLs and type-safe builders</div>
+              <div class="topic"><strong>Lesson 3</strong> — Memory profiling and allocation reduction</div>
+              <div class="topic"><strong>Lesson 4</strong> — Interop patterns and migration strategies</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Author high-performance Kotlin code and expressive DSLs.</div>
+          </section>
+
+          <!-- Module 9 -->
+          <section class="module" id="m9">
+            <h3>Module 9 — Tooling, Libraries & Ecosystem</h3>
+            <div class="desc">Explore popular Kotlin libraries, multiplatform libraries, and deployment considerations.</div>
+            <div class="topics">
+              <div class="topic"><strong>Lesson 1</strong> — Ktor, kotlinx.coroutines, kotlinx.serialization</div>
+              <div class="topic"><strong>Lesson 2</strong> — Jetpack Compose and Compose Multiplatform overview</div>
+              <div class="topic"><strong>Lesson 3</strong> — Publishing artifacts and versioning</div>
+              <div class="topic"><strong>Lesson 4</strong> — Community tools and learning resources</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: Navigate the Kotlin ecosystem and choose libraries wisely.</div>
+          </section>
+
+          <!-- Module 10 -->
+          <section class="module" id="m10">
+            <h3>Module 10 — Capstone: Multiplatform App</h3>
+            <div class="desc">Design and ship a small multiplatform application (shared logic + platform UI).</div>
+            <div class="topics">
+              <div class="topic"><strong>Project brief</strong> — Build a notes or task app with shared domain logic and platform UIs</div>
+              <div class="topic"><strong>Deliverables</strong> — Repo, tests, CI, platform builds (JVM/Android/JS), and README</div>
+              <div class="topic"><strong>Assessment</strong> — Code structure, tests, cross-platform reuse, and documentation</div>
+            </div>
+            <div class="sub muted"><strong>Outcomes</strong>: A portfolio-ready Kotlin multiplatform project.</div>
+            <div class="example"><pre>// Kotlin example
+fun greet(name: String) = "Hello, ${'$'}name!"
+println(greet("iAM Scholar"))</pre></div>
+          </section>
+        </main>
+
+        <aside class="sidebar" role="complementary">
+          <nav class="toc" aria-label="Course contents">
+            <strong style="display:block;margin-bottom:8px">Contents</strong>
+            <a href="#m1">Module 1 — Basics</a>
+            <a href="#m2">Module 2 — OOP & Functional</a>
+            <a href="#m3">Module 3 — Coroutines</a>
+            <a href="#m4">Module 4 — JVM Interop</a>
+            <a href="#m5">Module 5 — Multiplatform & Android</a>
+            <a href="#m6">Module 6 — Persistence & Networking</a>
+            <a href="#m7">Module 7 — Testing</a>
+            <a href="#m8">Module 8 — Advanced Patterns</a>
+            <a href="#m9">Module 9 — Ecosystem</a>
+            <a href="#m10">Module 10 — Capstone</a>
+
+            <div style="margin-top:12px;border-top:1px solid rgba(255,255,255,0.02);padding-top:10px">
+              <div class="muted">Course length</div>
+              <div style="font-weight:700;margin-top:6px">10 modules • ~60–100 hours</div>
+              <div class="muted" style="margin-top:8px">Assessment</div>
+              <div style="font-size:14px;margin-top:6px">Labs, code reviews, device testing, final capstone</div>
+              <a class="cta" href="#m10" style="display:inline-block">View capstone brief</a>
+            </div>
+          </nav>
+
+          <div style="margin-top:14px" class="card" aria-hidden="false">
+            <div style="font-weight:700">Included resources</div>
+            <ul style="margin:8px 0 0 18px;color:var(--muted)">
+              <li>Starter repos and sample multiplatform modules</li>
+              <li>Gradle Kotlin DSL templates</li>
+              <li>Compose examples and Android starters</li>
+              <li>Testing and CI templates</li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+
+      <div style="margin-top:18px;color:var(--muted);font-size:13px">
+        <strong>Delivery</strong>: Short lessons, hands-on labs, code reviews, and a final capstone. Students get starter repos, rubrics, and example solutions.
+      </div>
+    </div>
+
+    <footer style="margin-top:18px;color:var(--muted);text-align:center">
+      <div>iAM Scholar • Golden Apple Technologies</div>
+    </footer>
+  </div>
+</body>
+</html>
