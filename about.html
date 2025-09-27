@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About | Golden Apple Technologies</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: #f0f0f0;
+    }
+    .sidebar {
+      position: fixed;
+      top: 0; right: -250px;
+      width: 250px; height: 100%;
+      background-color: #111827;
+      padding: 1rem;
+      transition: right 0.3s ease-in-out;
+      z-index: 1000;
+    }
+    .sidebar.show { right: 0; }
+    .sidebar a {
+      display: block; padding: .5rem; margin-bottom: .5rem;
+      color: #f0f0f0; text-decoration: none;
+      border-right: 4px solid transparent;
+    }
+    .sidebar a:hover {
+      background-color: #1f2937; border-right: 4px solid #ffd700;
+    }
+    .header-glow {
+      text-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700;
+    }
+    .form-control {
+      background-color: #1f2937; border: none; color: #fff;
+    }
+    .form-control::placeholder { color: #aaa; }
+    .menu-btn {
+      cursor: pointer; font-size: 1.5rem; color: #ffd700;
+    }
+    .history-img {
+      width: 100%; border-radius: 10px; margin-top: 1rem;
+    }
+    .section { display: none; }
+    .section.active { display: block; }
+    .card-platform {
+      background-color: #111827; border: none; color: #f0f0f0;
+      transition: transform 0.2s;
+    }
+    .card-platform:hover { transform: scale(1.05); }
+  </style>
+</head>
+<body>
+
+  <!-- NAVIGATION -->
+  <nav class="navbar navbar-dark bg-dark px-4 d-flex justify-content-between">
+    <span class="navbar-brand mb-0 h1">Golden Apple Technologies</span>
+    <span class="menu-btn" onclick="toggleSidebar()">☰</span>
+  </nav>
+
+  <!-- SIDEBAR -->
+  <div id="sidebar" class="sidebar">
+    <h2 class="text-xl font-bold mb-4 header-glow">Menu</h2>
+    <a href="#" onclick="showSection('history')">📜 History</a>
+    <a href="#" onclick="showSection('vision')">🚀 Vision</a>
+    <a href="#" onclick="showSection('team')">👥 Officials</a>
+    <a href="#" onclick="showSection('comments')">💬 Comments</a>
+    <a href="#" onclick="showSection('social')">🌐 Social Media</a>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="container mt-4">
+    <!-- HISTORY -->
+    <section id="history" class="section active">
+      <h1 class="text-3xl font-bold mb-3 header-glow">Our History</h1>
+      <p class="text-lg mb-4">
+        Golden Apple Technologies was born in Kampala from the mentorship of CEO Nathan. What started as a coding dream has evolved into a tech empire—empowering youth, building tools like Codemind VOL 23.0, and launching platforms like iAM Scholar.
+      </p>
+<img src="https://images.unsplash.com/photo-1581090700227-1e7b6c7e7f4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80" alt="Tech Team Collaboration" class="history-img" />            <img src="https://images.unsplash.com/photo-1555949963-aa79dcee981d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80" alt="Coding Innovation" class="history-img" />    </section>
+
+    <!-- VISION -->
+    <section id="vision" class="section">
+      <h2 class="text-2xl font-bold mb-3">Our Vision</h2>
+      <p>
+        We aim to build legendary digital experiences that blend creativity, code, and culture. From educational games to cybersecurity tools, our mission is to shape Africa’s tech future.
+      </p>
+    </section>
+
+    <!-- OFFICIALS -->
+    <section id="team" class="section">
+      <h2 class="text-2xl font-bold mb-4">Golden Apple Officials</h2>
+      <div class="row g-4">
+        <div class="col-md-6 col-lg-4">
+          <div class="card bg-gray-800 text-white">
+            <img src="https://via.placeholder.com/150" class="card-img-top" alt="ICII">
+            <div class="card-body">
+              <h5 class="card-title">ICII</h5>
+              <p class="card-text">Lead Architect & Visionary</p>
+              <a href="icii.html" class="btn btn-warning">More</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="card bg-gray-800 text-white">
+            <img src="https://via.placeholder.com/150" class="card-img-top" alt="Dizzer J">
+            <div class="card-body">
+              <h5 class="card-title">Dizzer J</h5>
+              <p class="card-text">Co-Director & Music Producer</p>
+              <a href="dizzerj.html" class="btn btn-warning">More</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="card bg-gray-800 text-white">
+            <img src="https://gregorysteve.rf.gd/?i=1" class="card-img-top" alt="Gregory">
+            <div class="card-body">
+              <h5 class="card-title">Gregory Steve</h5>
+              <p class="card-text">Head of Development</p>
+              <a href="https://gregorysteve.rf.gd" class="btn btn-warning">More</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="card bg-gray-800 text-white">
+            <img src="https://via.placeholder.com/150" class="card-img-top" alt="Whole Team">
+            <div class="card-body">
+              <h5 class="card-title">Whole Team</h5>
+              <p class="card-text">Full Golden Apple Crew</p>
+              <a href="whole_team.html" class="btn btn-warning">More</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMMENTS -->
+    <section id="comments" class="section">
+      <h2 class="text-2xl font-bold mb-3">Send Us a Comment</h2>
+      <form onsubmit="sendToWhatsApp(); return false;">
+        <input type="text" id="name" class="form-control mb-2" placeholder="Your Name" required/>
+        <textarea id="message" class="form-control mb-2" rows="4" placeholder="Your Comment" required></textarea>
+        <button type="submit" class="btn btn-warning">Submit</button>
+      </form>
+    </section>
+
+    <!-- SOCIAL MEDIA -->
+    <section id="social" class="section">
+      <h2 class="text-2xl font-bold mb-4 header-glow">Connect With Us</h2>
+      <div class="row g-4">
+        <div class="col-md-6 col-lg-4">
+          <div class="card card-platform p-4 text-center">
+            <h5 class="card-title">Instagram</h5>
+            <a href="https://www.instagram.com/goldenappletech?igsh=ZmY2YTF0cWRodWl4" target="_blank" class="btn btn-warning">Follow @goldenappletech</a>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="card card-platform p-4 text-center">
+            <h5 class="card-title">Facebook</h5>
+            <a href="#" target="_blank" class="btn btn-warning">Like Our Page</a>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="card card-platform p-4 text-center">
+            <h5 class="card-title">TikTok</h5>
+            <a href="#" target="_blank" class="btn btn-warning">Watch @goldenappletech</a>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="card card-platform p-4 text-center">
+            <h5 class="card-title">GitHub</h5>
+            <a href="#" target="_blank" class="btn btn-warning">Explore Our Repos</a>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="card card-platform p-4 text-center">
+            <h5 class="card-title">LinkedIn</h5>
+            <a href="#" target="_blank" class="btn btn-warning">Connect With Us</a>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="card card-platform p-4 text-center">
+            <h5 class="card-title">YouTube</h5>
+            <a href="#" target="_blank" class="btn btn-warning">Subscribe</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="text-center mt-5 text-gray-400 text-sm">
+    © 2025 Golden Apple Technologies | Powered by Vision & Code
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('show');
+    }
+    function showSection(id) {
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      toggleSidebar();
+    }
+    function sendToWhatsApp() {
+      const name = document.getElementById('name').value;
+      const message = document.getElementById('message').value;
+      const full = `*Comment*
+> I'm ${name}.
+ Here's my comment:\n\n${message}`;
+      window.open(`https://wa.me/256791728084?text=${encodeURIComponent(full)}`, '_blank');
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
