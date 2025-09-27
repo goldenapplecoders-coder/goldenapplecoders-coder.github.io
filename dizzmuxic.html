@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DizzMuxic | Dizzer J</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Rajdhani', sans-serif;
+      background: linear-gradient(to right, #1f1c2c, #928dab);
+      color: #fff;
+    }
+    .navbar {
+      background-color: #111;
+      padding: 1rem;
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      border-bottom: 2px solid #00f7ff;
+    }
+    .navbar a {
+      color: #00f7ff;
+      text-decoration: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .navbar a:hover {
+      color: #fff;
+    }
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 2rem;
+    }
+    .section {
+      display: none;
+    }
+    .active {
+      display: block;
+    }
+    .card {
+      background-color: #2c2c3c;
+      border: 1px solid #00f7ff;
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 0 10px #00f7ff55;
+    }
+    h1, h2 {
+      color: #00f7ff;
+      margin-bottom: 1rem;
+    }
+    .track-meta {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-top: 0.5rem;
+    }
+    .download-btn {
+      display: inline-block;
+      background-color: #00f7ff;
+      color: #111;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+      margin-top: 0.5rem;
+    }
+    .download-btn:hover {
+      background-color: #00c7cc;
+    }
+    .comment {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .comment i {
+      font-size: 30px;
+      color: #00f7ff;
+    }
+    .comment-content {
+      background-color: #1a1a2e;
+      padding: 1rem;
+      border-radius: 8px;
+      border-left: 4px solid #00f7ff;
+    }
+    .reply-label {
+      font-size: 0.85rem;
+      color: #aaa;
+      margin-bottom: 0.3rem;
+      font-style: italic;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      border-top: 1px solid #00f7ff;
+      margin-top: 3rem;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <a onclick="showSection('music')">🎧 Music</a>
+    <a onclick="showSection('videos')">🎬 Videos</a>
+    <a onclick="showSection('comments')">💬 Comments</a>
+  </nav>
+
+  <div class="container">
+    <!-- MUSIC (Homepage) -->
+    <div id="music" class="section active">
+      <div class="card">
+        <h1>DizzMuxic by Dizzer J</h1>
+        <p>Welcome to the sonic lab of Golden Apple’s music-coder. DizzMuxic blends rhythm, logic, and emotion into tracks that power your mind and move your soul.</p>
+        <p>Each track is crafted for flow, focus, and fire — whether you're coding, creating, or cruising.</p>
+      </div>
+
+      <div class="card">
+        <h2>Shoot to Kill</h2>
+        <p>A fusion of trap beats and synth layers. Perfect for vybs in flow state.</p>
+        <div class="track-meta">
+          <strong>Release Date:</strong> Aug 12, 2024<br>
+          <strong>Album:</strong> Pretty Girls<br>
+          <strong>Duration:</strong> 3:42<br>
+          <strong>Type:</strong> Dancehall<br>
+          <strong>Listeners:</strong> 12,430<br>
+          <strong>Likes:</strong> 1.4M
+        </div>
+        <a href="stk.mp3" download class="download-btn"><i class="fas fa-download"></i> Download STK</a>
+      </div>
+
+      <div class="card">
+        <h2>Bisambi ft Page Vybz</h2>
+        <p>Deep bass meets rhyming melodies. Ideal for adults.</p>
+        <div class="track-meta">
+          <strong>Release Date:</strong> May 8, 2025<br>
+          <strong>Album:</strong> Pretty Girls<br>
+          <strong>Duration:</strong> 4:05<br>
+          <strong>Type:</strong> Drill<br>
+          <strong>Listeners:</strong> 9,870<br>
+          <strong>Likes:</strong> 12K
+        </div>
+        <a href="bsm.mp3" download class="download-btn"><i class="fas fa-download"></i> Download BSM</a>
+      </div>
+
+      <div class="card">
+        <h2>Champs Of Mityana </h2>
+        <p>Ambient synths with cosmic vibes. Designed for creative school sessions.</p>
+        <div class="track-meta">
+          <strong>Release Date:</strong> Mar 3, 2024<br>
+          <strong>Album:</strong> No Album<br>
+          <strong>Duration:</strong> 2:10<br>
+          <strong>Type:</strong> Jazz<br>
+          <strong>Listeners:</strong> 7,540<br>
+          <strong>Likes:</strong> 980
+        </div>
+        <a href="ssm.mp3" download class="download-btn"><i class="fas fa-download"></i> Download SSM</a>
+      </div>
+
+      <div class="card">
+        <h2>Ekyiti ft Page Vybz</h2>
+        <p>High-energy electro beats for powering through logic challenges.</p>
+        <div class="track-meta">
+          <strong>Release Date:</strong> August 18, 2024<br>
+          <strong>Album:</strong> Pretty Girls<br>
+          <strong>Duration:</strong> 1:58<br>
+          <strong>Type:</strong> Drill<br>
+          <strong>Listeners:</strong> 10,220<br>
+          <strong>Likes:</strong> 1,430
+        </div>
+        <a href="ekt.mp3" download class="download-btn"><i class="fas fa-download"></i> Download EKT</a>
+      </div>
+    </div>
+
+    <!-- VIDEOS -->
+    <div id="videos" class="section">
+      <div class="card">
+        <h2>🎬 Shoot to Kill (STK)</h2>
+        <video controls width="100%">
+          <source src="stk.mp4" type="video/mp4">
+        </video>
+      </div>
+
+      <div class="card">
+        <h2>🎬 Byisambi (BSM)</h2>
+        <video controls width="100%">
+          <source src="bsm.mp4" type="video/mp4">
+        </video>
+      </div>
+
+      <div class="card">
+        <h2>🎬 Champs of Mityana (SSM)</h2>
+        <video controls width="100%">
+          <source src="ssm.mp4" type="video/mp4">
+        </video>
+      </div>
+
+      <div class="card">
+        <h2>🎬 Ekyiti (EKT)</h2>
+        <video controls width="100%">
+          <source src="ekt.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+
+    <!-- COMMENTS -->
+    <div id="comments" class="section">
+      <div class="card">
+        <h2>💬 Listener Comments</h2>
+<div class="comment">
+          <i class="fas fa-user-circle"></i>
+          <div class="comment-content">
+            <strong>@AtimPaul</strong><br>
+            <div class="reply-label">In reply to... STK</div>
+            "Just know ur on fire man"
+          </div>
+        </div>
+<div class="comment">
+          <i class="fas fa-user-circle"></i>
+          <div class="comment-content">
+            <strong>@Cute_her</strong><br>
+            <div class="reply-label">In reply to... STK</div>
+            "🤟🤟🤟"
+          </div>
+        </div>
+<div class="comment">
+          <i class="fas fa-user-circle"></i>
+          <div class="comment-content">
+            <strong>@Sam133</strong><br>
+            <div class="reply-label">In reply to... STK</div>
+            "What are you shooting to kill?"
+          </div>
+        </div>
+<div class="comment">
+          <i class="fas fa-user-circle"></i>
+          <div class="comment-content">
+            <strong>@Tonnyfashions</strong><br>
+            <div class="reply-label">In reply to @Sam133 [You are ..]</div>
+            "Inbox me for shoes delivery. Bikumba"
+          </div>
+        </div>
+<div class="comment">
+          <i class="fas fa-user-circle"></i>
+          <div class="comment-content">
+            <strong>@Sam133</strong><br>
+            <div class="reply-label">In reply to... STK</div>
+            "You are talented, keep it up man"
+          </div>
+        </div>
+<div class="comment">
+          <i class="fas fa-user-circle"></i>
+          <div class="comment-content">
+            <strong>@ariana_ela</strong><br>
+            <div class="reply-label">In reply to... STK</div>
+            "STK is 🔥! The beat drop at 1:20 gave me goosebumps. This is so cool."
+          </div>
+        </div>
+<div class="comment">
+          <i class="fas fa-user-circle"></i>
+          <div class="comment-content">
+            <strong>@i_am_dizzer_j</strong><br>
+            <div class="reply-label">In reply to @Pine❤️[We are n...</div>
+            "I'll drop"
+          </div>
+        </div>
+<div class="comment">
+          <i class="fas fa-user-circle"></i>
+          <div class="comment-content">
+            <strong>@metaMoneyMachine</strong><br>
+            <div class="reply-label">In reply to @Pine❤️[We are n...</div>
+            "And Kiti"
+          </div>
+        </div>
+<div class="comment">
+          <i class="fas fa-user-circle"></i>
+          <div class="comment-content">
+            <strong>@Pine❤️</strong><br>
+            <div class="reply-label">In reply to... STK</div>
+            "We are not seeing Bisabi"
+          </div>
+        </div>
+<div class="comment">
+          <i class="fas fa-user-circle"></i>
+          <div class="comment-content">
+            <strong>@omaletTimes</strong><br>
+            <div class="reply-label">In reply to... STK</div>
+            "Is pretty girls out?"
+          </div>
+        </div>
+<div class="comment">
+          <i class="fas fa-user-circle"></i>
+          <div class="comment-content">
+            <strong>@i_am_page</strong><br>
+            <div class="reply-label">In reply to... STK</div>
+            "👌🤟🤟🤟
+ Bigup"
+          </div>
+        </div>
+
+        <div class="comment">
+          <i class="fas fa-user-circle"></i>
+          <div class="comment-content">
+            <strong>@SynthQueen</strong><br>
+            <div class="reply-label">In reply to... BSM</div>
+            "BSM is smooth but lacks punch. Could use more layering in the mid-range."
+          </div>
+        </div>
+
+        <div class="comment">
+          <i class="fas fa-user-circle"></i>
+          <div class="comment-content">
+          <strong>@see_me</strong><br>
+            <div class="reply-label">In reply to... SSM</div>
+            "SSM made guys chill, bya kawani. Not champions"
+          </div>
+        </div>
+
+        <div class="comment">
+          <i class="fas fa-user-circle"></i>
+          <div class="comment-content">
+<strong>@EchoByte</strong><br>
+            <div class="reply-label">In reply to... EKT</div>
+                        "Kikume pola"
+          </div>
+        </div>
+
+        <div class="comment">
+          <i class="fas fa-user-circle"></i>
+          <div class="comment-content">
+            <strong>@BassCritic</strong><br>
+            <div class="reply-label">In reply to Bisambi...</div>
+            "BSM didn’t hit like I expected. Maybe it's just not my vibe, but production is clean."
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2025 Dizzer J | Golden Apple Technologies</p>
+  </footer>
+
+  <script>
+    function showSection(id) {
+      document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+  </script>
+</body>
+</html>
