@@ -72,7 +72,7 @@ Golden Apple runs **iAM Scholar**, a digital school for developers:
 - Ethical hacking, DevOps, and full-stack tracks  
 - Capstone projects, rubrics, and mentorship
 
-> Want to join? Visit [iAM Scholar](#) or email scholar@goldenappletech.com
+> Want to join? Visit [iAM Scholar](https://goldenapplecoders-coder.github.io/iam.html) or email [scholar@goldenappletech.com](goldenappletech.com@yahoo.com)
 
 ---
 
