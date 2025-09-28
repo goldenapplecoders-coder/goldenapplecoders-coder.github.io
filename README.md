@@ -1,4 +1,4 @@
-# Golden Apple Technologies 🍏✨(https://goldenapplecoders-coder.github.io/)  
+# [Golden Apple Technologies 🍏✨](https://goldenapplecoders-coder.github.io/)  
 **Crafted Code. Bold Design. Ethical Innovation.**
 
 ![Golden Apple Technologies](dancing.svg)
