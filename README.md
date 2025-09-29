@@ -1,7 +1,7 @@
 # [Golden Apple Technologies](https://goldenapplecoders-coder.github.io/)  
 **Crafted Code. Bold Design. Ethical Innovation.**
 
-![Golden Apple Technologies](favicon.png)
+![Golden Apple Technologies](favicon.ico)
 
 [![Website](https://img.shields.io/badge/Website-live-06b6d4)](#)  
 [![Teams](https://img.shields.io/badge/Team-Experienced-orange)](#)  
