@@ -60,3 +60,56 @@
 
     .cta{display:inline-block;padding:10px 14px;border-radius:10px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#021022;font-weight:700;margin-top:12px;text-decoration:none}
     .muted{color:var(--muted);font-size:13px}
+/* Henry Woodworks Modal Styles */
+.henry-modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0, 0, 0, 0.85);
+}
+
+.henry-modal-content {
+  position: relative;
+  width: 100%; height: 100%;
+  overflow: hidden;
+}
+
+.henry-ad-bg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.9;
+}
+
+.henry-ad-overlay {
+  position: absolute;
+  bottom: 10%;
+  left: 5%;
+  color: #fff;
+  font-family: sans-serif;
+  text-shadow: 1px 1px 4px #000;
+}
+
+.henry-ad-overlay h1 {
+  font-size: 3em;
+  color: gold;
+}
+
+.henry-ad-overlay p {
+  font-size: 1.5em;
+}
+
+.henry-close-btn {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  font-size: 2em;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
