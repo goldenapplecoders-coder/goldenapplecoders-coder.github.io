@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Golden Apple User's Experience</title>
+  <style>
+/* Reset & Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: #f5f5f5;
+  color: #333;
+  padding: 20px;
+}
+
+/* 🔒 Lock Modal */
+.modal {
+  background-color: #fff;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  padding: 30px;
+  max-width: 400px;
+  margin: 100px auto;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.modal h2 {
+  margin-bottom: 10px;
+}
+
+.modal p {
+  margin-bottom: 20px;
+}
+
+.modal input {
+  width: 80%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+}
+
+.modal button {
+  padding: 10px 20px;
+  margin-top: 10px;
+  background-color: #0078d7;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.modal button:hover {
+  background-color: #005fa3;
+}
+
+#lockMessage {
+  margin-top: 15px;
+  color: red;
+}
+
+/* 🧭 Card Layout */
+#cardContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  text-align: center;
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: scale(1.03);
+}
+
+/* Role-based card colors */
+.card.tourist {
+  border-left: 5px solid #28a745;
+}
+
+.card.user {
+  border-left: 5px solid #17a2b8;
+}
+
+.card.admin {
+  border-left: 5px solid #ffc107;
+}
+
+/* 💬 Feedback Section */
+#feedbackSection {
+  margin-top: 40px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 6px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+#feedbackInput {
+  width: 100%;
+  height: 100px;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  resize: vertical;
+}
+
+#submitFeedback {
+  background-color: #0078d7;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#submitFeedback:hover {
+  background-color: #005fa3;
+}
+
+#makePublic {
+  margin-right: 5px;
+}
+
+#feedbackDisplay {
+  margin-top: 20px;
+}
+
+.feedbackItem {
+  background-color: #f0f0f0;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  position: relative;
+}
+
+.feedbackItem button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 5px 8px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.feedbackItem button:hover {
+  background-color: #b02a37;
+}
+
+/* 🛠 Admin Controls */
+#adminControls {
+  margin-top: 30px;
+  background-color: #fff8e1;
+  padding: 20px;
+  border-radius: 6px;
+  border: 1px solid #ffc107;
+}
+
+#banUser {
+  padding: 8px;
+  margin-right: 10px;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+}
+
+#banBtn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#banBtn:hover {
+  background-color: #b02a37;
+}
+  </style>
+</head>
+<body>
+  <!-- 🔒 Lock Modal -->
+  <div id="lockModal" class="modal">
+    <h2>This page is encrypted</h2>
+    <p>Please confirm your username and password to continue.</p>
+    <form id="loginForm">
+      <input type="text" id="username" placeholder="Username" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <button type="submit">Submit</button>
+    </form>
+    <button id="touristBtn">Continue as Tourist</button>
+    <p id="lockMessage"></p>
+  </div>
+
+  <!-- 🔐 Main Content -->
+  <div id="mainContent" style="display:none;">
+    <h1>Golden Apple User's Experience</h1>
+
+    <!-- 🧭 Service Cards -->
+    <div id="cardContainer">
+      <!-- Tourist-only cards -->
+      <div class="card tourist">Tourist Service 1</div>
+      <div class="card tourist">Tourist Service 2</div>
+
+      <!-- User-only cards (9 total, excluding 2 editable) -->
+      <div class="card user">User Service 1</div>
+      <div class="card user">User Service 2</div>
+      <div class="card user">User Service 3</div>
+      <div class="card user">User Service 4</div>
+      <div class="card user">User Service 5</div>
+      <div class="card user">User Service 6</div>
+      <div class="card user">User Service 7</div>
+      <div class="card user">[User Restricted Card 1]</div>
+      <div class="card user">[User Restricted Card 2]</div>
+
+      <!-- Admin-only cards -->
+      <div class="card admin">Admin Service 1</div>
+      <div class="card admin">Admin Service 2</div>
+    </div>
+
+    <!-- 💬 Feedback Section -->
+    <section id="feedbackSection">
+      <h2>Feedback</h2>
+      <textarea id="feedbackInput" placeholder="Leave your feedback..."></textarea>
+      <label>
+        <input type="checkbox" id="makePublic" />
+        Make feedback public
+      </label>
+      <button id="submitFeedback">Submit Feedback</button>
+
+      <!-- Feedback Display -->
+      <div id="feedbackDisplay"></div>
+    </section>
+
+    <!-- 🛠 Admin Controls -->
+    <section id="adminControls" style="display:none;">
+      <h3>Admin Panel</h3>
+      <label for="banUser">Ban Tourist:</label>
+      <input type="text" id="banUser" placeholder="Tourist Username" />
+      <button id="banBtn">Ban</button>
+    </section>
+  </div>
+
+  <!-- 🗃 Scripts Placeholder -->
+  <script>
+// User credentials
+const users = {
+  Dizzer: "iam#dzj",
+  Hacker: "iam#hck",
+  Icii: "Abc123##"
+};
+
+let currentUser = null;
+let isTourist = false;
+let bannedUsers = JSON.parse(localStorage.getItem("bannedUsers")) || [];
+let failedAttempts = parseInt(localStorage.getItem("failedAttempts")) || 0;
+
+// DOM Elements
+const lockModal = document.getElementById("lockModal");
+const loginForm = document.getElementById("loginForm");
+const usernameInput = document.getElementById("username");
+const passwordInput = document.getElementById("password");
+const lockMessage = document.getElementById("lockMessage");
+const touristBtn = document.getElementById("touristBtn");
+
+const mainContent = document.getElementById("mainContent");
+const cardContainer = document.getElementById("cardContainer");
+const adminControls = document.getElementById("adminControls");
+
+const feedbackInput = document.getElementById("feedbackInput");
+const makePublic = document.getElementById("makePublic");
+const submitFeedback = document.getElementById("submitFeedback");
+const feedbackDisplay = document.getElementById("feedbackDisplay");
+
+const banUserInput = document.getElementById("banUser");
+const banBtn = document.getElementById("banBtn");
+
+// Check lockout on load
+const lockoutTime = localStorage.getItem("lockedOut");
+if (lockoutTime && Date.now() < parseInt(lockoutTime)) {
+  startCountdown(Math.ceil((parseInt(lockoutTime) - Date.now()) / 1000));
+  disableInputs();
+}
+
+// Login handler
+loginForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const username = usernameInput.value.trim();
+  const password = passwordInput.value;
+
+  if (users[username] === password) {
+    currentUser = username;
+    isTourist = false;
+    failedAttempts = 0;
+    localStorage.setItem("failedAttempts", "0");
+    unlockSite();
+} else {
+    failedAttempts++;
+    localStorage.setItem("failedAttempts", failedAttempts.toString());
+
+    if (failedAttempts>= 5) {
+      const retryTime = Date.now() + 30000;
+      localStorage.setItem("lockedOut", retryTime.toString());
+      startCountdown(30);
+      disableInputs();
+} else {
+      lockMessage.textContent = `Incorrect credentials. ${5 - failedAttempts} attempts remaining.`;
+}
+}
+});
+
+// Tourist access
+touristBtn.addEventListener("click", () => {
+  isTourist = true;
+  currentUser = "Tourist";
+  unlockSite();
+});
+
+// Unlock site and show relevant cards
+function unlockSite() {
+  lockModal.style.display = "none";
+  mainContent.style.display = "block";
+
+  const cards = document.querySelectorAll(".card");
+  cards.forEach(card => {
+    if (isTourist &&!card.classList.contains("tourist")) {
+      card.style.display = "none";
+} else if (!isTourist && currentUser!== "Icii" && card.classList.contains("admin")) {
+      card.style.display = "none";
+} else if (!isTourist && currentUser!== "Icii" && card.textContent.includes("Restricted")) {
+      card.style.display = "none";
+}
+});
+
+  if (currentUser === "Icii") {
+    adminControls.style.display = "block";
+}
+}
+
+// Disable inputs and start countdown
+function disableInputs() {
+  usernameInput.disabled = true;
+  passwordInput.disabled = true;
+  loginForm.querySelector("button").disabled = true;
+}
+
+// Re-enable inputs
+function enableInputs() {
+  usernameInput.disabled = false;
+  passwordInput.disabled = false;
+  loginForm.querySelector("button").disabled = false;
+  lockMessage.textContent = "";
+  localStorage.removeItem("lockedOut");
+  failedAttempts = 0;
+  localStorage.setItem("failedAttempts", "0");
+}
+
+// Countdown timer
+function startCountdown(seconds) {
+  let countdown = seconds;
+ lockMessage.textContent = `Locked. Try again in ${countdown} seconds.`;
+
+  const interval = setInterval(() => {
+    countdown--;
+    lockMessage.textContent = `Locked. Try again in ${countdown} seconds.`;
+
+    if (countdown <= 0) {
+      clearInterval(interval);
+      enableInputs();
+}
+}, 1000);
+}
+
+// Feedback submission
+submitFeedback.addEventListener("click", () => {
+  if (isTourist && bannedUsers.includes(currentUser)) {
+    alert("You are banned from commenting.");
+    return;
+}
+
+  const text = feedbackInput.value.trim();
+  if (!text) return;
+
+  const feedbackItem = document.createElement("div");
+  feedbackItem.className = "feedbackItem";
+  feedbackItem.textContent = text;
+
+  if (makePublic.checked) {
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "Delete";
+    deleteBtn.onclick = () => {
+      feedbackItem.remove();
+};
+    feedbackItem.appendChild(deleteBtn);
+}
+
+  feedbackDisplay.appendChild(feedbackItem);
+  feedbackInput.value = "";
+  makePublic.checked = false;
+});
+
+// Admin banning tourists
+banBtn.addEventListener("click", () => {
+  const userToBan = banUserInput.value.trim();
+  if (userToBan &&!bannedUsers.includes(userToBan)) {
+    bannedUsers.push(userToBan);
+    localStorage.setItem("bannedUsers", JSON.stringify(bannedUsers));
+    alert(`${userToBan} has been banned from commenting.`);
+    banUserInput.value = "";
+}
+});
+ </script>
+</body>
+</html>
