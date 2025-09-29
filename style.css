@@ -105,11 +105,11 @@
   position: absolute;
   top: 20px;
   right: 30px;
-  font-size: 2em;
+  font-size: 4em;
   background: none;
   border: none;
   color: white;
   cursor: pointer;
   opacity: 0;
-  transition: opacity 1s ease;
+  transition: opacity 5s ease;
 }
