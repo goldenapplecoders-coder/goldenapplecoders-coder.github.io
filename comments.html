@@ -1,215 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Public Comments</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);
-      min-height: 100vh;
-      color: #333;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      padding: 40px 20px;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 800px;
-      background: white;
-      border-radius: 12px;
-      padding: 30px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    }
-
-    .header {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-
-    .header h1 {
-      font-size: 2.5em;
-      color: #0072ff;
-    }
-
-    .header p {
-      font-size: 1em;
-      color: #555;
-    }
-
-    .comment-form input,
-    .comment-form textarea {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 10px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 1em;
-    }
-
-    .comment-form textarea {
-      resize: vertical;
-      min-height: 80px;
-    }
-
-    .btn {
-      padding: 10px 20px;
-      background: #0072ff;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-
-    .btn:hover {
-      background: #005ecb;
-    }
-
-    .delete-btn {
-      background: #dc3545;
-    }
-
-    .delete-btn:hover {
-      background: #c82333;
-    }
-
-    .comments-section h2 {
-      margin-top: 30px;
-      margin-bottom: 15px;
-      color: #333;
-    }
-
-    .comments-list {
-      border: 1px solid #eee;
-      border-radius: 8px;
-      padding: 20px;
-      background: #f9f9f9;
-    }
-
-    .comment-item {
-      padding: 15px 0;
-      border-bottom: 1px solid #ddd;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-    }
-
-    .comment-info {
-      flex: 1;
-    }
-
-    .comment-info strong {
-      color: #0072ff;
-    }
-
-    .comment-info p {
-      margin-top: 5px;
-    }
-
-    .comment-actions {
-      margin-left: 20px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comments - Your Project</title>
+    <link rel="stylesheet" href="comments.css">
+    <!-- You can add your existing global styles here if needed -->
 </head>
 <body>
-  <main class="container">
-    <header class="header">
-      <h1>Public Comments</h1>
-      <p>Share your thoughts with the world</p>
-    </header>
+    <div class="comments-container">
+        <!-- Navigation -->
+        <nav class="comments-nav">
+            <div class="nav-content">
+                <a href="index.html" class="back-link">← Back to Home</a>
+                <h1>Community Comments</h1>
+            </div>
+        </nav>
 
-    <section class="comment-form">
-      <input type="text" id="username" placeholder="Your name" />
-      <textarea id="commentText" placeholder="Write your comment..."></textarea>
-      <button class="btn" onclick="postComment()">Post Comment</button>
-    </section>
+        <!-- Comment Form -->
+        <section class="comment-form-section">
+            <div class="form-container">
+                <h2>Add Your Comment</h2>
+                <form id="commentForm" class="comment-form">
+                    <div class="form-group">
+                        <label for="username">Your Username:</label>
+                        <input type="text" id="username" name="username" required 
+                               placeholder="Enter your username" maxlength="50">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="comment">Your Comment:</label>
+                        <textarea id="comment" name="comment" required 
+                                  placeholder="Share your thoughts..." rows="4" maxlength="500"></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">Post Comment</button>
+                </form>
+                
+                <div id="formMessage" class="form-message"></div>
+            </div>
+        </section>
 
-    <section class="comments-section">
-      <h2>All Comments</h2>
-      <div id="commentsList" class="comments-list">
-        <p>Loading comments...</p>
-      </div>
-    </section>
-  </main>
+        <!-- Comments Display -->
+        <section class="comments-section">
+            <div class="section-header">
+                <h2>Latest Comments (<span id="commentCount">0</span>)</h2>
+                <button id="refreshBtn" class="refresh-btn">Refresh</button>
+            </div>
+            <div id="commentsContainer" class="comments-list">
+                <div class="loading">Loading comments...</div>
+            </div>
+        </section>
 
-  <script>
-    function getComments() {
-      return JSON.parse(localStorage.getItem('publicComments') || '[]');
-    }
-
-    function saveComments(comments) {
-      localStorage.setItem('publicComments', JSON.stringify(comments));
-    }
-
-    function postComment() {
-      const username = document.getElementById('username').value.trim();
-      const text = document.getElementById('commentText').value.trim();
-
-      if (!username || !text) {
-        alert('Please enter both name and comment');
-        return;
-      }
-
-      const comments = getComments();
-      comments.push({
-        user: username,
-        text: text,
-        time: new Date().toISOString()
-      });
-
-      saveComments(comments);
-      document.getElementById('username').value = '';
-      document.getElementById('commentText').value = '';
-      renderComments();
-    }
-
-    function deleteComment(index) {
-      const password = prompt('Enter password to delete this comment:');
-      if (password !== 'comdel') {
-        alert('Incorrect password');
-        return;
-      }
-
-      const comments = getComments();
-      comments.splice(index, 1);
-      saveComments(comments);
-      renderComments();
-    }
-
-    function renderComments() {
-      const comments = getComments();
-      const container = document.getElementById('commentsList');
-
-      if (comments.length === 0) {
-        container.innerHTML = '<p>No comments yet</p>';
-        return;
-      }
-
-      container.innerHTML = comments.map((comment, index) => `
-        <div class="comment-item">
-          <div class="comment-info">
-            <strong>${comment.user}</strong>
-            <br><small>${new Date(comment.time).toLocaleString()}</small>
-            <p>${comment.text}</p>
-          </div>
-          <div class="comment-actions">
-            <button class="btn delete-btn" onclick="deleteComment(${index})">Delete</button>
-          </div>
+        <!-- Delete Modal -->
+        <div id="deleteModal" class="modal">
+            <div class="modal-content">
+                <h3>Delete Comment</h3>
+                <p>Enter password to delete this comment:</p>
+                <form id="deleteForm" class="delete-form">
+                    <input type="password" id="deletePassword" name="password" required 
+                           placeholder="Enter password" autocomplete="off">
+                    <div class="modal-actions">
+                        <button type="submit" class="delete-btn">Delete</button>
+                        <button type="button" id="cancelDelete" class="cancel-btn">Cancel</button>
+                    </div>
+                </form>
+                <div id="modalMessage" class="modal-message"></div>
+            </div>
         </div>
-      `).join('');
-    }
 
-    document.addEventListener('DOMContentLoaded', renderComments);
-  </script>
+        <!-- Overlay for loading -->
+        <div id="loadingOverlay" class="loading-overlay">
+            <div class="spinner"></div>
+        </div>
+    </div>
+
+    <script src="comments.js"></script>
 </body>
 </html>
