@@ -2,74 +2,170 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Goldrive Accounts</title>
   <link rel="stylesheet" href="drive.css" />
+<style>
+/* Account List Styling */
+.account-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.account-item {
+  display: flex;
+  align-items: center;
+  background-color: #1e293b;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 0 5px rgba(56, 189, 248, 0.1);
+}
+
+.avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 1rem;
+  border: 2px solid #38bdf8;
+}
+
+.account-info {
+  flex: 1;
+}
+
+.account-actions {
+  margin-top: 0.5rem;
+}
+
+.account-actions.btn {
+  margin-right: 0.5rem;
+}
+
+</style>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
 </head>
 <body>
   <main class="container">
     <header class="header">
-      <h1>Manage Accounts</h1>
+      <h1><i class="fas fa-users"></i> Goldrive Accounts</h1>
+      <p>Manage your file manager profiles</p>
     </header>
 
-    <section class="account-manager">
-      <input type="text" id="newAccount" placeholder="Enter new username" />
-      <button class="btn" onclick="createAccount()">Create Account</button>
+    <section class="upload-section">
+      <h2><i class="fas fa-user-plus"></i> Create New Account</h2>
+      <input type="text" id="newAccount" placeholder="Enter username" />
+      <input type="file" id="profilePicInput" accept="image/*" />
+      <button class="btn upload-btn" onclick="createAccount()">Create Account</button>
+      <p class="note">Profile pictures are stored locally in your browser</p>
+    </section>
 
-      <h2>Available Accounts</h2>
-      <ul id="accountList" class="account-list"></ul>
+    <section class="files-section">
+      <h2><i class="fas fa-user-circle"></i> Existing Accounts</h2>
+      <ul id="accountList" class="account-list">
+        <p>Loading accounts...</p>
+      </ul>
     </section>
   </main>
-<script src="drive.js"></script>
+
   <script>
     function getAccounts() {
       return JSON.parse(localStorage.getItem('goldriveAccounts') || '[]');
-    }
+}
 
     function saveAccounts(accounts) {
       localStorage.setItem('goldriveAccounts', JSON.stringify(accounts));
-    }
+}
+
+    function getProfilePic(username) {
+      return localStorage.getItem(`goldriveProfile_${username}`);
+}
+
+    function saveProfilePic(username, dataUrl) {
+      localStorage.setItem(`goldriveProfile_${username}`, dataUrl);
+}
+
+    function setCurrentUser(username) {
+      localStorage.setItem('goldriveCurrentUser', username);
+}
+
+    function removeCurrentUser() {
+      localStorage.removeItem('goldriveCurrentUser');
+}
 
     function createAccount() {
       const username = document.getElementById('newAccount').value.trim();
+      const fileInput = document.getElementById('profilePicInput');
       if (!username) return alert('Enter a valid username');
+
       let accounts = getAccounts();
       if (accounts.includes(username)) return alert('Account already exists');
+
       accounts.push(username);
       saveAccounts(accounts);
-      renderAccounts();
+
+      if (fileInput.files.length> 0) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          saveProfilePic(username, e.target.result);
+          renderAccounts();
+};
+        reader.readAsDataURL(fileInput.files[0]);
+} else {
+        renderAccounts();
+}
+
       document.getElementById('newAccount').value = '';
-    }
+      fileInput.value = '';
+}
 
     function switchAccount(username) {
-      localStorage.setItem('goldriveCurrentUser', username);
-      window.location.href = 'drive.html';
-    }
+      setCurrentUser(username);
+      window.location.href = 'index.html';
+}
 
     function deleteAccount(username) {
       if (!confirm(`Delete account "${username}" and all its files?`)) return;
-      let accounts = getAccounts().filter(acc => acc !== username);
+
+      let accounts = getAccounts().filter(acc => acc!== username);
       saveAccounts(accounts);
       localStorage.removeItem(`goldriveFiles_${username}`);
-      if (localStorage.getItem('goldriveCurrentUser') === username) {
-        localStorage.removeItem('goldriveCurrentUser');
-      }
+      localStorage.removeItem(`goldriveProfile_${username}`);
+
+      removeCurrentUser();
       renderAccounts();
-    }
+}
 
     function renderAccounts() {
       const accounts = getAccounts();
       const list = document.getElementById('accountList');
-      list.innerHTML = accounts.map(username => `
-        <li>
-          <strong>${username}</strong>
-          <button class="btn" onclick="switchAccount('${username}')">Login</button>
-          <button class="btn delete-btn" onclick="deleteAccount('${username}')">Delete</button>
-        </li>
-      `).join('');
-    }
+      if (!list) return;
 
-    renderAccounts();
+      if (accounts.length === 0) {
+        list.innerHTML = '<p>No accounts found</p>';
+        return;
+}
+
+      list.innerHTML = accounts.map(username => {
+        const profilePic = getProfilePic(username);
+        return `
+          <li class="account-item">
+            <img src="${profilePic || 'default-avatar.png'}" alt="${username}" class="avatar" />
+            <div class="account-info">
+              <strong>${username}</strong>
+<div class="account-actions">
+                <button class="btn" onclick="switchAccount('${username}')">Login</button>
+                <button class="btn delete-btn" onclick="deleteAccount('${username}')">Delete</button>
+              </div>
+            </div>
+          </li>
+        `;
+}).join('');
+}
+
+    document.addEventListener('DOMContentLoaded', renderAccounts);
   </script>
 </body>
 </html>
