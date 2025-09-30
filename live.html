@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Contact Video Chat</title>
+    <style>
+        /* Basic CSS Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Groups Grid Layout */
+        .groups-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .group-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .group-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .group-thumbnail {
+            width: 100%;
+            height: 180px;
+            background-color: #eee;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .group-thumbnail::after {
+            content: "LIVE";
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ff4757;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .participants-preview {
+            display: flex;
+            height: 100%;
+        }
+
+        .participant-preview {
+            flex: 1;
+            border-right: 1px solid white;
+            background: linear-gradient(45deg, #a4b0be, #747d8c);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .participant-preview:last-child {
+            border-right: none;
+        }
+
+        .group-info {
+            padding: 15px;
+        }
+
+        .group-title {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            color: #2f3542;
+        }
+
+        .group-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #747d8c;
+            font-size: 0.9rem;
+        }
+
+        .participant-count {
+            display: flex;
+            align-items: center;
+        }
+
+        .participant-count::before {
+            content: "•";
+            color: #2ed573;
+            margin-right: 5px;
+            font-size: 1.2rem;
+        }
+
+        /* Call Screen (Initially Hidden) */
+        #callScreen {
+            display: none;
+            background: #1e1e1e;
+            border-radius: 10px;
+            overflow: hidden;
+            height: 70vh;
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        #videoContainer {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            height: 100%;
+            padding: 10px;
+        }
+
+        .participant-video {
+            background: #2f3542;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            position: relative;
+        }
+
+        .participant-video video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .participant-name {
+            position: absolute;
+            bottom: 8px;
+            left: 8px;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+
+        /* Call Controls */
+        #callControls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .control-btn {
+            background: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.2s ease;
+        }
+
+        .control-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .control-btn.end-call {
+            background: #ff4757;
+            color: white;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .groups-container {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            #videoContainer {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .groups-container {
+                grid-template-columns: 1fr;
+            }
+            
+            #videoContainer {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Live Contact</h1>
+            <p class="subtitle">Join a live video conversation with people around the world</p>
+        </header>
+
+        <main>
+            <!-- Groups Selection Screen -->
+            <section id="groupsScreen">
+                <div class="groups-container" id="groupsContainer">
+                    <!-- Group cards will be dynamically generated here -->
+                </div>
+            </section>
+
+            <!-- Active Call Screen -->
+            <section id="callScreen">
+                <div id="videoContainer">
+                    <!-- Video elements will be dynamically inserted here -->
+                </div>
+            </section>
+
+            <!-- Call Controls -->
+            <div id="callControls" style="display: none;">
+                <button class="control-btn" id="toggleVideo">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+                    </svg>
+                </button>
+                <button class="control-btn" id="toggleAudio">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/>
+                    </svg>
+                </button>
+                <button class="control-btn end-call" id="leaveCall">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M10.68 13.31a16 16 0 0 0 3.41 2.6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7 2 2 0 0 1 1.72 2v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91"/>
+                        <line x1="23" y1="1" x2="1" y2="23"/>
+                    </svg>
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Sample data for available groups
+        const availableGroups = [
+            { id: 'group1', title: 'Casual Chat', participants: 4, maxParticipants: 6 },
+            { id: 'group2', title: 'Tech Enthusiasts', participants: 2, maxParticipants: 6 },
+            { id: 'group3', title: 'Language Practice', participants: 5, maxParticipants: 6 },
+            { id: 'group4', title: 'Book Club', participants: 3, maxParticipants: 6 },
+            { id: 'group5', title: 'Music Lovers', participants: 1, maxParticipants: 6 },
+            { id: 'group6', title: 'Travel Stories', participants: 6, maxParticipants: 6 }
+        ];
+
+        // DOM Elements
+        const groupsContainer = document.getElementById('groupsContainer');
+        const groupsScreen = document.getElementById('groupsScreen');
+        const callScreen = document.getElementById('callScreen');
+        const callControls = document.getElementById('callControls');
+        const videoContainer = document.getElementById('videoContainer');
+        const leaveCallBtn = document.getElementById('leaveCall');
+        const toggleVideoBtn = document.getElementById('toggleVideo');
+        const toggleAudioBtn = document.getElementById('toggleAudio');
+
+        // Generate group cards
+        function renderGroups() {
+            groupsContainer.innerHTML = '';
+            
+            availableGroups.forEach(group => {
+                const groupCard = document.createElement('div');
+                groupCard.className = 'group-card';
+                groupCard.innerHTML = `
+                    <div class="group-thumbnail">
+                        <div class="participants-preview">
+                            ${Array.from({length: Math.min(group.participants, 4)}, (_, i) => 
+                                `<div class="participant-preview">${i < 3 ? 'User' : '+' + (group.participants - 3)}</div>`
+                            ).join('')}
+                        </div>
+                    </div>
+                    <div class="group-info">
+                        <h3 class="group-title">${group.title}</h3>
+                        <div class="group-meta">
+                            <span class="participant-count">${group.participants}/6 people</span>
+                            <span class="join-text">Tap to join</span>
+                        </div>
+                    </div>
+                `;
+                
+                // Only make the group clickable if it's not full
+                if (group.participants < group.maxParticipants) {
+                    groupCard.addEventListener('click', () => joinGroup(group.id));
+                } else {
+                    groupCard.style.opacity = '0.6';
+                    groupCard.style.cursor = 'not-allowed';
+                }
+                
+                groupsContainer.appendChild(groupCard);
+            });
+        }
+
+        // Simulate joining a group
+        function joinGroup(groupId) {
+            // In a real app, you would connect to your video API here
+            console.log(`Joining group: ${groupId}`);
+            
+            // Update UI to show call screen
+            groupsScreen.style.display = 'none';
+            callScreen.style.display = 'block';
+            callControls.style.display = 'flex';
+            
+            // Simulate adding participant videos
+            simulateCall();
+        }
+
+        // Simulate a call in progress (in a real app, this would use a video API)
+        function simulateCall() {
+            videoContainer.innerHTML = '';
+            
+            // Add local participant
+            const localParticipant = document.createElement('div');
+            localParticipant.className = 'participant-video';
+            localParticipant.innerHTML = `
+                <div style="color: white;">You (Local)</div>
+                <div class="participant-name">You</div>
+            `;
+            videoContainer.appendChild(localParticipant);
+            
+            // Add remote participants (simulated)
+            for (let i = 0; i < 3; i++) {
+                const remoteParticipant = document.createElement('div');
+                remoteParticipant.className = 'participant-video';
+                remoteParticipant.innerHTML = `
+                    <div style="color: white;">Remote User ${i+1}</div>
+                    <div class="participant-name">User ${i+1}</div>
+                `;
+                videoContainer.appendChild(remoteParticipant);
+            }
+        }
+
+        // Leave the call and return to groups screen
+        function leaveCall() {
+            callScreen.style.display = 'none';
+            callControls.style.display = 'none';
+            groupsScreen.style.display = 'block';
+        }
+
+        // Event Listeners
+        leaveCallBtn.addEventListener('click', leaveCall);
+
+        // Toggle video (placeholder functionality)
+        toggleVideoBtn.addEventListener('click', () => {
+            alert('In a real implementation, this would toggle your video stream.');
+        });
+
+        // Toggle audio (placeholder functionality)
+        toggleAudioBtn.addEventListener('click', () => {
+            alert('In a real implementation, this would toggle your audio stream.');
+        });
+
+        // Initialize the app
+        renderGroups();
+    </script>
+</body>
+</html>
