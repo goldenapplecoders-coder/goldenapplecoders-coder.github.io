@@ -3,49 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minimalist Camera</title>
+    <title>Professional Camera App</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Basic full-screen styling - you will need to expand this */
-        body, html {
+        * {
             margin: 0;
             padding: 0;
-            height: 100%;
-            width: 100%;
-            background-color: #000;
-            overflow: hidden;
-            font-family: sans-serif;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
         }
-        
+
+        body {
+            background: #000;
+            color: white;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+            position: fixed;
+        }
+
         #cameraContainer {
             position: relative;
-            width: 100vw;
-            height: 100vh;
-            background-color: #000;
-        }
-        
-        #videoElement {
-            /* Make video fill the container */
             width: 100%;
             height: 100%;
-            object-fit: cover; /* This is key to maintaining aspect ratio while filling the screen[citation:1] */
-            /* Optional: Flip front camera preview for more natural feel */
-            /* transform: scaleX(-1); */
+            background: #000;
+            overflow: hidden;
         }
-        
+
+        #videoElement {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scaleX(1); /* Normal for back camera */
+        }
+
+        /* Controls overlay */
         #controlsOverlay {
             position: absolute;
             bottom: 0;
             left: 0;
             width: 100%;
-            padding: 20px 0;
-            background: linear-gradient(transparent, rgba(0,0,0,0.5));
+            padding: 20px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.7));
             display: flex;
-            justify-content: space-around;
+            justify-content: space-between;
             align-items: center;
             box-sizing: border-box;
+            z-index: 10;
         }
-        
-        .controlBtn {
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .control-btn {
             background: rgba(255, 255, 255, 0.2);
             border: none;
             color: white;
@@ -58,15 +71,65 @@
             justify-content: center;
             align-items: center;
             font-size: 1.2rem;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
-        
+
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .control-btn:active {
+            transform: scale(0.95);
+        }
+
         #captureBtn {
             width: 70px;
             height: 70px;
             background: white;
             color: #333;
+            font-size: 1.5rem;
         }
-        
+
+        #captureBtn:active {
+            transform: scale(0.9);
+        }
+
+        /* Mode selector */
+        #modeSelector {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 5px;
+            display: flex;
+            backdrop-filter: blur(10px);
+            z-index: 10;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .mode-btn {
+            background: none;
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .mode-btn.active {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Preview overlay */
         #previewOverlay {
             position: absolute;
             top: 0;
@@ -77,69 +140,315 @@
             display: none;
             flex-direction: column;
             justify-content: space-between;
+            z-index: 20;
         }
-        
+
         #previewImage {
             width: 100%;
             height: 100%;
             object-fit: contain;
         }
-        
+
         #previewControls {
             position: absolute;
             bottom: 0;
             left: 0;
             width: 100%;
-            padding: 20px 0;
+            padding: 20px;
             display: flex;
             justify-content: space-around;
             align-items: center;
+            background: linear-gradient(transparent, rgba(0,0,0,0.7));
+        }
+
+        /* Recording indicator */
+        #recordingIndicator {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 0, 0, 0.7);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            display: none;
+            align-items: center;
+            gap: 5px;
+            z-index: 10;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Camera status */
+        #cameraStatus {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            z-index: 10;
+            display: none;
+        }
+
+        /* Focus indicator */
+        .focus-indicator {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border: 2px solid white;
+            border-radius: 50%;
+            z-index: 5;
+            display: none;
+            pointer-events: none;
+        }
+
+        /* Error message */
+        #errorMessage {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            z-index: 30;
+            display: none;
+            max-width: 80%;
+        }
+
+        /* Loading indicator */
+        #loadingIndicator {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 1.2rem;
+            z-index: 5;
+            display: none;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .control-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1rem;
+            }
+            
+            #captureBtn {
+                width: 60px;
+                height: 60px;
+                font-size: 1.3rem;
+            }
+            
+            #controlsOverlay {
+                padding: 15px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .control-btn {
+                width: 55px;
+                height: 55px;
+                font-size: 1.3rem;
+            }
+            
+            #captureBtn {
+                width: 80px;
+                height: 80px;
+                font-size: 1.7rem;
+            }
+        }
+
+        /* Animation for capture */
+        @keyframes captureFlash {
+            0% { opacity: 0; }
+            50% { opacity: 0.5; }
+            100% { opacity: 0; }
+        }
+
+        .capture-flash {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            z-index: 15;
+            pointer-events: none;
+            animation: captureFlash 0.3s ease;
         }
     </style>
 </head>
 <body>
     <div id="cameraContainer">
-        <!-- Camera feed will be here -->
-        <video autoplay playsinline id="videoElement"></video>
+        <video id="videoElement" autoplay playsinline></video>
         
-        <!-- Main shooting controls -->
-        <div id="controlsOverlay">
-            <button class="controlBtn" id="switchCameraBtn" title="Switch Camera">🔄</button>
-            <button class="controlBtn" id="captureBtn" title="Take Picture">📷</button>
-            <button class="controlBtn" id="toggleModeBtn" title="Switch to Video">🎥</button>
+        <div id="modeSelector">
+            <button class="mode-btn active" data-mode="photo">
+                <i class="fas fa-camera"></i> Photo
+            </button>
+            <button class="mode-btn" data-mode="video">
+                <i class="fas fa-video"></i> Video
+            </button>
         </div>
         
-        <!-- Preview and Save/Delete screen -->
+        <div id="recordingIndicator">
+            <i class="fas fa-circle"></i> Recording...
+        </div>
+        
+        <div id="cameraStatus">
+            <i class="fas fa-camera"></i> Camera Active
+        </div>
+        
+        <div class="focus-indicator"></div>
+        
+        <div id="loadingIndicator">
+            <i class="fas fa-spinner fa-spin"></i> Loading Camera...
+        </div>
+        
+        <div id="errorMessage">
+            <i class="fas fa-exclamation-triangle"></i>
+            <h3>Camera Error</h3>
+            <p>Unable to access your camera. Please check permissions and try again.</p>
+            <button id="retryButton" class="control-btn" style="margin-top: 15px;">
+                <i class="fas fa-redo"></i> Retry
+            </button>
+        </div>
+
+        <div id="controlsOverlay">
+            <div class="control-group">
+                <button id="switchCameraBtn" class="control-btn" title="Switch Camera">
+                    <i class="fas fa-camera-rotate"></i>
+                </button>
+                <button id="flashBtn" class="control-btn" title="Flash">
+                    <i class="fas fa-bolt"></i>
+                </button>
+            </div>
+            
+            <button id="captureBtn" class="control-btn" title="Take Picture">
+                <i class="fas fa-camera"></i>
+            </button>
+            
+            <div class="control-group">
+                <button id="settingsBtn" class="control-btn" title="Settings">
+                    <i class="fas fa-cog"></i>
+                </button>
+                <button id="timerBtn" class="control-btn" title="Timer">
+                    <i class="fas fa-clock"></i>
+                </button>
+            </div>
+        </div>
+        
         <div id="previewOverlay">
             <img id="previewImage" alt="Captured preview">
             <div id="previewControls">
-                <button class="controlBtn" id="deleteBtn" style="background: #ff4757;">❌</button>
-                <button class="controlBtn" id="saveBtn" style="background: #2ed573;">💾</button>
+                <button id="deleteBtn" class="control-btn" style="background: #ff4757;">
+                    <i class="fas fa-trash"></i>
+                </button>
+                <button id="saveBtn" class="control-btn" style="background: #2ed573;">
+                    <i class="fas fa-save"></i>
+                </button>
             </div>
         </div>
     </div>
 
     <script>
-        // State variables
+        // DOM Elements
+        const videoElement = document.getElementById('videoElement');
+        const captureBtn = document.getElementById('captureBtn');
+        const switchCameraBtn = document.getElementById('switchCameraBtn');
+        const flashBtn = document.getElementById('flashBtn');
+        const settingsBtn = document.getElementById('settingsBtn');
+        const timerBtn = document.getElementById('timerBtn');
+        const modeButtons = document.querySelectorAll('.mode-btn');
+        const previewOverlay = document.getElementById('previewOverlay');
+        const previewImage = document.getElementById('previewImage');
+        const deleteBtn = document.getElementById('deleteBtn');
+        const saveBtn = document.getElementById('saveBtn');
+        const recordingIndicator = document.getElementById('recordingIndicator');
+        const cameraStatus = document.getElementById('cameraStatus');
+        const focusIndicator = document.querySelector('.focus-indicator');
+        const errorMessage = document.getElementById('errorMessage');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const retryButton = document.getElementById('retryButton');
+
+        // Global variables
         let currentStream = null;
         let currentFacingMode = 'user'; // 'user' for front, 'environment' for back
         let isVideoMode = false;
         let mediaRecorder = null;
         let recordedChunks = [];
+        let isRecording = false;
+        let availableCameras = [];
+        let flashMode = 'off'; // 'off', 'on', 'auto'
 
-        // DOM elements
-        const videoElement = document.getElementById('videoElement');
-        const captureBtn = document.getElementById('captureBtn');
-        const switchCameraBtn = document.getElementById('switchCameraBtn');
-        const toggleModeBtn = document.getElementById('toggleModeBtn');
-        const previewOverlay = document.getElementById('previewOverlay');
-        const previewImage = document.getElementById('previewImage');
-        const deleteBtn = document.getElementById('deleteBtn');
-        const saveBtn = document.getElementById('saveBtn');
+        // Initialize the app
+        async function init() {
+            showLoading(true);
+            try {
+                await checkCameraAvailability();
+                await startCamera();
+                setupEventListeners();
+                showLoading(false);
+                showCameraStatus(true);
+            } catch (error) {
+                console.error('Error initializing camera:', error);
+                showLoading(false);
+                showError('Failed to initialize camera. Please check permissions.');
+            }
+        }
 
-        // Initialize camera
-        async function initCamera() {
-            stopCamera(); // Stop any existing stream first
+        // Set up event listeners
+        function setupEventListeners() {
+            captureBtn.addEventListener('click', captureMedia);
+            switchCameraBtn.addEventListener('click', switchCamera);
+            flashBtn.addEventListener('click', toggleFlash);
+            deleteBtn.addEventListener('click', deleteMedia);
+            saveBtn.addEventListener('click', saveMedia);
+            retryButton.addEventListener('click', init);
+            
+            modeButtons.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const mode = e.currentTarget.dataset.mode;
+                    switchMode(mode);
+                });
+            });
+
+            // Handle screen orientation changes
+            window.addEventListener('orientationchange', handleOrientationChange);
+            
+            // Handle page visibility changes
+            document.addEventListener('visibilitychange', handleVisibilityChange);
+            
+            // Handle focus on camera preview
+            videoElement.addEventListener('click', handleFocus);
+        }
+
+        // Check camera availability
+        async function checkCameraAvailability() {
+            try {
+                const devices = await navigator.mediaDevices.enumerateDevices();
+                availableCameras = devices.filter(device => device.kind === 'videoinput');
+                
+                // Show/hide camera switch button based on available cameras
+                switchCameraBtn.style.display = availableCameras.length > 1 ? 'flex' : 'none';
+                
+                return availableCameras.length > 0;
+            } catch (error) {
+                console.error('Error checking camera availability:', error);
+                return false;
+            }
+        }
+
+        // Start camera
+        async function startCamera() {
+            stopCamera(); // Stop any existing stream
 
             const constraints = {
                 video: { 
@@ -147,7 +456,7 @@
                     width: { ideal: 1920 },
                     height: { ideal: 1080 }
                 },
-                audio: isVideoMode // Only request audio if in video mode
+                audio: isVideoMode
             };
 
             try {
@@ -159,25 +468,91 @@
                 if (isVideoMode) {
                     setupMediaRecorder(stream);
                 }
+                
+                return true;
             } catch (error) {
-                console.error("Error accessing camera:", error);
-                alert("Unable to access the camera. Please check permissions.");
+                console.error('Error starting camera:', error);
+                throw error;
             }
         }
 
+        // Stop camera
         function stopCamera() {
             if (currentStream) {
                 currentStream.getTracks().forEach(track => track.stop());
                 currentStream = null;
             }
+            if (mediaRecorder && mediaRecorder.state === 'recording') {
+                mediaRecorder.stop();
+            }
         }
 
-        function setupMediaRecorder(stream) {
-            // Browser-specific MIME type handling would be needed here for production
-            const options = { mimeType: 'video/webm; codecs=vp9' };
-            recordedChunks = [];
-
+        // Switch between front and back cameras
+        async function switchCamera() {
+            showLoading(true);
             try {
+                currentFacingMode = currentFacingMode === 'user' ? 'environment' : 'user';
+                await startCamera();
+                showLoading(false);
+            } catch (error) {
+                console.error('Error switching camera:', error);
+                showLoading(false);
+                showError('Failed to switch camera.');
+            }
+        }
+
+        // Switch between photo and video mode
+        function switchMode(mode) {
+            if ((mode === 'video' && isVideoMode) || (mode === 'photo' && !isVideoMode)) {
+                return;
+            }
+            
+            isVideoMode = mode === 'video';
+            
+            // Update UI
+            modeButtons.forEach(btn => {
+                if (btn.dataset.mode === mode) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            
+            // Update capture button
+            captureBtn.innerHTML = isVideoMode ? 
+                '<i class="fas fa-video"></i>' : 
+                '<i class="fas fa-camera"></i>';
+            
+            // Restart camera with appropriate settings
+            restartCameraForMode();
+        }
+
+        // Restart camera for current mode
+        async function restartCameraForMode() {
+            showLoading(true);
+            try {
+                await startCamera();
+                showLoading(false);
+            } catch (error) {
+                console.error('Error restarting camera for mode:', error);
+                showLoading(false);
+                showError('Failed to switch mode.');
+            }
+        }
+
+        // Setup media recorder for video
+        function setupMediaRecorder(stream) {
+            try {
+                // Try different MIME types for broader browser compatibility
+                const options = { 
+                    mimeType: 'video/webm; codecs=vp9,opus' ||
+                              'video/webm; codecs=vp8,opus' ||
+                              'video/webm; codecs=h264,opus' ||
+                              'video/mp4; codecs=h264,aac' ||
+                              'video/mp4'
+                };
+                
+                recordedChunks = [];
                 mediaRecorder = new MediaRecorder(stream, options);
 
                 mediaRecorder.ondataavailable = (event) => {
@@ -186,104 +561,234 @@
                     }
                 };
 
-                mediaRecorder.onstop = () => {
-                    const blob = new Blob(recordedChunks, { type: 'video/webm' });
-                    // For video, you would trigger preview with the blob
-                    // For this example, we'll just handle images
-                };
-            } catch (e) {
-                console.error("MediaRecorder setup failed:", e);
+                mediaRecorder.onstop = saveVideo;
+            } catch (error) {
+                console.error('MediaRecorder setup failed:', error);
+                // Fallback to default MIME type
+                try {
+                    mediaRecorder = new MediaRecorder(stream);
+                    recordedChunks = [];
+                    
+                    mediaRecorder.ondataavailable = (event) => {
+                        if (event.data.size > 0) {
+                            recordedChunks.push(event.data);
+                        }
+                    };
+
+                    mediaRecorder.onstop = saveVideo;
+                } catch (fallbackError) {
+                    console.error('MediaRecorder fallback also failed:', fallbackError);
+                    showError('Video recording is not supported in your browser.');
+                }
             }
         }
 
-        // Capture image
-        function captureImage() {
+        // Capture photo or video
+        function captureMedia() {
+            if (isVideoMode) {
+                toggleRecording();
+            } else {
+                takePicture();
+            }
+        }
+
+        // Take picture
+        function takePicture() {
+            // Add visual feedback
+            const flash = document.createElement('div');
+            flash.className = 'capture-flash';
+            document.getElementById('cameraContainer').appendChild(flash);
+            
+            setTimeout(() => {
+                document.getElementById('cameraContainer').removeChild(flash);
+            }, 300);
+            
             const canvas = document.createElement('canvas');
             const context = canvas.getContext('2d');
             
-            // Set canvas dimensions to match video stream
+            // Set canvas dimensions to match video
             canvas.width = videoElement.videoWidth;
             canvas.height = videoElement.videoHeight;
             
             // Draw current video frame to canvas
             context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
             
-            // Convert to Blob and trigger preview
+            // Convert to Blob and show preview
             canvas.toBlob(blob => {
                 const url = URL.createObjectURL(blob);
                 previewImage.src = url;
                 previewOverlay.style.display = 'flex';
                 
-                // Store the blob for saving later
+                // Store the blob for saving
                 previewImage._capturedBlob = blob;
-            }, 'image/jpeg', 0.8);
+            }, 'image/jpeg', 0.9);
         }
 
-        // Event listeners
-        captureBtn.addEventListener('click', () => {
-            if (isVideoMode) {
-                // Handle video recording start/stop
-                // This is a simplified version - you'd need more UI for recording state
-                if (mediaRecorder && mediaRecorder.state === 'recording') {
-                    mediaRecorder.stop();
-                    captureBtn.textContent = '📷';
-                } else {
+        // Toggle video recording
+        function toggleRecording() {
+            if (!isRecording) {
+                // Start recording
+                if (mediaRecorder && mediaRecorder.state === 'inactive') {
+                    recordedChunks = [];
                     mediaRecorder.start();
-                    captureBtn.textContent = '⏹️';
+                    isRecording = true;
+                    recordingIndicator.style.display = 'flex';
+                    captureBtn.innerHTML = '<i class="fas fa-square"></i>';
+                    captureBtn.style.background = '#ff4757';
                 }
             } else {
-                captureImage();
+                // Stop recording
+                if (mediaRecorder && mediaRecorder.state === 'recording') {
+                    mediaRecorder.stop();
+                    isRecording = false;
+                    recordingIndicator.style.display = 'none';
+                    captureBtn.innerHTML = '<i class="fas fa-video"></i>';
+                    captureBtn.style.background = 'white';
+                }
             }
-        });
+        }
 
-        switchCameraBtn.addEventListener('click', () => {
-            currentFacingMode = currentFacingMode === 'user' ? 'environment' : 'user';
-            initCamera();
-        });
+        // Save recorded video
+        function saveVideo() {
+            const blob = new Blob(recordedChunks, { type: mediaRecorder.mimeType || 'video/webm' });
+            const url = URL.createObjectURL(blob);
+            previewImage.src = url;
+            previewOverlay.style.display = 'flex';
+            
+            // Store the blob for saving
+            previewImage._capturedBlob = blob;
+        }
 
-        toggleModeBtn.addEventListener('click', () => {
-            isVideoMode = !isVideoMode;
-            toggleModeBtn.textContent = isVideoMode ? '📷' : '🎥';
-            captureBtn.textContent = isVideoMode ? '🎥' : '📷';
-            stopCamera();
-            initCamera();
-        });
-
-        deleteBtn.addEventListener('click', () => {
-            // Clean up and return to camera view
+        // Delete captured media
+        function deleteMedia() {
             if (previewImage.src) {
                 URL.revokeObjectURL(previewImage.src);
             }
             previewOverlay.style.display = 'none';
             previewImage.removeAttribute('src');
-        });
+            previewImage._capturedBlob = null;
+        }
 
-        saveBtn.addEventListener('click', () => {
+        // Save media to device
+        function saveMedia() {
             if (previewImage._capturedBlob) {
-                // Create a download link and trigger it
-                const url = URL.createObjectURL(previewImage._capturedBlob);
+                const blob = previewImage._capturedBlob;
+                const fileExtension = isVideoMode ? 
+                    (mediaRecorder.mimeType.includes('mp4') ? 'mp4' : 'webm') : 
+                    'jpg';
+                
+                const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = `capture_${Date.now()}.jpg`;
+                a.download = `camera_capture_${Date.now()}.${fileExtension}`;
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
                 
-                // Clean up
-                URL.revokeObjectURL(url);
+                // Clean up and return to camera
                 setTimeout(() => {
-                    URL.revokeObjectURL(previewImage.src);
+                    URL.revokeObjectURL(url);
                     previewOverlay.style.display = 'none';
                     previewImage.removeAttribute('src');
+                    previewImage._capturedBlob = null;
                 }, 100);
             }
-        });
+        }
 
-        // Start the camera when page loads
-        window.addEventListener('load', initCamera);
+        // Toggle flash mode
+        function toggleFlash() {
+            const modes = ['off', 'on', 'auto'];
+            const currentIndex = modes.indexOf(flashMode);
+            flashMode = modes[(currentIndex + 1) % modes.length];
+            
+            // Update flash button icon
+            switch(flashMode) {
+                case 'off':
+                    flashBtn.innerHTML = '<i class="fas fa-bolt-slash"></i>';
+                    flashBtn.title = 'Flash Off';
+                    break;
+                case 'on':
+                    flashBtn.innerHTML = '<i class="fas fa-bolt"></i>';
+                    flashBtn.title = 'Flash On';
+                    break;
+                case 'auto':
+                    flashBtn.innerHTML = '<i class="fas fa-bolt"></i>';
+                    flashBtn.title = 'Flash Auto';
+                    break;
+            }
+            
+            // In a real app, you would apply flash settings to the camera
+            // This is a UI-only implementation for demonstration
+        }
+
+        // Handle focus on camera preview
+        function handleFocus(e) {
+            const rect = videoElement.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            // Show focus indicator
+            focusIndicator.style.left = (x - 30) + 'px';
+            focusIndicator.style.top = (y - 30) + 'px';
+            focusIndicator.style.display = 'block';
+            
+            setTimeout(() => {
+                focusIndicator.style.display = 'none';
+            }, 1000);
+            
+            // In a real app, you would adjust camera focus here
+        }
+
+        // Handle screen orientation changes
+        function handleOrientationChange() {
+            // Restart camera to adjust to new orientation
+            setTimeout(() => {
+                restartCameraForMode();
+            }, 300);
+        }
+
+        // Handle page visibility changes
+        function handleVisibilityChange() {
+            if (document.hidden) {
+                // Page is hidden, stop camera to save resources
+                if (isRecording) {
+                    toggleRecording(); // Stop recording if active
+                }
+                stopCamera();
+            } else {
+                // Page is visible again, restart camera
+                if (!currentStream) {
+                    restartCameraForMode();
+                }
+            }
+        }
+
+        // Show/hide loading indicator
+        function showLoading(show) {
+            loadingIndicator.style.display = show ? 'block' : 'none';
+        }
+
+        // Show/hide camera status
+        function showCameraStatus(show) {
+            cameraStatus.style.display = show ? 'block' : 'none';
+        }
+
+        // Show error message
+        function showError(message) {
+            errorMessage.querySelector('p').textContent = message;
+            errorMessage.style.display = 'block';
+        }
+
+        // Initialize the app when page loads
+        window.addEventListener('DOMContentLoaded', init);
         
         // Clean up when page is closed
-        window.addEventListener('beforeunload', stopCamera);
+        window.addEventListener('beforeunload', () => {
+            stopCamera();
+            if (previewImage.src) {
+                URL.revokeObjectURL(previewImage.src);
+            }
+        });
     </script>
 </body>
 </html>
