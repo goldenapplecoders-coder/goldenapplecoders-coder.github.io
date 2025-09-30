@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universal Video Player</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .player-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .video-section {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .video-container {
+            background: #000;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        #video-player {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .video-info {
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        #video-title {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        #video-description {
+            color: #ccc;
+            font-size: 1rem;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.8);
+            gap: 10px;
+        }
+
+        .control-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: background 0.3s;
+        }
+
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .progress-container {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #progress-bar {
+            flex-grow: 1;
+            height: 6px;
+            background: #555;
+            border-radius: 3px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        #progress {
+            height: 100%;
+            background: #ff3333;
+            border-radius: 3px;
+            width: 0%;
+        }
+
+        .time {
+            font-size: 0.9rem;
+            color: #ccc;
+            min-width: 100px;
+        }
+
+        .volume-container {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        #volume {
+            width: 80px;
+        }
+
+        .playlist-section {
+            flex: 0 0 300px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .playlist-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #444;
+        }
+
+        .file-input-container {
+            margin-bottom: 15px;
+        }
+
+        #file-input {
+            display: none;
+        }
+
+        .file-input-label {
+            display: block;
+            background: #5d6af0;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-align: center;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .file-input-label:hover {
+            background: #4a57d4;
+        }
+
+        #playlist {
+            list-style: none;
+        }
+
+        .playlist-item {
+            padding: 12px;
+            border-bottom: 1px solid #444;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .playlist-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .playlist-item.active {
+            background: rgba(93, 106, 240, 0.3);
+            border-left: 3px solid #5d6af0;
+        }
+
+        .playlist-item-thumbnail {
+            width: 60px;
+            height: 40px;
+            background: #333;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .playlist-item-info {
+            flex-grow: 1;
+            overflow: hidden;
+        }
+
+        .playlist-item-title {
+            font-weight: bold;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .playlist-item-duration {
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+
+        @media (max-width: 768px) {
+            .player-container {
+                flex-direction: column;
+            }
+            
+            .playlist-section {
+                flex: 1;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Universal Video Player</h1>
+            <p>Play online videos and local files with playlist support</p>
+        </header>
+        
+        <div class="player-container">
+            <div class="video-section">
+                <div class="video-container">
+                    <video id="video-player">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="video-info">
+                        <h2 id="video-title">Select a video to play</h2>
+                        <p id="video-description">Choose from the playlist or add your own videos</p>
+                    </div>
+                    <div class="controls">
+                        <button class="control-btn" id="play-pause">
+                            <i class="fas fa-play"></i>
+                        </button>
+                        <button class="control-btn" id="prev">
+                            <i class="fas fa-step-backward"></i>
+                        </button>
+                        <button class="control-btn" id="next">
+                            <i class="fas fa-step-forward"></i>
+                        </button>
+                        <div class="progress-container">
+                            <span class="time" id="current-time">00:00</span>
+                            <div id="progress-bar">
+                                <div id="progress"></div>
+                            </div>
+                            <span class="time" id="duration">00:00</span>
+                        </div>
+                        <div class="volume-container">
+                            <button class="control-btn" id="mute">
+                                <i class="fas fa-volume-up"></i>
+                            </button>
+                            <input type="range" id="volume" min="0" max="1" step="0.1" value="1">
+                        </div>
+                        <button class="control-btn" id="fullscreen">
+                            <i class="fas fa-expand"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="playlist-section">
+                <div class="playlist-header">
+                    <h2>Playlist</h2>
+                    <span id="playlist-count">0 videos</span>
+                </div>
+                
+                <div class="file-input-container">
+                    <label for="file-input" class="file-input-label">
+                        <i class="fas fa-folder-open"></i> Add Local Videos
+                    </label>
+                    <input type="file" id="file-input" accept="video/*" multiple>
+                </div>
+                
+                <ul id="playlist">
+                    <!-- Playlist items will be generated here -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const videoPlayer = document.getElementById('video-player');
+        const playPauseBtn = document.getElementById('play-pause');
+        const prevBtn = document.getElementById('prev');
+        const nextBtn = document.getElementById('next');
+        const muteBtn = document.getElementById('mute');
+        const volumeSlider = document.getElementById('volume');
+        const progressBar = document.getElementById('progress-bar');
+        const progress = document.getElementById('progress');
+        const currentTimeEl = document.getElementById('current-time');
+        const durationEl = document.getElementById('duration');
+        const fullscreenBtn = document.getElementById('fullscreen');
+        const videoTitle = document.getElementById('video-title');
+        const videoDescription = document.getElementById('video-description');
+        const fileInput = document.getElementById('file-input');
+        const playlistEl = document.getElementById('playlist');
+        const playlistCount = document.getElementById('playlist-count');
+
+        // Player state
+        let isPlaying = false;
+        let currentVideoIndex = 0;
+        let videos = [
+            {
+                title: "Big Buck Bunny",
+                description: "A short animated film by the Blender Foundation",
+                src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+                duration: "00:00",
+                thumbnail: null
+            },
+            {
+                title: "Elephants Dream",
+                description: "The story of two characters in a surreal world",
+                src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+                duration: "00:00",
+                thumbnail: null
+            },
+            {
+                title: "For Bigger Blazes",
+                description: "A sample video for demonstration purposes",
+                src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+                duration: "00:00",
+                thumbnail: null
+            }
+        ];
+
+        // Initialize the player
+        function initPlayer() {
+            updatePlaylist();
+            loadVideo(0);
+            
+            // Event listeners
+            playPauseBtn.addEventListener('click', togglePlay);
+            prevBtn.addEventListener('click', prevVideo);
+            nextBtn.addEventListener('click', nextVideo);
+            muteBtn.addEventListener('click', toggleMute);
+            volumeSlider.addEventListener('input', setVolume);
+            videoPlayer.addEventListener('timeupdate', updateProgress);
+            videoPlayer.addEventListener('loadedmetadata', setDuration);
+            progressBar.addEventListener('click', setProgress);
+            fullscreenBtn.addEventListener('click', toggleFullscreen);
+            fileInput.addEventListener('change', handleFileSelect);
+            
+            // Set initial volume
+            videoPlayer.volume = volumeSlider.value;
+        }
+
+        // Toggle play/pause
+        function togglePlay() {
+            if (isPlaying) {
+                videoPlayer.pause();
+            } else {
+                videoPlayer.play();
+            }
+        }
+
+        // Update play/pause button
+        videoPlayer.addEventListener('play', function() {
+            isPlaying = true;
+            playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+        });
+
+        videoPlayer.addEventListener('pause', function() {
+            isPlaying = false;
+            playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+        });
+
+        // Load a video
+        function loadVideo(index) {
+            if (index >= 0 && index < videos.length) {
+                currentVideoIndex = index;
+                const video = videos[index];
+                
+                videoPlayer.src = video.src;
+                videoTitle.textContent = video.title;
+                videoDescription.textContent = video.description;
+                
+                // Update active item in playlist
+                const playlistItems = playlistEl.querySelectorAll('.playlist-item');
+                playlistItems.forEach((item, i) => {
+                    if (i === index) {
+                        item.classList.add('active');
+                    } else {
+                        item.classList.remove('active');
+                    }
+                });
+                
+                // Play the video
+                videoPlayer.play();
+            }
+        }
+
+        // Previous video
+        function prevVideo() {
+            let newIndex = currentVideoIndex - 1;
+            if (newIndex < 0) {
+                newIndex = videos.length - 1;
+            }
+            loadVideo(newIndex);
+        }
+
+        // Next video
+        function nextVideo() {
+            let newIndex = currentVideoIndex + 1;
+            if (newIndex >= videos.length) {
+                newIndex = 0;
+            }
+            loadVideo(newIndex);
+        }
+
+        // Toggle mute
+        function toggleMute() {
+            videoPlayer.muted = !videoPlayer.muted;
+            if (videoPlayer.muted) {
+                muteBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                volumeSlider.value = 0;
+            } else {
+                muteBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+                volumeSlider.value = videoPlayer.volume;
+            }
+        }
+
+        // Set volume
+        function setVolume() {
+            videoPlayer.volume = volumeSlider.value;
+            if (videoPlayer.volume == 0) {
+                muteBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+            } else {
+                muteBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+            }
+        }
+
+        // Update progress bar
+        function updateProgress() {
+            const percent = (videoPlayer.currentTime / videoPlayer.duration) * 100;
+            progress.style.width = `${percent}%`;
+            
+            // Update current time
+            currentTimeEl.textContent = formatTime(videoPlayer.currentTime);
+        }
+
+        // Set video duration
+        function setDuration() {
+            durationEl.textContent = formatTime(videoPlayer.duration);
+            
+            // Update duration in videos array
+            if (currentVideoIndex < videos.length) {
+                videos[currentVideoIndex].duration = formatTime(videoPlayer.duration);
+                updatePlaylist();
+            }
+        }
+
+        // Set progress on click
+        function setProgress(e) {
+            const rect = progressBar.getBoundingClientRect();
+            const percent = (e.clientX - rect.left) / rect.width;
+            videoPlayer.currentTime = percent * videoPlayer.duration;
+        }
+
+        // Toggle fullscreen
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                videoPlayer.parentElement.requestFullscreen().catch(err => {
+                    console.log(`Error attempting to enable fullscreen: ${err.message}`);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        // Handle file selection
+        function handleFileSelect(e) {
+            const files = e.target.files;
+            
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const url = URL.createObjectURL(file);
+                
+                videos.push({
+                    title: file.name,
+                    description: `Local file - ${formatFileSize(file.size)}`,
+                    src: url,
+                    duration: "00:00",
+                    thumbnail: null
+                });
+            }
+            
+            updatePlaylist();
+            fileInput.value = '';
+        }
+
+        // Update playlist UI
+        function updatePlaylist() {
+            playlistEl.innerHTML = '';
+            
+            videos.forEach((video, index) => {
+                const li = document.createElement('li');
+                li.className = 'playlist-item';
+                if (index === currentVideoIndex) {
+                    li.classList.add('active');
+                }
+                
+                li.innerHTML = `
+                    <div class="playlist-item-thumbnail">
+                        <i class="fas fa-film"></i>
+                    </div>
+                    <div class="playlist-item-info">
+                        <div class="playlist-item-title">${video.title}</div>
+                        <div class="playlist-item-duration">${video.duration}</div>
+                    </div>
+                `;
+                
+                li.addEventListener('click', () => loadVideo(index));
+                playlistEl.appendChild(li);
+            });
+            
+            playlistCount.textContent = `${videos.length} videos`;
+        }
+
+        // Format time (seconds to MM:SS)
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return "00:00";
+            
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // Format file size
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // Auto-play next video when current ends
+        videoPlayer.addEventListener('ended', nextVideo);
+
+        // Initialize the player when page loads
+        window.addEventListener('DOMContentLoaded', initPlayer);
+    </script>
+</body>
+</html>
