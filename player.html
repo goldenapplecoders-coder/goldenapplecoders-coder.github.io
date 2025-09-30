@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universal Music Player</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            transition: background-color .5s;
+            color: #333;
+        }
+
+        .player {
+            background: rgba(255, 255, 255, 0.95);
+            width: 90%;
+            max-width: 400px;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .details {
+            margin-bottom: 25px;
+        }
+
+        .now-playing {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .track-art {
+            margin: 20px auto;
+            width: 180px;
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 50%;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            background-image: url('https://source.unsplash.com/Qrspubmx6kE/640x360');
+        }
+
+        .track-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 10px 0 5px;
+        }
+
+        .track-artist {
+            font-size: 1.1rem;
+            color: #666;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .playpause-track, .prev-track, .next-track {
+            padding: 15px;
+            opacity: 0.8;
+            transition: opacity .2s, transform .2s;
+            cursor: pointer;
+        }
+
+        .playpause-track:hover, .prev-track:hover, .next-track:hover {
+            opacity: 1.0;
+            transform: scale(1.1);
+        }
+
+        .playpause-track {
+            font-size: 2.5rem;
+        }
+
+        .prev-track, .next-track {
+            font-size: 1.5rem;
+        }
+
+        .slider_container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .current-time, .total-duration {
+            width: 50px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .seek_slider, .volume_slider {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            height: 6px;
+            background: #ddd;
+            border-radius: 3px;
+            outline: none;
+            opacity: 0.7;
+            transition: opacity .2s;
+        }
+
+        .seek_slider::-webkit-slider-thumb, .volume_slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #667eea;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        .seek_slider:hover, .volume_slider:hover {
+            opacity: 1.0;
+        }
+
+        .seek_slider {
+            flex: 1;
+            max-width: 60%;
+            margin: 0 10px;
+        }
+
+        .volume_slider {
+            width: 30%;
+            margin: 0 10px;
+        }
+
+        i.fa-volume-down, i.fa-volume-up {
+            color: #666;
+        }
+
+        .file-input-container {
+            margin: 20px 0;
+        }
+
+        .file-input-label {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: background .3s;
+            font-size: 0.9rem;
+        }
+
+        .file-input-label:hover {
+            background: #764ba2;
+        }
+
+        #file-input {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="player">
+        <div class="details">
+            <div class="now-playing">PLAYING <span id="track-index">1</span> OF <span id="total-tracks">3</span></div>
+            <div class="track-art" id="track-art"></div>
+            <div class="track-name" id="track-name">Track Name</div>
+            <div class="track-artist" id="track-artist">Track Artist</div>
+        </div>
+
+        <div class="file-input-container">
+            <label for="file-input" class="file-input-label">
+                <i class="fas fa-file-audio"></i> Choose Local Music File
+            </label>
+            <input type="file" id="file-input" accept="audio/*">
+        </div>
+
+        <div class="buttons">
+            <div class="prev-track" onclick="prevTrack()">
+                <i class="fa fa-step-backward fa-2x"></i>
+            </div>
+            <div class="playpause-track" onclick="playpauseTrack()">
+                <i class="fa fa-play-circle fa-5x" id="play-pause-icon"></i>
+            </div>
+            <div class="next-track" onclick="nextTrack()">
+                <i class="fa fa-step-forward fa-2x"></i>
+            </div>
+        </div>
+
+        <div class="slider_container">
+            <div class="current-time" id="current-time">00:00</div>
+            <input type="range" min="0" max="100" value="0" class="seek_slider" id="seek-slider" oninput="seekTo()">
+            <div class="total-duration" id="total-duration">00:00</div>
+        </div>
+
+        <div class="slider_container">
+            <i class="fa fa-volume-down"></i>
+            <input type="range" min="0" max="100" value="70" class="volume_slider" id="volume-slider" oninput="setVolume()">
+            <i class="fa fa-volume-up"></i>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const nowPlaying = document.querySelector(".now-playing");
+        const trackArt = document.getElementById("track-art");
+        const trackName = document.getElementById("track-name");
+        const trackArtist = document.getElementById("track-artist");
+        const trackIndexDisplay = document.getElementById("track-index");
+        const totalTracksDisplay = document.getElementById("total-tracks");
+        const playPauseIcon = document.getElementById("play-pause-icon");
+        const seekSlider = document.getElementById("seek-slider");
+        const volumeSlider = document.getElementById("volume-slider");
+        const currentTimeDisplay = document.getElementById("current-time");
+        const totalDurationDisplay = document.getElementById("total-duration");
+        const fileInput = document.getElementById("file-input");
+
+        // Player State
+        let trackIndex = 0;
+        let isPlaying = false;
+        let updateTimer;
+        let isOnlineTrack = true;
+
+        // Create audio element
+        const currTrack = document.createElement('audio');
+
+        // Online track list [citation:1]
+        const onlineTrackList = [
+            {
+                name: "Night Owl",
+                artist: "Broke For Free",
+                image: "https://source.unsplash.com/Qrspubmx6kE/640x360",
+                path: "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Broke_For_Free/Directionless_EP/Broke_For_Free_-_01_-_Night_Owl.mp3"
+            },
+            {
+                name: "Enthusiast",
+                artist: "Tours",
+                image: "https://source.unsplash.com/8e2gal_GIE8/640x360",
+                path: "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Tours/Enthusiast/Tours_-_01_-_Enthusiast.mp3"
+            },
+            {
+                name: "Shipping Lanes",
+                artist: "Chad Crouch",
+                image: "https://source.unsplash.com/8e2gal_GIE8/640x360",
+                path: "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/ccCommunity/Chad_Crouch/Arps/Chad_Crouch_-_Shipping_Lanes.mp3"
+            }
+        ];
+
+        // Local track list (will be populated by user selection)
+        let localTrackList = [];
+        let currentTrackList = onlineTrackList;
+
+        // Load a track into the player [citation:1]
+        function loadTrack(trackIndex) {
+            clearInterval(updateTimer);
+            resetValues();
+
+            const track = currentTrackList[trackIndex];
+            currTrack.src = track.path;
+            currTrack.load();
+
+            trackArt.style.backgroundImage = `url("${track.image}")`;
+            trackName.textContent = track.name;
+            trackArtist.textContent = track.artist;
+            trackIndexDisplay.textContent = trackIndex + 1;
+            totalTracksDisplay.textContent = currentTrackList.length;
+            nowPlaying.textContent = `PLAYING ${trackIndex + 1} OF ${currentTrackList.length}`;
+
+            updateTimer = setInterval(updateSeekSlider, 1000);
+
+            currTrack.addEventListener('ended', nextTrack);
+        }
+
+        // Reset player values [citation:1]
+        function resetValues() {
+            currentTimeDisplay.textContent = "00:00";
+            totalDurationDisplay.textContent = "00:00";
+            seekSlider.value = 0;
+        }
+
+        // Play or pause the currently loaded track [citation:1]
+        function playpauseTrack() {
+            if (!isPlaying) {
+                playTrack();
+            } else {
+                pauseTrack();
+            }
+        }
+
+        function playTrack() {
+            currTrack.play();
+            isPlaying = true;
+            playPauseIcon.classList.remove('fa-play-circle');
+            playPauseIcon.classList.add('fa-pause-circle');
+        }
+
+        function pauseTrack() {
+            currTrack.pause();
+            isPlaying = false;
+            playPauseIcon.classList.remove('fa-pause-circle');
+            playPauseIcon.classList.add('fa-play-circle');
+        }
+
+        // Play the next track in the list [citation:1]
+        function nextTrack() {
+            if (trackIndex < currentTrackList.length - 1) {
+                trackIndex += 1;
+            } else {
+                trackIndex = 0;
+            }
+            loadTrack(trackIndex);
+            if (isPlaying) {
+                playTrack();
+            }
+        }
+
+        // Play the previous track in the list [citation:1]
+        function prevTrack() {
+            if (trackIndex > 0) {
+                trackIndex -= 1;
+            } else {
+                trackIndex = currentTrackList.length - 1;
+            }
+            loadTrack(trackIndex);
+            if (isPlaying) {
+                playTrack();
+            }
+        }
+
+        // Update the seek slider as the track plays [citation:1]
+        function updateSeekSlider() {
+            const seekPosition = currTrack.currentTime / currTrack.duration * 100;
+            
+            if (!isNaN(seekPosition)) {
+                seekSlider.value = seekPosition;
+                
+                const currentMinutes = Math.floor(currTrack.currentTime / 60);
+                const currentSeconds = Math.floor(currTrack.currentTime - currentMinutes * 60);
+                const durationMinutes = Math.floor(currTrack.duration / 60);
+                const durationSeconds = Math.floor(currTrack.duration - durationMinutes * 60);
+                
+                currentTimeDisplay.textContent = 
+                    `${currentMinutes}:${currentSeconds < 10 ? '0' : ''}${currentSeconds}`;
+                totalDurationDisplay.textContent = 
+                    `${durationMinutes}:${durationSeconds < 10 ? '0' : ''}${durationSeconds}`;
+            }
+        }
+
+        // Seek to a specific position in the track [citation:1]
+        function seekTo() {
+            const seekTo = currTrack.duration * (seekSlider.value / 100);
+            currTrack.currentTime = seekTo;
+        }
+
+        // Set the volume [citation:1]
+        function setVolume() {
+            currTrack.volume = volumeSlider.value / 100;
+        }
+
+        // Handle local file selection
+        fileInput.addEventListener('change', function(e) {
+            const files = e.target.files;
+            if (files.length === 0) return;
+            
+            localTrackList = [];
+            
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const url = URL.createObjectURL(file);
+                
+                localTrackList.push({
+                    name: file.name.replace(/\.[^/.]+$/, ""), // Remove file extension
+                    artist: "Local Artist",
+                    image: "https://source.unsplash.com/8e2gal_GIE8/640x360", // Default image
+                    path: url
+                });
+            }
+            
+            // Switch to local tracks
+            currentTrackList = localTrackList;
+            trackIndex = 0;
+            isOnlineTrack = false;
+            loadTrack(trackIndex);
+            
+            // Auto-play the first local track
+            playTrack();
+        });
+
+        // Initialize the player with the first online track
+        loadTrack(trackIndex);
+        setVolume(); // Set initial volume
+    </script>
+</body>
+</html>
