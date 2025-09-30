@@ -3,246 +3,814 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Golden Apple Technologies</title>
+  <title>About | Golden Apple Technologies</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-:root {
-      --primary: #f9c80e;
-      --accent: #f86624;
-      --bg: #f4f4f4;
-      --text: #333;
-      --card-bg: #fff;
-}
-
+    :root {
+      --primary: #6C63FF;
+      --secondary: #FF6584;
+      --accent: #00D4FF;
+      --dark: #0A0A14;
+      --darker: #050509;
+      --light: #F5F5F7;
+      --card-bg: rgba(255, 255, 255, 0.05);
+    }
+    
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-}
-
+    }
+    
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-}
-
-    header {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+      color: var(--light);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: var(--darker);
+    }
+    
+    ::-webkit-scrollbar-thumb {
       background: var(--primary);
-      padding: 20px;
+      border-radius: 10px;
+    }
+    
+    /* Navigation */
+    .navbar {
+      background: rgba(10, 10, 20, 0.8);
+      backdrop-filter: blur(10px);
+      padding: 1rem 2rem;
+      border-bottom: 1px solid rgba(108, 99, 255, 0.2);
+      transition: all 0.3s ease;
+    }
+    
+    .navbar-brand {
+      font-weight: 700;
+      font-size: 1.8rem;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .navbar-brand i {
+      color: var(--secondary);
+    }
+    
+    .nav-link {
+      color: var(--light) !important;
+      font-weight: 500;
+      margin: 0 10px;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      transition: width 0.3s ease;
+    }
+    
+    .nav-link:hover::after,
+    .nav-link.active::after {
+      width: 100%;
+    }
+    
+    /* Hero Section */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 30% 30%, rgba(108, 99, 255, 0.1) 0%, transparent 50%),
+                  radial-gradient(circle at 70% 70%, rgba(255, 101, 132, 0.1) 0%, transparent 50%);
+      z-index: -1;
+    }
+    
+    .hero-content {
+      max-width: 800px;
+      margin: 0 auto;
       text-align: center;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
-
-    header h1 {
-      font-size: 2.5rem;
+      padding: 2rem;
+    }
+    
+    .hero h1 {
+      font-size: 4rem;
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(90deg, var(--primary), var(--accent), var(--secondary));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      line-height: 1.2;
+    }
+    
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      color: rgba(245, 245, 247, 0.8);
+      line-height: 1.6;
+    }
+    
+    .cta-button {
+      display: inline-block;
+      padding: 12px 30px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
       color: white;
-      margin-bottom: 5px;
-}
-
-    nav {
-      background: white;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(108, 99, 255, 0.4);
+      border: none;
+    }
+    
+    .cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(108, 99, 255, 0.6);
+      color: white;
+    }
+    
+    /* Sections */
+    .section {
+      padding: 100px 0;
+      position: relative;
+    }
+    
+    .section-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 3rem;
+      text-align: center;
+      position: relative;
+    }
+    
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      border-radius: 2px;
+    }
+    
+    /* History Section */
+    .history-content {
+      display: flex;
+      align-items: center;
+      gap: 3rem;
+      margin-bottom: 4rem;
+    }
+    
+    .history-text {
+      flex: 1;
+    }
+    
+    .history-images {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    
+    .history-img {
+      width: 100%;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease;
+    }
+    
+    .history-img:hover {
+      transform: scale(1.03);
+    }
+    
+    /* Vision Section */
+    .vision-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+    
+    .vision-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 2rem;
+      text-align: center;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .vision-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      border-color: rgba(108, 99, 255, 0.3);
+    }
+    
+    .vision-icon {
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    
+    /* Team Section */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+    
+    .team-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .team-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      border-color: rgba(108, 99, 255, 0.3);
+    }
+    
+    .team-img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+    }
+    
+    .team-info {
+      padding: 1.5rem;
+    }
+    
+    .team-name {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    
+    .team-role {
+      color: var(--accent);
+      margin-bottom: 1rem;
+      font-weight: 500;
+    }
+    
+    .team-btn {
+      display: inline-block;
+      padding: 8px 20px;
+      background: transparent;
+      color: var(--primary);
+      border: 1px solid var(--primary);
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    
+    .team-btn:hover {
+      background: var(--primary);
+      color: white;
+    }
+    
+    /* Comments Section */
+    .comment-form {
+      max-width: 600px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      padding: 2.5rem;
+      border-radius: 15px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .form-control {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--light);
+      padding: 12px 15px;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+      transition: all 0.3s ease;
+    }
+    
+    .form-control:focus {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.2);
+      color: var(--light);
+    }
+    
+    .form-control::placeholder {
+      color: rgba(245, 245, 247, 0.5);
+    }
+    
+    /* Social Media Section */
+    .social-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+    
+    .social-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 2rem;
+      text-align: center;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .social-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      border-color: rgba(108, 99, 255, 0.3);
+    }
+    
+    .social-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .social-name {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    
+    .social-btn {
+      display: inline-block;
+      padding: 10px 25px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      color: white;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    
+    .social-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(108, 99, 255, 0.4);
+      color: white;
+    }
+    
+    /* Footer */
+    footer {
+      background: rgba(5, 5, 9, 0.8);
+      padding: 3rem 0;
+      text-align: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    .footer-logo {
+      font-size: 2rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 1.5rem;
+    }
+    
+    .footer-text {
+      color: rgba(245, 245, 247, 0.6);
+      margin-bottom: 2rem;
+    }
+    
+    .footer-social {
       display: flex;
       justify-content: center;
-      gap: 20px;
-      padding: 10px 0;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-}
-
-    nav button {
-      background: none;
-      border: none;
-      font-size: 1rem;
-      cursor: pointer;
-      padding: 10px 15px;
-      border-radius: 5px;
-      transition: background 0.3s;
-}
-
-    nav button:hover {
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .footer-social a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 50%;
+      color: var(--light);
+      transition: all 0.3s ease;
+    }
+    
+    .footer-social a:hover {
       background: var(--primary);
-      color: white;
-}
-
-.container {
-      max-width: 1000px;
-      margin: 30px auto;
-      padding: 0 20px;
-}
-
-    section {
-      display: none;
-      animation: fadeIn 0.5s ease-in-out;
-}
-
-    section.active {
-      display: block;
-}
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px);}
-      to { opacity: 1; transform: translateY(0);}
-}
-
-.card {
-      background: var(--card-bg);
-      border-radius: 10px;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-}
-
-.card img {
-      width: 100%;
-      border-radius: 10px;
-      margin-bottom: 15px;
-}
-
-.form-group {
-      margin-bottom: 15px;
-}
-
-.form-group input,
-.form-group textarea {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 1rem;
-}
-
-.btn {
-      background: var(--accent);
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 1rem;
-      transition: background 0.3s;
-}
-
-.btn:hover {
-      background: #e0551e;
-}
-
-    footer {
-      text-align: center;
-      padding: 20px;
-      background: #eee;
+      transform: translateY(-3px);
+    }
+    
+    .copyright {
+      color: rgba(245, 245, 247, 0.4);
       font-size: 0.9rem;
-      margin-top: 40px;
-}
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 992px) {
+      .hero h1 {
+        font-size: 3rem;
+      }
+      
+      .history-content {
+        flex-direction: column;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+      
+      .section {
+        padding: 70px 0;
+      }
+      
+      .section-title {
+        font-size: 2rem;
+      }
+    }
+    
+    @media (max-width: 576px) {
+      .hero h1 {
+        font-size: 2rem;
+      }
+      
+      .hero p {
+        font-size: 1rem;
+      }
+    }
+    
+    /* Animation Classes */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.6s ease;
+    }
+    
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    /* Floating Elements */
+    .floating {
+      animation: floating 3s ease-in-out infinite;
+    }
+    
+    @keyframes floating {
+      0% { transform: translate(0, 0px); }
+      50% { transform: translate(0, -15px); }
+      100% { transform: translate(0, 0px); }
+    }
   </style>
 </head>
 <body>
-
-  <header>
-    <h1>Golden Apple Technologies</h1>
-    <p>Empowering Africa's Tech Future</p>
-  </header>
-
-  <nav>
-    <button onclick="showSection('about')">About</button>
-    <button onclick="showSection('vision')">Vision</button>
-    <button onclick="showSection('team')">Team</button>
-    <button onclick="showSection('comment')">Comment</button><br>
-    <button onclick="showSection('social')">Social</button>
-  </nav>
-
-  <div class="container">
-    <!-- ABOUT -->
-    <section id="about" class="active">
-      <div class="card">
-        <h2>About Us</h2>
-        <p>Golden Apple Technologies was born in Kampala from the mentorship of CEO Nathan. What started as a coding dream has evolved into a tech empire—empowering youth, building tools like Codemind VOL 23.0, and launching platforms like iAM Scholar.</p>
-        <img src="history1.jpeg" alt="Tech Team Collaboration" />
-        <img src="history2.jpeg" alt="Coding Innovation" />
-      </div>
-    </section>
-
-    <!-- VISION -->
-    <section id="vision">
-      <div class="card">
-        <h2>Our Vision</h2>
-<p>We aim to build legendary digital experiences that blend creativity, code, and culture. From educational games to cybersecurity tools, our mission is to shape Africa’s tech future.</p>
-      </div>
-    </section>
-
-    <!-- TEAM -->
-    <section id="team">
-      <div class="card">
-        <h2>Our Team</h2>
-        <div class="card">
-          <h3>ICII</h3>
-          <p>Lead Architect & Visionary</p>
-          <img src="bot.jpeg" alt="ICII" />
-        </div>
-        <div class="card">
-          <h3>Dizzer J</h3>
-          <p>Co-Director & Music Producer</p>
-          <img src="dizzer.jpeg" alt="Dizzer J" />
-        </div>
-        <div class="card">
-          <h3>Alpha</h3>
-          <p>Head of Development</p>
-          <img src="witness.jpeg" alt="Alpha" />
-        </div>
-        <div class="card">
-          <h3>Whole Team</h3>
-          <p>Full Golden Apple Crew</p>
-          <img src="team.jpeg" alt="Team" />
-        </div>
-      </div>
-    </section>
-
-    <!-- COMMENT -->
-    <section id="comment">
-      <div class="card">
-        <h2>Leave a Comment</h2>
-        <form onsubmit="sendToWhatsApp(); return false;">
-          <div class="form-group">
-            <input type="text" id="name" placeholder="Your Name" required />
-          </div>
-          <div class="form-group">
-            <textarea id="message" rows="4" placeholder="Your Comment" required></textarea>
-          </div>
-          <button type="submit" class="btn">Send comment</button>
-        </form>
-      </div>
-    </section>
-
-    <!-- SOCIAL -->
-    <section id="social">
-      <div class="card">
-        <h2>Connect With Us</h2>
-        <ul>
-          <li><a href="https://www.instagram.com/goldenappletech" target="_blank">Instagram</a></li>
-          <li><a href="#" target="_blank">Facebook</a></li>
-          <li><a href="#" target="_blank">TikTok</a></li>
-          <li><a href="https://github.com/goldenapplecoders-coder" target="_blank">GitHub</a></li>
-          <li><a href="https://www.linkedin.com/in/golden-apple-technologies-international-b71296387" target="_blank">LinkedIn</a></li>
-          <li><a href="https://youtube.com/@gatech-sos" target="_blank">YouTube</a></li>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">
+        <i class="fas fa-apple-alt"></i> Golden Apple
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link active" href="#history">Info</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#vision">Vision</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#team">Officials</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#comments">Comments</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#social">Social</a>
+          </li>
         </ul>
       </div>
-    </section>
-  </div>
+    </div>
+  </nav>
 
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1 class="floating">Golden Apple Technologies</h1>
+        <p>Transforming ideas into digital reality through innovation, creativity, and cutting-edge technology solutions.</p>
+        <a href="#history" class="cta-button">Explore Our Story</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- History Section -->
+  <section id="history" class="section">
+    <div class="container">
+      <h2 class="section-title fade-in">Our Story</h2>
+      <div class="history-content">
+        <div class="history-text fade-in">
+          <p>Golden Apple Technologies was born in Kampala from the mentorship of CEO Nathan. What started as a coding dream has evolved into a tech empire—empowering youth, building tools like Codemind VOL 23.0, and launching platforms like iAM Scholar.</p>
+          <p>Our journey began with a simple vision: to create technology that makes a difference. Today, we're proud to be at the forefront of digital innovation in Africa, developing solutions that solve real-world problems and inspire the next generation of tech leaders.</p>
+        </div>
+        <div class="history-images fade-in">
+          <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Tech Team Collaboration" class="history-img">
+          <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Coding Innovation" class="history-img">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Vision Section -->
+  <section id="vision" class="section">
+    <div class="container">
+      <h2 class="section-title fade-in">Our Vision</h2>
+      <div class="vision-cards">
+        <div class="vision-card fade-in">
+          <div class="vision-icon">
+            <i class="fas fa-lightbulb"></i>
+          </div>
+          <h3>Innovation</h3>
+          <p>We push the boundaries of technology to create solutions that are not only functional but revolutionary.</p>
+        </div>
+        <div class="vision-card fade-in">
+          <div class="vision-icon">
+            <i class="fas fa-globe-africa"></i>
+          </div>
+          <h3>Empowerment</h3>
+          <p>We're committed to empowering African youth with the digital skills needed to shape the continent's future.</p>
+        </div>
+        <div class="vision-card fade-in">
+          <div class="vision-icon">
+            <i class="fas fa-code"></i>
+          </div>
+          <h3>Excellence</h3>
+          <p>We strive for excellence in every line of code, every design, and every solution we deliver to our clients.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Team Section -->
+  <section id="team" class="section">
+    <div class="container">
+      <h2 class="section-title fade-in">Our Team</h2>
+      <div class="team-grid">
+        <div class="team-card fade-in">
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="ICII" class="team-img">
+          <div class="team-info">
+            <h3 class="team-name">ICII</h3>
+            <p class="team-role">Lead Architect & Visionary</p>
+            <a href="icii.html" class="team-btn">View Profile</a>
+          </div>
+        </div>
+        <div class="team-card fade-in">
+          <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Dizzer J" class="team-img">
+          <div class="team-info">
+            <h3 class="team-name">Dizzer J</h3>
+            <p class="team-role">Co-Director & Music Producer</p>
+            <a href="dizzerj.html" class="team-btn">View Profile</a>
+          </div>
+        </div>
+        <div class="team-card fade-in">
+          <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Alpha" class="team-img">
+          <div class="team-info">
+            <h3 class="team-name">Alpha</h3>
+            <p class="team-role">Head of Development</p>
+            <a href="#" class="team-btn">View Profile</a>
+          </div>
+        </div>
+        <div class="team-card fade-in">
+          <img src="https://images.unsplash.com/photo-1521737852567-6949f3f9f2b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Whole Team" class="team-img">
+          <div class="team-info">
+            <h3 class="team-name">Golden Apple Team</h3>
+            <p class="team-role">Full Golden Apple Crew</p>
+            <a href="team.html" class="team-btn">View Team</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comments Section -->
+  <section id="comments" class="section">
+    <div class="container">
+      <h2 class="section-title fade-in">Send Us a Comment</h2>
+      <div class="comment-form fade-in">
+        <form onsubmit="sendToWhatsApp(); return false;">
+          <div class="mb-3">
+            <input type="text" id="name" class="form-control" placeholder="Your Name" required>
+          </div>
+          <div class="mb-3">
+            <input type="email" id="email" class="form-control" placeholder="Your Email" required>
+          </div>
+          <div class="mb-3">
+            <textarea id="message" class="form-control" rows="5" placeholder="Your Message" required></textarea>
+          </div>
+          <button type="submit" class="cta-button w-100">Send Message</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Social Media Section -->
+  <section id="social" class="section">
+    <div class="container">
+      <h2 class="section-title fade-in">Connect With Us</h2>
+      <div class="social-grid">
+        <div class="social-card fade-in">
+          <div class="social-icon">
+            <i class="fab fa-instagram" style="color: #E1306C;"></i>
+          </div>
+          <h3 class="social-name">Instagram</h3>
+          <a href="https://www.instagram.com/goldenappletech?igsh=ZmY2YTF0cWRodWl4" target="_blank" class="social-btn">Follow Us</a>
+        </div>
+        <div class="social-card fade-in">
+          <div class="social-icon">
+            <i class="fab fa-facebook" style="color: #1877F2;"></i>
+          </div>
+          <h3 class="social-name">Facebook</h3>
+          <a href="#" target="_blank" class="social-btn">Like Our Page</a>
+        </div>
+        <div class="social-card fade-in">
+          <div class="social-icon">
+            <i class="fab fa-tiktok" style="color: #000000;"></i>
+          </div>
+          <h3 class="social-name">TikTok</h3>
+          <a href="#" target="_blank" class="social-btn">Follow Us</a>
+        </div>
+        <div class="social-card fade-in">
+          <div class="social-icon">
+            <i class="fab fa-github" style="color: #ffffff;"></i>
+          </div>
+          <h3 class="social-name">GitHub</h3>
+          <a href="https://github.com/goldenapplecoders-coder" target="_blank" class="social-btn">Explore Repos</a>
+        </div>
+        <div class="social-card fade-in">
+          <div class="social-icon">
+            <i class="fab fa-linkedin" style="color: #0A66C2;"></i>
+          </div>
+          <h3 class="social-name">LinkedIn</h3>
+          <a href="https://www.linkedin.com/in/golden-apple-technologies-international-b71296387?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" class="social-btn">Connect</a>
+        </div>
+        <div class="social-card fade-in">
+          <div class="social-icon">
+            <i class="fab fa-youtube" style="color: #FF0000;"></i>
+          </div>
+          <h3 class="social-name">YouTube</h3>
+          <a href="https://youtube.com/@gatech-sos?si=ASUbCHs6OnCEWLdl" target="_blank" class="social-btn">Subscribe</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
   <footer>
-    © 2025 Golden Apple Technologies | Powered by Vision & Code
+    <div class="container">
+      <div class="footer-logo">Golden Apple Technologies</div>
+      <p class="footer-text">Transforming ideas into digital reality through innovation and creativity.</p>
+      <div class="footer-social">
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        <a href="#"><i class="fab fa-github"></i></a>
+      </div>
+      <p class="copyright">© 2025 Golden Apple Technologies | Powered by Vision & Code</p>
+    </div>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    function showSection(id) {
-      document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-}
+    // Navbar scroll effect
+    window.addEventListener('scroll', function() {
+      const navbar = document.querySelector('.navbar');
+      if (window.scrollY > 50) {
+        navbar.style.background = 'rgba(10, 10, 20, 0.95)';
+        navbar.style.padding = '0.7rem 2rem';
+      } else {
+        navbar.style.background = 'rgba(10, 10, 20, 0.8)';
+        navbar.style.padding = '1rem 2rem';
+      }
+    });
 
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          window.scrollTo({
+            top: targetElement.offsetTop - 80,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+
+    // Fade-in animation on scroll
+    const fadeElements = document.querySelectorAll('.fade-in');
+    
+    const fadeInOnScroll = function() {
+      fadeElements.forEach(element => {
+        const elementTop = element.getBoundingClientRect().top;
+        const elementVisible = 150;
+        
+        if (elementTop < window.innerHeight - elementVisible) {
+          element.classList.add('visible');
+        }
+      });
+    };
+    
+    window.addEventListener('scroll', fadeInOnScroll);
+    // Initial check in case elements are already in view
+    fadeInOnScroll();
+
+    // WhatsApp message function
     function sendToWhatsApp() {
       const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
       const message = document.getElementById('message').value;
-      const full = `*Comment*\nI'm ${name}.\nHere's my comment:\n\n${message}`;
-      window.open(`https://wa.me/256791728084?text=${encodeURIComponent(full)}`, '_blank');
-}
+      
+      const fullMessage = `*New Message from Golden Apple Website*
+      
+Name: ${name}
+Email: ${email}
+
+Message:
+${message}`;
+      
+      window.open(`https://wa.me/256791728084?text=${encodeURIComponent(fullMessage)}`, '_blank');
+    }
+
+    // Set active nav link based on scroll position
+    window.addEventListener('scroll', function() {
+      const sections = document.querySelectorAll('section');
+      const navLinks = document.querySelectorAll('.nav-link');
+      
+      let current = '';
+      
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        
+        if (pageYOffset >= sectionTop - 100) {
+          current = section.getAttribute('id');
+        }
+      });
+      
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${current}`) {
+          link.classList.add('active');
+        }
+      });
+    });
   </script>
 </body>
 </html>
