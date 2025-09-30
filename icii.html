@@ -6,144 +6,350 @@
   <title>Mugenyi Bob Nathan | Golden Apple Technologies</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Add Font Awesome for enhanced icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <style>
-:root {
-      --primary: #f9c80e;
-      --accent: #f86624;
-      --bg: #f0f4f8;
-      --card: #ffffff;
-      --text: #333;
-      --shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-}
-
+    :root {
+      --primary-glow: #00ffff;
+      --secondary-glow: #ff00ff;
+      --tertiary-glow: #00ffaa;
+      --dark-bg: #0f172a;
+      --darker-bg: #0a0f1c;
+    }
+    
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: var(--bg);
-      color: var(--text);
-      margin: 0;
-      padding: 0;
-}
-
-    header {
-      text-align: center;
-      padding: 60px 20px 30px;
-      background: linear-gradient(135deg, #f9c80e, #f86624);
-      color: white;
-}
-
-.avatar {
-      width: 140px;
-      height: 140px;
-      margin: 0 auto 20px;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: linear-gradient(135deg, var(--darker-bg), var(--dark-bg), #1a2a3a);
+      color: #e2e8f0;
+      overflow-x: hidden;
+      min-height: 100vh;
+      position: relative;
+    }
+    
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 10% 20%, rgba(0, 255, 255, 0.05) 0%, transparent 20%),
+        radial-gradient(circle at 90% 60%, rgba(255, 0, 255, 0.05) 0%, transparent 20%),
+        radial-gradient(circle at 40% 80%, rgba(0, 255, 170, 0.05) 0%, transparent 20%);
+      z-index: -1;
+    }
+    
+    .glass {
+      background: rgba(255, 255, 255, 0.07);
+      border-radius: 20px;
+      backdrop-filter: blur(12px);
+      box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        0 0 20px rgba(0, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 25px;
+      margin-bottom: 30px;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .glass::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      transition: left 0.7s;
+    }
+    
+    .glass:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 
+        0 15px 40px rgba(0, 0, 0, 0.4),
+        0 0 30px rgba(0, 255, 255, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    }
+    
+    .glass:hover::before {
+      left: 100%;
+    }
+    
+    .avatar {
+      width: 160px;
+      height: 160px;
+      margin: 0 auto;
       background: url('https://cdn-icons-png.flaticon.com/512/2721/2721296.png') no-repeat center;
       background-size: cover;
       border-radius: 50%;
-      border: 5px solid white;
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
-}
-
-    h1 {
+      border: 3px solid transparent;
+      background-clip: padding-box;
+      box-shadow: 
+        0 0 25px var(--primary-glow),
+        inset 0 0 25px rgba(0, 255, 255, 0.2);
+      position: relative;
+      transition: all 0.5s ease;
+      animation: float 6s ease-in-out infinite;
+    }
+    
+    .avatar::after {
+      content: '';
+      position: absolute;
+      top: -3px;
+      left: -3px;
+      right: -3px;
+      bottom: -3px;
+      background: linear-gradient(135deg, var(--primary-glow), var(--secondary-glow));
+      border-radius: 50%;
+      z-index: -1;
+      animation: rotate 10s linear infinite;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+    
+    @keyframes rotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .section-title {
       font-size: 2.8rem;
-      font-weight: bold;
-}
-
-.subtitle {
-      font-size: 1.2rem;
-      margin-top: 10px;
-      font-style: italic;
-      color: #f0f0f0;
-}
-
-.section-title {
-      font-size: 2rem;
-      font-weight: bold;
       margin: 50px 0 30px;
       text-align: center;
-      color: var(--accent);
-}
-
-.card-box {
-      background: var(--card);
-      border-radius: 16px;
-      box-shadow: var(--shadow);
-      padding: 20px;
-      margin-bottom: 30px;
-      transition: transform 0.3s ease;
-}
-
-.card-box:hover {
-      transform: translateY(-5px);
-}
-
-.container {
-      max-width: 1000px;
-      margin: auto;
-      padding: 20px;
-}
-
-.text-center p {
-      margin-bottom: 0;
-}
-
+      background: linear-gradient(90deg, var(--primary-glow), var(--secondary-glow));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      font-weight: 800;
+      letter-spacing: 1px;
+      position: relative;
+      display: inline-block;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 10%;
+      width: 80%;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--primary-glow), transparent);
+      border-radius: 3px;
+    }
+    
+    .skill-icon, .project-icon {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      display: block;
+    }
+    
+    .skill-item, .project-item {
+      transition: all 0.3s ease;
+    }
+    
+    .skill-item:hover .skill-icon {
+      transform: scale(1.2);
+      color: var(--primary-glow);
+    }
+    
+    .project-item:hover .project-icon {
+      transform: scale(1.2) rotate(5deg);
+      color: var(--tertiary-glow);
+    }
+    
+    .pulse {
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(0, 255, 255, 0.4); }
+      70% { box-shadow: 0 0 0 15px rgba(0, 255, 255, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(0, 255, 255, 0); }
+    }
+    
     footer {
-      background-color: #fff;
       text-align: center;
-      padding: 20px;
-      font-size: 0.9rem;
-      color: #666;
-      border-top: 1px solid #ddd;
-}
-
+      padding: 25px;
+      background: rgba(11, 15, 28, 0.8);
+      backdrop-filter: blur(10px);
+      color: #9ca3af;
+      margin-top: 50px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    .glow-text {
+      text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    }
+    
+    .hero-section {
+      padding: 80px 0 60px;
+      position: relative;
+    }
+    
+    /* Responsive adjustments */
     @media (max-width: 768px) {
-      h1 {
-        font-size: 2rem;
-}
-.section-title {
-        font-size: 1.5rem;
-}
-}
+      .section-title {
+        font-size: 2.2rem;
+      }
+      
+      .avatar {
+        width: 140px;
+        height: 140px;
+      }
+      
+      .glass {
+        padding: 20px;
+      }
+    }
   </style>
 </head>
 <body>
 
-  <header>
-    <div class="avatar"></div>
-    <h1>Mugenyi Bob Nathan</h1>
-    <p class="subtitle">CEO, Golden Apple Technologies</p>
-    <p class="subtitle">"Downtown boy turned tech leader. Self-taught, self-made."</p>
-  </header>
+  <!-- Hero Section -->
+  <div class="hero-section text-center">
+    <div class="avatar pulse mb-4"></div>
+    <h1 class="text-5xl md:text-6xl font-bold mt-4 glow-text">Mugenyi Bob Nathan</h1>
+    <p class="text-xl md:text-2xl mt-3 text-cyan-300">CEO, Golden Apple Technologies</p>
+    <p class="italic text-gray-300 mt-3 text-lg max-w-2xl mx-auto">"Downtown boy turned tech leader. Self-taught, self-made."</p>
+  </div>
 
   <div class="container">
+    <!-- Skills Section -->
     <h2 class="section-title">Skills</h2>
     <div class="row text-center">
-      <div class="col-md-4"><div class="card-box">💻 Web Development</div></div>
-      <div class="col-md-4"><div class="card-box">🔐 Network Security</div></div>
-      <div class="col-md-4"><div class="card-box">🧠 C++ Programming</div></div>
+      <div class="col-md-4 skill-item">
+        <div class="glass">
+          <i class="skill-icon fas fa-code"></i>
+          <h3 class="text-xl font-semibold mb-2">Web Development</h3>
+          <p class="text-gray-300">Creating responsive and modern web applications</p>
+        </div>
+      </div>
+      <div class="col-md-4 skill-item">
+        <div class="glass">
+          <i class="skill-icon fas fa-shield-alt"></i>
+          <h3 class="text-xl font-semibold mb-2">Network Security</h3>
+          <p class="text-gray-300">Protecting systems and networks from digital threats</p>
+        </div>
+      </div>
+      <div class="col-md-4 skill-item">
+        <div class="glass">
+          <i class="skill-icon fas fa-cogs"></i>
+          <h3 class="text-xl font-semibold mb-2">C++ Programming</h3>
+          <p class="text-gray-300">High-performance applications and system programming</p>
+        </div>
+      </div>
     </div>
 
+    <!-- Tools & Projects Section -->
     <h2 class="section-title">Tools & Projects</h2>
     <div class="row text-center">
-      <div class="col-md-6"><div class="card-box">🧩 Golden Apple Codemind VOL 22.7</div></div>
-      <div class="col-md-6"><div class="card-box">🚀 Project Infinity</div></div>
+      <div class="col-md-6 project-item">
+        <div class="glass h-100">
+          <i class="project-icon fas fa-brain"></i>
+          <h3 class="text-xl font-semibold mb-2">Golden Apple Codemind VOL 22.7</h3>
+          <p class="text-gray-300">An innovative coding environment for modern developers</p>
+        </div>
+      </div>
+      <div class="col-md-6 project-item">
+        <div class="glass h-100">
+          <i class="project-icon fas fa-rocket"></i>
+          <h3 class="text-xl font-semibold mb-2">Project Infinity</h3>
+          <p class="text-gray-300">Pushing the boundaries of technology and innovation</p>
+        </div>
+      </div>
     </div>
 
+    <!-- Achievements Section -->
     <h2 class="section-title">Achievements</h2>
-    <div class="card-box text-center">
-      🏅 West Schools Best IT Student<br />
-      🛤️ No award yet — but the journey continues.
+    <div class="glass text-center max-w-2xl mx-auto">
+      <i class="fas fa-trophy text-3xl mb-3 text-yellow-400"></i>
+      <h3 class="text-xl font-semibold mb-2">West Schools Best IT Student</h3>
+      <p class="text-gray-300">Recognized for excellence in information technology studies</p>
+      <div class="mt-4 pt-4 border-t border-gray-700">
+        <i class="fas fa-road text-xl mb-2 text-cyan-400"></i>
+        <p class="text-gray-300">No award yet — but the journey continues.</p>
+      </div>
     </div>
 
+    <!-- Contact Section -->
     <h2 class="section-title">Contact</h2>
-    <div class="card-box text-center">
-      📧 <a href="mailto:goldenapplecoders@gmail.com">goldenapplecoders@gmail.com</a><br />
-      📞 <a href="tel:+256791728084">+256791728084</a><br />
-      📍 Live on your phone
+    <div class="glass text-center max-w-2xl mx-auto">
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <i class="fas fa-envelope text-2xl mb-2 text-cyan-400"></i>
+          <p class="font-medium">goldenapplecoders@gmail.com</p>
+        </div>
+        <div class="col-md-6 mb-3">
+          <i class="fas fa-phone text-2xl mb-2 text-green-400"></i>
+          <p class="font-medium">+256791728084</p>
+        </div>
+      </div>
+      <div class="mt-3">
+        <i class="fas fa-map-marker-alt text-2xl mb-2 text-purple-400"></i>
+        <p class="font-medium">Live on your phone</p>
+      </div>
     </div>
   </div>
 
   <footer>
-&copy; 2025 Golden Apple Technologies. Built with 💻 HTML, CSS, JS, Bootstrap. Inspired by vision.
+    &copy; 2025 Golden Apple Technologies. Built with 💻 HTML, CSS, JS, Bootstrap & Tailwind. Inspired by vision.
   </footer>
 
+  <script>
+    // Add scroll animations
+    document.addEventListener('DOMContentLoaded', function() {
+      // Add intersection observer for fade-in animations
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      };
+      
+      const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = 1;
+            entry.target.style.transform = 'translateY(0)';
+          }
+        });
+      }, observerOptions);
+      
+      // Observe all glass elements for animation
+      document.querySelectorAll('.glass').forEach(el => {
+        el.style.opacity = 0;
+        el.style.transform = 'translateY(20px)';
+        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(el);
+      });
+      
+      // Add a simple typewriter effect to the quote
+      const quote = document.querySelector('.hero-section p.italic');
+      if (quote) {
+        const text = quote.textContent;
+        quote.textContent = '';
+        let i = 0;
+        
+        function typeWriter() {
+          if (i < text.length) {
+            quote.textContent += text.charAt(i);
+            i++;
+            setTimeout(typeWriter, 50);
+          }
+        }
+        
+        // Start typewriter effect after a brief delay
+        setTimeout(typeWriter, 1000);
+      }
+    });
+  </script>
 </body>
 </html>
