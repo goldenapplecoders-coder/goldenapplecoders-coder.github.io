@@ -1,149 +1,248 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Golden Apple Technologies</title>
-    <style>
-        /* Global Styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Golden Apple Technologies</title>
+  <style>
+:root {
+      --primary: #f9c80e;
+      --accent: #f86624;
+      --bg: #f4f4f4;
+      --text: #333;
+      --card-bg: #fff;
+}
 
-        body {
-            background-color: #f0f0f0;
-            line-height: 1.6;
-            color: #333;
-        }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+}
 
-        /* Header Styles */
-        header {
-            background-color: #333;
-            color: #fff;
-            padding: 1rem;
-            text-align: center;
-        }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+}
 
-        /* Navigation Styles */
-        nav {
-            background-color: #444;
-            padding: 0.5rem;
-            text-align: center;
-        }
+    header {
+      background: var(--primary);
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
 
-        nav a {
-            color: #fff;
-            text-decoration: none;
-            margin: 0 1rem;
-        }
+    header h1 {
+      font-size: 2.5rem;
+      color: white;
+      margin-bottom: 5px;
+}
 
-        nav a:hover {
-            color: #ccc;
-        }
+    nav {
+      background: white;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      padding: 10px 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
 
-        /* Main Content Styles */
-        main {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 2rem;
-        }
+    nav button {
+      background: none;
+      border: none;
+      font-size: 1rem;
+      cursor: pointer;
+      padding: 10px 15px;
+      border-radius: 5px;
+      transition: background 0.3s;
+}
 
-        /* Section Styles */
-        section {
-            background-color: #fff;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
+    nav button:hover {
+      background: var(--primary);
+      color: white;
+}
 
-        section h2 {
-            margin-top: 0;
-        }
+.container {
+      max-width: 1000px;
+      margin: 30px auto;
+      padding: 0 20px;
+}
 
-        /* Footer Styles */
-        footer {
-            background-color: #333;
-            color: #fff;
-            padding: 1rem;
-            text-align: center;
-            clear: both;
-        }
+    section {
+      display: none;
+      animation: fadeIn 0.5s ease-in-out;
+}
 
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            main {
-                flex-direction: column;
-            }
-        }
-    </style>
+    section.active {
+      display: block;
+}
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px);}
+      to { opacity: 1; transform: translateY(0);}
+}
+
+.card {
+      background: var(--card-bg);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.card img {
+      width: 100%;
+      border-radius: 10px;
+      margin-bottom: 15px;
+}
+
+.form-group {
+      margin-bottom: 15px;
+}
+
+.form-group input,
+.form-group textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+}
+
+.btn {
+      background: var(--accent);
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.3s;
+}
+
+.btn:hover {
+      background: #e0551e;
+}
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: #eee;
+      font-size: 0.9rem;
+      margin-top: 40px;
+}
+  </style>
 </head>
 <body>
-    <header>
-        <h1>Golden Apple Technologies</h1>
-    </header>
-    <nav>
-        <a href="                     
-        <a href="#vision">Vision</a>
-        <a href="               
-        <a href="#comments">Comments</a>
-        <a href="                         
-    </nav>
-    <main>
-        <section id="history">
-            <h2>History</h2>
-            <p>Golden Apple Technologies was born in Kampala from the mentorship of CEO Nathan. What started as a coding dream has evolved into a tech empire—empowering youth, building tools like Codemind VOL 23.0, and launching platforms like iAM Scholar.</p>
-        </section>
-        <section id="vision">
-            <h2>Vision</h2>
-            <p>We aim to build legendary digital experiences that blend creativity, code, and culture. From educational games to cybersecurity tools, our mission is to shape Africa’s tech future.</p>
-        </section>
-        <section id="team">
-            <h2>Team</h2>
-            <p>Meet our team members:</p>
-            <ul>
-                <li>ICII - Lead Architect & Visionary</li>
-                <li>Dizzer J - Co-Director & Music Producer</li>
-                <li>Alpha - Head of Development</li>
-            </ul>
-        </section>
-        <section id="comments">
-            <h2>Comments</h2>
-            <form>
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name"><br><br>
-                <label for="comment">Comment:</label>
-                <textarea id="comment" name="comment"></textarea><br><br>
-                <input type="submit" value="Submit">
-            </form>
-        </section>
-        <section id="social">
-            <h2>Social Media</h2>
-            <p>Follow us on:</p>
-            <ul>
-                <li><a href="#">Instagram</a></li>
-                <li><a href="                    
-                <li><a href="#">TikTok</a></li>
-                <li><a href="                  
-                <li><a href="#">LinkedIn</a></li>
-                <li><a href="#">YouTube</a></li>
-            </ul>
-        </section>
-    </main>
-    <footer>
-        &copy; 2025 Golden Apple Technologies
-    </footer>
-    <script>
-        // Add event listener to the submit button
-        document.querySelector('form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const name = document.getElementById('name').value;
-            const comment = document.getElementById('comment').value;
-            alert(`Thank you, ${name}, for your comment: ${comment}`);
-        });
-    </script>
+
+  <header>
+    <h1>Golden Apple Technologies</h1>
+    <p>Empowering Africa's Tech Future</p>
+  </header>
+
+  <nav>
+    <button onclick="showSection('about')">About</button>
+    <button onclick="showSection('vision')">Vision</button>
+    <button onclick="showSection('team')">Team</button>
+    <button onclick="showSection('comment')">Comment</button>
+    <button onclick="showSection('social')">Social</button>
+  </nav>
+
+  <div class="container">
+    <!-- ABOUT -->
+    <section id="about" class="active">
+      <div class="card">
+        <h2>About Us</h2>
+        <p>Golden Apple Technologies was born in Kampala from the mentorship of CEO Nathan. What started as a coding dream has evolved into a tech empire—empowering youth, building tools like Codemind VOL 23.0, and launching platforms like iAM Scholar.</p>
+        <img src="history1.jpeg" alt="Tech Team Collaboration" />
+        <img src="history2.jpeg" alt="Coding Innovation" />
+      </div>
+    </section>
+
+    <!-- VISION -->
+    <section id="vision">
+      <div class="card">
+        <h2>Our Vision</h2>
+<p>We aim to build legendary digital experiences that blend creativity, code, and culture. From educational games to cybersecurity tools, our mission is to shape Africa’s tech future.</p>
+      </div>
+    </section>
+
+    <!-- TEAM -->
+    <section id="team">
+      <div class="card">
+        <h2>Our Team</h2>
+        <div class="card">
+          <h3>ICII</h3>
+          <p>Lead Architect & Visionary</p>
+          <img src="bot.jpeg" alt="ICII" />
+        </div>
+        <div class="card">
+          <h3>Dizzer J</h3>
+          <p>Co-Director & Music Producer</p>
+          <img src="dizzer.jpeg" alt="Dizzer J" />
+        </div>
+        <div class="card">
+          <h3>Alpha</h3>
+          <p>Head of Development</p>
+          <img src="witness.jpeg" alt="Alpha" />
+        </div>
+        <div class="card">
+          <h3>Whole Team</h3>
+          <p>Full Golden Apple Crew</p>
+          <img src="team.jpeg" alt="Team" />
+        </div>
+      </div>
+    </section>
+
+    <!-- COMMENT -->
+    <section id="comment">
+      <div class="card">
+        <h2>Leave a Comment</h2>
+        <form onsubmit="sendToWhatsApp(); return false;">
+          <div class="form-group">
+            <input type="text" id="name" placeholder="Your Name" required />
+          </div>
+          <div class="form-group">
+            <textarea id="message" rows="4" placeholder="Your Comment" required></textarea>
+          </div>
+          <button type="submit" class="btn">Send via WhatsApp</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- SOCIAL -->
+    <section id="social">
+      <div class="card">
+        <h2>Connect With Us</h2>
+        <ul>
+          <li><a href="https://www.instagram.com/goldenappletech" target="_blank">Instagram</a></li>
+          <li><a href="#" target="_blank">Facebook</a></li>
+          <li><a href="#" target="_blank">TikTok</a></li>
+          <li><a href="https://github.com/goldenapplecoders-coder" target="_blank">GitHub</a></li>
+          <li><a href="https://www.linkedin.com/in/golden-apple-technologies-international-b71296387" target="_blank">LinkedIn</a></li>
+          <li><a href="https://youtube.com/@gatech-sos" target="_blank">YouTube</a></li>
+        </ul>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    © 2025 Golden Apple Technologies | Powered by Vision & Code
+  </footer>
+
+  <script>
+    function showSection(id) {
+      document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+}
+
+    function sendToWhatsApp() {
+      const name = document.getElementById('name').value;
+      const message = document.getElementById('message').value;
+      const full = `*Comment*\nI'm ${name}.\nHere's my comment:\n\n${message}`;
+      window.open(`https://wa.me/256791728084?text=${encodeURIComponent(full)}`, '_blank');
+}
+  </script>
 </body>
 </html>
