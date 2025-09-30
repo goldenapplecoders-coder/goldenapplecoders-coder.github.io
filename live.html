@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dual Camera Capture</title>
+    <title>Full Screen Camera App</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -13,247 +14,252 @@
         }
 
         body {
-            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            background: #000;
             color: white;
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        }
-
-        .subtitle {
-            font-size: 1.2rem;
-            opacity: 0.9;
-        }
-
-        .camera-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 30px;
-            margin-bottom: 30px;
-        }
-
-        .camera-section {
-            flex: 1;
-            min-width: 300px;
-            background: rgba(0, 0, 0, 0.4);
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .camera-section h2 {
-            text-align: center;
-            margin-bottom: 15px;
-            color: #fdbb2d;
-        }
-
-        .camera-preview {
-            width: 100%;
-            height: 300px;
-            background-color: #000;
-            border-radius: 10px;
-            margin-bottom: 15px;
             overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        #camera-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 1;
         }
 
         #videoElement, #backVideoElement {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
 
+        #backVideoElement {
+            display: none;
+        }
+
         .controls {
+            position: fixed;
+            bottom: 30px;
+            left: 0;
+            width: 100%;
             display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-            margin-bottom: 15px;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            z-index: 10;
         }
 
-        button {
-            padding: 10px 20px;
+        .control-btn {
+            background: rgba(255, 255, 255, 0.2);
             border: none;
-            border-radius: 50px;
-            background: #fdbb2d;
-            color: #1a2a6c;
-            font-weight: bold;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
             cursor: pointer;
+            backdrop-filter: blur(10px);
             transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
-        button:hover {
-            background: #ffcc44;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
         }
 
-        button:active {
-            transform: translateY(0);
+        #captureBtn {
+            width: 70px;
+            height: 70px;
+            background: white;
+            color: #333;
+            font-size: 1.5rem;
         }
 
-        button:disabled {
-            background: #666;
-            color: #999;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
+        #captureBtn:active {
+            transform: scale(0.9);
         }
 
-        .captured-media {
+        #cameraSwitch {
+            display: none; /* Hidden by default, shown only if multiple cameras */
+        }
+
+        #galleryBtn {
+            position: relative;
+        }
+
+        .badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ff4757;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 0.7rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Gallery Styles */
+        #gallery {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 20;
+            display: none;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        #galleryHeader {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #333;
+        }
+
+        #closeGallery {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        #mediaGrid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+            flex: 1;
+            overflow-y: auto;
         }
 
         .media-item {
             position: relative;
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease;
-        }
-
-        .media-item:hover {
-            transform: scale(1.05);
+            aspect-ratio: 3/4;
         }
 
         .media-item img, .media-item video {
             width: 100%;
-            height: 150px;
-            object-fit: cover;
-            display: block;
-        }
-
-        .media-info {
-            padding: 8px;
-            background: rgba(0, 0, 0, 0.7);
-            font-size: 0.8rem;
-        }
-
-        .media-actions {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 5px;
-        }
-
-        .delete-btn {
-            background: #b21f1f;
-            color: white;
-            padding: 5px 10px;
-            font-size: 0.7rem;
-        }
-
-        .play-btn {
-            background: #1a2a6c;
-            color: white;
-            padding: 5px 10px;
-            font-size: 0.7rem;
-        }
-
-        .storage-info {
-            background: rgba(0, 0, 0, 0.4);
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 30px;
-            text-align: center;
-        }
-
-        .progress-bar {
-            height: 10px;
-            background: #333;
-            border-radius: 5px;
-            margin: 10px 0;
-            overflow: hidden;
-        }
-
-        .progress {
             height: 100%;
-            background: #fdbb2d;
-            width: 0%;
-            transition: width 0.5s ease;
+            object-fit: cover;
         }
 
-        @media (max-width: 768px) {
-            .camera-container {
-                flex-direction: column;
-            }
-            
-            h1 {
-                font-size: 2rem;
-            }
+        .media-type {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 0.7rem;
+        }
+
+        /* Recording indicator */
+        #recordingIndicator {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 0, 0, 0.7);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            display: none;
+            z-index: 5;
+        }
+
+        /* Mode selector */
+        #modeSelector {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 5px;
+            display: flex;
+            backdrop-filter: blur(10px);
+            z-index: 5;
+        }
+
+        .mode-btn {
+            background: none;
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .mode-btn.active {
+            background: rgba(255, 255, 255, 0.3);
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Dual Camera Capture</h1>
-            <p class="subtitle">Capture images with front and back cameras • Save to browser storage • Play videos externally</p>
-        </header>
-
-        <div class="camera-container">
-            <div class="camera-section">
-                <h2>Front Camera</h2>
-                <div class="camera-preview">
-                    <video id="videoElement" autoplay playsinline></video>
-                </div>
-                <div class="controls">
-                    <button id="frontStartBtn">Start Front Camera</button>
-                    <button id="frontCaptureBtn" disabled>Capture Image</button>
-                </div>
-            </div>
-
-            <div class="camera-section">
-                <h2>Back Camera</h2>
-                <div class="camera-preview">
-                    <video id="backVideoElement" autoplay playsinline></video>
-                </div>
-                <div class="controls">
-                    <button id="backStartBtn">Start Back Camera</button>
-                    <button id="backCaptureBtn" disabled>Capture Image</button>
-                </div>
-            </div>
+    <!-- Camera Container -->
+    <div id="camera-container">
+        <video id="videoElement" autoplay playsinline></video>
+        <video id="backVideoElement" autoplay playsinline></video>
+        
+        <div id="modeSelector">
+            <button class="mode-btn active" data-mode="photo">Photo</button>
+            <button class="mode-btn" data-mode="video">Video</button>
         </div>
-
-        <div class="camera-section">
-            <h2>Captured Media</h2>
-            <div class="controls">
-                <button id="clearStorageBtn">Clear All Media</button>
-                <button id="downloadAllBtn">Download All</button>
-            </div>
-            <div class="captured-media" id="mediaGallery">
-                <!-- Media items will be dynamically added here -->
-            </div>
+        
+        <div id="recordingIndicator">
+            <i class="fas fa-circle"></i> Recording...
         </div>
+    </div>
 
-        <div class="storage-info">
-            <h3>Storage Usage</h3>
-            <div class="progress-bar">
-                <div class="progress" id="storageProgress"></div>
-            </div>
-            <p id="storageText">0% used (0 KB / 5 MB estimated)</p>
+    <!-- Bottom Controls -->
+    <div class="controls">
+        <button id="galleryBtn" class="control-btn">
+            <i class="fas fa-images"></i>
+            <span class="badge" id="mediaCount">0</span>
+        </button>
+        
+        <button id="captureBtn" class="control-btn">
+            <i class="fas fa-camera"></i>
+        </button>
+        
+        <button id="cameraSwitch" class="control-btn">
+            <i class="fas fa-camera-rotate"></i>
+        </button>
+    </div>
+
+    <!-- Gallery -->
+    <div id="gallery">
+        <div id="galleryHeader">
+            <h2>Your Media</h2>
+            <button id="closeGallery">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div id="mediaGrid">
+            <!-- Media items will be dynamically added here -->
         </div>
     </div>
 
@@ -261,143 +267,201 @@
         // DOM Elements
         const videoElement = document.getElementById('videoElement');
         const backVideoElement = document.getElementById('backVideoElement');
-        const frontStartBtn = document.getElementById('frontStartBtn');
-        const backStartBtn = document.getElementById('backStartBtn');
-        const frontCaptureBtn = document.getElementById('frontCaptureBtn');
-        const backCaptureBtn = document.getElementById('backCaptureBtn');
-        const clearStorageBtn = document.getElementById('clearStorageBtn');
-        const downloadAllBtn = document.getElementById('downloadAllBtn');
-        const mediaGallery = document.getElementById('mediaGallery');
-        const storageProgress = document.getElementById('storageProgress');
-        const storageText = document.getElementById('storageText');
+        const captureBtn = document.getElementById('captureBtn');
+        const cameraSwitch = document.getElementById('cameraSwitch');
+        const galleryBtn = document.getElementById('galleryBtn');
+        const closeGallery = document.getElementById('closeGallery');
+        const gallery = document.getElementById('gallery');
+        const mediaGrid = document.getElementById('mediaGrid');
+        const mediaCount = document.getElementById('mediaCount');
+        const recordingIndicator = document.getElementById('recordingIndicator');
+        const modeButtons = document.querySelectorAll('.mode-btn');
 
         // Global variables
-        let frontStream = null;
-        let backStream = null;
+        let currentStream = null;
+        let currentFacingMode = 'user'; // 'user' for front, 'environment' for back
+        let mediaRecorder = null;
+        let recordedChunks = [];
+        let isRecording = false;
+        let currentMode = 'photo'; // 'photo' or 'video'
         let mediaItems = [];
 
         // Initialize the app
         function init() {
             loadMediaFromStorage();
-            updateStorageInfo();
+            updateMediaCount();
             setupEventListeners();
+            startCamera();
         }
 
         // Set up event listeners
         function setupEventListeners() {
-            frontStartBtn.addEventListener('click', toggleFrontCamera);
-            backStartBtn.addEventListener('click', toggleBackCamera);
-            frontCaptureBtn.addEventListener('click', () => captureImage('front'));
-            backCaptureBtn.addEventListener('click', () => captureImage('back'));
-            clearStorageBtn.addEventListener('click', clearStorage);
-            downloadAllBtn.addEventListener('click', downloadAllMedia);
-        }
+            captureBtn.addEventListener('click', captureMedia);
+            cameraSwitch.addEventListener('click', switchCamera);
+            galleryBtn.addEventListener('click', openGallery);
+            closeGallery.addEventListener('click', closeGalleryView);
+            
+            modeButtons.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const mode = e.target.dataset.mode;
+                    switchMode(mode);
+                });
+            });
 
-        // Toggle front camera
-        async function toggleFrontCamera() {
-            if (frontStream) {
-                stopFrontCamera();
-            } else {
-                await startFrontCamera();
-            }
-        }
-
-        // Toggle back camera
-        async function toggleBackCamera() {
-            if (backStream) {
-                stopBackCamera();
-            } else {
-                await startBackCamera();
-            }
-        }
-
-        // Start front camera
-        async function startFrontCamera() {
-            try {
-                const constraints = {
-                    video: { facingMode: "user" }
-                };
-                
-                frontStream = await navigator.mediaDevices.getUserMedia(constraints);
-                videoElement.srcObject = frontStream;
-                frontStartBtn.textContent = "Stop Front Camera";
-                frontCaptureBtn.disabled = false;
-            } catch (error) {
-                console.error("Error accessing front camera:", error);
-                alert("Unable to access front camera. Please check permissions.");
-            }
-        }
-
-        // Start back camera
-        async function startBackCamera() {
-            try {
-                const constraints = {
-                    video: { facingMode: { exact: "environment" } }
-                };
-                
-                backStream = await navigator.mediaDevices.getUserMedia(constraints);
-                backVideoElement.srcObject = backStream;
-                backStartBtn.textContent = "Stop Back Camera";
-                backCaptureBtn.disabled = false;
-            } catch (error) {
-                console.error("Error accessing back camera:", error);
-                // If environment mode fails, try any available camera
-                try {
-                    const constraints = { video: true };
-                    backStream = await navigator.mediaDevices.getUserMedia(constraints);
-                    backVideoElement.srcObject = backStream;
-                    backStartBtn.textContent = "Stop Back Camera";
-                    backCaptureBtn.disabled = false;
-                } catch (fallbackError) {
-                    alert("Unable to access any camera. Please check permissions.");
+            // Handle page visibility change to restart camera
+            document.addEventListener('visibilitychange', () => {
+                if (!document.hidden && !currentStream) {
+                    startCamera();
                 }
+            });
+        }
+
+        // Start camera
+        async function startCamera() {
+            stopCamera(); // Stop any existing stream
+
+            const constraints = {
+                video: { 
+                    facingMode: currentFacingMode,
+                    width: { ideal: 1920 },
+                    height: { ideal: 1080 }
+                },
+                audio: currentMode === 'video' // Enable audio for video mode
+            };
+
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia(constraints);
+                currentStream = stream;
+                
+                // Show/hide appropriate video element
+                if (currentFacingMode === 'user') {
+                    videoElement.srcObject = stream;
+                    videoElement.style.display = 'block';
+                    backVideoElement.style.display = 'none';
+                } else {
+                    backVideoElement.srcObject = stream;
+                    backVideoElement.style.display = 'block';
+                    videoElement.style.display = 'none';
+                }
+
+                // Check if multiple cameras available
+                await checkMultipleCameras();
+                
+                // Setup media recorder for video mode
+                if (currentMode === 'video') {
+                    setupMediaRecorder(stream);
+                }
+            } catch (error) {
+                console.error('Error accessing camera:', error);
+                alert('Unable to access camera. Please check permissions.');
             }
         }
 
-        // Stop front camera
-        function stopFrontCamera() {
-            if (frontStream) {
-                frontStream.getTracks().forEach(track => track.stop());
-                frontStream = null;
-                videoElement.srcObject = null;
-                frontStartBtn.textContent = "Start Front Camera";
-                frontCaptureBtn.disabled = true;
+        // Stop camera
+        function stopCamera() {
+            if (currentStream) {
+                currentStream.getTracks().forEach(track => track.stop());
+                currentStream = null;
+            }
+            if (mediaRecorder && mediaRecorder.state === 'recording') {
+                mediaRecorder.stop();
             }
         }
 
-        // Stop back camera
-        function stopBackCamera() {
-            if (backStream) {
-                backStream.getTracks().forEach(track => track.stop());
-                backStream = null;
-                backVideoElement.srcObject = null;
-                backStartBtn.textContent = "Start Back Camera";
-                backCaptureBtn.disabled = true;
+        // Check if multiple cameras are available
+        async function checkMultipleCameras() {
+            try {
+                const devices = await navigator.mediaDevices.enumerateDevices();
+                const videoDevices = devices.filter(device => device.kind === 'videoinput');
+                
+                // Show camera switch button if multiple cameras found
+                cameraSwitch.style.display = videoDevices.length > 1 ? 'flex' : 'none';
+            } catch (error) {
+                console.error('Error enumerating devices:', error);
+                cameraSwitch.style.display = 'none';
             }
         }
 
-        // Capture image from camera
-        function captureImage(cameraType) {
+        // Switch between front and back cameras
+        async function switchCamera() {
+            currentFacingMode = currentFacingMode === 'user' ? 'environment' : 'user';
+            await startCamera();
+        }
+
+        // Switch between photo and video mode
+        function switchMode(mode) {
+            if (mode === currentMode) return;
+            
+            currentMode = mode;
+            
+            // Update UI
+            modeButtons.forEach(btn => {
+                if (btn.dataset.mode === mode) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            
+            // Update capture button icon
+            captureBtn.innerHTML = mode === 'photo' ? 
+                '<i class="fas fa-camera"></i>' : 
+                '<i class="fas fa-video"></i>';
+            
+            // Restart camera with appropriate settings
+            startCamera();
+        }
+
+        // Setup media recorder for video
+        function setupMediaRecorder(stream) {
+            try {
+                recordedChunks = [];
+                mediaRecorder = new MediaRecorder(stream, {
+                    mimeType: 'video/webm; codecs=vp9'
+                });
+
+                mediaRecorder.ondataavailable = (event) => {
+                    if (event.data.size > 0) {
+                        recordedChunks.push(event.data);
+                    }
+                };
+
+                mediaRecorder.onstop = saveVideo;
+            } catch (error) {
+                console.error('MediaRecorder setup failed:', error);
+            }
+        }
+
+        // Capture photo or video
+        function captureMedia() {
+            if (currentMode === 'photo') {
+                takePicture();
+            } else {
+                toggleRecording();
+            }
+        }
+
+        // Take picture
+        function takePicture() {
             const canvas = document.createElement('canvas');
             const context = canvas.getContext('2d');
-            let videoElementToUse;
+            const video = currentFacingMode === 'user' ? videoElement : backVideoElement;
             
-            if (cameraType === 'front') {
-                videoElementToUse = videoElement;
-            } else {
-                videoElementToUse = backVideoElement;
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            
+            // Flip image if using front camera for more natural feel
+            if (currentFacingMode === 'user') {
+                context.translate(canvas.width, 0);
+                context.scale(-1, 1);
             }
             
-            canvas.width = videoElementToUse.videoWidth;
-            canvas.height = videoElementToUse.videoHeight;
-            
-            context.drawImage(videoElementToUse, 0, 0, canvas.width, canvas.height);
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
             
             canvas.toBlob(blob => {
                 const mediaItem = {
                     id: Date.now(),
                     type: 'image',
-                    camera: cameraType,
                     timestamp: new Date().toLocaleString(),
                     data: blob
                 };
@@ -406,18 +470,51 @@
             }, 'image/jpeg', 0.8);
         }
 
+        // Toggle video recording
+        function toggleRecording() {
+            if (!isRecording) {
+                // Start recording
+                if (mediaRecorder && mediaRecorder.state === 'inactive') {
+                    recordedChunks = [];
+                    mediaRecorder.start();
+                    isRecording = true;
+                    recordingIndicator.style.display = 'block';
+                    captureBtn.innerHTML = '<i class="fas fa-square"></i>';
+                }
+            } else {
+                // Stop recording
+                if (mediaRecorder && mediaRecorder.state === 'recording') {
+                    mediaRecorder.stop();
+                    isRecording = false;
+                    recordingIndicator.style.display = 'none';
+                    captureBtn.innerHTML = '<i class="fas fa-video"></i>';
+                }
+            }
+        }
+
+        // Save recorded video
+        function saveVideo() {
+            const blob = new Blob(recordedChunks, { type: 'video/webm' });
+            const mediaItem = {
+                id: Date.now(),
+                type: 'video',
+                timestamp: new Date().toLocaleString(),
+                data: blob
+            };
+            
+            saveMediaItem(mediaItem);
+        }
+
         // Save media item to storage
         function saveMediaItem(mediaItem) {
-            mediaItems.push(mediaItem);
-            localStorage.setItem('capturedMedia', JSON.stringify(mediaItems.map(item => {
-                // Convert Blob to base64 for storage
+            mediaItems.unshift(mediaItem); // Add to beginning of array
+            localStorage.setItem('cameraMedia', JSON.stringify(mediaItems.map(item => {
                 return new Promise(resolve => {
                     const reader = new FileReader();
                     reader.onloadend = () => {
                         resolve({
                             id: item.id,
                             type: item.type,
-                            camera: item.camera,
                             timestamp: item.timestamp,
                             data: reader.result
                         });
@@ -426,14 +523,17 @@
                 });
             })));
             
-            // Update UI
-            renderMediaItem(mediaItem);
-            updateStorageInfo();
+            updateMediaCount();
+            
+            // If gallery is open, refresh it
+            if (gallery.style.display === 'flex') {
+                renderMediaGallery();
+            }
         }
 
         // Load media from storage
         function loadMediaFromStorage() {
-            const storedMedia = localStorage.getItem('capturedMedia');
+            const storedMedia = localStorage.getItem('cameraMedia');
             if (storedMedia) {
                 const mediaData = JSON.parse(storedMedia);
                 mediaItems = mediaData.map(item => {
@@ -450,118 +550,102 @@
                     return {
                         id: item.id,
                         type: item.type,
-                        camera: item.camera,
                         timestamp: item.timestamp,
                         data: new Blob([ab], {type: mimeString})
                     };
                 });
-                
-                // Render all media items
-                mediaItems.forEach(item => renderMediaItem(item));
             }
         }
 
-        // Render a media item in the gallery
-        function renderMediaItem(mediaItem) {
-            const mediaElement = document.createElement('div');
-            mediaElement.className = 'media-item';
-            mediaElement.dataset.id = mediaItem.id;
-            
-            const url = URL.createObjectURL(mediaItem.data);
-            
-            if (mediaItem.type === 'image') {
-                mediaElement.innerHTML = `
-                    <img src="${url}" alt="Captured image">
-                    <div class="media-info">
-                        <div>${mediaItem.camera} camera</div>
-                        <div>${mediaItem.timestamp}</div>
-                        <div class="media-actions">
-                            <button class="delete-btn" onclick="deleteMediaItem(${mediaItem.id})">Delete</button>
-                            <a href="${url}" download="image_${mediaItem.id}.jpg" class="play-btn" style="text-decoration: none;">Download</a>
-                        </div>
-                    </div>
-                `;
-            } else {
-                mediaElement.innerHTML = `
-                    <video controls>
-                        <source src="${url}" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
-                    <div class="media-info">
-                        <div>${mediaItem.camera} camera</div>
-                        <div>${mediaItem.timestamp}</div>
-                        <div class="media-actions">
-                            <button class="delete-btn" onclick="deleteMediaItem(${mediaItem.id})">Delete</button>
-                            <a href="https://goldenapplecoders-coder.github.io/vplayer.html?video=${encodeURIComponent(url)}" target="_blank" class="play-btn" style="text-decoration: none;">Play</a>
-                        </div>
-                    </div>
-                `;
-            }
-            
-            mediaGallery.appendChild(mediaElement);
+        // Update media count badge
+        function updateMediaCount() {
+            mediaCount.textContent = mediaItems.length;
         }
 
-        // Delete a media item
-        function deleteMediaItem(id) {
-            mediaItems = mediaItems.filter(item => item.id !== id);
-            localStorage.setItem('capturedMedia', JSON.stringify(mediaItems));
-            
-            const mediaElement = document.querySelector(`.media-item[data-id="${id}"]`);
-            if (mediaElement) {
-                mediaElement.remove();
-            }
-            
-            updateStorageInfo();
+        // Open gallery
+        function openGallery() {
+            renderMediaGallery();
+            gallery.style.display = 'flex';
         }
 
-        // Clear all media from storage
-        function clearStorage() {
-            if (confirm("Are you sure you want to delete all captured media?")) {
-                mediaItems = [];
-                localStorage.removeItem('capturedMedia');
-                mediaGallery.innerHTML = '';
-                updateStorageInfo();
-            }
+        // Close gallery
+        function closeGalleryView() {
+            gallery.style.display = 'none';
         }
 
-        // Download all media as a zip (simplified version)
-        function downloadAllMedia() {
+        // Render media gallery
+        function renderMediaGallery() {
+            mediaGrid.innerHTML = '';
+            
             if (mediaItems.length === 0) {
-                alert("No media to download.");
+                mediaGrid.innerHTML = '<p style="text-align: center; width: 100%;">No media captured yet</p>';
                 return;
             }
             
-            mediaItems.forEach((item, index) => {
+            mediaItems.forEach(item => {
+                const mediaElement = document.createElement('div');
+                mediaElement.className = 'media-item';
+                
                 const url = URL.createObjectURL(item.data);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `${item.type}_${item.camera}_${item.id}.${item.type === 'image' ? 'jpg' : 'mp4'}`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
+                
+                if (item.type === 'image') {
+                    mediaElement.innerHTML = `
+                        <img src="${url}" alt="Captured image">
+                        <div class="media-type">Photo</div>
+                    `;
+                } else {
+                    mediaElement.innerHTML = `
+                        <video>
+                            <source src="${url}" type="video/webm">
+                        </video>
+                        <div class="media-type">Video</div>
+                    `;
+                }
+                
+                // Add click to view larger
+                mediaElement.addEventListener('click', () => {
+                    if (item.type === 'image') {
+                        window.open(url, '_blank');
+                    } else {
+                        const videoPlayer = document.createElement('video');
+                        videoPlayer.controls = true;
+                        videoPlayer.style.width = '100%';
+                        videoPlayer.style.maxWidth = '500px';
+                        videoPlayer.innerHTML = `<source src="${url}" type="video/webm">`;
+                        
+                        const container = document.createElement('div');
+                        container.style.position = 'fixed';
+                        container.style.top = '0';
+                        container.style.left = '0';
+                        container.style.width = '100%';
+                        container.style.height = '100%';
+                        container.style.background = 'rgba(0,0,0,0.9)';
+                        container.style.display = 'flex';
+                        container.style.justifyContent = 'center';
+                        container.style.alignItems = 'center';
+                        container.style.zIndex = '30';
+                        container.appendChild(videoPlayer);
+                        
+                        container.addEventListener('click', (e) => {
+                            if (e.target === container) {
+                                document.body.removeChild(container);
+                            }
+                        });
+                        
+                        document.body.appendChild(container);
+                        videoPlayer.play();
+                    }
+                });
+                
+                mediaGrid.appendChild(mediaElement);
             });
-        }
-
-        // Update storage usage information
-        function updateStorageInfo() {
-            // Estimate storage usage (this is a rough estimate)
-            const estimatedSize = mediaItems.reduce((total, item) => {
-                return total + (item.data.size || 100000); // Default to 100KB if size not available
-            }, 0);
-            
-            const maxSize = 5 * 1024 * 1024; // 5MB estimated max
-            const percentage = Math.min(100, (estimatedSize / maxSize) * 100);
-            
-            storageProgress.style.width = `${percentage}%`;
-            storageText.textContent = `${percentage.toFixed(1)}% used (${(estimatedSize / 1024).toFixed(1)} KB / ${(maxSize / 1024 / 1024).toFixed(1)} MB estimated)`;
         }
 
         // Initialize the app when the page loads
         window.addEventListener('DOMContentLoaded', init);
 
-        // Make functions available globally for onclick handlers
-        window.deleteMediaItem = deleteMediaItem;
+        // Handle page unload to clean up
+        window.addEventListener('beforeunload', stopCamera);
     </script>
 </body>
 </html>
