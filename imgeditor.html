@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Editor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eee;
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .editor-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+        }
+
+        .image-section {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .preview-container {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        #previewImage {
+            max-width: 100%;
+            max-height: 400px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .controls-section {
+            flex: 0 0 300px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .control-group {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .control-group h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .slider-container {
+            margin-bottom: 15px;
+        }
+
+        .slider-container label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .slider-value {
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #ddd;
+            outline: none;
+            accent-color: #667eea;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            background: #667eea;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            flex: 1;
+            min-width: 120px;
+        }
+
+        button:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .file-input-container {
+            margin-bottom: 20px;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .file-input-label {
+            display: block;
+            padding: 12px 20px;
+            background: #667eea;
+            color: white;
+            border-radius: 5px;
+            text-align: center;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .file-input-label:hover {
+            background: #5a6fd8;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .editor-container {
+                flex-direction: column;
+            }
+            
+            .controls-section {
+                flex: 1;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-edit"></i> Image Editor</h1>
+            <p>Edit your images directly in the browser and save to your device</p>
+        </header>
+        
+        <div class="editor-container">
+            <div class="image-section">
+                <div class="file-input-container">
+                    <label for="fileInput" class="file-input-label">
+                        <i class="fas fa-folder-open"></i> Choose Image
+                    </label>
+                    <input type="file" id="fileInput" accept="image/*">
+                </div>
+                
+                <div class="preview-container">
+                    <img id="previewImage" src="https://via.placeholder.com/600x400?text=Choose+an+image+to+edit" alt="Preview">
+                </div>
+                
+                <div class="buttons">
+                    <button id="resetBtn"><i class="fas fa-undo"></i> Reset</button>
+                    <button id="saveBtn"><i class="fas fa-save"></i> Save Image</button>
+                </div>
+            </div>
+            
+            <div class="controls-section">
+                <div class="control-group">
+                    <h3><i class="fas fa-sliders-h"></i> Basic Adjustments</h3>
+                    
+                    <div class="slider-container">
+                        <label>
+                            Brightness
+                            <span class="slider-value" id="brightnessValue">100%</span>
+                        </label>
+                        <input type="range" id="brightnessSlider" min="0" max="200" value="100">
+                    </div>
+                    
+                    <div class="slider-container">
+                        <label>
+                            Contrast
+                            <span class="slider-value" id="contrastValue">100%</span>
+                        </label>
+                        <input type="range" id="contrastSlider" min="0" max="200" value="100">
+                    </div>
+                    
+                    <div class="slider-container">
+                        <label>
+                            Saturation
+                            <span class="slider-value" id="saturationValue">100%</span>
+                        </label>
+                        <input type="range" id="saturationSlider" min="0" max="200" value="100">
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <h3><i class="fas fa-magic"></i> Effects</h3>
+                    
+                    <div class="slider-container">
+                        <label>
+                            Grayscale
+                            <span class="slider-value" id="grayscaleValue">0%</span>
+                        </label>
+                        <input type="range" id="grayscaleSlider" min="0" max="100" value="0">
+                    </div>
+                    
+                    <div class="slider-container">
+                        <label>
+                            Blur
+                            <span class="slider-value" id="blurValue">0px</span>
+                        </label>
+                        <input type="range" id="blurSlider" min="0" max="10" step="0.1" value="0">
+                    </div>
+                    
+                    <div class="slider-container">
+                        <label>
+                            Hue Rotate
+                            <span class="slider-value" id="hueValue">0deg</span>
+                        </label>
+                        <input type="range" id="hueSlider" min="0" max="360" value="0">
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <h3><i class="fas fa-crop-alt"></i> Transform</h3>
+                    
+                    <div class="slider-container">
+                        <label>
+                            Rotate
+                            <span class="slider-value" id="rotateValue">0deg</span>
+                        </label>
+                        <input type="range" id="rotateSlider" min="0" max="360" value="0">
+                    </div>
+                    
+                    <div class="buttons">
+                        <button id="flipHorizontalBtn"><i class="fas fa-arrows-alt-h"></i> Flip H</button>
+                        <button id="flipVerticalBtn"><i class="fas fa-arrows-alt-v"></i> Flip V</button>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <h3><i class="fas fa-filter"></i> Preset Filters</h3>
+                    <div class="buttons">
+                        <button id="vintageBtn">Vintage</button>
+                        <button id="blackWhiteBtn">B&W</button>
+                        <button id="warmBtn">Warm</button>
+                        <button id="coolBtn">Cool</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const fileInput = document.getElementById('fileInput');
+        const previewImage = document.getElementById('previewImage');
+        const saveBtn = document.getElementById('saveBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        
+        // Sliders
+        const brightnessSlider = document.getElementById('brightnessSlider');
+        const contrastSlider = document.getElementById('contrastSlider');
+        const saturationSlider = document.getElementById('saturationSlider');
+        const grayscaleSlider = document.getElementById('grayscaleSlider');
+        const blurSlider = document.getElementById('blurSlider');
+        const hueSlider = document.getElementById('hueSlider');
+        const rotateSlider = document.getElementById('rotateSlider');
+        
+        // Slider value displays
+        const brightnessValue = document.getElementById('brightnessValue');
+        const contrastValue = document.getElementById('contrastValue');
+        const saturationValue = document.getElementById('saturationValue');
+        const grayscaleValue = document.getElementById('grayscaleValue');
+        const blurValue = document.getElementById('blurValue');
+        const hueValue = document.getElementById('hueValue');
+        const rotateValue = document.getElementById('rotateValue');
+        
+        // Buttons
+        const flipHorizontalBtn = document.getElementById('flipHorizontalBtn');
+        const flipVerticalBtn = document.getElementById('flipVerticalBtn');
+        const vintageBtn = document.getElementById('vintageBtn');
+        const blackWhiteBtn = document.getElementById('blackWhiteBtn');
+        const warmBtn = document.getElementById('warmBtn');
+        const coolBtn = document.getElementById('coolBtn');
+        
+        // Editor state
+        let currentImage = null;
+        let scaleX = 1;
+        let scaleY = 1;
+        
+        // Initialize the editor
+        function initEditor() {
+            // File input event
+            fileInput.addEventListener('change', handleImageUpload);
+            
+            // Save button event
+            saveBtn.addEventListener('click', saveImage);
+            
+            // Reset button event
+            resetBtn.addEventListener('click', resetImage);
+            
+            // Slider events
+            brightnessSlider.addEventListener('input', updateFilter);
+            contrastSlider.addEventListener('input', updateFilter);
+            saturationSlider.addEventListener('input', updateFilter);
+            grayscaleSlider.addEventListener('input', updateFilter);
+            blurSlider.addEventListener('input', updateFilter);
+            hueSlider.addEventListener('input', updateFilter);
+            rotateSlider.addEventListener('input', updateFilter);
+            
+            // Button events
+            flipHorizontalBtn.addEventListener('click', () => {
+                scaleX = -scaleX;
+                updateFilter();
+            });
+            
+            flipVerticalBtn.addEventListener('click', () => {
+                scaleY = -scaleY;
+                updateFilter();
+            });
+            
+            // Preset filters
+            vintageBtn.addEventListener('click', () => applyPreset('vintage'));
+            blackWhiteBtn.addEventListener('click', () => applyPreset('blackWhite'));
+            warmBtn.addEventListener('click', () => applyPreset('warm'));
+            coolBtn.addEventListener('click', () => applyPreset('cool'));
+            
+            // Initialize slider values
+            updateSliderValues();
+        }
+        
+        // Handle image upload
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewImage.src = e.target.result;
+                currentImage = new Image();
+                currentImage.onload = function() {
+                    resetSliders();
+                };
+                currentImage.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        // Update the CSS filter based on slider values
+        function updateFilter() {
+            const brightness = brightnessSlider.value;
+            const contrast = contrastSlider.value;
+            const saturation = saturationSlider.value;
+            const grayscale = grayscaleSlider.value;
+            const blur = blurSlider.value;
+            const hue = hueSlider.value;
+            const rotate = rotateSlider.value;
+            
+            const filter = `
+                brightness(${brightness}%) 
+                contrast(${contrast}%) 
+                saturate(${saturation}%) 
+                grayscale(${grayscale}%) 
+                blur(${blur}px) 
+                hue-rotate(${hue}deg)
+            `;
+            
+            const transform = `
+                rotate(${rotate}deg) 
+                scaleX(${scaleX}) 
+                scaleY(${scaleY})
+            `;
+            
+            previewImage.style.filter = filter;
+            previewImage.style.transform = transform;
+            
+            updateSliderValues();
+        }
+        
+        // Update slider value displays
+        function updateSliderValues() {
+            brightnessValue.textContent = `${brightnessSlider.value}%`;
+            contrastValue.textContent = `${contrastSlider.value}%`;
+            saturationValue.textContent = `${saturationSlider.value}%`;
+            grayscaleValue.textContent = `${grayscaleSlider.value}%`;
+            blurValue.textContent = `${blurSlider.value}px`;
+            hueValue.textContent = `${hueSlider.value}deg`;
+            rotateValue.textContent = `${rotateSlider.value}deg`;
+        }
+        
+        // Reset all sliders to default values
+        function resetSliders() {
+            brightnessSlider.value = 100;
+            contrastSlider.value = 100;
+            saturationSlider.value = 100;
+            grayscaleSlider.value = 0;
+            blurSlider.value = 0;
+            hueSlider.value = 0;
+            rotateSlider.value = 0;
+            scaleX = 1;
+            scaleY = 1;
+            updateFilter();
+        }
+        
+        // Reset the image to original state
+        function resetImage() {
+            if (currentImage) {
+                previewImage.src = currentImage.src;
+            }
+            resetSliders();
+        }
+        
+        // Apply preset filters
+        function applyPreset(preset) {
+            switch(preset) {
+                case 'vintage':
+                    brightnessSlider.value = 110;
+                    contrastSlider.value = 90;
+                    saturationSlider.value = 80;
+                    grayscaleSlider.value = 20;
+                    hueSlider.value = 30;
+                    break;
+                case 'blackWhite':
+                    brightnessSlider.value = 105;
+                    contrastSlider.value = 110;
+                    saturationSlider.value = 0;
+                    grayscaleSlider.value = 100;
+                    break;
+                case 'warm':
+                    brightnessSlider.value = 105;
+                    saturationSlider.value = 130;
+                    hueSlider.value = 10;
+                    break;
+                case 'cool':
+                    brightnessSlider.value = 105;
+                    saturationSlider.value = 120;
+                    hueSlider.value = 200;
+                    break;
+            }
+            updateFilter();
+        }
+        
+        // Save the edited image
+        function saveImage() {
+            if (!currentImage) {
+                alert('Please upload an image first!');
+                return;
+            }
+            
+            // Create a canvas element
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Set canvas dimensions to match the image
+            canvas.width = currentImage.width;
+            canvas.height = currentImage.height;
+            
+            // Apply the same filters to the canvas
+            ctx.filter = `
+                brightness(${brightnessSlider.value}%) 
+                contrast(${contrastSlider.value}%) 
+                saturate(${saturationSlider.value}%) 
+                grayscale(${grayscaleSlider.value}%) 
+                hue-rotate(${hueSlider.value}deg)
+            `;
+            
+            // Apply transformations
+            ctx.translate(canvas.width / 2, canvas.height / 2);
+            ctx.rotate(parseInt(rotateSlider.value) * Math.PI / 180);
+            ctx.scale(scaleX, scaleY);
+            ctx.translate(-canvas.width / 2, -canvas.height / 2);
+            
+            // Draw the image
+            ctx.drawImage(currentImage, 0, 0, canvas.width, canvas.height);
+            
+            // Create download link
+            const link = document.createElement('a');
+            link.download = 'edited-image.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+        
+        // Initialize the editor when the page loads
+        window.addEventListener('DOMContentLoaded', initEditor);
+    </script>
+</body>
+</html>
