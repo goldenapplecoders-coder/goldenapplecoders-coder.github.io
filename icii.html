@@ -211,13 +211,47 @@
         padding: 20px;
       }
     }
+.avatar-icon {
+  width: 160px;
+  height: 160px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  background-clip: padding-box;
+  box-shadow: 
+    0 0 25px var(--primary-glow),
+    inset 0 0 25px rgba(0, 255, 255, 0.2);
+  position: relative;
+  transition: all 0.5s ease;
+  animation: float 6s ease-in-out infinite;
+  font-size: 4rem; /* Adjust the icon size */
+  color: #00ffff; /* Adjust the icon color */
+}
+.avatar-icon::after {
+  /* Keep the same glowing border effect as your original .avatar */
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  background: linear-gradient(135deg, var(--primary-glow), var(--secondary-glow));
+  border-radius: 50%;
+  z-index: -1;
+  animation: rotate 10s linear infinite;
+}
   </style>
 </head>
 <body>
 
   <!-- Hero Section -->
   <div class="hero-section text-center">
-    <div class="avatar pulse mb-4"></div>
+<div class="avatar-icon pulse">
+  <i class="fas fa-user-ninja"></i>
+</div>
     <h1 class="text-5xl md:text-6xl font-bold mt-4 glow-text">Mugenyi Bob Nathan</h1>
     <p class="text-xl md:text-2xl mt-3 text-cyan-300">CEO, Golden Apple Technologies</p>
     <p class="italic text-gray-300 mt-3 text-lg max-w-2xl mx-auto">"Downtown boy turned tech leader. Self-taught, self-made."</p>
