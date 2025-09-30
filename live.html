@@ -3,1035 +3,565 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sapsap - I Am Live Online School</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Dual Camera Capture</title>
     <style>
-        :root {
-            --primary-color: #4a6fa5;
-            --secondary-color: #166088;
-            --accent-color: #4cb5f5;
-            --text-color: #333;
-            --light-bg: #f5f5f5;
-            --dark-bg: #2c3e50;
-            --success-color: #2ecc71;
-            --warning-color: #e74c3c;
-            --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
         body {
-            background-color: var(--light-bg);
-            color: var(--text-color);
-            line-height: 1.6;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
         }
-        
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
         }
-        
+
         header {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            padding: 20px 0;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .logo h1 {
-            font-size: 2.2rem;
-            font-weight: 700;
-        }
-        
-        .logo span {
-            color: var(--accent-color);
-        }
-        
-        .logo i {
+
+        h1 {
             font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
-        
-        .main-content {
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .camera-container {
             display: flex;
-            flex-direction: column;
+            flex-wrap: wrap;
             gap: 30px;
-            margin-top: 30px;
+            margin-bottom: 30px;
         }
-        
-        .card {
-            background: white;
-            border-radius: 10px;
-            box-shadow: var(--card-shadow);
-            padding: 25px;
-            transition: transform 0.3s ease;
+
+        .camera-section {
+            flex: 1;
+            min-width: 300px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
-        
-        .card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .card h2 {
-            color: var(--secondary-color);
+
+        .camera-section h2 {
+            text-align: center;
             margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--accent-color);
+            color: #fdbb2d;
         }
-        
-        .broadcast-section {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        
-        .video-container {
-            position: relative;
+
+        .camera-preview {
             width: 100%;
+            height: 300px;
             background-color: #000;
-            border-radius: 8px;
+            border-radius: 10px;
+            margin-bottom: 15px;
             overflow: hidden;
-            aspect-ratio: 16/9;
         }
-        
-        #localVideo, #remoteVideo {
+
+        #videoElement, #backVideoElement {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-        
-        .video-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(transparent, rgba(0,0,0,0.7));
-            color: white;
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .status-indicator {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .status-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background-color: var(--warning-color);
-        }
-        
-        .status-dot.live {
-            background-color: var(--success-color);
-            animation: pulse 1.5s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
-        }
-        
+
         .controls {
             display: flex;
-            gap: 15px;
-            justify-content: center;
             flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 15px;
         }
-        
-        .btn {
-            padding: 12px 25px;
+
+        button {
+            padding: 10px 20px;
             border: none;
             border-radius: 50px;
-            font-weight: 600;
+            background: #fdbb2d;
+            color: #1a2a6c;
+            font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-        
-        .btn-primary {
-            background-color: var(--primary-color);
-            color: white;
+
+        button:hover {
+            background: #ffcc44;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
         }
-        
-        .btn-primary:hover {
-            background-color: var(--secondary-color);
+
+        button:active {
+            transform: translateY(0);
         }
-        
-        .btn-success {
-            background-color: var(--success-color);
-            color: white;
-        }
-        
-        .btn-success:hover {
-            background-color: #27ae60;
-        }
-        
-        .btn-warning {
-            background-color: var(--warning-color);
-            color: white;
-        }
-        
-        .btn-warning:hover {
-            background-color: #c0392b;
-        }
-        
-        .btn:disabled {
-            background-color: #95a5a6;
+
+        button:disabled {
+            background: #666;
+            color: #999;
             cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
         }
-        
-        .viewers-section {
+
+        .captured-media {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-        }
-        
-        .viewer-card {
-            background: white;
-            border-radius: 8px;
-            padding: 15px;
-            display: flex;
-            align-items: center;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 15px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-top: 20px;
         }
-        
-        .viewer-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background-color: var(--accent-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
-        
-        .viewer-info h3 {
-            font-size: 1rem;
-            margin-bottom: 5px;
-        }
-        
-        .viewer-info p {
-            font-size: 0.8rem;
-            color: #7f8c8d;
-        }
-        
-        footer {
-            text-align: center;
-            margin-top: 50px;
-            padding: 20px;
-            color: #7f8c8d;
-            font-size: 0.9rem;
-        }
-        
-        .hidden {
-            display: none;
-        }
-        
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 15px 20px;
-            background-color: var(--success-color);
-            color: white;
-            border-radius: 5px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            z-index: 1000;
-            transform: translateX(150%);
+
+        .media-item {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             transition: transform 0.3s ease;
         }
-        
-        .notification.show {
-            transform: translateX(0);
+
+        .media-item:hover {
+            transform: scale(1.05);
         }
-        
-        .class-info {
+
+        .media-item img, .media-item video {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .media-info {
+            padding: 8px;
+            background: rgba(0, 0, 0, 0.7);
+            font-size: 0.8rem;
+        }
+
+        .media-actions {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #eee;
+            margin-top: 5px;
         }
-        
-        .class-title {
-            font-size: 1.5rem;
-            color: var(--secondary-color);
+
+        .delete-btn {
+            background: #b21f1f;
+            color: white;
+            padding: 5px 10px;
+            font-size: 0.7rem;
         }
-        
-        .class-time {
-            font-size: 1rem;
-            color: #7f8c8d;
+
+        .play-btn {
+            background: #1a2a6c;
+            color: white;
+            padding: 5px 10px;
+            font-size: 0.7rem;
         }
-        
-        .chat-section {
-            margin-top: 20px;
-            border-top: 1px solid #eee;
-            padding-top: 20px;
-        }
-        
-        .chat-messages {
-            height: 200px;
-            overflow-y: auto;
-            border: 1px solid #eee;
-            border-radius: 8px;
+
+        .storage-info {
+            background: rgba(0, 0, 0, 0.4);
             padding: 15px;
-            margin-bottom: 15px;
-            background-color: #f9f9f9;
-        }
-        
-        .message {
-            margin-bottom: 10px;
-            padding: 8px 12px;
-            border-radius: 18px;
-            max-width: 80%;
-        }
-        
-        .message.system {
-            background-color: #e0e0e0;
-            color: #666;
-            margin: 0 auto;
+            border-radius: 10px;
+            margin-top: 30px;
             text-align: center;
-            max-width: 100%;
-            font-style: italic;
         }
-        
-        .message.viewer {
-            background-color: #e3f2fd;
-            align-self: flex-start;
-        }
-        
-        .message.broadcaster {
-            background-color: #e8f5e9;
-            align-self: flex-end;
-            margin-left: auto;
-        }
-        
-        .chat-input {
-            display: flex;
-            gap: 10px;
-        }
-        
-        .chat-input input {
-            flex: 1;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 24px;
-            outline: none;
-        }
-        
-        .chat-input button {
-            padding: 12px 20px;
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 24px;
-            cursor: pointer;
-        }
-        
-        .connection-status {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 10px;
-            font-size: 0.9rem;
-            color: #7f8c8d;
-        }
-        
-        .connection-dot {
-            width: 10px;
+
+        .progress-bar {
             height: 10px;
-            border-radius: 50%;
-            background-color: #e74c3c;
+            background: #333;
+            border-radius: 5px;
+            margin: 10px 0;
+            overflow: hidden;
         }
-        
-        .connection-dot.connected {
-            background-color: #2ecc71;
+
+        .progress {
+            height: 100%;
+            background: #fdbb2d;
+            width: 0%;
+            transition: width 0.5s ease;
         }
-        
-        .setup-section {
-            background-color: #f8f9fa;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-left: 4px solid var(--primary-color);
-        }
-        
-        .setup-section h3 {
-            margin-bottom: 15px;
-            color: var(--secondary-color);
-        }
-        
-        .setup-controls {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        
-        .setup-controls select, .setup-controls input {
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            min-width: 200px;
-        }
-        
-        .setup-controls button {
-            padding: 10px 20px;
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        
+
         @media (max-width: 768px) {
-            .logo h1 {
-                font-size: 1.8rem;
-            }
-            
-            .viewers-section {
-                grid-template-columns: 1fr;
-            }
-            
-            .controls {
+            .camera-container {
                 flex-direction: column;
             }
             
-            .btn {
-                width: 100%;
-                justify-content: center;
-            }
-            
-            .class-info {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
-            }
-            
-            .setup-controls {
-                flex-direction: column;
-            }
-            
-            .setup-controls select, .setup-controls input {
-                min-width: 100%;
+            h1 {
+                font-size: 2rem;
             }
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <div class="logo">
-                <i class="fas fa-chalkboard-teacher"></i>
-                <h1>SAPSAP - <span>I AM LIVE</span></h1>
-            </div>
-        </div>
-    </header>
-    
     <div class="container">
-        <div class="main-content">
-            <div class="card">
-                <div class="class-info">
-                    <div>
-                        <h2 class="class-title" id="classTitle">Mathematics - Algebra Basics</h2>
-                        <p class="class-time" id="classTime">Live Session • 45 minutes remaining</p>
-                    </div>
-                    <div class="status-indicator">
-                        <div class="status-dot" id="statusDot"></div>
-                        <span id="statusText">Offline</span>
-                    </div>
+        <header>
+            <h1>Dual Camera Capture</h1>
+            <p class="subtitle">Capture images with front and back cameras • Save to browser storage • Play videos externally</p>
+        </header>
+
+        <div class="camera-container">
+            <div class="camera-section">
+                <h2>Front Camera</h2>
+                <div class="camera-preview">
+                    <video id="videoElement" autoplay playsinline></video>
                 </div>
-                
-                <div class="broadcast-section">
-                    <div class="setup-section">
-                        <h3>Stream Setup</h3>
-                        <div class="setup-controls">
-                            <select id="videoSource">
-                                <option value="">Select Camera</option>
-                            </select>
-                            <select id="audioSource">
-                                <option value="">Select Microphone</option>
-                            </select>
-                            <input type="text" id="streamTitle" placeholder="Stream Title" value="Algebra Basics: Solving Equations">
-                            <button id="applySettings">Apply Settings</button>
-                        </div>
-                    </div>
-                    
-                    <div class="video-container">
-                        <video id="localVideo" autoplay muted playsinline></video>
-                        <video id="remoteVideo" autoplay playsinline class="hidden"></video>
-                        <div class="video-overlay">
-                            <div id="lessonTitle">Algebra Basics: Solving Equations</div>
-                            <div id="viewerCount">0 Viewers</div>
-                        </div>
-                    </div>
-                    
-                    <div class="controls">
-                        <button id="startBroadcast" class="btn btn-primary">
-                            <i class="fas fa-broadcast-tower"></i>
-                            <span>Start Broadcast</span>
-                        </button>
-                        <button id="stopBroadcast" class="btn btn-warning" disabled>
-                            <i class="fas fa-stop"></i>
-                            <span>Stop Broadcast</span>
-                        </button>
-                        <button id="shareLink" class="btn btn-success">
-                            <i class="fas fa-share-alt"></i>
-                            <span>Share Viewer Link</span>
-                        </button>
-                    </div>
-                    
-                    <div class="connection-status">
-                        <div class="connection-dot" id="connectionDot"></div>
-                        <span id="connectionStatus">Not connected to server</span>
-                    </div>
+                <div class="controls">
+                    <button id="frontStartBtn">Start Front Camera</button>
+                    <button id="frontCaptureBtn" disabled>Capture Image</button>
                 </div>
             </div>
-            
-            <div class="card">
-                <h2><i class="fas fa-users"></i> Current Viewers <span id="realViewerCount">(0)</span></h2>
-                <div id="viewersList" class="viewers-section">
-                    <div class="viewer-card">
-                        <div class="viewer-avatar">A</div>
-                        <div class="viewer-info">
-                            <h3>No viewers yet</h3>
-                            <p>Real viewers will appear here when they join</p>
-                        </div>
-                    </div>
+
+            <div class="camera-section">
+                <h2>Back Camera</h2>
+                <div class="camera-preview">
+                    <video id="backVideoElement" autoplay playsinline></video>
                 </div>
-            </div>
-            
-            <div class="card">
-                <h2><i class="fas fa-comments"></i> Live Chat</h2>
-                <div class="chat-section">
-                    <div id="chatMessages" class="chat-messages">
-                        <div class="message system">Welcome to the live class! Please be respectful in the chat.</div>
-                    </div>
-                    <div class="chat-input">
-                        <input type="text" id="messageInput" placeholder="Type your message...">
-                        <button id="sendMessage"><i class="fas fa-paper-plane"></i> Send</button>
-                    </div>
+                <div class="controls">
+                    <button id="backStartBtn">Start Back Camera</button>
+                    <button id="backCaptureBtn" disabled>Capture Image</button>
                 </div>
             </div>
         </div>
-    </div>
-    
-    <footer>
-        <div class="container">
-            <p>Sapsap - I Am Live Online School &copy; 2023 | Real-time Live Streaming Platform</p>
+
+        <div class="camera-section">
+            <h2>Captured Media</h2>
+            <div class="controls">
+                <button id="clearStorageBtn">Clear All Media</button>
+                <button id="downloadAllBtn">Download All</button>
+            </div>
+            <div class="captured-media" id="mediaGallery">
+                <!-- Media items will be dynamically added here -->
+            </div>
         </div>
-    </footer>
-    
-    <div id="notification" class="notification">
-        Viewer link copied to clipboard!
+
+        <div class="storage-info">
+            <h3>Storage Usage</h3>
+            <div class="progress-bar">
+                <div class="progress" id="storageProgress"></div>
+            </div>
+            <p id="storageText">0% used (0 KB / 5 MB estimated)</p>
+        </div>
     </div>
 
     <script>
         // DOM Elements
-        const localVideo = document.getElementById('localVideo');
-        const remoteVideo = document.getElementById('remoteVideo');
-        const startBroadcastBtn = document.getElementById('startBroadcast');
-        const stopBroadcastBtn = document.getElementById('stopBroadcast');
-        const shareLinkBtn = document.getElementById('shareLink');
-        const statusText = document.getElementById('statusText');
-        const statusDot = document.getElementById('statusDot');
-        const viewerCount = document.getElementById('viewerCount');
-        const realViewerCount = document.getElementById('realViewerCount');
-        const viewersList = document.getElementById('viewersList');
-        const notification = document.getElementById('notification');
-        const chatMessages = document.getElementById('chatMessages');
-        const messageInput = document.getElementById('messageInput');
-        const sendMessageBtn = document.getElementById('sendMessage');
-        const lessonTitle = document.getElementById('lessonTitle');
-        const classTitle = document.getElementById('classTitle');
-        const connectionStatus = document.getElementById('connectionStatus');
-        const connectionDot = document.getElementById('connectionDot');
-        const videoSource = document.getElementById('videoSource');
-        const audioSource = document.getElementById('audioSource');
-        const streamTitle = document.getElementById('streamTitle');
-        const applySettingsBtn = document.getElementById('applySettings');
-        
-        // Application state
-        let localStream = null;
-        let peerConnections = {};
-        let dataChannels = {};
-        let isBroadcasting = false;
-        let viewerCounter = 0;
-        let viewerData = {};
-        let roomId = null;
-        let userName = "Instructor";
-        let ws = null;
-        
-        // WebRTC configuration (using free STUN servers)
-        const configuration = {
-            iceServers: [
-                { urls: 'stun:stun.l.google.com:19302' },
-                { urls: 'stun:stun1.l.google.com:19302' }
-            ]
-        };
-        
-        // Initialize the application
+        const videoElement = document.getElementById('videoElement');
+        const backVideoElement = document.getElementById('backVideoElement');
+        const frontStartBtn = document.getElementById('frontStartBtn');
+        const backStartBtn = document.getElementById('backStartBtn');
+        const frontCaptureBtn = document.getElementById('frontCaptureBtn');
+        const backCaptureBtn = document.getElementById('backCaptureBtn');
+        const clearStorageBtn = document.getElementById('clearStorageBtn');
+        const downloadAllBtn = document.getElementById('downloadAllBtn');
+        const mediaGallery = document.getElementById('mediaGallery');
+        const storageProgress = document.getElementById('storageProgress');
+        const storageText = document.getElementById('storageText');
+
+        // Global variables
+        let frontStream = null;
+        let backStream = null;
+        let mediaItems = [];
+
+        // Initialize the app
         function init() {
-            // Set up event listeners
-            startBroadcastBtn.addEventListener('click', startBroadcast);
-            stopBroadcastBtn.addEventListener('click', stopBroadcast);
-            shareLinkBtn.addEventListener('click', shareViewerLink);
-            sendMessageBtn.addEventListener('click', sendMessage);
-            messageInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') sendMessage();
-            });
-            applySettingsBtn.addEventListener('click', applySettings);
-            
-            // Generate a unique room ID
-            roomId = generateRoomId();
-            
-            // Initialize lesson content
-            initializeLessonContent();
-            
-            // Get available media devices
-            getMediaDevices();
-            
-            // Connect to signaling server
-            connectToSignalingServer();
+            loadMediaFromStorage();
+            updateStorageInfo();
+            setupEventListeners();
         }
-        
-        // Get available media devices
-        async function getMediaDevices() {
-            try {
-                const devices = await navigator.mediaDevices.enumerateDevices();
-                videoSource.innerHTML = '<option value="">Select Camera</option>';
-                audioSource.innerHTML = '<option value="">Select Microphone</option>';
-                
-                devices.forEach(device => {
-                    const option = document.createElement('option');
-                    option.value = device.deviceId;
-                    option.text = device.label || `Unknown ${device.kind}`;
-                    
-                    if (device.kind === 'videoinput') {
-                        videoSource.appendChild(option);
-                    } else if (device.kind === 'audioinput') {
-                        audioSource.appendChild(option);
-                    }
-                });
-            } catch (error) {
-                console.error('Error getting media devices:', error);
-            }
+
+        // Set up event listeners
+        function setupEventListeners() {
+            frontStartBtn.addEventListener('click', toggleFrontCamera);
+            backStartBtn.addEventListener('click', toggleBackCamera);
+            frontCaptureBtn.addEventListener('click', () => captureImage('front'));
+            backCaptureBtn.addEventListener('click', () => captureImage('back'));
+            clearStorageBtn.addEventListener('click', clearStorage);
+            downloadAllBtn.addEventListener('click', downloadAllMedia);
         }
-        
-        // Apply media settings
-        async function applySettings() {
-            if (isBroadcasting) {
-                alert('Please stop the broadcast before changing settings');
-                return;
-            }
-            
-            const videoDeviceId = videoSource.value;
-            const audioDeviceId = audioSource.value;
-            const title = streamTitle.value;
-            
-            if (title) {
-                lessonTitle.textContent = title;
-                classTitle.textContent = `Mathematics - ${title.split(':')[0]}`;
-            }
-            
-            // If we have a local stream, stop it
-            if (localStream) {
-                localStream.getTracks().forEach(track => track.stop());
-            }
-            
-            // Get new stream with selected devices
-            const constraints = {
-                video: videoDeviceId ? { deviceId: { exact: videoDeviceId } } : true,
-                audio: audioDeviceId ? { deviceId: { exact: audioDeviceId } } : true
-            };
-            
-            try {
-                localStream = await navigator.mediaDevices.getUserMedia(constraints);
-                localVideo.srcObject = localStream;
-                showNotification('Media settings applied successfully');
-            } catch (error) {
-                console.error('Error applying media settings:', error);
-                alert('Failed to apply media settings. Please check your device permissions.');
-            }
-        }
-        
-        // Generate a random room ID
-        function generateRoomId() {
-            return Math.random().toString(36).substring(2, 8).toUpperCase();
-        }
-        
-        // Initialize lesson content
-        function initializeLessonContent() {
-            const lessons = [
-                "Algebra Basics: Solving Equations",
-                "Introduction to Quadratic Functions",
-                "Linear Equations and Graphs",
-                "Polynomial Expressions",
-                "Systems of Equations"
-            ];
-            
-            const randomLesson = lessons[Math.floor(Math.random() * lessons.length)];
-            lessonTitle.textContent = randomLesson;
-            classTitle.textContent = `Mathematics - ${randomLesson.split(':')[0]}`;
-            streamTitle.value = randomLesson;
-        }
-        
-        // Connect to signaling server (WebSocket)
-        function connectToSignalingServer() {
-            updateConnectionStatus('Connecting to server...', false);
-            
-            // For this demo, we'll use a mock WebSocket connection
-            // In a real implementation, you would connect to an actual WebSocket server
-            // ws = new WebSocket('wss://yourserver.com/ws');
-            
-            // Simulate connection delay
-            setTimeout(() => {
-                updateConnectionStatus('Connected to server', true);
-                
-                // In a real implementation, you would set up WebSocket event handlers here
-                // For this demo, we'll simulate the connection
-                
-            }, 1500);
-        }
-        
-        // Update connection status display
-        function updateConnectionStatus(message, isConnected) {
-            connectionStatus.textContent = message;
-            connectionDot.className = isConnected ? 'connection-dot connected' : 'connection-dot';
-        }
-        
-        // Start the broadcast
-        async function startBroadcast() {
-            try {
-                // Get user media (camera and microphone)
-                if (!localStream) {
-                    localStream = await navigator.mediaDevices.getUserMedia({
-                        video: true,
-                        audio: true
-                    });
-                }
-                
-                // Display the local video stream
-                localVideo.srcObject = localStream;
-                
-                // In a real implementation, you would:
-                // 1. Send a message to the signaling server to create a room
-                // 2. Set up WebRTC peer connections for each viewer
-                // 3. Handle incoming viewer connections
-                
-                // For this demo, we'll simulate the WebRTC setup
-                
-                // Update UI
-                startBroadcastBtn.disabled = true;
-                stopBroadcastBtn.disabled = false;
-                statusText.textContent = 'Live';
-                statusDot.classList.add('live');
-                isBroadcasting = true;
-                
-                // Add system message to chat
-                addChatMessage('system', 'Live broadcast has started. Welcome students!');
-                
-                showNotification('Broadcast started successfully!');
-                
-            } catch (error) {
-                console.error('Error starting broadcast:', error);
-                alert('Failed to start broadcast. Please check your camera and microphone permissions.');
-            }
-        }
-        
-        // Stop the broadcast
-        function stopBroadcast() {
-            // Stop all tracks in the local stream
-            if (localStream) {
-                localStream.getTracks().forEach(track => track.stop());
-                localStream = null;
-            }
-            
-            // Close all peer connections
-            Object.values(peerConnections).forEach(pc => pc.close());
-            peerConnections = {};
-            
-            // Close all data channels
-            Object.values(dataChannels).forEach(dc => dc.close());
-            dataChannels = {};
-            
-            // Reset UI
-            startBroadcastBtn.disabled = false;
-            stopBroadcastBtn.disabled = true;
-            statusText.textContent = 'Offline';
-            statusDot.classList.remove('live');
-            isBroadcasting = false;
-            viewerCounter = 0;
-            viewerCount.textContent = '0 Viewers';
-            realViewerCount.textContent = '(0)';
-            
-            // Clear viewers list
-            viewersList.innerHTML = `
-                <div class="viewer-card">
-                    <div class="viewer-avatar">A</div>
-                    <div class="viewer-info">
-                        <h3>No viewers yet</h3>
-                        <p>Real viewers will appear here when they join</p>
-                    </div>
-                </div>
-            `;
-            
-            // Add system message to chat
-            addChatMessage('system', 'Live broadcast has ended. Thank you for attending!');
-            
-            showNotification('Broadcast ended');
-        }
-        
-        // Share the viewer link
-        function shareViewerLink() {
-            const viewerUrl = `${window.location.origin}${window.location.pathname}?room=${roomId}&viewer=true`;
-            
-            // Copy to clipboard
-            navigator.clipboard.writeText(viewerUrl).then(() => {
-                showNotification('Viewer link copied to clipboard!');
-            }).catch(err => {
-                // Fallback for browsers that don't support clipboard API
-                prompt('Copy this link to share with viewers:', viewerUrl);
-            });
-        }
-        
-        // Show notification
-        function showNotification(message) {
-            notification.textContent = message;
-            notification.classList.add('show');
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 3000);
-        }
-        
-        // Add a viewer to the list
-        function addViewer(viewerId, name) {
-            viewerCounter++;
-            viewerCount.textContent = `${viewerCounter} Viewer${viewerCounter !== 1 ? 's' : ''}`;
-            realViewerCount.textContent = `(${viewerCounter})`;
-            
-            // Generate a random color for the avatar
-            const colors = ['#4cb5f5', '#2ecc71', '#e74c3c', '#9b59b6', '#f39c12'];
-            const color = colors[Math.floor(Math.random() * colors.length)];
-            
-            // Create viewer card
-            const viewerCard = document.createElement('div');
-            viewerCard.className = 'viewer-card';
-            viewerCard.innerHTML = `
-                <div class="viewer-avatar" style="background-color: ${color}">${name.charAt(0).toUpperCase()}</div>
-                <div class="viewer-info">
-                    <h3>${name}</h3>
-                    <p>Joined ${new Date().toLocaleTimeString()}</p>
-                </div>
-            `;
-            
-            // Replace the placeholder if it's the first viewer
-            if (viewerCounter === 1) {
-                viewersList.innerHTML = '';
-            }
-            
-            viewersList.appendChild(viewerCard);
-            viewerData[viewerId] = { name, element: viewerCard };
-            
-            // Add system message to chat
-            addChatMessage('system', `${name} joined the class`);
-        }
-        
-        // Remove a viewer from the list
-        function removeViewer(viewerId) {
-            if (viewerData[viewerId]) {
-                const viewerName = viewerData[viewerId].name;
-                viewerData[viewerId].element.remove();
-                delete viewerData[viewerId];
-                
-                viewerCounter--;
-                viewerCount.textContent = `${viewerCounter} Viewer${viewerCounter !== 1 ? 's' : ''}`;
-                realViewerCount.textContent = `(${viewerCounter})`;
-                
-                // Show placeholder if no viewers
-                if (viewerCounter === 0) {
-                    viewersList.innerHTML = `
-                        <div class="viewer-card">
-                            <div class="viewer-avatar">A</div>
-                            <div class="viewer-info">
-                                <h3>No viewers yet</h3>
-                                <p>Real viewers will appear here when they join</p>
-                            </div>
-                        </div>
-                    `;
-                }
-                
-                // Add system message to chat
-                addChatMessage('system', `${viewerName} left the class`);
-            }
-        }
-        
-        // Add a message to the chat
-        function addChatMessage(type, content, senderName = 'System') {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${type}`;
-            
-            if (type === 'system') {
-                messageDiv.textContent = content;
+
+        // Toggle front camera
+        async function toggleFrontCamera() {
+            if (frontStream) {
+                stopFrontCamera();
             } else {
-                messageDiv.innerHTML = `<strong>${senderName}:</strong> ${content}`;
-            }
-            
-            chatMessages.appendChild(messageDiv);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-            
-            // Send message to viewers via data channel
-            if (type === 'broadcaster') {
-                // In a real implementation, send to all connected viewers
-                Object.values(dataChannels).forEach(dc => {
-                    if (dc.readyState === 'open') {
-                        dc.send(JSON.stringify({
-                            type: 'chat',
-                            text: content,
-                            sender: userName
-                        }));
-                    }
-                });
+                await startFrontCamera();
             }
         }
-        
-        // Send a message from the broadcaster
-        function sendMessage() {
-            const message = messageInput.value.trim();
-            if (message === '') return;
-            
-            addChatMessage('broadcaster', message, userName);
-            messageInput.value = '';
+
+        // Toggle back camera
+        async function toggleBackCamera() {
+            if (backStream) {
+                stopBackCamera();
+            } else {
+                await startBackCamera();
+            }
         }
-        
-        // Check if we're in viewer mode
-        const urlParams = new URLSearchParams(window.location.search);
-        const isViewer = urlParams.get('viewer') === 'true';
-        const roomParam = urlParams.get('room');
-        
-        if (isViewer && roomParam) {
-            // This is a viewer page
-            initializeViewerPage(roomParam);
-        } else {
-            // This is the broadcaster page
-            init();
-        }
-        
-        // Initialize viewer page
-        function initializeViewerPage(roomId) {
-            document.querySelector('header .logo h1').innerHTML = 'SAPSAP - <span>VIEWING LIVE</span>';
-            document.querySelector('.card h2').textContent = 'Live Stream';
-            
-            // Hide broadcaster controls and setup
-            document.querySelector('.controls').style.display = 'none';
-            document.querySelector('.setup-section').style.display = 'none';
-            document.querySelector('.chat-input').style.display = 'none';
-            
-            // Update class info for viewer
-            document.querySelector('.class-title').textContent = 'Mathematics - Algebra Basics';
-            document.querySelector('.class-time').textContent = 'Live Session • 45 minutes remaining';
-            
-            // Show a connecting message
-            viewersList.innerHTML = `
-                <div class="viewer-card" style="grid-column: 1 / -1; text-align: center;">
-                    <div class="viewer-info">
-                        <h3>Connecting to live stream...</h3>
-                        <p>Please wait while we connect you to room ${roomId}</p>
-                    </div>
-                </div>
-            `;
-            
-            // In a real implementation, this would connect to the signaling server
-            // and set up a WebRTC connection to receive the stream
-            setTimeout(() => {
-                connectAsViewer(roomId);
-            }, 2000);
-        }
-        
-        // Connect as a viewer to the broadcast
-        function connectAsViewer(roomId) {
-            // In a real implementation, this would:
-            // 1. Connect to signaling server
-            // 2. Send join request with roomId
-            // 3. Set up WebRTC connection to receive video stream
-            
-            updateConnectionStatus('Connecting to broadcast...', false);
-            
-            // Simulate connection process
-            setTimeout(() => {
-                updateConnectionStatus('Connected to broadcast', true);
+
+        // Start front camera
+        async function startFrontCamera() {
+            try {
+                const constraints = {
+                    video: { facingMode: "user" }
+                };
                 
-                viewersList.innerHTML = `
-                    <div class="viewer-card" style="grid-column: 1 / -1; text-align: center;">
-                        <div class="viewer-info">
-                            <h3>Connected to live stream</h3>
-                            <p>You are now watching the broadcast in room ${roomId}</p>
+                frontStream = await navigator.mediaDevices.getUserMedia(constraints);
+                videoElement.srcObject = frontStream;
+                frontStartBtn.textContent = "Stop Front Camera";
+                frontCaptureBtn.disabled = false;
+            } catch (error) {
+                console.error("Error accessing front camera:", error);
+                alert("Unable to access front camera. Please check permissions.");
+            }
+        }
+
+        // Start back camera
+        async function startBackCamera() {
+            try {
+                const constraints = {
+                    video: { facingMode: { exact: "environment" } }
+                };
+                
+                backStream = await navigator.mediaDevices.getUserMedia(constraints);
+                backVideoElement.srcObject = backStream;
+                backStartBtn.textContent = "Stop Back Camera";
+                backCaptureBtn.disabled = false;
+            } catch (error) {
+                console.error("Error accessing back camera:", error);
+                // If environment mode fails, try any available camera
+                try {
+                    const constraints = { video: true };
+                    backStream = await navigator.mediaDevices.getUserMedia(constraints);
+                    backVideoElement.srcObject = backStream;
+                    backStartBtn.textContent = "Stop Back Camera";
+                    backCaptureBtn.disabled = false;
+                } catch (fallbackError) {
+                    alert("Unable to access any camera. Please check permissions.");
+                }
+            }
+        }
+
+        // Stop front camera
+        function stopFrontCamera() {
+            if (frontStream) {
+                frontStream.getTracks().forEach(track => track.stop());
+                frontStream = null;
+                videoElement.srcObject = null;
+                frontStartBtn.textContent = "Start Front Camera";
+                frontCaptureBtn.disabled = true;
+            }
+        }
+
+        // Stop back camera
+        function stopBackCamera() {
+            if (backStream) {
+                backStream.getTracks().forEach(track => track.stop());
+                backStream = null;
+                backVideoElement.srcObject = null;
+                backStartBtn.textContent = "Start Back Camera";
+                backCaptureBtn.disabled = true;
+            }
+        }
+
+        // Capture image from camera
+        function captureImage(cameraType) {
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            let videoElementToUse;
+            
+            if (cameraType === 'front') {
+                videoElementToUse = videoElement;
+            } else {
+                videoElementToUse = backVideoElement;
+            }
+            
+            canvas.width = videoElementToUse.videoWidth;
+            canvas.height = videoElementToUse.videoHeight;
+            
+            context.drawImage(videoElementToUse, 0, 0, canvas.width, canvas.height);
+            
+            canvas.toBlob(blob => {
+                const mediaItem = {
+                    id: Date.now(),
+                    type: 'image',
+                    camera: cameraType,
+                    timestamp: new Date().toLocaleString(),
+                    data: blob
+                };
+                
+                saveMediaItem(mediaItem);
+            }, 'image/jpeg', 0.8);
+        }
+
+        // Save media item to storage
+        function saveMediaItem(mediaItem) {
+            mediaItems.push(mediaItem);
+            localStorage.setItem('capturedMedia', JSON.stringify(mediaItems.map(item => {
+                // Convert Blob to base64 for storage
+                return new Promise(resolve => {
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                        resolve({
+                            id: item.id,
+                            type: item.type,
+                            camera: item.camera,
+                            timestamp: item.timestamp,
+                            data: reader.result
+                        });
+                    };
+                    reader.readAsDataURL(item.data);
+                });
+            })));
+            
+            // Update UI
+            renderMediaItem(mediaItem);
+            updateStorageInfo();
+        }
+
+        // Load media from storage
+        function loadMediaFromStorage() {
+            const storedMedia = localStorage.getItem('capturedMedia');
+            if (storedMedia) {
+                const mediaData = JSON.parse(storedMedia);
+                mediaItems = mediaData.map(item => {
+                    // Convert base64 back to Blob
+                    const byteString = atob(item.data.split(',')[1]);
+                    const mimeString = item.data.split(',')[0].split(':')[1].split(';')[0];
+                    const ab = new ArrayBuffer(byteString.length);
+                    const ia = new Uint8Array(ab);
+                    
+                    for (let i = 0; i < byteString.length; i++) {
+                        ia[i] = byteString.charCodeAt(i);
+                    }
+                    
+                    return {
+                        id: item.id,
+                        type: item.type,
+                        camera: item.camera,
+                        timestamp: item.timestamp,
+                        data: new Blob([ab], {type: mimeString})
+                    };
+                });
+                
+                // Render all media items
+                mediaItems.forEach(item => renderMediaItem(item));
+            }
+        }
+
+        // Render a media item in the gallery
+        function renderMediaItem(mediaItem) {
+            const mediaElement = document.createElement('div');
+            mediaElement.className = 'media-item';
+            mediaElement.dataset.id = mediaItem.id;
+            
+            const url = URL.createObjectURL(mediaItem.data);
+            
+            if (mediaItem.type === 'image') {
+                mediaElement.innerHTML = `
+                    <img src="${url}" alt="Captured image">
+                    <div class="media-info">
+                        <div>${mediaItem.camera} camera</div>
+                        <div>${mediaItem.timestamp}</div>
+                        <div class="media-actions">
+                            <button class="delete-btn" onclick="deleteMediaItem(${mediaItem.id})">Delete</button>
+                            <a href="${url}" download="image_${mediaItem.id}.jpg" class="play-btn" style="text-decoration: none;">Download</a>
                         </div>
                     </div>
                 `;
-                
-                // In a real implementation, the remote video would show the actual stream
-                // For this demo, we'll show a placeholder with a message
-                remoteVideo.classList.remove('hidden');
-                localVideo.classList.add('hidden');
-                
-                // Create a canvas to display a "live" message
-                const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d');
-                canvas.width = 640;
-                canvas.height = 480;
-                
-                // Draw a simple "live" screen
-                ctx.fillStyle = '#2c3e50';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                
-                ctx.fillStyle = '#ecf0f1';
-                ctx.font = 'bold 48px Arial';
-                ctx.textAlign = 'center';
-                ctx.fillText('LIVE STREAM', canvas.width/2, canvas.height/2 - 30);
-                
-                ctx.font = '24px Arial';
-                ctx.fillText('Mathematics - Algebra Basics', canvas.width/2, canvas.height/2 + 30);
-                
-                ctx.font = '18px Arial';
-                ctx.fillText('Room: ' + roomId, canvas.width/2, canvas.height/2 + 70);
-                
-                // Convert canvas to stream and set as video source
-                const stream = canvas.captureStream(25);
-                remoteVideo.srcObject = stream;
-                
-                // Update status
-                statusText.textContent = 'Watching Live';
-                statusDot.classList.add('live');
-                
-                // Add welcome message to chat
-                addChatMessage('system', 'You have joined the live class. Please be respectful in the chat.');
-                
-            }, 2000);
+            } else {
+                mediaElement.innerHTML = `
+                    <video controls>
+                        <source src="${url}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="media-info">
+                        <div>${mediaItem.camera} camera</div>
+                        <div>${mediaItem.timestamp}</div>
+                        <div class="media-actions">
+                            <button class="delete-btn" onclick="deleteMediaItem(${mediaItem.id})">Delete</button>
+                            <a href="https://goldenapplecoders-coder.github.io/vplayer.html?video=${encodeURIComponent(url)}" target="_blank" class="play-btn" style="text-decoration: none;">Play</a>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            mediaGallery.appendChild(mediaElement);
         }
+
+        // Delete a media item
+        function deleteMediaItem(id) {
+            mediaItems = mediaItems.filter(item => item.id !== id);
+            localStorage.setItem('capturedMedia', JSON.stringify(mediaItems));
+            
+            const mediaElement = document.querySelector(`.media-item[data-id="${id}"]`);
+            if (mediaElement) {
+                mediaElement.remove();
+            }
+            
+            updateStorageInfo();
+        }
+
+        // Clear all media from storage
+        function clearStorage() {
+            if (confirm("Are you sure you want to delete all captured media?")) {
+                mediaItems = [];
+                localStorage.removeItem('capturedMedia');
+                mediaGallery.innerHTML = '';
+                updateStorageInfo();
+            }
+        }
+
+        // Download all media as a zip (simplified version)
+        function downloadAllMedia() {
+            if (mediaItems.length === 0) {
+                alert("No media to download.");
+                return;
+            }
+            
+            mediaItems.forEach((item, index) => {
+                const url = URL.createObjectURL(item.data);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${item.type}_${item.camera}_${item.id}.${item.type === 'image' ? 'jpg' : 'mp4'}`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
+        }
+
+        // Update storage usage information
+        function updateStorageInfo() {
+            // Estimate storage usage (this is a rough estimate)
+            const estimatedSize = mediaItems.reduce((total, item) => {
+                return total + (item.data.size || 100000); // Default to 100KB if size not available
+            }, 0);
+            
+            const maxSize = 5 * 1024 * 1024; // 5MB estimated max
+            const percentage = Math.min(100, (estimatedSize / maxSize) * 100);
+            
+            storageProgress.style.width = `${percentage}%`;
+            storageText.textContent = `${percentage.toFixed(1)}% used (${(estimatedSize / 1024).toFixed(1)} KB / ${(maxSize / 1024 / 1024).toFixed(1)} MB estimated)`;
+        }
+
+        // Initialize the app when the page loads
+        window.addEventListener('DOMContentLoaded', init);
+
+        // Make functions available globally for onclick handlers
+        window.deleteMediaItem = deleteMediaItem;
     </script>
 </body>
 </html>
