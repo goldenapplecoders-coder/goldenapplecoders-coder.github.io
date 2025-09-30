@@ -3,78 +3,418 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comments - Your Project</title>
-    <link rel="stylesheet" href="comments.css">
-    <!-- You can add your existing global styles here if needed -->
+    <title>Public Comments</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .main-content {
+            padding: 30px;
+        }
+        
+        .comment-form {
+            background-color: #f9fafc;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #444;
+        }
+        
+        input, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+        
+        input:focus, textarea:focus {
+            border-color: #6a11cb;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(106, 17, 203, 0.2);
+        }
+        
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .comments-section {
+            margin-top: 30px;
+        }
+        
+        .comments-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #444;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .comment {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid #6a11cb;
+            position: relative;
+        }
+        
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .username {
+            font-weight: 600;
+            color: #6a11cb;
+        }
+        
+        .timestamp {
+            font-size: 0.85rem;
+            color: #888;
+        }
+        
+        .comment-content {
+            margin-bottom: 15px;
+            color: #555;
+        }
+        
+        .delete-btn {
+            background-color: #ff4757;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .delete-btn:hover {
+            background-color: #ff3742;
+        }
+        
+        .password-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .modal-title {
+            margin-bottom: 20px;
+            color: #444;
+        }
+        
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .cancel-btn {
+            background-color: #a4b0be;
+        }
+        
+        .cancel-btn:hover {
+            background-color: #747d8c;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #888;
+        }
+        
+        .empty-state p {
+            margin-bottom: 20px;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                border-radius: 0;
+            }
+            
+            .main-content {
+                padding: 20px 15px;
+            }
+            
+            .comment-form {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="comments-container">
-        <!-- Navigation -->
-        <nav class="comments-nav">
-            <div class="nav-content">
-                <a href="index.html" class="back-link">← Back to Home</a>
-                <h1>Community Comments</h1>
-            </div>
-        </nav>
-
-        <!-- Comment Form -->
-        <section class="comment-form-section">
-            <div class="form-container">
-                <h2>Add Your Comment</h2>
-                <form id="commentForm" class="comment-form">
+    <div class="container">
+        <header>
+            <h1>Public Comments</h1>
+            <p class="subtitle">Share your thoughts with the community</p>
+        </header>
+        
+        <div class="main-content">
+            <div class="comment-form">
+                <h2>Post a Comment</h2>
+                <form id="commentForm">
                     <div class="form-group">
-                        <label for="username">Your Username:</label>
-                        <input type="text" id="username" name="username" required 
-                               placeholder="Enter your username" maxlength="50">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" placeholder="Enter your username" required>
                     </div>
-                    
                     <div class="form-group">
-                        <label for="comment">Your Comment:</label>
-                        <textarea id="comment" name="comment" required 
-                                  placeholder="Share your thoughts..." rows="4" maxlength="500"></textarea>
+                        <label for="comment">Comment</label>
+                        <textarea id="comment" placeholder="Write your comment here..." required></textarea>
                     </div>
-                    
-                    <button type="submit" class="submit-btn">Post Comment</button>
+                    <button type="submit">Post Comment</button>
                 </form>
-                
-                <div id="formMessage" class="form-message"></div>
             </div>
-        </section>
-
-        <!-- Comments Display -->
-        <section class="comments-section">
-            <div class="section-header">
-                <h2>Latest Comments (<span id="commentCount">0</span>)</h2>
-                <button id="refreshBtn" class="refresh-btn">Refresh</button>
-            </div>
-            <div id="commentsContainer" class="comments-list">
-                <div class="loading">Loading comments...</div>
-            </div>
-        </section>
-
-        <!-- Delete Modal -->
-        <div id="deleteModal" class="modal">
-            <div class="modal-content">
-                <h3>Delete Comment</h3>
-                <p>Enter password to delete this comment:</p>
-                <form id="deleteForm" class="delete-form">
-                    <input type="password" id="deletePassword" name="password" required 
-                           placeholder="Enter password" autocomplete="off">
-                    <div class="modal-actions">
-                        <button type="submit" class="delete-btn">Delete</button>
-                        <button type="button" id="cancelDelete" class="cancel-btn">Cancel</button>
+            
+            <div class="comments-section">
+                <h2 class="comments-title">Recent Comments</h2>
+                <div id="commentsContainer">
+                    <!-- Comments will be dynamically added here -->
+                    <div class="empty-state">
+                        <p>No comments yet. Be the first to share your thoughts!</p>
                     </div>
-                </form>
-                <div id="modalMessage" class="modal-message"></div>
+                </div>
             </div>
         </div>
-
-        <!-- Overlay for loading -->
-        <div id="loadingOverlay" class="loading-overlay">
-            <div class="spinner"></div>
+    </div>
+    
+    <!-- Password Modal -->
+    <div class="password-modal" id="passwordModal">
+        <div class="modal-content">
+            <h3 class="modal-title">Enter Password to Delete</h3>
+            <p>To delete this comment, please enter the password "comdel".</p>
+            <div class="form-group">
+                <input type="password" id="passwordInput" placeholder="Enter password">
+            </div>
+            <div class="modal-actions">
+                <button class="cancel-btn" id="cancelDelete">Cancel</button>
+                <button id="confirmDelete">Delete</button>
+            </div>
         </div>
     </div>
 
-    <script src="comments.js"></script>
+    <script>
+        // DOM Elements
+        const commentForm = document.getElementById('commentForm');
+        const commentsContainer = document.getElementById('commentsContainer');
+        const passwordModal = document.getElementById('passwordModal');
+        const passwordInput = document.getElementById('passwordInput');
+        const cancelDeleteBtn = document.getElementById('cancelDelete');
+        const confirmDeleteBtn = document.getElementById('confirmDelete');
+        
+        // Store comments in localStorage
+        let comments = JSON.parse(localStorage.getItem('comments')) || [];
+        
+        // Comment to be deleted (temporarily stored when delete button is clicked)
+        let commentToDelete = null;
+        
+        // Display existing comments on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            renderComments();
+        });
+        
+        // Handle form submission
+        commentForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value.trim();
+            const commentText = document.getElementById('comment').value.trim();
+            
+            if (username && commentText) {
+                const newComment = {
+                    id: Date.now(),
+                    username: username,
+                    text: commentText,
+                    timestamp: new Date().toLocaleString()
+                };
+                
+                comments.unshift(newComment);
+                saveComments();
+                renderComments();
+                
+                // Reset form
+                commentForm.reset();
+            }
+        });
+        
+        // Render all comments
+        function renderComments() {
+            if (comments.length === 0) {
+                commentsContainer.innerHTML = `
+                    <div class="empty-state">
+                        <p>No comments yet. Be the first to share your thoughts!</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            commentsContainer.innerHTML = '';
+            
+            comments.forEach(comment => {
+                const commentElement = document.createElement('div');
+                commentElement.className = 'comment';
+                commentElement.innerHTML = `
+                    <div class="comment-header">
+                        <span class="username">${escapeHtml(comment.username)}</span>
+                        <span class="timestamp">${comment.timestamp}</span>
+                    </div>
+                    <div class="comment-content">${escapeHtml(comment.text)}</div>
+                    <button class="delete-btn" data-id="${comment.id}">Delete</button>
+                `;
+                
+                commentsContainer.appendChild(commentElement);
+            });
+            
+            // Add event listeners to delete buttons
+            document.querySelectorAll('.delete-btn').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const commentId = parseInt(e.target.getAttribute('data-id'));
+                    commentToDelete = commentId;
+                    passwordModal.style.display = 'flex';
+                    passwordInput.focus();
+                });
+            });
+        }
+        
+        // Handle password confirmation for deletion
+        confirmDeleteBtn.addEventListener('click', () => {
+            if (passwordInput.value === 'comdel') {
+                deleteComment(commentToDelete);
+                passwordModal.style.display = 'none';
+                passwordInput.value = '';
+            } else {
+                alert('Incorrect password. Please try again.');
+                passwordInput.value = '';
+                passwordInput.focus();
+            }
+        });
+        
+        // Cancel deletion
+        cancelDeleteBtn.addEventListener('click', () => {
+            passwordModal.style.display = 'none';
+            passwordInput.value = '';
+            commentToDelete = null;
+        });
+        
+        // Close modal when clicking outside
+        passwordModal.addEventListener('click', (e) => {
+            if (e.target === passwordModal) {
+                passwordModal.style.display = 'none';
+                passwordInput.value = '';
+                commentToDelete = null;
+            }
+        });
+        
+        // Delete comment function
+        function deleteComment(commentId) {
+            comments = comments.filter(comment => comment.id !== commentId);
+            saveComments();
+            renderComments();
+        }
+        
+        // Save comments to localStorage
+        function saveComments() {
+            localStorage.setItem('comments', JSON.stringify(comments));
+        }
+        
+        // Helper function to escape HTML (prevent XSS)
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
 </body>
 </html>
