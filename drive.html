@@ -20,15 +20,11 @@
       <h2><i class="fas fa-upload"></i> Upload Files</h2>
       <input type="file" id="fileInput" multiple />
       <button class="btn upload-btn" onclick="uploadFiles()">Upload Files</button>
-      <p class="note">Note: Files are stored in your browser only</p>
-      <div class="storage-info">
-        <label>Storage Used:</label>
-      </div>
+      <p class="note">Note: Files are stored in your browser only and lost if you reset your browser settings. Download files to restore them to your device storage </p>
     </section>
 
     <section class="files-section">
       <h2><i class="fas fa-folder-open"></i> Your Files</h2>
-      <input type="text" id="searchInput" placeholder="Search files..." oninput="filterFiles()" />
       <div id="filesList" class="files-list">
         <p>Loading files...</p>
       </div>
