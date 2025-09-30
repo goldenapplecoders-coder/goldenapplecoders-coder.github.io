@@ -3,8 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sapsap - Live Group Video Chat</title>
+    <title>Sapsap - I Am Live Online School</title>
     <style>
+        :root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #166088;
+            --accent-color: #4cb5f5;
+            --text-color: #333;
+            --light-bg: #f5f5f5;
+            --dark-bg: #2c3e50;
+            --success-color: #2ecc71;
+            --warning-color: #e74c3c;
+        }
+        
         * {
             margin: 0;
             padding: 0;
@@ -13,645 +24,606 @@
         }
         
         body {
-            background: linear-gradient(135deg, #6e8efb, #a777e3);
-            color: #333;
-            min-height: 100vh;
-            padding: 20px;
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            line-height: 1.6;
         }
         
         .container {
             max-width: 1200px;
             margin: 0 auto;
+            padding: 20px;
         }
         
         header {
-            text-align: center;
-            margin-bottom: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+            padding: 20px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         
-        header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-        }
-        
-        header p {
-            font-size: 1.2rem;
-            opacity: 0.9;
-        }
-        
-        .app-container {
+        .logo {
             display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-        
-        .groups-section {
-            flex: 1;
-            min-width: 300px;
-            background: white;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        }
-        
-        .video-section {
-            flex: 2;
-            min-width: 500px;
-            background: white;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .section-title {
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            color: #6e8efb;
-            border-bottom: 2px solid #f0f0f0;
-            padding-bottom: 10px;
-        }
-        
-        .groups-list {
-            display: grid;
+            align-items: center;
             gap: 15px;
         }
         
-        .group-item {
-            background: #f8f9fa;
+        .logo h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+        }
+        
+        .logo span {
+            color: var(--accent-color);
+        }
+        
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .card {
+            background: white;
             border-radius: 10px;
-            padding: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card h2 {
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--accent-color);
+        }
+        
+        .broadcast-section {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-        }
-        
-        .group-item:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            border-color: #6e8efb;
-        }
-        
-        .group-item.active {
-            border-color: #6e8efb;
-            background: #eef2ff;
-        }
-        
-        .group-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .group-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: #6e8efb;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-        }
-        
-        .group-name {
-            font-weight: 600;
-        }
-        
-        .group-count {
-            background: #e9ecef;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-        }
-        
-        .group-count.full {
-            background: #ff6b6b;
-            color: white;
+            flex-direction: column;
+            gap: 20px;
         }
         
         .video-container {
-            flex: 1;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .video-wrapper {
             position: relative;
-            background: #000;
-            border-radius: 10px;
+            width: 100%;
+            background-color: #000;
+            border-radius: 8px;
             overflow: hidden;
-            aspect-ratio: 4/3;
+            aspect-ratio: 16/9;
         }
         
-        .video-wrapper video {
+        #localVideo, #remoteVideo {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
         
-        .video-label {
+        .video-overlay {
             position: absolute;
-            bottom: 10px;
-            left: 10px;
-            background: rgba(0, 0, 0, 0.7);
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.7));
             color: white;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 0.9rem;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--warning-color);
+        }
+        
+        .status-dot.live {
+            background-color: var(--success-color);
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
         }
         
         .controls {
             display: flex;
-            justify-content: center;
             gap: 15px;
-            margin-top: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
         }
         
-        .control-btn {
-            background: #6e8efb;
-            color: white;
+        .btn {
+            padding: 12px 25px;
             border: none;
-            border-radius: 50%;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background-color: #27ae60;
+        }
+        
+        .btn-warning {
+            background-color: var(--warning-color);
+            color: white;
+        }
+        
+        .btn-warning:hover {
+            background-color: #c0392b;
+        }
+        
+        .btn:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+        
+        .viewers-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .viewer-card {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .viewer-avatar {
             width: 50px;
             height: 50px;
+            border-radius: 50%;
+            background-color: var(--accent-color);
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
         }
         
-        .control-btn:hover {
-            transform: scale(1.1);
-            background: #5a7dfa;
+        .viewer-info h3 {
+            font-size: 1rem;
+            margin-bottom: 5px;
         }
         
-        .control-btn.muted {
-            background: #ff6b6b;
+        .viewer-info p {
+            font-size: 0.8rem;
+            color: #7f8c8d;
         }
         
-        .control-btn.leave {
-            background: #ff6b6b;
-        }
-        
-        .empty-state {
+        footer {
             text-align: center;
-            padding: 40px 20px;
-            color: #6c757d;
+            margin-top: 50px;
+            padding: 20px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
         }
         
-        .empty-state i {
-            font-size: 3rem;
-            margin-bottom: 15px;
-            opacity: 0.5;
+        .hidden {
+            display: none;
         }
         
-        .empty-state p {
-            font-size: 1.1rem;
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            background-color: var(--success-color);
+            color: white;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            z-index: 1000;
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
         }
         
         @media (max-width: 768px) {
-            .app-container {
+            .logo h1 {
+                font-size: 1.8rem;
+            }
+            
+            .viewers-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .controls {
                 flex-direction: column;
             }
             
-            .video-section, .groups-section {
-                min-width: 100%;
+            .btn {
+                width: 100%;
+                justify-content: center;
             }
         }
     </style>
 </head>
 <body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>SAPSAP - <span>I AM LIVE</span></h1>
+            </div>
+        </div>
+    </header>
+    
     <div class="container">
-        <header>
-            <h1>Sapsap</h1>
-            <p>Connect instantly with small groups for live video chats</p>
-        </header>
-        
-        <div class="app-container">
-            <section class="groups-section">
-                <h2 class="section-title">Available Groups</h2>
-                <div class="groups-list" id="groupsList">
-                    <!-- Groups will be populated by JavaScript -->
-                </div>
-            </section>
-            
-            <section class="video-section">
-                <h2 class="section-title">Video Call</h2>
-                <div class="video-container" id="videoContainer">
-                    <div class="empty-state" id="emptyState">
-                        <i>📹</i>
-                        <p>Select a group to start a video chat</p>
+        <div class="main-content">
+            <div class="card">
+                <h2>Live Broadcast</h2>
+                <div class="broadcast-section">
+                    <div class="video-container">
+                        <video id="localVideo" autoplay muted playsinline></video>
+                        <video id="remoteVideo" autoplay playsinline class="hidden"></video>
+                        <div class="video-overlay">
+                            <div class="status-indicator">
+                                <div class="status-dot"></div>
+                                <span id="statusText">Offline</span>
+                            </div>
+                            <div id="viewerCount">0 Viewers</div>
+                        </div>
+                    </div>
+                    
+                    <div class="controls">
+                        <button id="startBroadcast" class="btn btn-primary">
+                            <span>Start Broadcast</span>
+                        </button>
+                        <button id="stopBroadcast" class="btn btn-warning" disabled>
+                            <span>Stop Broadcast</span>
+                        </button>
+                        <button id="shareLink" class="btn btn-success">
+                            <span>Share Viewer Link</span>
+                        </button>
                     </div>
                 </div>
-                
-                <div class="controls" id="controls" style="display: none;">
-                    <button class="control-btn" id="muteAudio">
-                        <i>🎤</i>
-                    </button>
-                    <button class="control-btn" id="muteVideo">
-                        <i>📹</i>
-                    </button>
-                    <button class="control-btn leave" id="leaveCall">
-                        <i>📞</i>
-                    </button>
+            </div>
+            
+            <div class="card">
+                <h2>Current Viewers</h2>
+                <div id="viewersList" class="viewers-section">
+                    <div class="viewer-card">
+                        <div class="viewer-avatar">A</div>
+                        <div class="viewer-info">
+                            <h3>No viewers yet</h3>
+                            <p>Viewers will appear here when they join</p>
+                        </div>
+                    </div>
                 </div>
-            </section>
+            </div>
         </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>Sapsap - I Am Live Online School &copy; 2023 | Real-time Live Streaming Platform</p>
+        </div>
+    </footer>
+    
+    <div id="notification" class="notification">
+        Viewer link copied to clipboard!
     </div>
 
     <script>
-        // Configuration
-        const MAX_GROUP_SIZE = 3;
-        const SERVER_URL = 'wss://sapsap-signaling-server.glitch.me'; // Using a free WebSocket server
+        // DOM Elements
+        const localVideo = document.getElementById('localVideo');
+        const remoteVideo = document.getElementById('remoteVideo');
+        const startBroadcastBtn = document.getElementById('startBroadcast');
+        const stopBroadcastBtn = document.getElementById('stopBroadcast');
+        const shareLinkBtn = document.getElementById('shareLink');
+        const statusText = document.getElementById('statusText');
+        const statusDot = document.querySelector('.status-dot');
+        const viewerCount = document.getElementById('viewerCount');
+        const viewersList = document.getElementById('viewersList');
+        const notification = document.getElementById('notification');
         
-        // Application state
-        let currentGroup = null;
+        // WebRTC variables
         let localStream = null;
-        let peers = {};
-        let socket = null;
-        let isAudioMuted = false;
-        let isVideoMuted = false;
+        let peerConnections = {};
+        let isBroadcasting = false;
+        let viewerCounter = 0;
+        let viewerData = {};
         
-        // DOM elements
-        const groupsList = document.getElementById('groupsList');
-        const videoContainer = document.getElementById('videoContainer');
-        const emptyState = document.getElementById('emptyState');
-        const controls = document.getElementById('controls');
-        const muteAudioBtn = document.getElementById('muteAudio');
-        const muteVideoBtn = document.getElementById('muteVideo');
-        const leaveCallBtn = document.getElementById('leaveCall');
+        // Generate a unique room ID
+        const roomId = generateRoomId();
         
         // Initialize the application
-        document.addEventListener('DOMContentLoaded', init);
-        
-        async function init() {
-            // Connect to signaling server
-            connectToSignalingServer();
+        function init() {
+            // Set up event listeners
+            startBroadcastBtn.addEventListener('click', startBroadcast);
+            stopBroadcastBtn.addEventListener('click', stopBroadcast);
+            shareLinkBtn.addEventListener('click', shareViewerLink);
             
-            // Set up event listeners for controls
-            muteAudioBtn.addEventListener('click', toggleAudio);
-            muteVideoBtn.addEventListener('click', toggleVideo);
-            leaveCallBtn.addEventListener('click', leaveCall);
-            
-            // Load initial groups
-            loadGroups();
+            // Display the room ID for the broadcaster
+            console.log(`Broadcast Room ID: ${roomId}`);
         }
         
-        function connectToSignalingServer() {
-            socket = new WebSocket(SERVER_URL);
-            
-            socket.onopen = () => {
-                console.log('Connected to signaling server');
-            };
-            
-            socket.onmessage = (event) => {
-                const message = JSON.parse(event.data);
-                handleSignalingMessage(message);
-            };
-            
-            socket.onclose = () => {
-                console.log('Disconnected from signaling server');
-                // Try to reconnect after 3 seconds
-                setTimeout(connectToSignalingServer, 3000);
-            };
+        // Generate a random room ID
+        function generateRoomId() {
+            return Math.random().toString(36).substring(2, 8).toUpperCase();
         }
         
-        function handleSignalingMessage(message) {
-            switch (message.type) {
-                case 'group-list':
-                    updateGroupsList(message.groups);
-                    break;
-                case 'user-joined':
-                    handleUserJoined(message.userId, message.groupId);
-                    break;
-                case 'user-left':
-                    handleUserLeft(message.userId, message.groupId);
-                    break;
-                case 'offer':
-                    handleOffer(message.offer, message.from);
-                    break;
-                case 'answer':
-                    handleAnswer(message.answer, message.from);
-                    break;
-                case 'ice-candidate':
-                    handleIceCandidate(message.candidate, message.from);
-                    break;
-            }
-        }
-        
-        function loadGroups() {
-            // Request group list from server
-            if (socket && socket.readyState === WebSocket.OPEN) {
-                socket.send(JSON.stringify({ type: 'get-groups' }));
-            }
-        }
-        
-        function updateGroupsList(groups) {
-            groupsList.innerHTML = '';
-            
-            groups.forEach(group => {
-                const groupItem = document.createElement('div');
-                groupItem.className = 'group-item';
-                if (currentGroup && currentGroup.id === group.id) {
-                    groupItem.classList.add('active');
-                }
-                
-                const isFull = group.participants.length >= MAX_GROUP_SIZE;
-                
-                groupItem.innerHTML = `
-                    <div class="group-info">
-                        <div class="group-avatar">${group.name.charAt(0)}</div>
-                        <div class="group-name">${group.name}</div>
-                    </div>
-                    <div class="group-count ${isFull ? 'full' : ''}">
-                        ${group.participants.length}/${MAX_GROUP_SIZE}
-                    </div>
-                `;
-                
-                if (!isFull) {
-                    groupItem.addEventListener('click', () => joinGroup(group.id));
-                }
-                
-                groupsList.appendChild(groupItem);
-            });
-        }
-        
-        async function joinGroup(groupId) {
-            if (currentGroup) {
-                await leaveCall();
-            }
-            
-            // Request to join the group
-            if (socket && socket.readyState === WebSocket.OPEN) {
-                socket.send(JSON.stringify({ 
-                    type: 'join-group', 
-                    groupId: groupId 
-                }));
-                
-                currentGroup = { id: groupId };
-                
-                // Get user media
-                try {
-                    localStream = await navigator.mediaDevices.getUserMedia({
-                        video: true,
-                        audio: true
-                    });
-                    
-                    // Show local video
-                    showLocalVideo();
-                    
-                    // Show controls
-                    controls.style.display = 'flex';
-                    emptyState.style.display = 'none';
-                    
-                    // Update groups list
-                    loadGroups();
-                } catch (error) {
-                    console.error('Error accessing media devices:', error);
-                    alert('Could not access your camera and microphone. Please check permissions.');
-                }
-            }
-        }
-        
-        function showLocalVideo() {
-            // Remove empty state
-            emptyState.style.display = 'none';
-            
-            // Create local video element
-            const localVideoWrapper = document.createElement('div');
-            localVideoWrapper.className = 'video-wrapper';
-            localVideoWrapper.id = 'localVideoWrapper';
-            
-            const localVideo = document.createElement('video');
-            localVideo.srcObject = localStream;
-            localVideo.autoplay = true;
-            localVideo.muted = true; // Mute local video to avoid echo
-            
-            const localLabel = document.createElement('div');
-            localLabel.className = 'video-label';
-            localLabel.textContent = 'You';
-            
-            localVideoWrapper.appendChild(localVideo);
-            localVideoWrapper.appendChild(localLabel);
-            
-            videoContainer.appendChild(localVideoWrapper);
-        }
-        
-        function handleUserJoined(userId, groupId) {
-            if (currentGroup && currentGroup.id === groupId) {
-                // Create a new peer connection for the joining user
-                createPeerConnection(userId);
-                
-                // Send them an offer
-                sendOffer(userId);
-            }
-        }
-        
-        function handleUserLeft(userId, groupId) {
-            if (currentGroup && currentGroup.id === groupId) {
-                // Remove the peer connection
-                if (peers[userId]) {
-                    peers[userId].close();
-                    delete peers[userId];
-                }
-                
-                // Remove their video element
-                const remoteVideo = document.getElementById(`remoteVideo-${userId}`);
-                if (remoteVideo) {
-                    remoteVideo.remove();
-                }
-                
-                // Update groups list
-                loadGroups();
-            }
-        }
-        
-        function createPeerConnection(userId) {
-            const peerConnection = new RTCPeerConnection({
-                iceServers: [
-                    { urls: 'stun:stun.l.google.com:19302' }
-                ]
-            });
-            
-            // Add local stream to connection
-            localStream.getTracks().forEach(track => {
-                peerConnection.addTrack(track, localStream);
-            });
-            
-            // Handle incoming stream
-            peerConnection.ontrack = (event) => {
-                const remoteStream = event.streams[0];
-                showRemoteVideo(userId, remoteStream);
-            };
-            
-            // Handle ICE candidates
-            peerConnection.onicecandidate = (event) => {
-                if (event.candidate) {
-                    socket.send(JSON.stringify({
-                        type: 'ice-candidate',
-                        candidate: event.candidate,
-                        to: userId,
-                        groupId: currentGroup.id
-                    }));
-                }
-            };
-            
-            peers[userId] = peerConnection;
-            return peerConnection;
-        }
-        
-        function showRemoteVideo(userId, stream) {
-            // Create remote video element
-            const remoteVideoWrapper = document.createElement('div');
-            remoteVideoWrapper.className = 'video-wrapper';
-            remoteVideoWrapper.id = `remoteVideo-${userId}`;
-            
-            const remoteVideo = document.createElement('video');
-            remoteVideo.srcObject = stream;
-            remoteVideo.autoplay = true;
-            
-            const remoteLabel = document.createElement('div');
-            remoteLabel.className = 'video-label';
-            remoteLabel.textContent = `User ${userId.substring(0, 6)}`;
-            
-            remoteVideoWrapper.appendChild(remoteVideo);
-            remoteVideoWrapper.appendChild(remoteLabel);
-            
-            videoContainer.appendChild(remoteVideoWrapper);
-        }
-        
-        async function sendOffer(toUserId) {
-            const peerConnection = peers[toUserId];
-            
-            const offer = await peerConnection.createOffer();
-            await peerConnection.setLocalDescription(offer);
-            
-            socket.send(JSON.stringify({
-                type: 'offer',
-                offer: offer,
-                to: toUserId,
-                groupId: currentGroup.id
-            }));
-        }
-        
-        async function handleOffer(offer, fromUserId) {
-            if (!peers[fromUserId]) {
-                createPeerConnection(fromUserId);
-            }
-            
-            const peerConnection = peers[fromUserId];
-            await peerConnection.setRemoteDescription(offer);
-            
-            const answer = await peerConnection.createAnswer();
-            await peerConnection.setLocalDescription(answer);
-            
-            socket.send(JSON.stringify({
-                type: 'answer',
-                answer: answer,
-                to: fromUserId,
-                groupId: currentGroup.id
-            }));
-        }
-        
-        async function handleAnswer(answer, fromUserId) {
-            const peerConnection = peers[fromUserId];
-            await peerConnection.setRemoteDescription(answer);
-        }
-        
-        async function handleIceCandidate(candidate, fromUserId) {
-            const peerConnection = peers[fromUserId];
-            await peerConnection.addIceCandidate(candidate);
-        }
-        
-        function toggleAudio() {
-            if (localStream) {
-                const audioTracks = localStream.getAudioTracks();
-                audioTracks.forEach(track => {
-                    track.enabled = !track.enabled;
+        // Start the broadcast
+        async function startBroadcast() {
+            try {
+                // Get user media (camera and microphone)
+                localStream = await navigator.mediaDevices.getUserMedia({
+                    video: true,
+                    audio: true
                 });
                 
-                isAudioMuted = !isAudioMuted;
-                muteAudioBtn.classList.toggle('muted', isAudioMuted);
-            }
-        }
-        
-        function toggleVideo() {
-            if (localStream) {
-                const videoTracks = localStream.getVideoTracks();
-                videoTracks.forEach(track => {
-                    track.enabled = !track.enabled;
-                });
+                // Display the local video stream
+                localVideo.srcObject = localStream;
                 
-                isVideoMuted = !isVideoMuted;
-                muteVideoBtn.classList.toggle('muted', isVideoMuted);
+                // Update UI
+                startBroadcastBtn.disabled = true;
+                stopBroadcastBtn.disabled = false;
+                statusText.textContent = 'Live';
+                statusDot.classList.add('live');
+                isBroadcasting = true;
+                
+                // In a real implementation, you would connect to a signaling server here
+                // For this demo, we'll simulate the connection
+                simulateSignalingServer();
+                
+                showNotification('Broadcast started successfully!');
+                
+            } catch (error) {
+                console.error('Error starting broadcast:', error);
+                alert('Failed to start broadcast. Please check your camera and microphone permissions.');
             }
         }
         
-        async function leaveCall() {
-            // Notify server we're leaving
-            if (socket && socket.readyState === WebSocket.OPEN && currentGroup) {
-                socket.send(JSON.stringify({
-                    type: 'leave-group',
-                    groupId: currentGroup.id
-                }));
+        // Stop the broadcast
+        function stopBroadcast() {
+            // Stop all tracks in the local stream
+            if (localStream) {
+                localStream.getTracks().forEach(track => track.stop());
             }
             
             // Close all peer connections
-            Object.values(peers).forEach(peer => {
-                peer.close();
-            });
-            peers = {};
+            Object.values(peerConnections).forEach(pc => pc.close());
+            peerConnections = {};
             
-            // Stop local stream
-            if (localStream) {
-                localStream.getTracks().forEach(track => {
-                    track.stop();
-                });
-                localStream = null;
-            }
+            // Reset UI
+            startBroadcastBtn.disabled = false;
+            stopBroadcastBtn.disabled = true;
+            statusText.textContent = 'Offline';
+            statusDot.classList.remove('live');
+            isBroadcasting = false;
+            viewerCounter = 0;
+            viewerCount.textContent = '0 Viewers';
             
-            // Clear video container
-            videoContainer.innerHTML = '';
+            // Clear viewers list
+            viewersList.innerHTML = `
+                <div class="viewer-card">
+                    <div class="viewer-avatar">A</div>
+                    <div class="viewer-info">
+                        <h3>No viewers yet</h3>
+                        <p>Viewers will appear here when they join</p>
+                    </div>
+                </div>
+            `;
             
-            // Show empty state
-            emptyState.style.display = 'block';
-            controls.style.display = 'none';
-            
-            // Reset current group
-            currentGroup = null;
-            
-            // Update groups list
-            loadGroups();
-            
-            // Reset mute states
-            isAudioMuted = false;
-            isVideoMuted = false;
-            muteAudioBtn.classList.remove('muted');
-            muteVideoBtn.classList.remove('muted');
+            showNotification('Broadcast ended');
         }
         
-        // Simulate initial groups (in a real app, this would come from the server)
-        setTimeout(() => {
-            const simulatedGroups = [
-                { id: 'group1', name: 'Casual Chat', participants: ['user1', 'user2'] },
-                { id: 'group2', name: 'Tech Talk', participants: ['user3'] },
-                { id: 'group3', name: 'Music Lovers', participants: [] },
-                { id: 'group4', name: 'Book Club', participants: ['user4', 'user5', 'user6'] }
-            ];
-            updateGroupsList(simulatedGroups);
-        }, 1000);
+        // Share the viewer link
+        function shareViewerLink() {
+            const viewerUrl = `${window.location.origin}${window.location.pathname}?room=${roomId}&viewer=true`;
+            
+            // Copy to clipboard
+            navigator.clipboard.writeText(viewerUrl).then(() => {
+                showNotification('Viewer link copied to clipboard!');
+            }).catch(err => {
+                // Fallback for browsers that don't support clipboard API
+                prompt('Copy this link to share with viewers:', viewerUrl);
+            });
+        }
+        
+        // Show notification
+        function showNotification(message) {
+            notification.textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Add a viewer to the list
+        function addViewer(viewerId, name) {
+            viewerCounter++;
+            viewerCount.textContent = `${viewerCounter} Viewer${viewerCounter !== 1 ? 's' : ''}`;
+            
+            // Generate a random color for the avatar
+            const colors = ['#4cb5f5', '#2ecc71', '#e74c3c', '#9b59b6', '#f39c12'];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            
+            // Create viewer card
+            const viewerCard = document.createElement('div');
+            viewerCard.className = 'viewer-card';
+            viewerCard.innerHTML = `
+                <div class="viewer-avatar" style="background-color: ${color}">${name.charAt(0).toUpperCase()}</div>
+                <div class="viewer-info">
+                    <h3>${name}</h3>
+                    <p>Joined ${new Date().toLocaleTimeString()}</p>
+                </div>
+            `;
+            
+            // Replace the placeholder if it's the first viewer
+            if (viewerCounter === 1) {
+                viewersList.innerHTML = '';
+            }
+            
+            viewersList.appendChild(viewerCard);
+            viewerData[viewerId] = { name, element: viewerCard };
+        }
+        
+        // Remove a viewer from the list
+        function removeViewer(viewerId) {
+            if (viewerData[viewerId]) {
+                viewerData[viewerId].element.remove();
+                delete viewerData[viewerId];
+                
+                viewerCounter--;
+                viewerCount.textContent = `${viewerCounter} Viewer${viewerCounter !== 1 ? 's' : ''}`;
+                
+                // Show placeholder if no viewers
+                if (viewerCounter === 0) {
+                    viewersList.innerHTML = `
+                        <div class="viewer-card">
+                            <div class="viewer-avatar">A</div>
+                            <div class="viewer-info">
+                                <h3>No viewers yet</h3>
+                                <p>Viewers will appear here when they join</p>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+        }
+        
+        // Simulate a signaling server for demo purposes
+        function simulateSignalingServer() {
+            // In a real implementation, this would connect to a WebSocket server
+            // For this demo, we'll simulate viewers joining and leaving
+            
+            // Simulate first viewer joining after 3 seconds
+            setTimeout(() => {
+                if (isBroadcasting) {
+                    const viewerId = 'viewer_' + Math.random().toString(36).substr(2, 5);
+                    const names = ['Alex Johnson', 'Maria Garcia', 'James Smith', 'Sarah Williams', 'Robert Brown'];
+                    const name = names[Math.floor(Math.random() * names.length)];
+                    
+                    addViewer(viewerId, name);
+                    
+                    // Simulate viewer leaving after 20-60 seconds
+                    const leaveTime = 20000 + Math.random() * 40000;
+                    setTimeout(() => {
+                        if (isBroadcasting) {
+                            removeViewer(viewerId);
+                        }
+                    }, leaveTime);
+                }
+            }, 3000);
+            
+            // Simulate more viewers joining periodically
+            const interval = setInterval(() => {
+                if (!isBroadcasting) {
+                    clearInterval(interval);
+                    return;
+                }
+                
+                // 30% chance of a new viewer joining every 10 seconds
+                if (Math.random() < 0.3) {
+                    const viewerId = 'viewer_' + Math.random().toString(36).substr(2, 5);
+                    const names = ['Michael Davis', 'Emily Wilson', 'David Miller', 'Jennifer Taylor', 'Christopher Anderson'];
+                    const name = names[Math.floor(Math.random() * names.length)];
+                    
+                    addViewer(viewerId, name);
+                    
+                    // Simulate viewer leaving after 20-60 seconds
+                    const leaveTime = 20000 + Math.random() * 40000;
+                    setTimeout(() => {
+                        if (isBroadcasting) {
+                            removeViewer(viewerId);
+                        }
+                    }, leaveTime);
+                }
+            }, 10000);
+        }
+        
+        // Check if we're in viewer mode
+        const urlParams = new URLSearchParams(window.location.search);
+        const isViewer = urlParams.get('viewer') === 'true';
+        const roomParam = urlParams.get('room');
+        
+        if (isViewer && roomParam) {
+            // This is a viewer page
+            document.querySelector('header .logo h1').innerHTML = 'SAPSAP - <span>VIEWING LIVE</span>';
+            document.querySelector('.card h2').textContent = 'Live Stream';
+            
+            // Hide broadcaster controls
+            document.querySelector('.controls').style.display = 'none';
+            
+            // Show a connecting message
+            viewersList.innerHTML = `
+                <div class="viewer-card" style="grid-column: 1 / -1; text-align: center;">
+                    <div class="viewer-info">
+                        <h3>Connecting to live stream...</h3>
+                        <p>Please wait while we connect you to the broadcast</p>
+                    </div>
+                </div>
+            `;
+            
+            // In a real implementation, this would connect to the signaling server
+            // and set up a WebRTC connection to receive the stream
+            setTimeout(() => {
+                viewersList.innerHTML = `
+                    <div class="viewer-card" style="grid-column: 1 / -1; text-align: center;">
+                        <div class="viewer-info">
+                            <h3>Connected to live stream</h3>
+                            <p>You are now watching the broadcast</p>
+                        </div>
+                    </div>
+                `;
+                
+                // In a real implementation, the remote video would show the stream
+                // For this demo, we'll show a placeholder
+                remoteVideo.classList.remove('hidden');
+                localVideo.classList.add('hidden');
+                
+                // Update status
+                statusText.textContent = 'Watching Live';
+                statusDot.classList.add('live');
+            }, 2000);
+        } else {
+            // This is the broadcaster page
+            init();
+        }
     </script>
 </body>
 </html>
