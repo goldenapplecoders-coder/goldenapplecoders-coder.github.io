@@ -130,3 +130,40 @@ a {
 .file-actions button:hover {
   background-color: #64748b;
 }
+/* Account List Styling */
+.account-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.account-item {
+  display: flex;
+  align-items: center;
+  background-color: #1e293b;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 0 5px rgba(56, 189, 248, 0.1);
+}
+
+.avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 1rem;
+  border: 2px solid #38bdf8;
+}
+
+.account-info {
+  flex: 1;
+}
+
+.account-actions {
+  margin-top: 0.5rem;
+}
+
+.account-actions.btn {
+  margin-right: 0.5rem;
+}
