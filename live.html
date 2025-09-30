@@ -371,6 +371,41 @@
             background-color: #2ecc71;
         }
         
+        .setup-section {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .setup-section h3 {
+            margin-bottom: 15px;
+            color: var(--secondary-color);
+        }
+        
+        .setup-controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .setup-controls select, .setup-controls input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            min-width: 200px;
+        }
+        
+        .setup-controls button {
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
         @media (max-width: 768px) {
             .logo h1 {
                 font-size: 1.8rem;
@@ -393,6 +428,14 @@
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 10px;
+            }
+            
+            .setup-controls {
+                flex-direction: column;
+            }
+            
+            .setup-controls select, .setup-controls input {
+                min-width: 100%;
             }
         }
     </style>
@@ -422,6 +465,20 @@
                 </div>
                 
                 <div class="broadcast-section">
+                    <div class="setup-section">
+                        <h3>Stream Setup</h3>
+                        <div class="setup-controls">
+                            <select id="videoSource">
+                                <option value="">Select Camera</option>
+                            </select>
+                            <select id="audioSource">
+                                <option value="">Select Microphone</option>
+                            </select>
+                            <input type="text" id="streamTitle" placeholder="Stream Title" value="Algebra Basics: Solving Equations">
+                            <button id="applySettings">Apply Settings</button>
+                        </div>
+                    </div>
+                    
                     <div class="video-container">
                         <video id="localVideo" autoplay muted playsinline></video>
                         <video id="remoteVideo" autoplay playsinline class="hidden"></video>
@@ -454,13 +511,13 @@
             </div>
             
             <div class="card">
-                <h2><i class="fas fa-users"></i> Current Viewers</h2>
+                <h2><i class="fas fa-users"></i> Current Viewers <span id="realViewerCount">(0)</span></h2>
                 <div id="viewersList" class="viewers-section">
                     <div class="viewer-card">
                         <div class="viewer-avatar">A</div>
                         <div class="viewer-info">
                             <h3>No viewers yet</h3>
-                            <p>Viewers will appear here when they join</p>
+                            <p>Real viewers will appear here when they join</p>
                         </div>
                     </div>
                 </div>
@@ -501,6 +558,7 @@
         const statusText = document.getElementById('statusText');
         const statusDot = document.getElementById('statusDot');
         const viewerCount = document.getElementById('viewerCount');
+        const realViewerCount = document.getElementById('realViewerCount');
         const viewersList = document.getElementById('viewersList');
         const notification = document.getElementById('notification');
         const chatMessages = document.getElementById('chatMessages');
@@ -510,17 +568,21 @@
         const classTitle = document.getElementById('classTitle');
         const connectionStatus = document.getElementById('connectionStatus');
         const connectionDot = document.getElementById('connectionDot');
+        const videoSource = document.getElementById('videoSource');
+        const audioSource = document.getElementById('audioSource');
+        const streamTitle = document.getElementById('streamTitle');
+        const applySettingsBtn = document.getElementById('applySettings');
         
         // Application state
         let localStream = null;
-        let peerConnection = null;
-        let dataChannel = null;
-        let socket = null;
+        let peerConnections = {};
+        let dataChannels = {};
         let isBroadcasting = false;
         let viewerCounter = 0;
         let viewerData = {};
         let roomId = null;
         let userName = "Instructor";
+        let ws = null;
         
         // WebRTC configuration (using free STUN servers)
         const configuration = {
@@ -540,6 +602,7 @@
             messageInput.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') sendMessage();
             });
+            applySettingsBtn.addEventListener('click', applySettings);
             
             // Generate a unique room ID
             roomId = generateRoomId();
@@ -547,8 +610,71 @@
             // Initialize lesson content
             initializeLessonContent();
             
+            // Get available media devices
+            getMediaDevices();
+            
             // Connect to signaling server
             connectToSignalingServer();
+        }
+        
+        // Get available media devices
+        async function getMediaDevices() {
+            try {
+                const devices = await navigator.mediaDevices.enumerateDevices();
+                videoSource.innerHTML = '<option value="">Select Camera</option>';
+                audioSource.innerHTML = '<option value="">Select Microphone</option>';
+                
+                devices.forEach(device => {
+                    const option = document.createElement('option');
+                    option.value = device.deviceId;
+                    option.text = device.label || `Unknown ${device.kind}`;
+                    
+                    if (device.kind === 'videoinput') {
+                        videoSource.appendChild(option);
+                    } else if (device.kind === 'audioinput') {
+                        audioSource.appendChild(option);
+                    }
+                });
+            } catch (error) {
+                console.error('Error getting media devices:', error);
+            }
+        }
+        
+        // Apply media settings
+        async function applySettings() {
+            if (isBroadcasting) {
+                alert('Please stop the broadcast before changing settings');
+                return;
+            }
+            
+            const videoDeviceId = videoSource.value;
+            const audioDeviceId = audioSource.value;
+            const title = streamTitle.value;
+            
+            if (title) {
+                lessonTitle.textContent = title;
+                classTitle.textContent = `Mathematics - ${title.split(':')[0]}`;
+            }
+            
+            // If we have a local stream, stop it
+            if (localStream) {
+                localStream.getTracks().forEach(track => track.stop());
+            }
+            
+            // Get new stream with selected devices
+            const constraints = {
+                video: videoDeviceId ? { deviceId: { exact: videoDeviceId } } : true,
+                audio: audioDeviceId ? { deviceId: { exact: audioDeviceId } } : true
+            };
+            
+            try {
+                localStream = await navigator.mediaDevices.getUserMedia(constraints);
+                localVideo.srcObject = localStream;
+                showNotification('Media settings applied successfully');
+            } catch (error) {
+                console.error('Error applying media settings:', error);
+                alert('Failed to apply media settings. Please check your device permissions.');
+            }
         }
         
         // Generate a random room ID
@@ -569,14 +695,16 @@
             const randomLesson = lessons[Math.floor(Math.random() * lessons.length)];
             lessonTitle.textContent = randomLesson;
             classTitle.textContent = `Mathematics - ${randomLesson.split(':')[0]}`;
+            streamTitle.value = randomLesson;
         }
         
         // Connect to signaling server (WebSocket)
         function connectToSignalingServer() {
+            updateConnectionStatus('Connecting to server...', false);
+            
             // For this demo, we'll use a mock WebSocket connection
             // In a real implementation, you would connect to an actual WebSocket server
-            
-            updateConnectionStatus('Connecting to server...', false);
+            // ws = new WebSocket('wss://yourserver.com/ws');
             
             // Simulate connection delay
             setTimeout(() => {
@@ -584,13 +712,6 @@
                 
                 // In a real implementation, you would set up WebSocket event handlers here
                 // For this demo, we'll simulate the connection
-                
-                // Simulate receiving messages from server
-                setInterval(() => {
-                    if (isBroadcasting && Math.random() < 0.1) {
-                        simulateViewerJoin();
-                    }
-                }, 10000);
                 
             }, 1500);
         }
@@ -605,57 +726,22 @@
         async function startBroadcast() {
             try {
                 // Get user media (camera and microphone)
-                localStream = await navigator.mediaDevices.getUserMedia({
-                    video: true,
-                    audio: true
-                });
+                if (!localStream) {
+                    localStream = await navigator.mediaDevices.getUserMedia({
+                        video: true,
+                        audio: true
+                    });
+                }
                 
                 // Display the local video stream
                 localVideo.srcObject = localStream;
                 
-                // Create peer connection
-                peerConnection = new RTCPeerConnection(configuration);
+                // In a real implementation, you would:
+                // 1. Send a message to the signaling server to create a room
+                // 2. Set up WebRTC peer connections for each viewer
+                // 3. Handle incoming viewer connections
                 
-                // Add local stream to peer connection
-                localStream.getTracks().forEach(track => {
-                    peerConnection.addTrack(track, localStream);
-                });
-                
-                // Create data channel for chat
-                dataChannel = peerConnection.createDataChannel('chat');
-                dataChannel.onopen = () => {
-                    console.log('Data channel opened');
-                };
-                
-                dataChannel.onmessage = (event) => {
-                    const message = JSON.parse(event.data);
-                    if (message.type === 'chat') {
-                        addChatMessage('viewer', message.text, message.sender);
-                    } else if (message.type === 'viewer_joined') {
-                        addViewer(message.viewerId, message.name);
-                    }
-                };
-                
-                // Set up ICE candidate handler
-                peerConnection.onicecandidate = (event) => {
-                    if (event.candidate) {
-                        // In a real implementation, send candidate to signaling server
-                        console.log('New ICE candidate:', event.candidate);
-                    }
-                };
-                
-                // Set up remote stream handler
-                peerConnection.ontrack = (event) => {
-                    // This would handle incoming streams from viewers (for interactive features)
-                    console.log('Received remote track:', event.track);
-                };
-                
-                // Create offer
-                const offer = await peerConnection.createOffer();
-                await peerConnection.setLocalDescription(offer);
-                
-                // In a real implementation, send offer to signaling server
-                console.log('Created offer:', offer);
+                // For this demo, we'll simulate the WebRTC setup
                 
                 // Update UI
                 startBroadcastBtn.disabled = true;
@@ -680,13 +766,16 @@
             // Stop all tracks in the local stream
             if (localStream) {
                 localStream.getTracks().forEach(track => track.stop());
+                localStream = null;
             }
             
-            // Close peer connection
-            if (peerConnection) {
-                peerConnection.close();
-                peerConnection = null;
-            }
+            // Close all peer connections
+            Object.values(peerConnections).forEach(pc => pc.close());
+            peerConnections = {};
+            
+            // Close all data channels
+            Object.values(dataChannels).forEach(dc => dc.close());
+            dataChannels = {};
             
             // Reset UI
             startBroadcastBtn.disabled = false;
@@ -696,6 +785,7 @@
             isBroadcasting = false;
             viewerCounter = 0;
             viewerCount.textContent = '0 Viewers';
+            realViewerCount.textContent = '(0)';
             
             // Clear viewers list
             viewersList.innerHTML = `
@@ -703,7 +793,7 @@
                     <div class="viewer-avatar">A</div>
                     <div class="viewer-info">
                         <h3>No viewers yet</h3>
-                        <p>Viewers will appear here when they join</p>
+                        <p>Real viewers will appear here when they join</p>
                     </div>
                 </div>
             `;
@@ -741,6 +831,7 @@
         function addViewer(viewerId, name) {
             viewerCounter++;
             viewerCount.textContent = `${viewerCounter} Viewer${viewerCounter !== 1 ? 's' : ''}`;
+            realViewerCount.textContent = `(${viewerCounter})`;
             
             // Generate a random color for the avatar
             const colors = ['#4cb5f5', '#2ecc71', '#e74c3c', '#9b59b6', '#f39c12'];
@@ -778,6 +869,7 @@
                 
                 viewerCounter--;
                 viewerCount.textContent = `${viewerCounter} Viewer${viewerCounter !== 1 ? 's' : ''}`;
+                realViewerCount.textContent = `(${viewerCounter})`;
                 
                 // Show placeholder if no viewers
                 if (viewerCounter === 0) {
@@ -786,7 +878,7 @@
                             <div class="viewer-avatar">A</div>
                             <div class="viewer-info">
                                 <h3>No viewers yet</h3>
-                                <p>Viewers will appear here when they join</p>
+                                <p>Real viewers will appear here when they join</p>
                             </div>
                         </div>
                     `;
@@ -812,13 +904,17 @@
             chatMessages.scrollTop = chatMessages.scrollHeight;
             
             // Send message to viewers via data channel
-            if (type === 'broadcaster' && dataChannel && dataChannel.readyState === 'open') {
-                const message = {
-                    type: 'chat',
-                    text: content,
-                    sender: userName
-                };
-                dataChannel.send(JSON.stringify(message));
+            if (type === 'broadcaster') {
+                // In a real implementation, send to all connected viewers
+                Object.values(dataChannels).forEach(dc => {
+                    if (dc.readyState === 'open') {
+                        dc.send(JSON.stringify({
+                            type: 'chat',
+                            text: content,
+                            sender: userName
+                        }));
+                    }
+                });
             }
         }
         
@@ -829,41 +925,6 @@
             
             addChatMessage('broadcaster', message, userName);
             messageInput.value = '';
-        }
-        
-        // Simulate a viewer joining (for demo purposes)
-        function simulateViewerJoin() {
-            if (!isBroadcasting) return;
-            
-            const viewerId = 'viewer_' + Math.random().toString(36).substr(2, 5);
-            const names = ['Alex Johnson', 'Maria Garcia', 'James Smith', 'Sarah Williams', 'Robert Brown'];
-            const name = names[Math.floor(Math.random() * names.length)];
-            
-            addViewer(viewerId, name);
-            
-            // Simulate viewer leaving after 20-60 seconds
-            const leaveTime = 20000 + Math.random() * 40000;
-            setTimeout(() => {
-                if (isBroadcasting) {
-                    removeViewer(viewerId);
-                }
-            }, leaveTime);
-            
-            // Simulate viewer sending a message
-            setTimeout(() => {
-                if (isBroadcasting && Math.random() < 0.7) {
-                    const messages = [
-                        "Hello everyone!",
-                        "Great lesson so far!",
-                        "Could you explain that again?",
-                        "Thank you for the clear explanation",
-                        "I have a question about the last topic"
-                    ];
-                    
-                    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-                    addChatMessage('viewer', randomMessage, name);
-                }
-            }, 5000 + Math.random() * 10000);
         }
         
         // Check if we're in viewer mode
@@ -884,8 +945,9 @@
             document.querySelector('header .logo h1').innerHTML = 'SAPSAP - <span>VIEWING LIVE</span>';
             document.querySelector('.card h2').textContent = 'Live Stream';
             
-            // Hide broadcaster controls
+            // Hide broadcaster controls and setup
             document.querySelector('.controls').style.display = 'none';
+            document.querySelector('.setup-section').style.display = 'none';
             document.querySelector('.chat-input').style.display = 'none';
             
             // Update class info for viewer
@@ -968,32 +1030,7 @@
                 // Add welcome message to chat
                 addChatMessage('system', 'You have joined the live class. Please be respectful in the chat.');
                 
-                // Set up a simulated data channel for chat
-                setupViewerDataChannel();
-                
             }, 2000);
-        }
-        
-        // Set up a simulated data channel for viewer chat
-        function setupViewerDataChannel() {
-            // In a real implementation, this would be a real WebRTC data channel
-            // For this demo, we'll simulate receiving messages
-            
-            // Simulate receiving chat messages
-            setInterval(() => {
-                if (Math.random() < 0.2) {
-                    const messages = [
-                        "Welcome to the class!",
-                        "Don't forget to submit your assignments",
-                        "Any questions so far?",
-                        "Let's move on to the next topic",
-                        "Great participation today!"
-                    ];
-                    
-                    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-                    addChatMessage('broadcaster', randomMessage, 'Instructor');
-                }
-            }, 15000);
         }
     </script>
 </body>
