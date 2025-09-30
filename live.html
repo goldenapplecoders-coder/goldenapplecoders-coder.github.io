@@ -3,193 +3,183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Contact Video Chat</title>
+    <title>Sapsap - Live Group Video Chat</title>
     <style>
-        /* Basic CSS Reset */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
+        
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
             color: #333;
             min-height: 100vh;
             padding: 20px;
         }
-
+        
         .container {
             max-width: 1200px;
             margin: 0 auto;
         }
-
+        
         header {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             color: white;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
         }
-
-        h1 {
+        
+        header h1 {
             font-size: 2.5rem;
             margin-bottom: 10px;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
         }
-
-        .subtitle {
-            font-size: 1.1rem;
+        
+        header p {
+            font-size: 1.2rem;
             opacity: 0.9;
         }
-
-        /* Groups Grid Layout */
-        .groups-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        
+        .app-container {
+            display: flex;
             gap: 20px;
-            margin-bottom: 40px;
+            flex-wrap: wrap;
         }
-
-        .group-card {
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .group-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-        }
-
-        .group-thumbnail {
-            width: 100%;
-            height: 180px;
-            background-color: #eee;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .group-thumbnail::after {
-            content: "LIVE";
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: #ff4757;
-            color: white;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
-
-        .participants-preview {
-            display: flex;
-            height: 100%;
-        }
-
-        .participant-preview {
+        
+        .groups-section {
             flex: 1;
-            border-right: 1px solid white;
-            background: linear-gradient(45deg, #a4b0be, #747d8c);
+            min-width: 300px;
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .video-section {
+            flex: 2;
+            min-width: 500px;
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
+            flex-direction: column;
         }
-
-        .participant-preview:last-child {
-            border-right: none;
+        
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #6e8efb;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
         }
-
-        .group-info {
+        
+        .groups-list {
+            display: grid;
+            gap: 15px;
+        }
+        
+        .group-item {
+            background: #f8f9fa;
+            border-radius: 10px;
             padding: 15px;
-        }
-
-        .group-title {
-            font-size: 1.2rem;
-            margin-bottom: 8px;
-            color: #2f3542;
-        }
-
-        .group-meta {
             display: flex;
             justify-content: space-between;
-            color: #747d8c;
-            font-size: 0.9rem;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
         }
-
-        .participant-count {
+        
+        .group-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-color: #6e8efb;
+        }
+        
+        .group-item.active {
+            border-color: #6e8efb;
+            background: #eef2ff;
+        }
+        
+        .group-info {
             display: flex;
             align-items: center;
-        }
-
-        .participant-count::before {
-            content: "•";
-            color: #2ed573;
-            margin-right: 5px;
-            font-size: 1.2rem;
-        }
-
-        /* Call Screen (Initially Hidden) */
-        #callScreen {
-            display: none;
-            background: #1e1e1e;
-            border-radius: 10px;
-            overflow: hidden;
-            height: 70vh;
-            position: relative;
-            margin-bottom: 20px;
-        }
-
-        #videoContainer {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
             gap: 10px;
-            height: 100%;
-            padding: 10px;
         }
-
-        .participant-video {
-            background: #2f3542;
-            border-radius: 5px;
+        
+        .group-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #6e8efb;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            position: relative;
+            font-weight: bold;
         }
-
-        .participant-video video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 5px;
+        
+        .group-name {
+            font-weight: 600;
         }
-
-        .participant-name {
-            position: absolute;
-            bottom: 8px;
-            left: 8px;
-            background: rgba(0, 0, 0, 0.6);
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 0.8rem;
+        
+        .group-count {
+            background: #e9ecef;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.9rem;
         }
-
-        /* Call Controls */
-        #callControls {
-            display: flex;
-            justify-content: center;
+        
+        .group-count.full {
+            background: #ff6b6b;
+            color: white;
+        }
+        
+        .video-container {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 15px;
             margin-bottom: 20px;
         }
-
+        
+        .video-wrapper {
+            position: relative;
+            background: #000;
+            border-radius: 10px;
+            overflow: hidden;
+            aspect-ratio: 4/3;
+        }
+        
+        .video-wrapper video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .video-label {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
         .control-btn {
-            background: white;
+            background: #6e8efb;
+            color: white;
             border: none;
             border-radius: 50%;
             width: 50px;
@@ -198,41 +188,46 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
-
+        
         .control-btn:hover {
             transform: scale(1.1);
+            background: #5a7dfa;
         }
-
-        .control-btn.end-call {
-            background: #ff4757;
-            color: white;
+        
+        .control-btn.muted {
+            background: #ff6b6b;
         }
-
-        /* Responsive Design */
+        
+        .control-btn.leave {
+            background: #ff6b6b;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #6c757d;
+        }
+        
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+        
+        .empty-state p {
+            font-size: 1.1rem;
+        }
+        
         @media (max-width: 768px) {
-            .groups-container {
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            .app-container {
+                flex-direction: column;
             }
             
-            #videoContainer {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 480px) {
-            .groups-container {
-                grid-template-columns: 1fr;
-            }
-            
-            #videoContainer {
-                grid-template-columns: 1fr;
-            }
-            
-            h1 {
-                font-size: 2rem;
+            .video-section, .groups-section {
+                min-width: 100%;
             }
         }
     </style>
@@ -240,165 +235,423 @@
 <body>
     <div class="container">
         <header>
-            <h1>Live Contact</h1>
-            <p class="subtitle">Join a live video conversation with people around the world</p>
+            <h1>Sapsap</h1>
+            <p>Connect instantly with small groups for live video chats</p>
         </header>
-
-        <main>
-            <!-- Groups Selection Screen -->
-            <section id="groupsScreen">
-                <div class="groups-container" id="groupsContainer">
-                    <!-- Group cards will be dynamically generated here -->
+        
+        <div class="app-container">
+            <section class="groups-section">
+                <h2 class="section-title">Available Groups</h2>
+                <div class="groups-list" id="groupsList">
+                    <!-- Groups will be populated by JavaScript -->
                 </div>
             </section>
-
-            <!-- Active Call Screen -->
-            <section id="callScreen">
-                <div id="videoContainer">
-                    <!-- Video elements will be dynamically inserted here -->
+            
+            <section class="video-section">
+                <h2 class="section-title">Video Call</h2>
+                <div class="video-container" id="videoContainer">
+                    <div class="empty-state" id="emptyState">
+                        <i>📹</i>
+                        <p>Select a group to start a video chat</p>
+                    </div>
+                </div>
+                
+                <div class="controls" id="controls" style="display: none;">
+                    <button class="control-btn" id="muteAudio">
+                        <i>🎤</i>
+                    </button>
+                    <button class="control-btn" id="muteVideo">
+                        <i>📹</i>
+                    </button>
+                    <button class="control-btn leave" id="leaveCall">
+                        <i>📞</i>
+                    </button>
                 </div>
             </section>
-
-            <!-- Call Controls -->
-            <div id="callControls" style="display: none;">
-                <button class="control-btn" id="toggleVideo">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
-                    </svg>
-                </button>
-                <button class="control-btn" id="toggleAudio">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/>
-                    </svg>
-                </button>
-                <button class="control-btn end-call" id="leaveCall">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M10.68 13.31a16 16 0 0 0 3.41 2.6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7 2 2 0 0 1 1.72 2v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91"/>
-                        <line x1="23" y1="1" x2="1" y2="23"/>
-                    </svg>
-                </button>
-            </div>
-        </main>
+        </div>
     </div>
 
     <script>
-        // Sample data for available groups
-        const availableGroups = [
-            { id: 'group1', title: 'Casual Chat', participants: 4, maxParticipants: 6 },
-            { id: 'group2', title: 'Tech Enthusiasts', participants: 2, maxParticipants: 6 },
-            { id: 'group3', title: 'Language Practice', participants: 5, maxParticipants: 6 },
-            { id: 'group4', title: 'Book Club', participants: 3, maxParticipants: 6 },
-            { id: 'group5', title: 'Music Lovers', participants: 1, maxParticipants: 6 },
-            { id: 'group6', title: 'Travel Stories', participants: 6, maxParticipants: 6 }
-        ];
-
-        // DOM Elements
-        const groupsContainer = document.getElementById('groupsContainer');
-        const groupsScreen = document.getElementById('groupsScreen');
-        const callScreen = document.getElementById('callScreen');
-        const callControls = document.getElementById('callControls');
+        // Configuration
+        const MAX_GROUP_SIZE = 3;
+        const SERVER_URL = 'wss://sapsap-signaling-server.glitch.me'; // Using a free WebSocket server
+        
+        // Application state
+        let currentGroup = null;
+        let localStream = null;
+        let peers = {};
+        let socket = null;
+        let isAudioMuted = false;
+        let isVideoMuted = false;
+        
+        // DOM elements
+        const groupsList = document.getElementById('groupsList');
         const videoContainer = document.getElementById('videoContainer');
+        const emptyState = document.getElementById('emptyState');
+        const controls = document.getElementById('controls');
+        const muteAudioBtn = document.getElementById('muteAudio');
+        const muteVideoBtn = document.getElementById('muteVideo');
         const leaveCallBtn = document.getElementById('leaveCall');
-        const toggleVideoBtn = document.getElementById('toggleVideo');
-        const toggleAudioBtn = document.getElementById('toggleAudio');
-
-        // Generate group cards
-        function renderGroups() {
-            groupsContainer.innerHTML = '';
+        
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', init);
+        
+        async function init() {
+            // Connect to signaling server
+            connectToSignalingServer();
             
-            availableGroups.forEach(group => {
-                const groupCard = document.createElement('div');
-                groupCard.className = 'group-card';
-                groupCard.innerHTML = `
-                    <div class="group-thumbnail">
-                        <div class="participants-preview">
-                            ${Array.from({length: Math.min(group.participants, 4)}, (_, i) => 
-                                `<div class="participant-preview">${i < 3 ? 'User' : '+' + (group.participants - 3)}</div>`
-                            ).join('')}
-                        </div>
-                    </div>
-                    <div class="group-info">
-                        <h3 class="group-title">${group.title}</h3>
-                        <div class="group-meta">
-                            <span class="participant-count">${group.participants}/6 people</span>
-                            <span class="join-text">Tap to join</span>
-                        </div>
-                    </div>
-                `;
-                
-                // Only make the group clickable if it's not full
-                if (group.participants < group.maxParticipants) {
-                    groupCard.addEventListener('click', () => joinGroup(group.id));
-                } else {
-                    groupCard.style.opacity = '0.6';
-                    groupCard.style.cursor = 'not-allowed';
-                }
-                
-                groupsContainer.appendChild(groupCard);
-            });
+            // Set up event listeners for controls
+            muteAudioBtn.addEventListener('click', toggleAudio);
+            muteVideoBtn.addEventListener('click', toggleVideo);
+            leaveCallBtn.addEventListener('click', leaveCall);
+            
+            // Load initial groups
+            loadGroups();
         }
-
-        // Simulate joining a group
-        function joinGroup(groupId) {
-            // In a real app, you would connect to your video API here
-            console.log(`Joining group: ${groupId}`);
+        
+        function connectToSignalingServer() {
+            socket = new WebSocket(SERVER_URL);
             
-            // Update UI to show call screen
-            groupsScreen.style.display = 'none';
-            callScreen.style.display = 'block';
-            callControls.style.display = 'flex';
+            socket.onopen = () => {
+                console.log('Connected to signaling server');
+            };
             
-            // Simulate adding participant videos
-            simulateCall();
+            socket.onmessage = (event) => {
+                const message = JSON.parse(event.data);
+                handleSignalingMessage(message);
+            };
+            
+            socket.onclose = () => {
+                console.log('Disconnected from signaling server');
+                // Try to reconnect after 3 seconds
+                setTimeout(connectToSignalingServer, 3000);
+            };
         }
-
-        // Simulate a call in progress (in a real app, this would use a video API)
-        function simulateCall() {
-            videoContainer.innerHTML = '';
-            
-            // Add local participant
-            const localParticipant = document.createElement('div');
-            localParticipant.className = 'participant-video';
-            localParticipant.innerHTML = `
-                <div style="color: white;">You (Local)</div>
-                <div class="participant-name">You</div>
-            `;
-            videoContainer.appendChild(localParticipant);
-            
-            // Add remote participants (simulated)
-            for (let i = 0; i < 3; i++) {
-                const remoteParticipant = document.createElement('div');
-                remoteParticipant.className = 'participant-video';
-                remoteParticipant.innerHTML = `
-                    <div style="color: white;">Remote User ${i+1}</div>
-                    <div class="participant-name">User ${i+1}</div>
-                `;
-                videoContainer.appendChild(remoteParticipant);
+        
+        function handleSignalingMessage(message) {
+            switch (message.type) {
+                case 'group-list':
+                    updateGroupsList(message.groups);
+                    break;
+                case 'user-joined':
+                    handleUserJoined(message.userId, message.groupId);
+                    break;
+                case 'user-left':
+                    handleUserLeft(message.userId, message.groupId);
+                    break;
+                case 'offer':
+                    handleOffer(message.offer, message.from);
+                    break;
+                case 'answer':
+                    handleAnswer(message.answer, message.from);
+                    break;
+                case 'ice-candidate':
+                    handleIceCandidate(message.candidate, message.from);
+                    break;
             }
         }
-
-        // Leave the call and return to groups screen
-        function leaveCall() {
-            callScreen.style.display = 'none';
-            callControls.style.display = 'none';
-            groupsScreen.style.display = 'block';
+        
+        function loadGroups() {
+            // Request group list from server
+            if (socket && socket.readyState === WebSocket.OPEN) {
+                socket.send(JSON.stringify({ type: 'get-groups' }));
+            }
         }
-
-        // Event Listeners
-        leaveCallBtn.addEventListener('click', leaveCall);
-
-        // Toggle video (placeholder functionality)
-        toggleVideoBtn.addEventListener('click', () => {
-            alert('In a real implementation, this would toggle your video stream.');
-        });
-
-        // Toggle audio (placeholder functionality)
-        toggleAudioBtn.addEventListener('click', () => {
-            alert('In a real implementation, this would toggle your audio stream.');
-        });
-
-        // Initialize the app
-        renderGroups();
+        
+        function updateGroupsList(groups) {
+            groupsList.innerHTML = '';
+            
+            groups.forEach(group => {
+                const groupItem = document.createElement('div');
+                groupItem.className = 'group-item';
+                if (currentGroup && currentGroup.id === group.id) {
+                    groupItem.classList.add('active');
+                }
+                
+                const isFull = group.participants.length >= MAX_GROUP_SIZE;
+                
+                groupItem.innerHTML = `
+                    <div class="group-info">
+                        <div class="group-avatar">${group.name.charAt(0)}</div>
+                        <div class="group-name">${group.name}</div>
+                    </div>
+                    <div class="group-count ${isFull ? 'full' : ''}">
+                        ${group.participants.length}/${MAX_GROUP_SIZE}
+                    </div>
+                `;
+                
+                if (!isFull) {
+                    groupItem.addEventListener('click', () => joinGroup(group.id));
+                }
+                
+                groupsList.appendChild(groupItem);
+            });
+        }
+        
+        async function joinGroup(groupId) {
+            if (currentGroup) {
+                await leaveCall();
+            }
+            
+            // Request to join the group
+            if (socket && socket.readyState === WebSocket.OPEN) {
+                socket.send(JSON.stringify({ 
+                    type: 'join-group', 
+                    groupId: groupId 
+                }));
+                
+                currentGroup = { id: groupId };
+                
+                // Get user media
+                try {
+                    localStream = await navigator.mediaDevices.getUserMedia({
+                        video: true,
+                        audio: true
+                    });
+                    
+                    // Show local video
+                    showLocalVideo();
+                    
+                    // Show controls
+                    controls.style.display = 'flex';
+                    emptyState.style.display = 'none';
+                    
+                    // Update groups list
+                    loadGroups();
+                } catch (error) {
+                    console.error('Error accessing media devices:', error);
+                    alert('Could not access your camera and microphone. Please check permissions.');
+                }
+            }
+        }
+        
+        function showLocalVideo() {
+            // Remove empty state
+            emptyState.style.display = 'none';
+            
+            // Create local video element
+            const localVideoWrapper = document.createElement('div');
+            localVideoWrapper.className = 'video-wrapper';
+            localVideoWrapper.id = 'localVideoWrapper';
+            
+            const localVideo = document.createElement('video');
+            localVideo.srcObject = localStream;
+            localVideo.autoplay = true;
+            localVideo.muted = true; // Mute local video to avoid echo
+            
+            const localLabel = document.createElement('div');
+            localLabel.className = 'video-label';
+            localLabel.textContent = 'You';
+            
+            localVideoWrapper.appendChild(localVideo);
+            localVideoWrapper.appendChild(localLabel);
+            
+            videoContainer.appendChild(localVideoWrapper);
+        }
+        
+        function handleUserJoined(userId, groupId) {
+            if (currentGroup && currentGroup.id === groupId) {
+                // Create a new peer connection for the joining user
+                createPeerConnection(userId);
+                
+                // Send them an offer
+                sendOffer(userId);
+            }
+        }
+        
+        function handleUserLeft(userId, groupId) {
+            if (currentGroup && currentGroup.id === groupId) {
+                // Remove the peer connection
+                if (peers[userId]) {
+                    peers[userId].close();
+                    delete peers[userId];
+                }
+                
+                // Remove their video element
+                const remoteVideo = document.getElementById(`remoteVideo-${userId}`);
+                if (remoteVideo) {
+                    remoteVideo.remove();
+                }
+                
+                // Update groups list
+                loadGroups();
+            }
+        }
+        
+        function createPeerConnection(userId) {
+            const peerConnection = new RTCPeerConnection({
+                iceServers: [
+                    { urls: 'stun:stun.l.google.com:19302' }
+                ]
+            });
+            
+            // Add local stream to connection
+            localStream.getTracks().forEach(track => {
+                peerConnection.addTrack(track, localStream);
+            });
+            
+            // Handle incoming stream
+            peerConnection.ontrack = (event) => {
+                const remoteStream = event.streams[0];
+                showRemoteVideo(userId, remoteStream);
+            };
+            
+            // Handle ICE candidates
+            peerConnection.onicecandidate = (event) => {
+                if (event.candidate) {
+                    socket.send(JSON.stringify({
+                        type: 'ice-candidate',
+                        candidate: event.candidate,
+                        to: userId,
+                        groupId: currentGroup.id
+                    }));
+                }
+            };
+            
+            peers[userId] = peerConnection;
+            return peerConnection;
+        }
+        
+        function showRemoteVideo(userId, stream) {
+            // Create remote video element
+            const remoteVideoWrapper = document.createElement('div');
+            remoteVideoWrapper.className = 'video-wrapper';
+            remoteVideoWrapper.id = `remoteVideo-${userId}`;
+            
+            const remoteVideo = document.createElement('video');
+            remoteVideo.srcObject = stream;
+            remoteVideo.autoplay = true;
+            
+            const remoteLabel = document.createElement('div');
+            remoteLabel.className = 'video-label';
+            remoteLabel.textContent = `User ${userId.substring(0, 6)}`;
+            
+            remoteVideoWrapper.appendChild(remoteVideo);
+            remoteVideoWrapper.appendChild(remoteLabel);
+            
+            videoContainer.appendChild(remoteVideoWrapper);
+        }
+        
+        async function sendOffer(toUserId) {
+            const peerConnection = peers[toUserId];
+            
+            const offer = await peerConnection.createOffer();
+            await peerConnection.setLocalDescription(offer);
+            
+            socket.send(JSON.stringify({
+                type: 'offer',
+                offer: offer,
+                to: toUserId,
+                groupId: currentGroup.id
+            }));
+        }
+        
+        async function handleOffer(offer, fromUserId) {
+            if (!peers[fromUserId]) {
+                createPeerConnection(fromUserId);
+            }
+            
+            const peerConnection = peers[fromUserId];
+            await peerConnection.setRemoteDescription(offer);
+            
+            const answer = await peerConnection.createAnswer();
+            await peerConnection.setLocalDescription(answer);
+            
+            socket.send(JSON.stringify({
+                type: 'answer',
+                answer: answer,
+                to: fromUserId,
+                groupId: currentGroup.id
+            }));
+        }
+        
+        async function handleAnswer(answer, fromUserId) {
+            const peerConnection = peers[fromUserId];
+            await peerConnection.setRemoteDescription(answer);
+        }
+        
+        async function handleIceCandidate(candidate, fromUserId) {
+            const peerConnection = peers[fromUserId];
+            await peerConnection.addIceCandidate(candidate);
+        }
+        
+        function toggleAudio() {
+            if (localStream) {
+                const audioTracks = localStream.getAudioTracks();
+                audioTracks.forEach(track => {
+                    track.enabled = !track.enabled;
+                });
+                
+                isAudioMuted = !isAudioMuted;
+                muteAudioBtn.classList.toggle('muted', isAudioMuted);
+            }
+        }
+        
+        function toggleVideo() {
+            if (localStream) {
+                const videoTracks = localStream.getVideoTracks();
+                videoTracks.forEach(track => {
+                    track.enabled = !track.enabled;
+                });
+                
+                isVideoMuted = !isVideoMuted;
+                muteVideoBtn.classList.toggle('muted', isVideoMuted);
+            }
+        }
+        
+        async function leaveCall() {
+            // Notify server we're leaving
+            if (socket && socket.readyState === WebSocket.OPEN && currentGroup) {
+                socket.send(JSON.stringify({
+                    type: 'leave-group',
+                    groupId: currentGroup.id
+                }));
+            }
+            
+            // Close all peer connections
+            Object.values(peers).forEach(peer => {
+                peer.close();
+            });
+            peers = {};
+            
+            // Stop local stream
+            if (localStream) {
+                localStream.getTracks().forEach(track => {
+                    track.stop();
+                });
+                localStream = null;
+            }
+            
+            // Clear video container
+            videoContainer.innerHTML = '';
+            
+            // Show empty state
+            emptyState.style.display = 'block';
+            controls.style.display = 'none';
+            
+            // Reset current group
+            currentGroup = null;
+            
+            // Update groups list
+            loadGroups();
+            
+            // Reset mute states
+            isAudioMuted = false;
+            isVideoMuted = false;
+            muteAudioBtn.classList.remove('muted');
+            muteVideoBtn.classList.remove('muted');
+        }
+        
+        // Simulate initial groups (in a real app, this would come from the server)
+        setTimeout(() => {
+            const simulatedGroups = [
+                { id: 'group1', name: 'Casual Chat', participants: ['user1', 'user2'] },
+                { id: 'group2', name: 'Tech Talk', participants: ['user3'] },
+                { id: 'group3', name: 'Music Lovers', participants: [] },
+                { id: 'group4', name: 'Book Club', participants: ['user4', 'user5', 'user6'] }
+            ];
+            updateGroupsList(simulatedGroups);
+        }, 1000);
     </script>
 </body>
 </html>
