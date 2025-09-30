@@ -76,9 +76,9 @@ function displayFiles() {
       <div class="file-info">
         <strong>${file.name}</strong>
         <br><small>${formatFileSize(file.size)} • ${new Date(file.uploaded).toLocaleDateString()}</small>
-      </div>
+      </div><br>
       <div class="file-actions">
-        <button class="btn" onclick="downloadFile(${index})">Download</button>
+        <button class="btn" onclick="downloadFile(${index})">Restore</button>
         <button class="btn delete-btn" onclick="deleteFile(${index})">Delete</button>
       </div>
     </div>
