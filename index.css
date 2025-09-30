@@ -1,0 +1,31 @@
+    body { font-family: 'Rajdhani', sans-serif; background: #111; color: #eee; }
+    .header { padding: 1rem 2rem; background: #222; display: flex; align-items: center; justify-content: space-between; }
+    .logo { font-size: 1.5rem; color: #ffd700; display: flex; align-items: center; gap: 0.5rem; text-decoration: none; }
+    .nav-actions { display: flex; gap: 1rem; }
+    .menu-btn { background: #ffd700; color: #222; border: none; border-radius: 8px; padding: 0.5rem 1rem; font-weight: bold; cursor: pointer; transition: background 0.2s; }
+    .menu-btn:hover { background: #ffea70; }
+    .main-content { padding: 2rem; max-width: 900px; margin: auto; }
+    .card { background: #222; padding: 1.5rem; border-radius: 1rem; margin-bottom: 2rem; }
+    .stats-grid, .features-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(160px,1fr)); gap: 1rem; }
+    .stat-card, .feature-card { background: #333; padding: 1rem; border-radius: 0.75rem; text-align: center; transition: box-shadow 0.2s; }
+    .feature-card:hover { box-shadow: 0 0 10px #ffd70055; }
+    .feature-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+    .feature-link { color: inherit; text-decoration: none; display: block; }
+    /* Modal beautification */
+    .modal { display: none; position: fixed; z-index: 100; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.7); }
+    .modal-content {
+      background: linear-gradient(135deg, #222 80%, #ffd700 100%);
+      color: #fff; margin: 10vh auto; padding: 2.5rem 2rem; border-radius: 1.5rem; max-width: 420px; box-shadow: 0 0 40px #ffd70066;
+      display: flex; flex-direction: column; align-items: center; gap: 1.5rem;
+    }
+    .modal-content h2 { font-size: 1.7rem; color: #ffd700; margin-bottom: 1rem; }
+    .modal-list { list-style: none; padding: 0; margin: 0; width: 100%; }
+    .modal-list li { display: flex; align-items: center; gap: 1rem; padding: 0.6rem 0 0.6rem 0.2rem; border-bottom: 1px solid #ffd70033; }
+    .modal-list li:last-child { border-bottom: none; }
+    .modal-list i { font-size: 1.2rem; color: #ffd700; }
+    .close-btn {
+      background: #ffd700; color: #222; border: none; border-radius: 8px; padding: 0.5rem 1.5rem; font-weight: bold; margin-top: 1rem; cursor: pointer;
+      box-shadow: 0 2px 8px #ffd70033; transition: background 0.2s;
+    }
+    .close-btn:hover { background: #ffea70; }
+    .show { display: block; }
