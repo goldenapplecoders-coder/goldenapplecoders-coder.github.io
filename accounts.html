@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Goldrive Accounts</title>
+  <link rel="stylesheet" href="drive.css" />
+</head>
+<body>
+  <main class="container">
+    <header class="header">
+      <h1>Manage Accounts</h1>
+    </header>
+
+    <section class="account-manager">
+      <input type="text" id="newAccount" placeholder="Enter new username" />
+      <button class="btn" onclick="createAccount()">Create Account</button>
+
+      <h2>Available Accounts</h2>
+      <ul id="accountList" class="account-list"></ul>
+    </section>
+  </main>
+
+  <script>
+    function getAccounts() {
+      return JSON.parse(localStorage.getItem('goldriveAccounts') || '[]');
+    }
+
+    function saveAccounts(accounts) {
+      localStorage.setItem('goldriveAccounts', JSON.stringify(accounts));
+    }
+
+    function createAccount() {
+      const username = document.getElementById('newAccount').value.trim();
+      if (!username) return alert('Enter a valid username');
+      let accounts = getAccounts();
+      if (accounts.includes(username)) return alert('Account already exists');
+      accounts.push(username);
+      saveAccounts(accounts);
+      renderAccounts();
+      document.getElementById('newAccount').value = '';
+    }
+
+    function switchAccount(username) {
+      localStorage.setItem('goldriveCurrentUser', username);
+      window.location.href = 'index.html';
+    }
+
+    function deleteAccount(username) {
+      if (!confirm(`Delete account "${username}" and all its files?`)) return;
+      let accounts = getAccounts().filter(acc => acc !== username);
+      saveAccounts(accounts);
+      localStorage.removeItem(`goldriveFiles_${username}`);
+      if (localStorage.getItem('goldriveCurrentUser') === username) {
+        localStorage.removeItem('goldriveCurrentUser');
+      }
+      renderAccounts();
+    }
+
+    function renderAccounts() {
+      const accounts = getAccounts();
+      const list = document.getElementById('accountList');
+      list.innerHTML = accounts.map(username => `
+        <li>
+          <strong>${username}</strong>
+          <button class="btn" onclick="switchAccount('${username}')">Login</button>
+          <button class="btn delete-btn" onclick="deleteAccount('${username}')">Delete</button>
+        </li>
+      `).join('');
+    }
+
+    renderAccounts();
+  </script>
+</body>
+</html>
