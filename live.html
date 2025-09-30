@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sapsap - I Am Live Online School</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --primary-color: #4a6fa5;
@@ -14,6 +15,7 @@
             --dark-bg: #2c3e50;
             --success-color: #2ecc71;
             --warning-color: #e74c3c;
+            --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
         
         * {
@@ -57,6 +59,10 @@
             color: var(--accent-color);
         }
         
+        .logo i {
+            font-size: 2.5rem;
+        }
+        
         .main-content {
             display: flex;
             flex-direction: column;
@@ -67,7 +73,7 @@
         .card {
             background: white;
             border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--card-shadow);
             padding: 25px;
             transition: transform 0.3s ease;
         }
@@ -261,6 +267,110 @@
             transform: translateX(0);
         }
         
+        .class-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .class-title {
+            font-size: 1.5rem;
+            color: var(--secondary-color);
+        }
+        
+        .class-time {
+            font-size: 1rem;
+            color: #7f8c8d;
+        }
+        
+        .chat-section {
+            margin-top: 20px;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+        
+        .chat-messages {
+            height: 200px;
+            overflow-y: auto;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: #f9f9f9;
+        }
+        
+        .message {
+            margin-bottom: 10px;
+            padding: 8px 12px;
+            border-radius: 18px;
+            max-width: 80%;
+        }
+        
+        .message.system {
+            background-color: #e0e0e0;
+            color: #666;
+            margin: 0 auto;
+            text-align: center;
+            max-width: 100%;
+            font-style: italic;
+        }
+        
+        .message.viewer {
+            background-color: #e3f2fd;
+            align-self: flex-start;
+        }
+        
+        .message.broadcaster {
+            background-color: #e8f5e9;
+            align-self: flex-end;
+            margin-left: auto;
+        }
+        
+        .chat-input {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .chat-input input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 24px;
+            outline: none;
+        }
+        
+        .chat-input button {
+            padding: 12px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 24px;
+            cursor: pointer;
+        }
+        
+        .connection-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+        
+        .connection-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #e74c3c;
+        }
+        
+        .connection-dot.connected {
+            background-color: #2ecc71;
+        }
+        
         @media (max-width: 768px) {
             .logo h1 {
                 font-size: 1.8rem;
@@ -278,6 +388,12 @@
                 width: 100%;
                 justify-content: center;
             }
+            
+            .class-info {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
         }
     </style>
 </head>
@@ -285,6 +401,7 @@
     <header>
         <div class="container">
             <div class="logo">
+                <i class="fas fa-chalkboard-teacher"></i>
                 <h1>SAPSAP - <span>I AM LIVE</span></h1>
             </div>
         </div>
@@ -293,34 +410,75 @@
     <div class="container">
         <div class="main-content">
             <div class="card">
-                <h2>Live Broadcast</h2>
+                <div class="class-info">
+                    <div>
+                        <h2 class="class-title" id="classTitle">Mathematics - Algebra Basics</h2>
+                        <p class="class-time" id="classTime">Live Session • 45 minutes remaining</p>
+                    </div>
+                    <div class="status-indicator">
+                        <div class="status-dot" id="statusDot"></div>
+                        <span id="statusText">Offline</span>
+                    </div>
+                </div>
+                
                 <div class="broadcast-section">
                     <div class="video-container">
                         <video id="localVideo" autoplay muted playsinline></video>
                         <video id="remoteVideo" autoplay playsinline class="hidden"></video>
                         <div class="video-overlay">
-                            <div class="status-indicator">
-                                <div class="status-dot"></div>
-                                <span id="statusText">Offline</span>
-                            </div>
+                            <div id="lessonTitle">Algebra Basics: Solving Equations</div>
                             <div id="viewerCount">0 Viewers</div>
                         </div>
                     </div>
                     
                     <div class="controls">
                         <button id="startBroadcast" class="btn btn-primary">
+                            <i class="fas fa-broadcast-tower"></i>
                             <span>Start Broadcast</span>
                         </button>
                         <button id="stopBroadcast" class="btn btn-warning" disabled>
+                            <i class="fas fa-stop"></i>
                             <span>Stop Broadcast</span>
                         </button>
                         <button id="shareLink" class="btn btn-success">
+                            <i class="fas fa-share-alt"></i>
                             <span>Share Viewer Link</span>
                         </button>
                     </div>
+                    
+                    <div class="connection-status">
+                        <div class="connection-dot" id="connectionDot"></div>
+                        <span id="connectionStatus">Not connected to server</span>
+                    </div>
                 </div>
             </div>
-                   </div>
+            
+            <div class="card">
+                <h2><i class="fas fa-users"></i> Current Viewers</h2>
+                <div id="viewersList" class="viewers-section">
+                    <div class="viewer-card">
+                        <div class="viewer-avatar">A</div>
+                        <div class="viewer-info">
+                            <h3>No viewers yet</h3>
+                            <p>Viewers will appear here when they join</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2><i class="fas fa-comments"></i> Live Chat</h2>
+                <div class="chat-section">
+                    <div id="chatMessages" class="chat-messages">
+                        <div class="message system">Welcome to the live class! Please be respectful in the chat.</div>
+                    </div>
+                    <div class="chat-input">
+                        <input type="text" id="messageInput" placeholder="Type your message...">
+                        <button id="sendMessage"><i class="fas fa-paper-plane"></i> Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     
     <footer>
@@ -341,20 +499,36 @@
         const stopBroadcastBtn = document.getElementById('stopBroadcast');
         const shareLinkBtn = document.getElementById('shareLink');
         const statusText = document.getElementById('statusText');
-        const statusDot = document.querySelector('.status-dot');
+        const statusDot = document.getElementById('statusDot');
         const viewerCount = document.getElementById('viewerCount');
         const viewersList = document.getElementById('viewersList');
         const notification = document.getElementById('notification');
+        const chatMessages = document.getElementById('chatMessages');
+        const messageInput = document.getElementById('messageInput');
+        const sendMessageBtn = document.getElementById('sendMessage');
+        const lessonTitle = document.getElementById('lessonTitle');
+        const classTitle = document.getElementById('classTitle');
+        const connectionStatus = document.getElementById('connectionStatus');
+        const connectionDot = document.getElementById('connectionDot');
         
-        // WebRTC variables
+        // Application state
         let localStream = null;
-        let peerConnections = {};
+        let peerConnection = null;
+        let dataChannel = null;
+        let socket = null;
         let isBroadcasting = false;
         let viewerCounter = 0;
         let viewerData = {};
+        let roomId = null;
+        let userName = "Instructor";
         
-        // Generate a unique room ID
-        const roomId = generateRoomId();
+        // WebRTC configuration (using free STUN servers)
+        const configuration = {
+            iceServers: [
+                { urls: 'stun:stun.l.google.com:19302' },
+                { urls: 'stun:stun1.l.google.com:19302' }
+            ]
+        };
         
         // Initialize the application
         function init() {
@@ -362,14 +536,69 @@
             startBroadcastBtn.addEventListener('click', startBroadcast);
             stopBroadcastBtn.addEventListener('click', stopBroadcast);
             shareLinkBtn.addEventListener('click', shareViewerLink);
+            sendMessageBtn.addEventListener('click', sendMessage);
+            messageInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') sendMessage();
+            });
             
-            // Display the room ID for the broadcaster
-            console.log(`Broadcast Room ID: ${roomId}`);
+            // Generate a unique room ID
+            roomId = generateRoomId();
+            
+            // Initialize lesson content
+            initializeLessonContent();
+            
+            // Connect to signaling server
+            connectToSignalingServer();
         }
         
         // Generate a random room ID
         function generateRoomId() {
             return Math.random().toString(36).substring(2, 8).toUpperCase();
+        }
+        
+        // Initialize lesson content
+        function initializeLessonContent() {
+            const lessons = [
+                "Algebra Basics: Solving Equations",
+                "Introduction to Quadratic Functions",
+                "Linear Equations and Graphs",
+                "Polynomial Expressions",
+                "Systems of Equations"
+            ];
+            
+            const randomLesson = lessons[Math.floor(Math.random() * lessons.length)];
+            lessonTitle.textContent = randomLesson;
+            classTitle.textContent = `Mathematics - ${randomLesson.split(':')[0]}`;
+        }
+        
+        // Connect to signaling server (WebSocket)
+        function connectToSignalingServer() {
+            // For this demo, we'll use a mock WebSocket connection
+            // In a real implementation, you would connect to an actual WebSocket server
+            
+            updateConnectionStatus('Connecting to server...', false);
+            
+            // Simulate connection delay
+            setTimeout(() => {
+                updateConnectionStatus('Connected to server', true);
+                
+                // In a real implementation, you would set up WebSocket event handlers here
+                // For this demo, we'll simulate the connection
+                
+                // Simulate receiving messages from server
+                setInterval(() => {
+                    if (isBroadcasting && Math.random() < 0.1) {
+                        simulateViewerJoin();
+                    }
+                }, 10000);
+                
+            }, 1500);
+        }
+        
+        // Update connection status display
+        function updateConnectionStatus(message, isConnected) {
+            connectionStatus.textContent = message;
+            connectionDot.className = isConnected ? 'connection-dot connected' : 'connection-dot';
         }
         
         // Start the broadcast
@@ -384,6 +613,50 @@
                 // Display the local video stream
                 localVideo.srcObject = localStream;
                 
+                // Create peer connection
+                peerConnection = new RTCPeerConnection(configuration);
+                
+                // Add local stream to peer connection
+                localStream.getTracks().forEach(track => {
+                    peerConnection.addTrack(track, localStream);
+                });
+                
+                // Create data channel for chat
+                dataChannel = peerConnection.createDataChannel('chat');
+                dataChannel.onopen = () => {
+                    console.log('Data channel opened');
+                };
+                
+                dataChannel.onmessage = (event) => {
+                    const message = JSON.parse(event.data);
+                    if (message.type === 'chat') {
+                        addChatMessage('viewer', message.text, message.sender);
+                    } else if (message.type === 'viewer_joined') {
+                        addViewer(message.viewerId, message.name);
+                    }
+                };
+                
+                // Set up ICE candidate handler
+                peerConnection.onicecandidate = (event) => {
+                    if (event.candidate) {
+                        // In a real implementation, send candidate to signaling server
+                        console.log('New ICE candidate:', event.candidate);
+                    }
+                };
+                
+                // Set up remote stream handler
+                peerConnection.ontrack = (event) => {
+                    // This would handle incoming streams from viewers (for interactive features)
+                    console.log('Received remote track:', event.track);
+                };
+                
+                // Create offer
+                const offer = await peerConnection.createOffer();
+                await peerConnection.setLocalDescription(offer);
+                
+                // In a real implementation, send offer to signaling server
+                console.log('Created offer:', offer);
+                
                 // Update UI
                 startBroadcastBtn.disabled = true;
                 stopBroadcastBtn.disabled = false;
@@ -391,9 +664,8 @@
                 statusDot.classList.add('live');
                 isBroadcasting = true;
                 
-                // In a real implementation, you would connect to a signaling server here
-                // For this demo, we'll simulate the connection
-                simulateSignalingServer();
+                // Add system message to chat
+                addChatMessage('system', 'Live broadcast has started. Welcome students!');
                 
                 showNotification('Broadcast started successfully!');
                 
@@ -410,9 +682,11 @@
                 localStream.getTracks().forEach(track => track.stop());
             }
             
-            // Close all peer connections
-            Object.values(peerConnections).forEach(pc => pc.close());
-            peerConnections = {};
+            // Close peer connection
+            if (peerConnection) {
+                peerConnection.close();
+                peerConnection = null;
+            }
             
             // Reset UI
             startBroadcastBtn.disabled = false;
@@ -433,6 +707,9 @@
                     </div>
                 </div>
             `;
+            
+            // Add system message to chat
+            addChatMessage('system', 'Live broadcast has ended. Thank you for attending!');
             
             showNotification('Broadcast ended');
         }
@@ -487,11 +764,15 @@
             
             viewersList.appendChild(viewerCard);
             viewerData[viewerId] = { name, element: viewerCard };
+            
+            // Add system message to chat
+            addChatMessage('system', `${name} joined the class`);
         }
         
         // Remove a viewer from the list
         function removeViewer(viewerId) {
             if (viewerData[viewerId]) {
+                const viewerName = viewerData[viewerId].name;
                 viewerData[viewerId].element.remove();
                 delete viewerData[viewerId];
                 
@@ -510,57 +791,79 @@
                         </div>
                     `;
                 }
+                
+                // Add system message to chat
+                addChatMessage('system', `${viewerName} left the class`);
             }
         }
         
-        // Simulate a signaling server for demo purposes
-        function simulateSignalingServer() {
-            // In a real implementation, this would connect to a WebSocket server
-            // For this demo, we'll simulate viewers joining and leaving
+        // Add a message to the chat
+        function addChatMessage(type, content, senderName = 'System') {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
             
-            // Simulate first viewer joining after 3 seconds
+            if (type === 'system') {
+                messageDiv.textContent = content;
+            } else {
+                messageDiv.innerHTML = `<strong>${senderName}:</strong> ${content}`;
+            }
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            // Send message to viewers via data channel
+            if (type === 'broadcaster' && dataChannel && dataChannel.readyState === 'open') {
+                const message = {
+                    type: 'chat',
+                    text: content,
+                    sender: userName
+                };
+                dataChannel.send(JSON.stringify(message));
+            }
+        }
+        
+        // Send a message from the broadcaster
+        function sendMessage() {
+            const message = messageInput.value.trim();
+            if (message === '') return;
+            
+            addChatMessage('broadcaster', message, userName);
+            messageInput.value = '';
+        }
+        
+        // Simulate a viewer joining (for demo purposes)
+        function simulateViewerJoin() {
+            if (!isBroadcasting) return;
+            
+            const viewerId = 'viewer_' + Math.random().toString(36).substr(2, 5);
+            const names = ['Alex Johnson', 'Maria Garcia', 'James Smith', 'Sarah Williams', 'Robert Brown'];
+            const name = names[Math.floor(Math.random() * names.length)];
+            
+            addViewer(viewerId, name);
+            
+            // Simulate viewer leaving after 20-60 seconds
+            const leaveTime = 20000 + Math.random() * 40000;
             setTimeout(() => {
                 if (isBroadcasting) {
-                    const viewerId = 'viewer_' + Math.random().toString(36).substr(2, 5);
-                    const names = ['Alex Johnson', 'Maria Garcia', 'James Smith', 'Sarah Williams', 'Robert Brown'];
-                    const name = names[Math.floor(Math.random() * names.length)];
-                    
-                    addViewer(viewerId, name);
-                    
-                    // Simulate viewer leaving after 20-60 seconds
-                    const leaveTime = 20000 + Math.random() * 40000;
-                    setTimeout(() => {
-                        if (isBroadcasting) {
-                            removeViewer(viewerId);
-                        }
-                    }, leaveTime);
+                    removeViewer(viewerId);
                 }
-            }, 3000);
+            }, leaveTime);
             
-            // Simulate more viewers joining periodically
-            const interval = setInterval(() => {
-                if (!isBroadcasting) {
-                    clearInterval(interval);
-                    return;
-                }
-                
-                // 30% chance of a new viewer joining every 10 seconds
-                if (Math.random() < 0.3) {
-                    const viewerId = 'viewer_' + Math.random().toString(36).substr(2, 5);
-                    const names = ['Michael Davis', 'Emily Wilson', 'David Miller', 'Jennifer Taylor', 'Christopher Anderson'];
-                    const name = names[Math.floor(Math.random() * names.length)];
+            // Simulate viewer sending a message
+            setTimeout(() => {
+                if (isBroadcasting && Math.random() < 0.7) {
+                    const messages = [
+                        "Hello everyone!",
+                        "Great lesson so far!",
+                        "Could you explain that again?",
+                        "Thank you for the clear explanation",
+                        "I have a question about the last topic"
+                    ];
                     
-                    addViewer(viewerId, name);
-                    
-                    // Simulate viewer leaving after 20-60 seconds
-                    const leaveTime = 20000 + Math.random() * 40000;
-                    setTimeout(() => {
-                        if (isBroadcasting) {
-                            removeViewer(viewerId);
-                        }
-                    }, leaveTime);
+                    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+                    addChatMessage('viewer', randomMessage, name);
                 }
-            }, 10000);
+            }, 5000 + Math.random() * 10000);
         }
         
         // Check if we're in viewer mode
@@ -570,18 +873,31 @@
         
         if (isViewer && roomParam) {
             // This is a viewer page
+            initializeViewerPage(roomParam);
+        } else {
+            // This is the broadcaster page
+            init();
+        }
+        
+        // Initialize viewer page
+        function initializeViewerPage(roomId) {
             document.querySelector('header .logo h1').innerHTML = 'SAPSAP - <span>VIEWING LIVE</span>';
             document.querySelector('.card h2').textContent = 'Live Stream';
             
             // Hide broadcaster controls
             document.querySelector('.controls').style.display = 'none';
+            document.querySelector('.chat-input').style.display = 'none';
+            
+            // Update class info for viewer
+            document.querySelector('.class-title').textContent = 'Mathematics - Algebra Basics';
+            document.querySelector('.class-time').textContent = 'Live Session • 45 minutes remaining';
             
             // Show a connecting message
             viewersList.innerHTML = `
                 <div class="viewer-card" style="grid-column: 1 / -1; text-align: center;">
                     <div class="viewer-info">
                         <h3>Connecting to live stream...</h3>
-                        <p>Please wait while we connect you to the broadcast</p>
+                        <p>Please wait while we connect you to room ${roomId}</p>
                     </div>
                 </div>
             `;
@@ -589,27 +905,95 @@
             // In a real implementation, this would connect to the signaling server
             // and set up a WebRTC connection to receive the stream
             setTimeout(() => {
+                connectAsViewer(roomId);
+            }, 2000);
+        }
+        
+        // Connect as a viewer to the broadcast
+        function connectAsViewer(roomId) {
+            // In a real implementation, this would:
+            // 1. Connect to signaling server
+            // 2. Send join request with roomId
+            // 3. Set up WebRTC connection to receive video stream
+            
+            updateConnectionStatus('Connecting to broadcast...', false);
+            
+            // Simulate connection process
+            setTimeout(() => {
+                updateConnectionStatus('Connected to broadcast', true);
+                
                 viewersList.innerHTML = `
                     <div class="viewer-card" style="grid-column: 1 / -1; text-align: center;">
                         <div class="viewer-info">
                             <h3>Connected to live stream</h3>
-                            <p>You are now watching the broadcast</p>
+                            <p>You are now watching the broadcast in room ${roomId}</p>
                         </div>
                     </div>
                 `;
                 
-                // In a real implementation, the remote video would show the stream
-                // For this demo, we'll show a placeholder
+                // In a real implementation, the remote video would show the actual stream
+                // For this demo, we'll show a placeholder with a message
                 remoteVideo.classList.remove('hidden');
                 localVideo.classList.add('hidden');
+                
+                // Create a canvas to display a "live" message
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                canvas.width = 640;
+                canvas.height = 480;
+                
+                // Draw a simple "live" screen
+                ctx.fillStyle = '#2c3e50';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                ctx.fillStyle = '#ecf0f1';
+                ctx.font = 'bold 48px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText('LIVE STREAM', canvas.width/2, canvas.height/2 - 30);
+                
+                ctx.font = '24px Arial';
+                ctx.fillText('Mathematics - Algebra Basics', canvas.width/2, canvas.height/2 + 30);
+                
+                ctx.font = '18px Arial';
+                ctx.fillText('Room: ' + roomId, canvas.width/2, canvas.height/2 + 70);
+                
+                // Convert canvas to stream and set as video source
+                const stream = canvas.captureStream(25);
+                remoteVideo.srcObject = stream;
                 
                 // Update status
                 statusText.textContent = 'Watching Live';
                 statusDot.classList.add('live');
+                
+                // Add welcome message to chat
+                addChatMessage('system', 'You have joined the live class. Please be respectful in the chat.');
+                
+                // Set up a simulated data channel for chat
+                setupViewerDataChannel();
+                
             }, 2000);
-        } else {
-            // This is the broadcaster page
-            init();
+        }
+        
+        // Set up a simulated data channel for viewer chat
+        function setupViewerDataChannel() {
+            // In a real implementation, this would be a real WebRTC data channel
+            // For this demo, we'll simulate receiving messages
+            
+            // Simulate receiving chat messages
+            setInterval(() => {
+                if (Math.random() < 0.2) {
+                    const messages = [
+                        "Welcome to the class!",
+                        "Don't forget to submit your assignments",
+                        "Any questions so far?",
+                        "Let's move on to the next topic",
+                        "Great participation today!"
+                    ];
+                    
+                    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+                    addChatMessage('broadcaster', randomMessage, 'Instructor');
+                }
+            }, 15000);
         }
     </script>
 </body>
