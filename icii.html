@@ -6,91 +6,143 @@
   <title>Mugenyi Bob Nathan | Golden Apple Technologies</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
   <style>
+:root {
+      --primary: #f9c80e;
+      --accent: #f86624;
+      --bg: #f0f4f8;
+      --card: #ffffff;
+      --text: #333;
+      --shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-      color: #fff;
-      overflow-x: hidden;
-    }
-    .glass {
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 16px;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      padding: 20px;
-      margin-bottom: 30px;
-      transition: transform 0.3s ease;
-    }
-    .glass:hover {
-      transform: scale(1.02);
-    }
-    .avatar {
+      background-color: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 0;
+}
+
+    header {
+      text-align: center;
+      padding: 60px 20px 30px;
+      background: linear-gradient(135deg, #f9c80e, #f86624);
+      color: white;
+}
+
+.avatar {
       width: 140px;
       height: 140px;
-      margin: 0 auto;
+      margin: 0 auto 20px;
       background: url('https://cdn-icons-png.flaticon.com/512/2721/2721296.png') no-repeat center;
       background-size: cover;
       border-radius: 50%;
-      border: 4px solid #00ffff;
-      box-shadow: 0 0 20px #00ffff;
-    }
-    .section-title {
-      font-size: 2.5rem;
-      margin: 40px 0 20px;
-      text-align: center;
-      color: #00ffff;
+      border: 5px solid white;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+}
+
+    h1 {
+      font-size: 2.8rem;
       font-weight: bold;
-    }
+}
+
+.subtitle {
+      font-size: 1.2rem;
+      margin-top: 10px;
+      font-style: italic;
+      color: #f0f0f0;
+}
+
+.section-title {
+      font-size: 2rem;
+      font-weight: bold;
+      margin: 50px 0 30px;
+      text-align: center;
+      color: var(--accent);
+}
+
+.card-box {
+      background: var(--card);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      padding: 20px;
+      margin-bottom: 30px;
+      transition: transform 0.3s ease;
+}
+
+.card-box:hover {
+      transform: translateY(-5px);
+}
+
+.container {
+      max-width: 1000px;
+      margin: auto;
+      padding: 20px;
+}
+
+.text-center p {
+      margin-bottom: 0;
+}
+
     footer {
+      background-color: #fff;
       text-align: center;
       padding: 20px;
-      background-color: #111827;
-      color: #9ca3af;
-    }
+      font-size: 0.9rem;
+      color: #666;
+      border-top: 1px solid #ddd;
+}
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2rem;
+}
+.section-title {
+        font-size: 1.5rem;
+}
+}
   </style>
 </head>
 <body>
 
-  <div class="text-center py-10">
+  <header>
     <div class="avatar"></div>
-    <h1 class="text-5xl font-bold mt-4">Mugenyi Bob Nathan</h1>
-    <p class="text-xl mt-2">CEO, Golden Apple Technologies</p>
-    <p class="italic text-gray-300 mt-2">"Downtown boy turned tech leader. Self-taught, self-made."</p>
-  </div>
+    <h1>Mugenyi Bob Nathan</h1>
+    <p class="subtitle">CEO, Golden Apple Technologies</p>
+    <p class="subtitle">"Downtown boy turned tech leader. Self-taught, self-made."</p>
+  </header>
 
   <div class="container">
     <h2 class="section-title">Skills</h2>
     <div class="row text-center">
-      <div class="col-md-4"><div class="glass">💻 Web Development</div></div>
-      <div class="col-md-4"><div class="glass">🔐 Network Security</div></div>
-      <div class="col-md-4"><div class="glass">🧠 C++ Programming</div></div>
+      <div class="col-md-4"><div class="card-box">💻 Web Development</div></div>
+      <div class="col-md-4"><div class="card-box">🔐 Network Security</div></div>
+      <div class="col-md-4"><div class="card-box">🧠 C++ Programming</div></div>
     </div>
 
     <h2 class="section-title">Tools & Projects</h2>
     <div class="row text-center">
-      <div class="col-md-6"><div class="glass">🧩 Golden Apple Codemind VOL 22.7</div></div>
-      <div class="col-md-6"><div class="glass">🚀 Project Infinity</div></div>
+      <div class="col-md-6"><div class="card-box">🧩 Golden Apple Codemind VOL 22.7</div></div>
+      <div class="col-md-6"><div class="card-box">🚀 Project Infinity</div></div>
     </div>
 
     <h2 class="section-title">Achievements</h2>
-    <div class="glass text-center">
+    <div class="card-box text-center">
       🏅 West Schools Best IT Student<br />
       🛤️ No award yet — but the journey continues.
     </div>
 
     <h2 class="section-title">Contact</h2>
-    <div class="glass text-center">
-      📧 goldenapplecoders@gmail.com<br />
-      📞 +256791728084<br />
+    <div class="card-box text-center">
+      📧 <a href="mailto:goldenapplecoders@gmail.com">goldenapplecoders@gmail.com</a><br />
+      📞 <a href="tel:+256791728084">+256791728084</a><br />
       📍 Live on your phone
     </div>
   </div>
 
   <footer>
-    &copy; 2025 Golden Apple Technologies. Built with 💻 HTML, CSS, JS, Bootstrap & Tailwind. Inspired by vision.
+&copy; 2025 Golden Apple Technologies. Built with 💻 HTML, CSS, JS, Bootstrap. Inspired by vision.
   </footer>
 
 </body>
