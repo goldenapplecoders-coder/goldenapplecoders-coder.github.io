@@ -53,6 +53,10 @@
             pointer-events: all;
         }
         
+        .hidden {
+            display: none;
+        }
+        
         .container {
             max-width: 800px;
             width: 90%;
@@ -1098,6 +1102,11 @@
                 gameActive = true;
                 createBoard();
                 updateGameStatus();
+                
+                // If it's AI's turn in single player mode
+                if (gameMode === 'single' && currentPlayer === 2) {
+                    setTimeout(makeAIMove, 500);
+                }
             }
             
             // Initialize the game
