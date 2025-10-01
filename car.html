@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asphait Cor Race</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom, #2c3e50, #1a1a2e);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        
+        .game-container {
+            position: relative;
+            width: 800px;
+            height: 600px;
+            border: 4px solid #3498db;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(52, 152, 219, 0.5);
+        }
+        
+        #gameCanvas {
+            background: linear-gradient(to bottom, #34495e, #2c3e50);
+            display: block;
+        }
+        
+        .menu-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10;
+        }
+        
+        h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #3498db;
+            text-shadow: 0 0 10px rgba(52, 152, 219, 0.7);
+        }
+        
+        .menu-screen h2 {
+            font-size: 32px;
+            margin-bottom: 30px;
+            color: #e74c3c;
+        }
+        
+        button {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        button:hover {
+            background: #c0392b;
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(231, 76, 60, 0.7);
+        }
+        
+        .score-display {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px 15px;
+            border-radius: 5px;
+        }
+        
+        .controls {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        .game-over {
+            display: none;
+        }
+        
+        .high-scores {
+            margin-top: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 15px;
+            border-radius: 5px;
+            width: 300px;
+            text-align: center;
+        }
+        
+        .high-scores h3 {
+            margin-bottom: 10px;
+            color: #f1c40f;
+        }
+        
+        .high-scores ol {
+            text-align: left;
+            margin-left: 20px;
+        }
+        
+        .high-scores li {
+            margin: 5px 0;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+        
+        <div class="score-display">
+            Score: <span id="score">0</span>
+        </div>
+        
+        <div class="controls">
+            Use LEFT/RIGHT arrows to move, SPACE to boost
+        </div>
+        
+        <div class="menu-screen start-screen">
+            <h1>Asphait Cor Race</h1>
+            <button id="startButton">Start Game</button>
+            <div class="high-scores">
+                <h3>High Scores</h3>
+                <ol id="highScoresList"></ol>
+            </div>
+        </div>
+        
+        <div class="menu-screen game-over">
+            <h2>Game Over</h2>
+            <p>Your Score: <span id="finalScore">0</span></p>
+            <button id="restartButton">Play Again</button>
+            <button id="menuButton">Main Menu</button>
+        </div>
+    </div>
+
+    <script>
+        // Game variables
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const startScreen = document.querySelector('.start-screen');
+        const gameOverScreen = document.querySelector('.game-over');
+        const startButton = document.getElementById('startButton');
+        const restartButton = document.getElementById('restartButton');
+        const menuButton = document.getElementById('menuButton');
+        const scoreDisplay = document.getElementById('score');
+        const finalScoreDisplay = document.getElementById('finalScore');
+        const highScoresList = document.getElementById('highScoresList');
+
+        let gameActive = false;
+        let score = 0;
+        let highScores = [];
+        
+        // Car properties
+        const car = {
+            x: canvas.width / 2 - 25,
+            y: canvas.height - 100,
+            width: 50,
+            height: 80,
+            speed: 5,
+            color: '#e74c3c',
+            moveLeft: false,
+            moveRight: false,
+            boost: false
+        };
+        
+        // Road properties
+        const road = {
+            width: 400,
+            laneCount: 3,
+            laneWidth: 0,
+            x: canvas.width / 2 - 200,
+            markings: []
+        };
+        
+        road.laneWidth = road.width / road.laneCount;
+        
+        // Initialize road markings
+        for (let i = 0; i < 20; i++) {
+            road.markings.push({
+                x: canvas.width / 2 - 5,
+                y: i * 60,
+                width: 10,
+                height: 30
+            });
+        }
+        
+        // Traffic cars
+        let traffic = [];
+        
+        // Key event listeners
+        document.addEventListener('keydown', (e) => {
+            if (!gameActive) return;
+            
+            switch(e.key) {
+                case 'ArrowLeft':
+                    car.moveLeft = true;
+                    break;
+                case 'ArrowRight':
+                    car.moveRight = true;
+                    break;
+                case ' ':
+                    car.boost = true;
+                    break;
+            }
+        });
+        
+        document.addEventListener('keyup', (e) => {
+            if (!gameActive) return;
+            
+            switch(e.key) {
+                case 'ArrowLeft':
+                    car.moveLeft = false;
+                    break;
+                case 'ArrowRight':
+                    car.moveRight = false;
+                    break;
+                case ' ':
+                    car.boost = false;
+                    break;
+            }
+        });
+        
+        // Button event listeners
+        startButton.addEventListener('click', startGame);
+        restartButton.addEventListener('click', startGame);
+        menuButton.addEventListener('click', () => {
+            gameOverScreen.style.display = 'none';
+            startScreen.style.display = 'flex';
+        });
+        
+        // Load high scores
+        loadHighScores();
+        
+        // Game functions
+        function startGame() {
+            gameActive = true;
+            score = 0;
+            scoreDisplay.textContent = score;
+            traffic = [];
+            
+            // Reset car position
+            car.x = canvas.width / 2 - 25;
+            car.y = canvas.height - 100;
+            car.moveLeft = false;
+            car.moveRight = false;
+            car.boost = false;
+            
+            // Hide menus
+            startScreen.style.display = 'none';
+            gameOverScreen.style.display = 'none';
+            
+            // Start game loop
+            gameLoop();
+        }
+        
+        function gameLoop() {
+            if (!gameActive) return;
+            
+            update();
+            draw();
+            
+            requestAnimationFrame(gameLoop);
+        }
+        
+        function update() {
+            // Move car
+            if (car.moveLeft && car.x > road.x) {
+                car.x -= car.speed;
+            }
+            if (car.moveRight && car.x + car.width < road.x + road.width) {
+                car.x += car.speed;
+            }
+            
+            // Move road markings (create illusion of movement)
+            for (let i = 0; i < road.markings.length; i++) {
+                road.markings[i].y += car.boost ? 10 : 5;
+                
+                // Reset marking when it goes off screen
+                if (road.markings[i].y > canvas.height) {
+                    road.markings[i].y = -30;
+                }
+            }
+            
+            // Add to score
+            score += car.boost ? 2 : 1;
+            scoreDisplay.textContent = score;
+            
+            // Spawn traffic
+            if (Math.random() < 0.02) {
+                const lane = Math.floor(Math.random() * road.laneCount);
+                traffic.push({
+                    x: road.x + lane * road.laneWidth + (road.laneWidth - 40) / 2,
+                    y: -80,
+                    width: 40,
+                    height: 70,
+                    speed: 3 + Math.random() * 2,
+                    color: '#3498db'
+                });
+            }
+            
+            // Move traffic
+            for (let i = 0; i < traffic.length; i++) {
+                traffic[i].y += traffic[i].speed;
+                
+                // Remove traffic that's off screen
+                if (traffic[i].y > canvas.height) {
+                    traffic.splice(i, 1);
+                    i--;
+                    continue;
+                }
+                
+                // Check for collisions
+                if (checkCollision(car, traffic[i])) {
+                    endGame();
+                    return;
+                }
+            }
+        }
+        
+        function draw() {
+            // Clear canvas
+            ctx.fillStyle = '#2c3e50';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw road
+            ctx.fillStyle = '#34495e';
+            ctx.fillRect(road.x, 0, road.width, canvas.height);
+            
+            // Draw road markings
+            ctx.fillStyle = '#f1c40f';
+            for (let i = 0; i < road.markings.length; i++) {
+                ctx.fillRect(road.markings[i].x, road.markings[i].y, road.markings[i].width, road.markings[i].height);
+            }
+            
+            // Draw traffic
+            for (let i = 0; i < traffic.length; i++) {
+                drawCar(traffic[i]);
+            }
+            
+            // Draw player car
+            drawCar(car);
+            
+            // Draw boost effect
+            if (car.boost) {
+                ctx.fillStyle = 'rgba(241, 196, 15, 0.5)';
+                ctx.fillRect(car.x, car.y + car.height, car.width, 20);
+            }
+        }
+        
+        function drawCar(carObj) {
+            // Car body
+            ctx.fillStyle = carObj.color;
+            ctx.fillRect(carObj.x, carObj.y, carObj.width, carObj.height);
+            
+            // Windows
+            ctx.fillStyle = '#2c3e50';
+            ctx.fillRect(carObj.x + 5, carObj.y + 5, carObj.width - 10, 20);
+            
+            // Wheels
+            ctx.fillStyle = '#2c3e50';
+            ctx.fillRect(carObj.x - 5, carObj.y + 10, 5, 20);
+            ctx.fillRect(carObj.x + carObj.width, carObj.y + 10, 5, 20);
+            ctx.fillRect(carObj.x - 5, carObj.y + carObj.height - 30, 5, 20);
+            ctx.fillRect(carObj.x + carObj.width, carObj.y + carObj.height - 30, 5, 20);
+        }
+        
+        function checkCollision(car1, car2) {
+            return car1.x < car2.x + car2.width &&
+                   car1.x + car1.width > car2.x &&
+                   car1.y < car2.y + car2.height &&
+                   car1.y + car1.height > car2.y;
+        }
+        
+        function endGame() {
+            gameActive = false;
+            finalScoreDisplay.textContent = score;
+            gameOverScreen.style.display = 'flex';
+            
+            // Update high scores
+            updateHighScores(score);
+        }
+        
+        function loadHighScores() {
+            // In a real application, this would fetch from the server
+            // For now, we'll use localStorage
+            const storedScores = localStorage.getItem('asphaitCorRaceHighScores');
+            if (storedScores) {
+                highScores = JSON.parse(storedScores);
+            } else {
+                highScores = [5000, 3000, 2000, 1500, 1000];
+            }
+            displayHighScores();
+        }
+        
+        function updateHighScores(newScore) {
+            highScores.push(newScore);
+            highScores.sort((a, b) => b - a);
+            highScores = highScores.slice(0, 5); // Keep only top 5
+            localStorage.setItem('asphaitCorRaceHighScores', JSON.stringify(highScores));
+            displayHighScores();
+        }
+        
+        function displayHighScores() {
+            highScoresList.innerHTML = '';
+            highScores.forEach((score, index) => {
+                const li = document.createElement('li');
+                li.textContent = `${index + 1}. ${score}`;
+                highScoresList.appendChild(li);
+            });
+        }
+    </script>
+</body>
+</html>
