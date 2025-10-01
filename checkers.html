@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Draughts - Checkers Game</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            color: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            background: linear-gradient(to right, #ff9966, #ff5e62);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .game-area {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        .board-container {
+            position: relative;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            grid-template-rows: repeat(8, 1fr);
+            width: 500px;
+            height: 500px;
+            border: 5px solid #5d4037;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .cell {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .dark {
+            background-color: #8d6e63;
+        }
+
+        .light {
+            background-color: #efebe9;
+        }
+
+        .piece {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+        }
+
+        .piece.player1 {
+            background: linear-gradient(135deg, #d32f2f, #b71c1c);
+            border: 2px solid #ff8a80;
+        }
+
+        .piece.player2 {
+            background: linear-gradient(135deg, #f5f5f5, #e0e0e0);
+            border: 2px solid #9e9e9e;
+        }
+
+        .piece.king::after {
+            content: '\f521';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: gold;
+            font-size: 20px;
+            text-shadow: 0 0 3px rgba(0, 0, 0, 0.7);
+        }
+
+        .piece.king.player1 {
+            background: linear-gradient(135deg, #ff8a65, #d84315);
+            box-shadow: 0 0 15px rgba(255, 193, 7, 0.7);
+        }
+
+        .piece.king.player2 {
+            background: linear-gradient(135deg, #fff176, #fdd835);
+            box-shadow: 0 0 15px rgba(255, 193, 7, 0.7);
+        }
+
+        .piece.selected {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+        }
+
+        .valid-move {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: rgba(76, 175, 80, 0.7);
+            z-index: 5;
+        }
+
+        .game-info {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        .player-turn {
+            font-size: 1.5rem;
+            text-align: center;
+            padding: 10px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .player-turn.player1 {
+            background: rgba(211, 47, 47, 0.3);
+            border: 2px solid #d32f2f;
+        }
+
+        .player-turn.player2 {
+            background: rgba(245, 245, 245, 0.2);
+            border: 2px solid #f5f5f5;
+        }
+
+        .score-board {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        .player-score {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .player-score.player1 .piece {
+            background: linear-gradient(135deg, #d32f2f, #b71c1c);
+        }
+
+        .player-score.player2 .piece {
+            background: linear-gradient(135deg, #f5f5f5, #e0e0e0);
+        }
+
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        button {
+            padding: 12px 20px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            background: linear-gradient(to right, #ff9966, #ff5e62);
+            color: white;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        .game-mode {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .mode-btn {
+            flex: 1;
+            padding: 10px;
+            font-size: 1rem;
+        }
+
+        .mode-btn.active {
+            background: linear-gradient(to right, #4CAF50, #2E7D32);
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+        }
+
+        .difficulty {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        select {
+            padding: 10px;
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .game-message {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s;
+        }
+
+        .game-message.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .message-content {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f);
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .message-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: gold;
+        }
+
+        .message-content p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .game-area {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .board {
+                width: 90vw;
+                height: 90vw;
+                max-width: 400px;
+                max-height: 400px;
+            }
+            
+            .piece {
+                width: 35px;
+                height: 35px;
+            }
+            
+            .game-info {
+                width: 90%;
+                max-width: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Draughts</h1>
+            <p class="subtitle">Classic Checkers Game with AI Opponent</p>
+        </header>
+        
+        <div class="game-area">
+            <div class="board-container">
+                <div class="board" id="board">
+                    <!-- Board will be generated by JavaScript -->
+                </div>
+            </div>
+            
+            <div class="game-info">
+                <div class="player-turn player1" id="player-turn">
+                    Player 1's Turn
+                </div>
+                
+                <div class="score-board">
+                    <div class="player-score player1">
+                        <div class="piece"></div>
+                        <div class="score">Pieces: <span id="player1-score">12</span></div>
+                    </div>
+                    <div class="player-score player2">
+                        <div class="piece"></div>
+                        <div class="score">Pieces: <span id="player2-score">12</span></div>
+                    </div>
+                </div>
+                
+                <div class="controls">
+                    <button id="new-game-btn">New Game</button>
+                    <button id="undo-btn">Undo Move</button>
+                    
+                    <div class="game-mode">
+                        <button class="mode-btn active" id="single-player-btn">Single Player</button>
+                        <button class="mode-btn" id="multi-player-btn">Multi Player</button>
+                    </div>
+                    
+                    <div class="difficulty" id="difficulty-container">
+                        <label for="ai-difficulty">AI Difficulty:</label>
+                        <select id="ai-difficulty">
+                            <option value="easy">Easy</option>
+                            <option value="medium">Medium</option>
+                            <option value="hard" selected>Hard</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="game-message" id="game-message">
+            <div class="message-content">
+                <h2 id="message-title">Game Over</h2>
+                <p id="message-text">Player 1 wins!</p>
+                <button id="play-again-btn">Play Again</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game state and configuration
+        const gameState = {
+            board: [],
+            currentPlayer: 1, // 1 for Player 1 (red), 2 for Player 2 (white)
+            selectedPiece: null,
+            validMoves: [],
+            gameMode: 'single', // 'single' or 'multi'
+            aiDifficulty: 'hard',
+            gameOver: false,
+            moveHistory: [],
+            player1Score: 12,
+            player2Score: 12
+        };
+
+        // DOM elements
+        const boardElement = document.getElementById('board');
+        const playerTurnElement = document.getElementById('player-turn');
+        const player1ScoreElement = document.getElementById('player1-score');
+        const player2ScoreElement = document.getElementById('player2-score');
+        const newGameBtn = document.getElementById('new-game-btn');
+        const undoBtn = document.getElementById('undo-btn');
+        const singlePlayerBtn = document.getElementById('single-player-btn');
+        const multiPlayerBtn = document.getElementById('multi-player-btn');
+        const aiDifficultySelect = document.getElementById('ai-difficulty');
+        const difficultyContainer = document.getElementById('difficulty-container');
+        const gameMessage = document.getElementById('game-message');
+        const messageTitle = document.getElementById('message-title');
+        const messageText = document.getElementById('message-text');
+        const playAgainBtn = document.getElementById('play-again-btn');
+
+        // Initialize the game
+        function initGame() {
+            createBoard();
+            setupEventListeners();
+            updateUI();
+        }
+
+        // Create the game board
+        function createBoard() {
+            boardElement.innerHTML = '';
+            gameState.board = [];
+            
+            // Create 8x8 board
+            for (let row = 0; row < 8; row++) {
+                gameState.board[row] = [];
+                
+                for (let col = 0; col < 8; col++) {
+                    // Create cell
+                    const cell = document.createElement('div');
+                    cell.className = `cell ${(row + col) % 2 === 0 ? 'light' : 'dark'}`;
+                    cell.dataset.row = row;
+                    cell.dataset.col = col;
+                    
+                    // Add pieces to starting positions
+                    if ((row + col) % 2 !== 0) {
+                        if (row < 3) {
+                            // Player 2 pieces (white)
+                            gameState.board[row][col] = { player: 2, king: false };
+                            const piece = createPiece(2, false);
+                            cell.appendChild(piece);
+                        } else if (row > 4) {
+                            // Player 1 pieces (red)
+                            gameState.board[row][col] = { player: 1, king: false };
+                            const piece = createPiece(1, false);
+                            cell.appendChild(piece);
+                        } else {
+                            gameState.board[row][col] = null;
+                        }
+                    } else {
+                        gameState.board[row][col] = null;
+                    }
+                    
+                    boardElement.appendChild(cell);
+                }
+            }
+            
+            // Reset game state
+            gameState.currentPlayer = 1;
+            gameState.selectedPiece = null;
+            gameState.validMoves = [];
+            gameState.gameOver = false;
+            gameState.moveHistory = [];
+            gameState.player1Score = 12;
+            gameState.player2Score = 12;
+        }
+
+        // Create a game piece
+        function createPiece(player, isKing) {
+            const piece = document.createElement('div');
+            piece.className = `piece player${player} ${isKing ? 'king' : ''}`;
+            return piece;
+        }
+
+        // Set up event listeners
+        function setupEventListeners() {
+            // Board clicks
+            boardElement.addEventListener('click', handleBoardClick);
+            
+            // Button events
+            newGameBtn.addEventListener('click', createBoard);
+            undoBtn.addEventListener('click', undoMove);
+            singlePlayerBtn.addEventListener('click', () => setGameMode('single'));
+            multiPlayerBtn.addEventListener('click', () => setGameMode('multi'));
+            aiDifficultySelect.addEventListener('change', (e) => {
+                gameState.aiDifficulty = e.target.value;
+            });
+            playAgainBtn.addEventListener('click', () => {
+                gameMessage.classList.remove('active');
+                createBoard();
+            });
+        }
+
+        // Handle board clicks
+        function handleBoardClick(e) {
+            if (gameState.gameOver) return;
+            
+            const cell = e.target.closest('.cell');
+            if (!cell) return;
+            
+            const row = parseInt(cell.dataset.row);
+            const col = parseInt(cell.dataset.col);
+            
+            // If a piece is already selected
+            if (gameState.selectedPiece) {
+                // Check if the click is on a valid move
+                const isValidMove = gameState.validMoves.some(move => 
+                    move.row === row && move.col === col
+                );
+                
+                if (isValidMove) {
+                    // Make the move
+                    makeMove(gameState.selectedPiece.row, gameState.selectedPiece.col, row, col);
+                    return;
+                }
+                
+                // If clicked on another piece of the same player, select that piece instead
+                const piece = gameState.board[row][col];
+                if (piece && piece.player === gameState.currentPlayer) {
+                    selectPiece(row, col);
+                    return;
+                }
+                
+                // Otherwise, deselect the current piece
+                deselectPiece();
+            } else {
+                // If no piece is selected, try to select one
+                const piece = gameState.board[row][col];
+                if (piece && piece.player === gameState.currentPlayer) {
+                    selectPiece(row, col);
+                }
+            }
+        }
+
+        // Select a piece and show valid moves
+        function selectPiece(row, col) {
+            // Deselect previous piece
+            deselectPiece();
+            
+            // Select new piece
+            gameState.selectedPiece = { row, col };
+            const cell = document.querySelector(`.cell[data-row="${row}"][data-col="${col}"]`);
+            const piece = cell.querySelector('.piece');
+            piece.classList.add('selected');
+            
+            // Calculate and show valid moves
+            gameState.validMoves = calculateValidMoves(row, col);
+            showValidMoves();
+        }
+
+        // Deselect the current piece
+        function deselectPiece() {
+            if (gameState.selectedPiece) {
+                const { row, col } = gameState.selectedPiece;
+                const cell = document.querySelector(`.cell[data-row="${row}"][data-col="${col}"]`);
+                if (cell) {
+                    const piece = cell.querySelector('.piece');
+                    if (piece) piece.classList.remove('selected');
+                }
+                
+                gameState.selectedPiece = null;
+                gameState.validMoves = [];
+                hideValidMoves();
+            }
+        }
+
+        // Calculate valid moves for a piece
+        function calculateValidMoves(row, col) {
+            const piece = gameState.board[row][col];
+            if (!piece) return [];
+            
+            const moves = [];
+            const directions = [];
+            
+            // Determine movement directions based on piece type
+            if (piece.king) {
+                // Kings can move in all four diagonal directions
+                directions.push(
+                    { rowDir: -1, colDir: -1 }, // Up-left
+                    { rowDir: -1, colDir: 1 },  // Up-right
+                    { rowDir: 1, colDir: -1 },  // Down-left
+                    { rowDir: 1, colDir: 1 }    // Down-right
+                );
+            } else {
+                // Regular pieces can only move forward
+                if (piece.player === 1) {
+                    // Player 1 (red) moves up the board
+                    directions.push({ rowDir: -1, colDir: -1 }, { rowDir: -1, colDir: 1 });
+                } else {
+                    // Player 2 (white) moves down the board
+                    directions.push({ rowDir: 1, colDir: -1 }, { rowDir: 1, colDir: 1 });
+                }
+            }
+            
+            // Check each direction for valid moves
+            for (const dir of directions) {
+                const newRow = row + dir.rowDir;
+                const newCol = col + dir.colDir;
+                
+                // Check if the new position is within the board
+                if (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8) {
+                    // Check if the cell is empty
+                    if (gameState.board[newRow][newCol] === null) {
+                        moves.push({ row: newRow, col: newCol, isCapture: false });
+                    } 
+                    // Check if the cell has an opponent's piece
+                    else if (gameState.board[newRow][newCol].player !== piece.player) {
+                        const jumpRow = newRow + dir.rowDir;
+                        const jumpCol = newCol + dir.colDir;
+                        
+                        // Check if we can jump over the opponent's piece
+                        if (jumpRow >= 0 && jumpRow < 8 && jumpCol >= 0 && jumpCol < 8 && 
+                            gameState.board[jumpRow][jumpCol] === null) {
+                            moves.push({ row: jumpRow, col: jumpCol, isCapture: true, capturedRow: newRow, capturedCol: newCol });
+                        }
+                    }
+                }
+            }
+            
+            // If there are capture moves, only allow captures (mandatory capture rule)
+            const captureMoves = moves.filter(move => move.isCapture);
+            return captureMoves.length > 0 ? captureMoves : moves;
+        }
+
+        // Show valid moves on the board
+        function showValidMoves() {
+            gameState.validMoves.forEach(move => {
+                const cell = document.querySelector(`.cell[data-row="${move.row}"][data-col="${move.col}"]`);
+                const indicator = document.createElement('div');
+                indicator.className = 'valid-move';
+                cell.appendChild(indicator);
+            });
+        }
+
+        // Hide valid moves from the board
+        function hideValidMoves() {
+            const indicators = document.querySelectorAll('.valid-move');
+            indicators.forEach(indicator => indicator.remove());
+        }
+
+        // Make a move
+        function makeMove(fromRow, fromCol, toRow, toCol) {
+            // Save current state for undo
+            gameState.moveHistory.push({
+                board: JSON.parse(JSON.stringify(gameState.board)),
+                currentPlayer: gameState.currentPlayer,
+                player1Score: gameState.player1Score,
+                player2Score: gameState.player2Score
+            });
+            
+            const piece = gameState.board[fromRow][fromCol];
+            gameState.board[fromRow][fromCol] = null;
+            gameState.board[toRow][toCol] = piece;
+            
+            // Check if this was a capture move
+            const move = gameState.validMoves.find(m => m.row === toRow && m.col === toCol);
+            if (move && move.isCapture) {
+                // Remove the captured piece
+                gameState.board[move.capturedRow][move.capturedCol] = null;
+                
+                // Update scores
+                if (gameState.currentPlayer === 1) {
+                    gameState.player2Score--;
+                } else {
+                    gameState.player1Score--;
+                }
+                
+                // Check for additional captures
+                const additionalCaptures = calculateValidMoves(toRow, toCol).filter(m => m.isCapture);
+                if (additionalCaptures.length > 0) {
+                    // Player gets another turn for additional capture
+                    deselectPiece();
+                    selectPiece(toRow, toCol);
+                    updateUI();
+                    return;
+                }
+            }
+            
+            // Check for king promotion
+            if (!piece.king) {
+                if ((piece.player === 1 && toRow === 0) || (piece.player === 2 && toRow === 7)) {
+                    piece.king = true;
+                    
+                    // Update the piece on the board
+                    const cell = document.querySelector(`.cell[data-row="${toRow}"][data-col="${toCol}"]`);
+                    const pieceElement = cell.querySelector('.piece');
+                    pieceElement.classList.add('king');
+                }
+            }
+            
+            // Switch player
+            gameState.currentPlayer = gameState.currentPlayer === 1 ? 2 : 1;
+            
+            // Deselect piece and update UI
+            deselectPiece();
+            updateUI();
+            
+            // Check for game over
+            checkGameOver();
+            
+            // If it's AI's turn in single player mode
+            if (gameState.gameMode === 'single' && gameState.currentPlayer === 2 && !gameState.gameOver) {
+                setTimeout(makeAIMove, 800);
+            }
+        }
+
+        // Make AI move
+        function makeAIMove() {
+            const bestMove = findBestMove();
+            if (bestMove) {
+                const { fromRow, fromCol, toRow, toCol } = bestMove;
+                selectPiece(fromRow, fromCol);
+                makeMove(fromRow, fromCol, toRow, toCol);
+            }
+        }
+
+        // Find the best move for AI using minimax algorithm
+        function findBestMove() {
+            const possibleMoves = getAllValidMoves(2); // Player 2 is AI
+            
+            if (possibleMoves.length === 0) return null;
+            
+            let bestMove = null;
+            let bestScore = -Infinity;
+            
+            // Set search depth based on difficulty
+            let depth = 3; // Default for hard
+            if (gameState.aiDifficulty === 'easy') depth = 1;
+            else if (gameState.aiDifficulty === 'medium') depth = 2;
+            
+            for (const move of possibleMoves) {
+                // Make the move on a copy of the board
+                const boardCopy = JSON.parse(JSON.stringify(gameState.board));
+                makeMoveOnBoard(boardCopy, move);
+                
+                // Evaluate the move
+                const score = minimax(boardCopy, depth, -Infinity, Infinity, false, 2);
+                
+                if (score > bestScore) {
+                    bestScore = score;
+                    bestMove = move;
+                }
+            }
+            
+            return bestMove;
+        }
+
+        // Minimax algorithm with alpha-beta pruning
+        function minimax(board, depth, alpha, beta, isMaximizing, player) {
+            if (depth === 0 || isGameOver(board)) {
+                return evaluateBoard(board, player);
+            }
+            
+            if (isMaximizing) {
+                let maxEval = -Infinity;
+                const moves = getAllValidMovesForBoard(board, player);
+                
+                for (const move of moves) {
+                    const boardCopy = JSON.parse(JSON.stringify(board));
+                    makeMoveOnBoard(boardCopy, move);
+                    const evaluation = minimax(boardCopy, depth - 1, alpha, beta, false, player === 1 ? 2 : 1);
+                    maxEval = Math.max(maxEval, evaluation);
+                    alpha = Math.max(alpha, evaluation);
+                    if (beta <= alpha) break;
+                }
+                return maxEval;
+            } else {
+                let minEval = Infinity;
+                const moves = getAllValidMovesForBoard(board, player);
+                
+                for (const move of moves) {
+                    const boardCopy = JSON.parse(JSON.stringify(board));
+                    makeMoveOnBoard(boardCopy, move);
+                    const evaluation = minimax(boardCopy, depth - 1, alpha, beta, true, player === 1 ? 2 : 1);
+                    minEval = Math.min(minEval, evaluation);
+                    beta = Math.min(beta, evaluation);
+                    if (beta <= alpha) break;
+                }
+                return minEval;
+            }
+        }
+
+        // Evaluate the board for AI
+        function evaluateBoard(board, player) {
+            let score = 0;
+            
+            // Count pieces and kings
+            for (let row = 0; row < 8; row++) {
+                for (let col = 0; col < 8; col++) {
+                    const piece = board[row][col];
+                    if (piece) {
+                        const value = piece.king ? 3 : 1;
+                        if (piece.player === player) {
+                            score += value;
+                            
+                            // Bonus for center control
+                            if (row > 1 && row < 6 && col > 1 && col < 6) {
+                                score += 0.1;
+                            }
+                            
+                            // Bonus for advancement (for regular pieces)
+                            if (!piece.king) {
+                                if (player === 2) {
+                                    // AI pieces (white) - bonus for moving down
+                                    score += (7 - row) * 0.05;
+                                } else {
+                                    // Player pieces (red) - bonus for moving up
+                                    score += row * 0.05;
+                                }
+                            }
+                        } else {
+                            score -= value;
+                        }
+                    }
+                }
+            }
+            
+            return score;
+        }
+
+        // Get all valid moves for a player
+        function getAllValidMoves(player) {
+            const moves = [];
+            
+            for (let row = 0; row < 8; row++) {
+                for (let col = 0; col < 8; col++) {
+                    const piece = gameState.board[row][col];
+                    if (piece && piece.player === player) {
+                        const pieceMoves = calculateValidMoves(row, col);
+                        for (const move of pieceMoves) {
+                            moves.push({
+                                fromRow: row,
+                                fromCol: col,
+                                toRow: move.row,
+                                toCol: move.col,
+                                isCapture: move.isCapture,
+                                capturedRow: move.capturedRow,
+                                capturedCol: move.capturedCol
+                            });
+                        }
+                    }
+                }
+            }
+            
+            return moves;
+        }
+
+        // Get all valid moves for a player on a specific board
+        function getAllValidMovesForBoard(board, player) {
+            const moves = [];
+            
+            for (let row = 0; row < 8; row++) {
+                for (let col = 0; col < 8; col++) {
+                    const piece = board[row][col];
+                    if (piece && piece.player === player) {
+                        const pieceMoves = calculateValidMovesForBoard(board, row, col);
+                        for (const move of pieceMoves) {
+                            moves.push({
+                                fromRow: row,
+                                fromCol: col,
+                                toRow: move.row,
+                                toCol: move.col,
+                                isCapture: move.isCapture,
+                                capturedRow: move.capturedRow,
+                                capturedCol: move.capturedCol
+                            });
+                        }
+                    }
+                }
+            }
+            
+            return moves;
+        }
+
+        // Calculate valid moves for a piece on a specific board
+        function calculateValidMovesForBoard(board, row, col) {
+            const piece = board[row][col];
+            if (!piece) return [];
+            
+            const moves = [];
+            const directions = [];
+            
+            // Determine movement directions based on piece type
+            if (piece.king) {
+                directions.push(
+                    { rowDir: -1, colDir: -1 },
+                    { rowDir: -1, colDir: 1 },
+                    { rowDir: 1, colDir: -1 },
+                    { rowDir: 1, colDir: 1 }
+                );
+            } else {
+                if (piece.player === 1) {
+                    directions.push({ rowDir: -1, colDir: -1 }, { rowDir: -1, colDir: 1 });
+                } else {
+                    directions.push({ rowDir: 1, colDir: -1 }, { rowDir: 1, colDir: 1 });
+                }
+            }
+            
+            // Check each direction for valid moves
+            for (const dir of directions) {
+                const newRow = row + dir.rowDir;
+                const newCol = col + dir.colDir;
+                
+                if (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8) {
+                    if (board[newRow][newCol] === null) {
+                        moves.push({ row: newRow, col: newCol, isCapture: false });
+                    } else if (board[newRow][newCol].player !== piece.player) {
+                        const jumpRow = newRow + dir.rowDir;
+                        const jumpCol = newCol + dir.colDir;
+                        
+                        if (jumpRow >= 0 && jumpRow < 8 && jumpCol >= 0 && jumpCol < 8 && 
+                            board[jumpRow][jumpCol] === null) {
+                            moves.push({ 
+                                row: jumpRow, 
+                                col: jumpCol, 
+                                isCapture: true, 
+                                capturedRow: newRow, 
+                                capturedCol: newCol 
+                            });
+                        }
+                    }
+                }
+            }
+            
+            // If there are capture moves, only allow captures
+            const captureMoves = moves.filter(move => move.isCapture);
+            return captureMoves.length > 0 ? captureMoves : moves;
+        }
+
+        // Make a move on a board
+        function makeMoveOnBoard(board, move) {
+            const { fromRow, fromCol, toRow, toCol, isCapture, capturedRow, capturedCol } = move;
+            const piece = board[fromRow][fromCol];
+            board[fromRow][fromCol] = null;
+            board[toRow][toCol] = piece;
+            
+            if (isCapture) {
+                board[capturedRow][capturedCol] = null;
+            }
+            
+            // Check for king promotion
+            if (!piece.king) {
+                if ((piece.player === 1 && toRow === 0) || (piece.player === 2 && toRow === 7)) {
+                    piece.king = true;
+                }
+            }
+        }
+
+        // Check if the game is over
+        function checkGameOver() {
+            const player1Moves = getAllValidMoves(1);
+            const player2Moves = getAllValidMoves(2);
+            
+            if (player1Moves.length === 0 || gameState.player1Score === 0) {
+                endGame(2); // Player 2 wins
+            } else if (player2Moves.length === 0 || gameState.player2Score === 0) {
+                endGame(1); // Player 1 wins
+            }
+        }
+
+        // Check if the game is over on a specific board
+        function isGameOver(board) {
+            const player1Moves = getAllValidMovesForBoard(board, 1);
+            const player2Moves = getAllValidMovesForBoard(board, 2);
+            
+            return player1Moves.length === 0 || player2Moves.length === 0;
+        }
+
+        // End the game
+        function endGame(winner) {
+            gameState.gameOver = true;
+            gameMessage.classList.add('active');
+            
+            if (winner === 1) {
+                messageTitle.textContent = 'Player 1 Wins!';
+                messageText.textContent = 'Congratulations! You have captured all opponent pieces.';
+            } else {
+                if (gameState.gameMode === 'single') {
+                    messageTitle.textContent = 'AI Wins!';
+                    messageText.textContent = 'The AI has outsmarted you. Try again!';
+                } else {
+                    messageTitle.textContent = 'Player 2 Wins!';
+                    messageText.textContent = 'Congratulations! You have captured all opponent pieces.';
+                }
+            }
+        }
+
+        // Set game mode
+        function setGameMode(mode) {
+            gameState.gameMode = mode;
+            
+            if (mode === 'single') {
+                singlePlayerBtn.classList.add('active');
+                multiPlayerBtn.classList.remove('active');
+                difficultyContainer.style.display = 'flex';
+            } else {
+                singlePlayerBtn.classList.remove('active');
+                multiPlayerBtn.classList.add('active');
+                difficultyContainer.style.display = 'none';
+            }
+            
+            // Start a new game when changing mode
+            createBoard();
+        }
+
+        // Undo the last move
+        function undoMove() {
+            if (gameState.moveHistory.length === 0) return;
+            
+            const lastState = gameState.moveHistory.pop();
+            gameState.board = lastState.board;
+            gameState.currentPlayer = lastState.currentPlayer;
+            gameState.player1Score = lastState.player1Score;
+            gameState.player2Score = lastState.player2Score;
+            gameState.gameOver = false;
+            
+            // Re-render the board
+            renderBoardFromState();
+            updateUI();
+        }
+
+        // Render the board from the current state
+        function renderBoardFromState() {
+            // Clear the board
+            const cells = document.querySelectorAll('.cell');
+            cells.forEach(cell => {
+                const piece = cell.querySelector('.piece');
+                if (piece) piece.remove();
+            });
+            
+            // Add pieces based on the state
+            for (let row = 0; row < 8; row++) {
+                for (let col = 0; col < 8; col++) {
+                    const piece = gameState.board[row][col];
+                    if (piece) {
+                        const cell = document.querySelector(`.cell[data-row="${row}"][data-col="${col}"]`);
+                        const pieceElement = createPiece(piece.player, piece.king);
+                        cell.appendChild(pieceElement);
+                    }
+                }
+            }
+        }
+
+        // Update the UI
+        function updateUI() {
+            // Update player turn
+            playerTurnElement.textContent = gameState.currentPlayer === 1 ? 
+                "Player 1's Turn" : (gameState.gameMode === 'single' ? "AI's Turn" : "Player 2's Turn");
+            playerTurnElement.className = `player-turn player${gameState.currentPlayer}`;
+            
+            // Update scores
+            player1ScoreElement.textContent = gameState.player1Score;
+            player2ScoreElement.textContent = gameState.player2Score;
+            
+            // Enable/disable undo button
+            undoBtn.disabled = gameState.moveHistory.length === 0;
+        }
+
+        // Initialize the game when the page loads
+        window.addEventListener('DOMContentLoaded', initGame);
+    </script>
+</body>
+</html>
