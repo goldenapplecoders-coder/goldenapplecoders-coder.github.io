@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cross DJ - Virtual DJ Studio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #8e44ad;
+            --secondary: #3498db;
+            --dark: #1a1a2e;
+            --darker: #16213e;
+            --light: #f5f5f5;
+            --accent: #e74c3c;
+            --success: #2ecc71;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--dark), var(--darker));
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding: 20px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo h1 {
+            font-size: 2rem;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+        }
+
+        .logo i {
+            font-size: 2.5rem;
+            color: var(--primary);
+        }
+
+        .status-bar {
+            display: flex;
+            gap: 20px;
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .status-item i {
+            color: var(--success);
+        }
+
+        .main-content {
+            display: flex;
+            flex: 1;
+            gap: 20px;
+        }
+
+        .library-panel {
+            flex: 0 0 300px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .panel-header h2 {
+            font-size: 1.3rem;
+            color: var(--secondary);
+        }
+
+        .search-box {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 8px 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-box input {
+            background: transparent;
+            border: none;
+            color: var(--light);
+            width: 100%;
+            outline: none;
+        }
+
+        .library-list {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .track-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 12px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .track-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .track-item.active {
+            background: rgba(142, 68, 173, 0.3);
+            border-left: 3px solid var(--primary);
+        }
+
+        .track-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .track-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+
+        .dj-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .decks-container {
+            display: flex;
+            gap: 20px;
+            flex: 1;
+        }
+
+        .deck {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .deck-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .deck-title {
+            font-size: 1.2rem;
+            color: var(--secondary);
+        }
+
+        .waveform {
+            height: 100px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .waveform canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        .playhead {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 2px;
+            height: 100%;
+            background: var(--accent);
+            z-index: 10;
+        }
+
+        .deck-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .play-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .control-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.3s;
+            border: none;
+            color: var(--light);
+            font-size: 1.2rem;
+        }
+
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .control-btn.play {
+            background: var(--success);
+        }
+
+        .control-btn.cue {
+            background: var(--accent);
+        }
+
+        .pitch-control {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .slider-container label {
+            font-size: 0.9rem;
+            color: #aaa;
+            width: 60px;
+        }
+
+        input[type="range"] {
+            flex: 1;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--secondary);
+            cursor: pointer;
+        }
+
+        .eq-controls {
+            display: flex;
+            gap: 15px;
+        }
+
+        .eq-band {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .eq-band label {
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+
+        .eq-slider {
+            height: 120px;
+            -webkit-appearance: slider-vertical;
+            width: 8px;
+        }
+
+        .mixer-panel {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            gap: 20px;
+        }
+
+        .channel-fader {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .channel-fader label {
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+        .crossfader-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            width: 100px;
+        }
+
+        .crossfader {
+            height: 120px;
+            -webkit-appearance: slider-vertical;
+            width: 8px;
+        }
+
+        .effects-panel {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .effects-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .effect-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            color: var(--light);
+            cursor: pointer;
+            transition: background 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .effect-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .effect-btn.active {
+            background: rgba(142, 68, 173, 0.3);
+        }
+
+        .effect-btn i {
+            font-size: 1.5rem;
+            color: var(--secondary);
+        }
+
+        .bpm-display {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--success);
+        }
+
+        footer {
+            margin-top: 20px;
+            padding: 15px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 1200px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .library-panel {
+                flex: 0 0 auto;
+                max-height: 300px;
+            }
+            
+            .decks-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-compact-disc"></i>
+                <h1>Cross DJ</h1>
+            </div>
+            <div class="status-bar">
+                <div class="status-item">
+                    <i class="fas fa-circle"></i>
+                    <span>Online</span>
+                </div>
+                <div class="status-item">
+                    <i class="fas fa-microchip"></i>
+                    <span>CPU: 24%</span>
+                </div>
+                <div class="status-item">
+                    <i class="fas fa-hdd"></i>
+                    <span>Storage: 2.3GB Free</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <div class="library-panel">
+                <div class="panel-header">
+                    <h2>Music Library</h2>
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search tracks...">
+                    </div>
+                </div>
+                <div class="library-list">
+                    <div class="track-item active">
+                        <div class="track-title">Deep House Groove</div>
+                        <div class="track-info">
+                            <span>128 BPM</span>
+                            <span>4:32</span>
+                        </div>
+                    </div>
+                    <div class="track-item">
+                        <div class="track-title">Techno Revolution</div>
+                        <div class="track-info">
+                            <span>135 BPM</span>
+                            <span>5:15</span>
+                        </div>
+                    </div>
+                    <div class="track-item">
+                        <div class="track-title">Trance Energy</div>
+                        <div class="track-info">
+                            <span>140 BPM</span>
+                            <span>6:42</span>
+                        </div>
+                    </div>
+                    <div class="track-item">
+                        <div class="track-title">Dubstep Bass</div>
+                        <div class="track-info">
+                            <span>70 BPM</span>
+                            <span>3:58</span>
+                        </div>
+                    </div>
+                    <div class="track-item">
+                        <div class="track-title">Hip Hop Beat</div>
+                        <div class="track-info">
+                            <span>95 BPM</span>
+                            <span>4:12</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dj-panel">
+                <div class="decks-container">
+                    <div class="deck">
+                        <div class="deck-header">
+                            <div class="deck-title">Deck A</div>
+                            <div class="bpm-display">
+                                <span>128.0</span>
+                                <i class="fas fa-tachometer-alt"></i>
+                            </div>
+                        </div>
+                        <div class="waveform">
+                            <div class="playhead"></div>
+                            <!-- Waveform would be drawn by JavaScript -->
+                        </div>
+                        <div class="deck-controls">
+                            <div class="play-controls">
+                                <button class="control-btn cue">
+                                    <i class="fas fa-undo"></i>
+                                </button>
+                                <button class="control-btn play">
+                                    <i class="fas fa-play"></i>
+                                </button>
+                                <button class="control-btn sync">
+                                    <i class="fas fa-sync"></i>
+                                </button>
+                            </div>
+                            <div class="pitch-control">
+                                <div class="slider-container">
+                                    <label>Pitch</label>
+                                    <input type="range" min="-8" max="8" value="0" step="0.1">
+                                </div>
+                                <div class="slider-container">
+                                    <label>Gain</label>
+                                    <input type="range" min="0" max="100" value="80">
+                                </div>
+                            </div>
+                            <div class="eq-controls">
+                                <div class="eq-band">
+                                    <label>Low</label>
+                                    <input type="range" class="eq-slider" min="-24" max="12" value="0">
+                                </div>
+                                <div class="eq-band">
+                                    <label>Mid</label>
+                                    <input type="range" class="eq-slider" min="-24" max="12" value="0">
+                                </div>
+                                <div class="eq-band">
+                                    <label>High</label>
+                                    <input type="range" class="eq-slider" min="-24" max="12" value="0">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="deck">
+                        <div class="deck-header">
+                            <div class="deck-title">Deck B</div>
+                            <div class="bpm-display">
+                                <span>128.0</span>
+                                <i class="fas fa-tachometer-alt"></i>
+                            </div>
+                        </div>
+                        <div class="waveform">
+                            <div class="playhead"></div>
+                            <!-- Waveform would be drawn by JavaScript -->
+                        </div>
+                        <div class="deck-controls">
+                            <div class="play-controls">
+                                <button class="control-btn cue">
+                                    <i class="fas fa-undo"></i>
+                                </button>
+                                <button class="control-btn play">
+                                    <i class="fas fa-play"></i>
+                                </button>
+                                <button class="control-btn sync">
+                                    <i class="fas fa-sync"></i>
+                                </button>
+                            </div>
+                            <div class="pitch-control">
+                                <div class="slider-container">
+                                    <label>Pitch</label>
+                                    <input type="range" min="-8" max="8" value="0" step="0.1">
+                                </div>
+                                <div class="slider-container">
+                                    <label>Gain</label>
+                                    <input type="range" min="0" max="100" value="80">
+                                </div>
+                            </div>
+                            <div class="eq-controls">
+                                <div class="eq-band">
+                                    <label>Low</label>
+                                    <input type="range" class="eq-slider" min="-24" max="12" value="0">
+                                </div>
+                                <div class="eq-band">
+                                    <label>Mid</label>
+                                    <input type="range" class="eq-slider" min="-24" max="12" value="0">
+                                </div>
+                                <div class="eq-band">
+                                    <label>High</label>
+                                    <input type="range" class="eq-slider" min="-24" max="12" value="0">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mixer-panel">
+                    <div class="channel-fader">
+                        <label>Deck A</label>
+                        <input type="range" class="eq-slider" min="0" max="100" value="80">
+                    </div>
+                    <div class="crossfader-container">
+                        <label>Crossfader</label>
+                        <input type="range" class="crossfader" min="0" max="100" value="50">
+                    </div>
+                    <div class="channel-fader">
+                        <label>Deck B</label>
+                        <input type="range" class="eq-slider" min="0" max="100" value="80">
+                    </div>
+                </div>
+
+                <div class="effects-panel">
+                    <div class="panel-header">
+                        <h2>Effects & Samples</h2>
+                    </div>
+                    <div class="effects-grid">
+                        <button class="effect-btn">
+                            <i class="fas fa-echo"></i>
+                            <span>Delay</span>
+                        </button>
+                        <button class="effect-btn">
+                            <i class="fas fa-redo-alt"></i>
+                            <span>Reverb</span>
+                        </button>
+                        <button class="effect-btn">
+                            <i class="fas fa-filter"></i>
+                            <span>Filter</span>
+                        </button>
+                        <button class="effect-btn">
+                            <i class="fas fa-compress-arrows-alt"></i>
+                            <span>Flanger</span>
+                        </button>
+                        <button class="effect-btn">
+                            <i class="fas fa-drum"></i>
+                            <span>Kick</span>
+                        </button>
+                        <button class="effect-btn">
+                            <i class="fas fa-drum"></i>
+                            <span>Snare</span>
+                        </button>
+                        <button class="effect-btn">
+                            <i class="fas fa-drum"></i>
+                            <span>Hi-Hat</span>
+                        </button>
+                        <button class="effect-btn">
+                            <i class="fas fa-bolt"></i>
+                            <span>FX 1</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Cross DJ Virtual Studio • Works Online & Offline • Professional DJ Software</p>
+        </footer>
+    </div>
+
+    <script>
+        // Initialize the DJ application
+        document.addEventListener('DOMContentLoaded', function() {
+            // Track library functionality
+            const trackItems = document.querySelectorAll('.track-item');
+            trackItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    trackItems.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // In a real implementation, this would load the track into a deck
+                    console.log('Track selected:', this.querySelector('.track-title').textContent);
+                });
+            });
+            
+            // Deck play/pause functionality
+            const playButtons = document.querySelectorAll('.control-btn.play');
+            playButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const icon = this.querySelector('i');
+                    if (icon.classList.contains('fa-play')) {
+                        icon.classList.remove('fa-play');
+                        icon.classList.add('fa-pause');
+                        this.style.background = 'var(--accent)';
+                    } else {
+                        icon.classList.remove('fa-pause');
+                        icon.classList.add('fa-play');
+                        this.style.background = 'var(--success)';
+                    }
+                    
+                    // In a real implementation, this would play/pause the deck
+                    console.log('Play/Pause toggled');
+                });
+            });
+            
+            // Cue button functionality
+            const cueButtons = document.querySelectorAll('.control-btn.cue');
+            cueButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // In a real implementation, this would set a cue point
+                    console.log('Cue point set');
+                });
+            });
+            
+            // Sync button functionality
+            const syncButtons = document.querySelectorAll('.control-btn.sync');
+            syncButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // In a real implementation, this would sync the BPM of both decks
+                    console.log('BPM Synced');
+                });
+            });
+            
+            // Effect buttons functionality
+            const effectButtons = document.querySelectorAll('.effect-btn');
+            effectButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    this.classList.toggle('active');
+                    
+                    // In a real implementation, this would toggle the effect
+                    console.log('Effect toggled:', this.querySelector('span').textContent);
+                });
+            });
+            
+            // Simulate waveform visualization
+            function drawWaveforms() {
+                const waveforms = document.querySelectorAll('.waveform');
+                
+                waveforms.forEach(waveform => {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = waveform.clientWidth;
+                    canvas.height = waveform.clientHeight;
+                    waveform.appendChild(canvas);
+                    
+                    const ctx = canvas.getContext('2d');
+                    const width = canvas.width;
+                    const height = canvas.height;
+                    
+                    // Draw a simple waveform visualization
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+                    ctx.fillRect(0, 0, width, height);
+                    
+                    ctx.strokeStyle = 'rgba(52, 152, 219, 0.7)';
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    
+                    const centerY = height / 2;
+                    const amplitude = height / 3;
+                    
+                    for (let x = 0; x < width; x++) {
+                        const y = centerY + Math.sin(x * 0.05) * amplitude * 
+                                 Math.sin(x * 0.01) * Math.random();
+                        if (x === 0) {
+                            ctx.moveTo(x, y);
+                        } else {
+                            ctx.lineTo(x, y);
+                        }
+                    }
+                    
+                    ctx.stroke();
+                });
+            }
+            
+            drawWaveforms();
+            
+            // Simulate playhead movement
+            function animatePlayheads() {
+                const playheads = document.querySelectorAll('.playhead');
+                let position = 0;
+                
+                setInterval(() => {
+                    position = (position + 1) % 100;
+                    playheads.forEach(playhead => {
+                        playhead.style.left = `${position}%`;
+                    });
+                }, 50);
+            }
+            
+            animatePlayheads();
+            
+            // Handle slider changes
+            const sliders = document.querySelectorAll('input[type="range"]');
+            sliders.forEach(slider => {
+                slider.addEventListener('input', function() {
+                    // In a real implementation, this would adjust the corresponding parameter
+                    console.log(`${this.previousElementSibling.textContent}: ${this.value}`);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
