@@ -3,9 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cross DJ - Professional Virtual DJ Studio</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Voice Changer - 50+ Voice Effects</title>
     <style>
+        :root {
+            --primary-color: #4a6ee0;
+            --secondary-color: #6c5ce7;
+            --accent-color: #fd79a8;
+            --dark-color: #2d3436;
+            --light-color: #f5f6fa;
+            --success-color: #00b894;
+            --danger-color: #d63031;
+            --border-radius: 10px;
+            --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -13,443 +24,261 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        :root {
-            --primary: #8e44ad;
-            --secondary: #3498db;
-            --dark: #1a1a2e;
-            --darker: #16213e;
-            --light: #f5f5f5;
-            --accent: #e74c3c;
-            --success: #2ecc71;
-            --warning: #f39c12;
-        }
-
         body {
-            background: linear-gradient(135deg, var(--dark), var(--darker));
-            color: var(--light);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--dark-color);
             min-height: 100vh;
-            overflow-x: hidden;
+            padding: 20px;
         }
 
         .container {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            padding: 20px;
-            max-width: 1600px;
+            max-width: 1200px;
             margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
         }
 
         header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 0;
-            margin-bottom: 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 20px;
+            text-align: center;
         }
 
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .logo h1 {
-            font-size: 2rem;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 700;
-        }
-
-        .logo i {
+        h1 {
             font-size: 2.5rem;
-            color: var(--primary);
+            margin-bottom: 10px;
         }
 
-        .status-bar {
-            display: flex;
-            gap: 20px;
-            font-size: 0.9rem;
-            color: #aaa;
-        }
-
-        .status-item {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .status-item i {
-            color: var(--success);
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
         }
 
         .main-content {
             display: flex;
-            flex: 1;
+            flex-wrap: wrap;
+            padding: 20px;
             gap: 20px;
         }
 
-        .library-panel {
-            flex: 0 0 320px;
-            background: rgba(0, 0, 0, 0.4);
-            border-radius: 10px;
+        .input-section, .effects-section, .output-section {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            border-radius: var(--border-radius);
             padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
+            box-shadow: var(--box-shadow);
         }
 
-        .panel-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .panel-header h2 {
-            font-size: 1.3rem;
-            color: var(--secondary);
-        }
-
-        .file-input-container {
+        .section-title {
+            color: var(--primary-color);
             margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--light-color);
         }
 
-        #file-input {
-            display: none;
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
         }
 
-        .file-input-label {
-            display: block;
-            background: var(--primary);
-            color: white;
+        button {
             padding: 12px 20px;
-            border-radius: 5px;
-            text-align: center;
-            cursor: pointer;
-            transition: background 0.3s;
-            font-weight: 500;
-        }
-
-        .file-input-label:hover {
-            background: #7d3c98;
-        }
-
-        .file-input-label i {
-            margin-right: 8px;
-        }
-
-        .search-box {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 8px 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-        .search-box input {
-            background: transparent;
             border: none;
-            color: var(--light);
-            width: 100%;
-            outline: none;
-        }
-
-        .library-list {
-            flex: 1;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            max-height: 400px;
-        }
-
-        .empty-playlist {
-            text-align: center;
-            padding: 30px;
-            color: #777;
-        }
-
-        .empty-playlist i {
-            font-size: 3rem;
-            margin-bottom: 15px;
-            color: #555;
-        }
-
-        .track-item {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
-            padding: 12px;
+            border-radius: var(--border-radius);
             cursor: pointer;
-            transition: background 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .track-item:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .track-item.active {
-            background: rgba(142, 68, 173, 0.3);
-            border-left: 3px solid var(--primary);
-        }
-
-        .track-item i {
-            color: var(--secondary);
-            font-size: 1.2rem;
-        }
-
-        .track-info {
-            flex: 1;
-        }
-
-        .track-title {
             font-weight: 600;
-            margin-bottom: 5px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .track-details {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.8rem;
-            color: #aaa;
-        }
-
-        .dj-panel {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .decks-container {
-            display: flex;
-            gap: 20px;
-            flex: 1;
-        }
-
-        .deck {
-            flex: 1;
-            background: rgba(0, 0, 0, 0.4);
-            border-radius: 10px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .deck-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .deck-title {
-            font-size: 1.2rem;
-            color: var(--secondary);
-        }
-
-        .waveform {
-            height: 100px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .waveform canvas {
-            width: 100%;
-            height: 100%;
-        }
-
-        .playhead {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 2px;
-            height: 100%;
-            background: var(--accent);
-            z-index: 10;
-        }
-
-        .deck-controls {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .play-controls {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-        }
-
-        .control-btn {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
-            transition: background 0.3s;
-            border: none;
-            color: var(--light);
-            font-size: 1.2rem;
-        }
-
-        .control-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .control-btn.play {
-            background: var(--success);
-        }
-
-        .control-btn.play.playing {
-            background: var(--accent);
-        }
-
-        .control-btn.cue {
-            background: var(--warning);
-        }
-
-        .pitch-control {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .slider-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .slider-container label {
-            font-size: 0.9rem;
-            color: #aaa;
-            width: 60px;
-        }
-
-        input[type="range"] {
-            flex: 1;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 3px;
-            outline: none;
-            -webkit-appearance: none;
-        }
-
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: var(--secondary);
-            cursor: pointer;
-        }
-
-        .eq-controls {
-            display: flex;
-            gap: 15px;
-        }
-
-        .eq-band {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
             gap: 8px;
         }
 
-        .eq-band label {
-            font-size: 0.8rem;
-            color: #aaa;
+        button.primary {
+            background-color: var(--primary-color);
+            color: white;
         }
 
-        .eq-slider {
-            height: 120px;
-            -webkit-appearance: slider-vertical;
-            width: 8px;
+        button.primary:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
         }
 
-        .mixer-panel {
-            background: rgba(0, 0, 0, 0.4);
-            border-radius: 10px;
-            padding: 20px;
-            display: flex;
-            gap: 20px;
+        button.secondary {
+            background-color: var(--light-color);
+            color: var(--dark-color);
         }
 
-        .channel-fader {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        button.secondary:hover {
+            background-color: #e1e2e6;
+        }
+
+        button.success {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        button.success:hover {
+            background-color: #00a085;
+        }
+
+        button.danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        button.danger:hover {
+            background-color: #c23616;
+        }
+
+        button:disabled {
+            background-color: #b2bec3;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-input-wrapper input[type=file] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-input-button {
+            width: 100%;
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .file-input-button:hover {
+            background-color: #e84393;
+        }
+
+        .audio-visualizer {
+            width: 100%;
+            height: 100px;
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .visualizer-canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        .effects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             gap: 10px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 10px 0;
         }
 
-        .channel-fader label {
-            font-size: 0.9rem;
-            color: #aaa;
+        .effect-button {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            padding: 10px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
         }
 
-        .crossfader-container {
+        .effect-button:hover {
+            background-color: #e1e2e6;
+            transform: translateY(-2px);
+        }
+
+        .effect-button.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--secondary-color);
+        }
+
+        .preview-section {
+            margin: 20px 0;
+        }
+
+        .audio-player {
+            width: 100%;
+            margin: 10px 0;
+        }
+
+        .download-section {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            width: 100px;
-        }
-
-        .crossfader {
-            height: 120px;
-            -webkit-appearance: slider-vertical;
-            width: 8px;
-        }
-
-        .bpm-display {
-            display: flex;
-            align-items: center;
             justify-content: center;
-            gap: 10px;
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--success);
+            margin-top: 20px;
+        }
+
+        .download-button {
+            background-color: var(--success-color);
+            color: white;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+        }
+
+        .download-button:hover {
+            background-color: #00a085;
+            transform: translateY(-2px);
+        }
+
+        .status-message {
+            padding: 10px;
+            border-radius: var(--border-radius);
+            margin: 10px 0;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .status-success {
+            background-color: rgba(0, 184, 148, 0.2);
+            color: var(--success-color);
+        }
+
+        .status-error {
+            background-color: rgba(214, 48, 49, 0.2);
+            color: var(--danger-color);
+        }
+
+        .status-info {
+            background-color: rgba(74, 110, 224, 0.2);
+            color: var(--primary-color);
         }
 
         footer {
-            margin-top: 20px;
-            padding: 15px 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
             text-align: center;
-            color: #aaa;
-            font-size: 0.9rem;
+            padding: 20px;
+            color: white;
+            margin-top: 20px;
         }
 
-        @media (max-width: 1200px) {
+        @media (max-width: 768px) {
             .main-content {
                 flex-direction: column;
             }
             
-            .library-panel {
-                flex: 0 0 auto;
-                max-height: 300px;
-            }
-            
-            .decks-container {
-                flex-direction: column;
+            .effects-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
             }
         }
     </style>
@@ -457,653 +286,534 @@
 <body>
     <div class="container">
         <header>
-            <div class="logo">
-                <i class="fas fa-compact-disc"></i>
-                <h1>Cross DJ</h1>
-            </div>
-            <div class="status-bar">
-                <div class="status-item">
-                    <i class="fas fa-circle"></i>
-                    <span>Online</span>
-                </div>
-                <div class="status-item">
-                    <i class="fas fa-microchip"></i>
-                    <span>CPU: 24%</span>
-                </div>
-                <div class="status-item">
-                    <i class="fas fa-hdd"></i>
-                    <span>Storage: 2.3GB Free</span>
-                </div>
-            </div>
+            <h1>Voice Changer</h1>
+            <p class="subtitle">Transform your voice with 50+ amazing effects</p>
         </header>
 
         <div class="main-content">
-            <div class="library-panel">
-                <div class="panel-header">
-                    <h2>Music Library</h2>
-                </div>
-                
-                <div class="file-input-container">
-                    <label for="file-input" class="file-input-label">
-                        <i class="fas fa-folder-open"></i> Select Music Files
-                    </label>
-                    <input type="file" id="file-input" accept="audio/*" multiple>
-                </div>
-                
-                <div class="search-box">
-                    <i class="fas fa-search"></i>
-                    <input type="text" id="search-input" placeholder="Search tracks...">
-                </div>
-                
-                <div class="library-list" id="playlist">
-                    <div class="empty-playlist">
-                        <i class="fas fa-music"></i>
-                        <p>Your playlist is empty</p>
-                        <p>Select music files to get started</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="dj-panel">
-                <div class="decks-container">
-                    <div class="deck" id="deck-a">
-                        <div class="deck-header">
-                            <div class="deck-title">Deck A</div>
-                            <div class="bpm-display">
-                                <span id="bpm-a">--</span>
-                                <i class="fas fa-tachometer-alt"></i>
-                            </div>
-                        </div>
-                        <div class="waveform" id="waveform-a">
-                            <div class="playhead" id="playhead-a"></div>
-                        </div>
-                        <div class="deck-controls">
-                            <div class="play-controls">
-                                <button class="control-btn cue" id="cue-a">
-                                    <i class="fas fa-undo"></i>
-                                </button>
-                                <button class="control-btn play" id="play-a">
-                                    <i class="fas fa-play"></i>
-                                </button>
-                                <button class="control-btn sync" id="sync-a">
-                                    <i class="fas fa-sync"></i>
-                                </button>
-                            </div>
-                            <div class="pitch-control">
-                                <div class="slider-container">
-                                    <label>Pitch</label>
-                                    <input type="range" id="pitch-a" min="-8" max="8" value="0" step="0.1">
-                                </div>
-                                <div class="slider-container">
-                                    <label>Gain</label>
-                                    <input type="range" id="gain-a" min="0" max="100" value="80">
-                                </div>
-                            </div>
-                            <div class="eq-controls">
-                                <div class="eq-band">
-                                    <label>Low</label>
-                                    <input type="range" class="eq-slider" id="eq-low-a" min="-24" max="12" value="0">
-                                </div>
-                                <div class="eq-band">
-                                    <label>Mid</label>
-                                    <input type="range" class="eq-slider" id="eq-mid-a" min="-24" max="12" value="0">
-                                </div>
-                                <div class="eq-band">
-                                    <label>High</label>
-                                    <input type="range" class="eq-slider" id="eq-high-a" min="-24" max="12" value="0">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="deck" id="deck-b">
-                        <div class="deck-header">
-                            <div class="deck-title">Deck B</div>
-                            <div class="bpm-display">
-                                <span id="bpm-b">--</span>
-                                <i class="fas fa-tachometer-alt"></i>
-                            </div>
-                        </div>
-                        <div class="waveform" id="waveform-b">
-                            <div class="playhead" id="playhead-b"></div>
-                        </div>
-                        <div class="deck-controls">
-                            <div class="play-controls">
-                                <button class="control-btn cue" id="cue-b">
-                                    <i class="fas fa-undo"></i>
-                                </button>
-                                <button class="control-btn play" id="play-b">
-                                    <i class="fas fa-play"></i>
-                                </button>
-                                <button class="control-btn sync" id="sync-b">
-                                    <i class="fas fa-sync"></i>
-                                </button>
-                            </div>
-                            <div class="pitch-control">
-                                <div class="slider-container">
-                                    <label>Pitch</label>
-                                    <input type="range" id="pitch-b" min="-8" max="8" value="0" step="0.1">
-                                </div>
-                                <div class="slider-container">
-                                    <label>Gain</label>
-                                    <input type="range" id="gain-b" min="0" max="100" value="80">
-                                </div>
-                            </div>
-                            <div class="eq-controls">
-                                <div class="eq-band">
-                                    <label>Low</label>
-                                    <input type="range" class="eq-slider" id="eq-low-b" min="-24" max="12" value="0">
-                                </div>
-                                <div class="eq-band">
-                                    <label>Mid</label>
-                                    <input type="range" class="eq-slider" id="eq-mid-b" min="-24" max="12" value="0">
-                                </div>
-                                <div class="eq-band">
-                                    <label>High</label>
-                                    <input type="range" class="eq-slider" id="eq-high-b" min="-24" max="12" value="0">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <section class="input-section">
+                <h2 class="section-title">Input Audio</h2>
+                <div class="button-group">
+                    <button id="recordButton" class="primary">
+                        <i class="icon">🎤</i> Start Recording
+                    </button>
+                    <button id="stopButton" class="danger" disabled>
+                        <i class="icon">⏹️</i> Stop Recording
+                    </button>
                 </div>
 
-                <div class="mixer-panel">
-                    <div class="channel-fader">
-                        <label>Deck A</label>
-                        <input type="range" class="eq-slider" id="volume-a" min="0" max="100" value="80">
-                    </div>
-                    <div class="crossfader-container">
-                        <label>Crossfader</label>
-                        <input type="range" class="crossfader" id="crossfader" min="0" max="100" value="50">
-                    </div>
-                    <div class="channel-fader">
-                        <label>Deck B</label>
-                        <input type="range" class="eq-slider" id="volume-b" min="0" max="100" value="80">
-                    </div>
+                <div class="file-input-wrapper">
+                    <button class="file-input-button">
+                        <i class="icon">📁</i> Select Audio File
+                    </button>
+                    <input type="file" id="fileInput" accept="audio/*">
                 </div>
-            </div>
+
+                <div class="audio-visualizer">
+                    <canvas id="visualizer" class="visualizer-canvas"></canvas>
+                </div>
+
+                <div id="statusMessage" class="status-message status-info">
+                    Please record audio or select a file to get started
+                </div>
+            </section>
+
+            <section class="effects-section">
+                <h2 class="section-title">Voice Effects</h2>
+                <div class="effects-grid" id="effectsGrid">
+                    <!-- Effect buttons will be generated by JavaScript -->
+                </div>
+            </section>
+
+            <section class="output-section">
+                <h2 class="section-title">Preview & Download</h2>
+                <div class="preview-section">
+                    <audio id="audioPlayer" class="audio-player" controls></audio>
+                </div>
+                <div class="download-section">
+                    <button id="downloadButton" class="download-button" disabled>
+                        <i class="icon">💾</i> Download Modified Audio
+                    </button>
+                </div>
+            </section>
         </div>
-
-        <footer>
-            <p>Cross DJ Virtual Studio • Works Online & Offline • Professional DJ Software</p>
-        </footer>
     </div>
 
+    <footer>
+        <p>Voice Changer App &copy; 2023 - Transform your voice with 50+ amazing effects</p>
+    </footer>
+
     <script>
-        // Global variables
-        let playlist = [];
+        // DOM Elements
+        const recordButton = document.getElementById('recordButton');
+        const stopButton = document.getElementById('stopButton');
+        const fileInput = document.getElementById('fileInput');
+        const visualizer = document.getElementById('visualizer');
+        const effectsGrid = document.getElementById('effectsGrid');
+        const audioPlayer = document.getElementById('audioPlayer');
+        const downloadButton = document.getElementById('downloadButton');
+        const statusMessage = document.getElementById('statusMessage');
+
+        // Audio Context and Variables
         let audioContext;
-        let deckA = {
-            audio: null,
-            source: null,
-            isPlaying: false,
-            currentTrack: null,
-            startTime: 0,
-            pausedAt: 0,
-            gainNode: null,
-            playbackRate: 1.0
-        };
-        let deckB = {
-            audio: null,
-            source: null,
-            isPlaying: false,
-            currentTrack: null,
-            startTime: 0,
-            pausedAt: 0,
-            gainNode: null,
-            playbackRate: 1.0
-        };
+        let analyser;
+        let mediaRecorder;
+        let audioChunks = [];
+        let originalAudioBuffer;
+        let modifiedAudioBuffer;
+        let currentEffect = 'original';
+        let isRecording = false;
+        let visualizationInterval;
 
-        // Initialize the DJ application
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize Web Audio API
-            try {
-                audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            } catch (e) {
-                console.error('Web Audio API is not supported in this browser', e);
-                alert('Web Audio API is not supported in your browser. Please use a modern browser like Chrome, Firefox, or Edge.');
-            }
+        // Voice effects list (50 effects)
+        const voiceEffects = [
+            { id: 'original', name: 'Original', description: 'No effect applied' },
+            { id: 'deep', name: 'Deep Voice', description: 'Lower pitch voice' },
+            { id: 'high', name: 'High Voice', description: 'Higher pitch voice' },
+            { id: 'robot', name: 'Robot', description: 'Robotic voice effect' },
+            { id: 'alien', name: 'Alien', description: 'Extraterrestrial voice' },
+            { id: 'bee', name: 'Bee', description: 'Buzzing bee effect' },
+            { id: 'helium', name: 'Helium', description: 'High-pitched helium voice' },
+            { id: 'monster', name: 'Monster', description: 'Scary monster voice' },
+            { id: 'chipmunk', name: 'Chipmunk', description: 'Fast and high-pitched' },
+            { id: 'slow', name: 'Slow Motion', description: 'Slow and deep voice' },
+            { id: 'fast', name: 'Fast Forward', description: 'Fast and high-pitched' },
+            { id: 'echo', name: 'Echo', description: 'Echo effect' },
+            { id: 'reverb', name: 'Reverb', description: 'Reverberation effect' },
+            { id: 'telephone', name: 'Telephone', description: 'Old telephone effect' },
+            { id: 'radio', name: 'Radio', description: 'AM radio effect' },
+            { id: 'underwater', name: 'Underwater', description: 'Underwater sound' },
+            { id: 'tunnel', name: 'Tunnel', description: 'Tunnel reverb effect' },
+            { id: 'space', name: 'Space', description: 'Cosmic space effect' },
+            { id: 'whisper', name: 'Whisper', description: 'Soft whisper effect' },
+            { id: 'megaphone', name: 'Megaphone', description: 'Megaphone effect' },
+            { id: 'karaoke', name: 'Karaoke', description: 'Karaoke style voice' },
+            { id: 'choir', name: 'Choir', description: 'Choir effect' },
+            { id: 'duet', name: 'Duet', description: 'Duet with yourself' },
+            { id: 'harmony', name: 'Harmony', description: 'Harmonized voice' },
+            { id: 'vibrato', name: 'Vibrato', description: 'Vibrato effect' },
+            { id: 'tremolo', name: 'Tremolo', description: 'Tremolo effect' },
+            { id: 'chorus', name: 'Chorus', description: 'Chorus effect' },
+            { id: 'flanger', name: 'Flanger', description: 'Flanger effect' },
+            { id: 'phaser', name: 'Phaser', description: 'Phaser effect' },
+            { id: 'distortion', name: 'Distortion', description: 'Distorted voice' },
+            { id: 'fuzz', name: 'Fuzz', description: 'Fuzz effect' },
+            { id: 'overdrive', name: 'Overdrive', description: 'Overdrive effect' },
+            { id: 'bitcrusher', name: 'Bit Crusher', description: 'Low bitrate effect' },
+            { id: 'vinyl', name: 'Vinyl', description: 'Vinyl record effect' },
+            { id: 'tape', name: 'Tape', description: 'Cassette tape effect' },
+            { id: 'gramophone', name: 'Gramophone', description: 'Old gramophone effect' },
+            { id: 'male', name: 'Male Voice', description: 'Masculine voice' },
+            { id: 'female', name: 'Female Voice', description: 'Feminine voice' },
+            { id: 'child', name: 'Child Voice', description: 'Child-like voice' },
+            { id: 'old', name: 'Old Person', description: 'Elderly voice' },
+            { id: 'demon', name: 'Demon', description: 'Evil demon voice' },
+            { id: 'angel', name: 'Angel', description: 'Heavenly angel voice' },
+            { id: 'ghost', name: 'Ghost', description: 'Haunting ghost voice' },
+            { id: 'vampire', name: 'Vampire', description: 'Vampire voice' },
+            { id: 'werewolf', name: 'Werewolf', description: 'Werewolf growl' },
+            { id: 'dinosaur', name: 'Dinosaur', description: 'Dinosaur roar' },
+            { id: 'squirrel', name: 'Squirrel', description: 'Squirrel chatter' },
+            { id: 'duck', name: 'Duck', description: 'Duck quack voice' },
+            { id: 'cat', name: 'Cat', description: 'Meowing voice' },
+            { id: 'dog', name: 'Dog', description: 'Barking voice' }
+        ];
 
-            // File input functionality
-            const fileInput = document.getElementById('file-input');
-            fileInput.addEventListener('change', handleFileSelect);
-
-            // Search functionality
-            const searchInput = document.getElementById('search-input');
-            searchInput.addEventListener('input', filterPlaylist);
-
-            // Deck A controls
-            document.getElementById('play-a').addEventListener('click', () => togglePlay('a'));
-            document.getElementById('cue-a').addEventListener('click', () => cueTrack('a'));
-            document.getElementById('sync-a').addEventListener('click', () => syncTracks());
-            
-            // Deck B controls
-            document.getElementById('play-b').addEventListener('click', () => togglePlay('b'));
-            document.getElementById('cue-b').addEventListener('click', () => cueTrack('b'));
-            document.getElementById('sync-b').addEventListener('click', () => syncTracks());
-
-            // Volume controls
-            document.getElementById('volume-a').addEventListener('input', () => updateVolume('a'));
-            document.getElementById('volume-b').addEventListener('input', () => updateVolume('b'));
-            document.getElementById('crossfader').addEventListener('input', updateCrossfader);
-
-            // Pitch controls
-            document.getElementById('pitch-a').addEventListener('input', () => updatePitch('a'));
-            document.getElementById('pitch-b').addEventListener('input', () => updatePitch('b'));
-
-            // Gain controls
-            document.getElementById('gain-a').addEventListener('input', () => updateGain('a'));
-            document.getElementById('gain-b').addEventListener('input', () => updateGain('b'));
-
-            // EQ controls
-            document.getElementById('eq-low-a').addEventListener('input', () => updateEQ('a'));
-            document.getElementById('eq-mid-a').addEventListener('input', () => updateEQ('a'));
-            document.getElementById('eq-high-a').addEventListener('input', () => updateEQ('a'));
-            document.getElementById('eq-low-b').addEventListener('input', () => updateEQ('b'));
-            document.getElementById('eq-mid-b').addEventListener('input', () => updateEQ('b'));
-            document.getElementById('eq-high-b').addEventListener('input', () => updateEQ('b'));
-
-            // Initialize gain nodes
-            if (audioContext) {
-                deckA.gainNode = audioContext.createGain();
-                deckA.gainNode.connect(audioContext.destination);
-                
-                deckB.gainNode = audioContext.createGain();
-                deckB.gainNode.connect(audioContext.destination);
-                
-                // Set initial volume
-                updateVolume('a');
-                updateVolume('b');
-                updateCrossfader();
-            }
-        });
-
-        // Handle file selection
-        function handleFileSelect(event) {
-            const files = event.target.files;
-            if (files.length === 0) return;
-
-            for (let i = 0; i < files.length; i++) {
-                const file = files[i];
-                if (!file.type.startsWith('audio/')) continue;
-
-                const url = URL.createObjectURL(file);
-                
-                // Create a temporary audio element to get duration
-                const audio = new Audio();
-                audio.src = url;
-                
-                audio.addEventListener('loadedmetadata', function() {
-                    const duration = formatTime(audio.duration);
-                    
-                    playlist.push({
-                        name: file.name.replace(/\.[^/.]+$/, ""), // Remove file extension
-                        file: file,
-                        url: url,
-                        duration: duration,
-                        element: null
-                    });
-                    
-                    updatePlaylist();
-                });
-            }
-            
-            // Reset file input to allow selecting the same files again
-            event.target.value = '';
+        // Initialize the app
+        function init() {
+            createEffectButtons();
+            setupEventListeners();
+            setupAudioContext();
         }
 
-        // Update the playlist UI
-        function updatePlaylist() {
-            const playlistElement = document.getElementById('playlist');
-            
-            if (playlist.length === 0) {
-                playlistElement.innerHTML = `
-                    <div class="empty-playlist">
-                        <i class="fas fa-music"></i>
-                        <p>Your playlist is empty</p>
-                        <p>Select music files to get started</p>
-                    </div>
+        // Create effect buttons
+        function createEffectButtons() {
+            voiceEffects.forEach(effect => {
+                const button = document.createElement('div');
+                button.className = 'effect-button';
+                button.dataset.effect = effect.id;
+                button.innerHTML = `
+                    <div style="font-size: 1.5rem; margin-bottom: 5px;">${getEffectIcon(effect.id)}</div>
+                    <div>${effect.name}</div>
                 `;
+                effectsGrid.appendChild(button);
+            });
+        }
+
+        // Get icon for effect
+        function getEffectIcon(effectId) {
+            const iconMap = {
+                'original': '🎵',
+                'deep': '🔊',
+                'high': '🔊',
+                'robot': '🤖',
+                'alien': '👽',
+                'bee': '🐝',
+                'helium': '🎈',
+                'monster': '👹',
+                'chipmunk': '🐿️',
+                'slow': '🐌',
+                'fast': '⚡',
+                'echo': '📢',
+                'reverb': '🏛️',
+                'telephone': '📞',
+                'radio': '📻',
+                'underwater': '🌊',
+                'tunnel': '🚇',
+                'space': '🚀',
+                'whisper': '🤫',
+                'megaphone': '📣',
+                'karaoke': '🎤',
+                'choir': '👥',
+                'duet': '👯',
+                'harmony': '🎶',
+                'vibrato': '🎵',
+                'tremolo': '🎵',
+                'chorus': '🎵',
+                'flanger': '🎵',
+                'phaser': '🎵',
+                'distortion': '🎸',
+                'fuzz': '🎸',
+                'overdrive': '🎸',
+                'bitcrusher': '💾',
+                'vinyl': '💿',
+                'tape': '📼',
+                'gramophone': '📻',
+                'male': '👨',
+                'female': '👩',
+                'child': '👶',
+                'old': '👴',
+                'demon': '😈',
+                'angel': '😇',
+                'ghost': '👻',
+                'vampire': '🧛',
+                'werewolf': '🐺',
+                'dinosaur': '🦖',
+                'squirrel': '🐿️',
+                'duck': '🦆',
+                'cat': '🐱',
+                'dog': '🐶'
+            };
+            
+            return iconMap[effectId] || '🎵';
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            recordButton.addEventListener('click', startRecording);
+            stopButton.addEventListener('click', stopRecording);
+            fileInput.addEventListener('change', handleFileUpload);
+            downloadButton.addEventListener('click', downloadAudio);
+            
+            // Effect buttons
+            effectsGrid.addEventListener('click', (e) => {
+                if (e.target.classList.contains('effect-button') || 
+                    e.target.parentElement.classList.contains('effect-button')) {
+                    
+                    const effectButton = e.target.classList.contains('effect-button') 
+                        ? e.target 
+                        : e.target.parentElement;
+                    
+                    const effectId = effectButton.dataset.effect;
+                    selectEffect(effectId);
+                }
+            });
+        }
+
+        // Setup audio context
+        function setupAudioContext() {
+            try {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                analyser = audioContext.createAnalyser();
+                analyser.fftSize = 256;
+                
+                // Setup visualizer
+                const canvasContext = visualizer.getContext('2d');
+                const bufferLength = analyser.frequencyBinCount;
+                const dataArray = new Uint8Array(bufferLength);
+                
+                function drawVisualizer() {
+                    if (!isRecording && !visualizationInterval) return;
+                    
+                    requestAnimationFrame(drawVisualizer);
+                    analyser.getByteFrequencyData(dataArray);
+                    
+                    canvasContext.fillStyle = 'rgb(245, 246, 250)';
+                    canvasContext.fillRect(0, 0, visualizer.width, visualizer.height);
+                    
+                    const barWidth = (visualizer.width / bufferLength) * 2.5;
+                    let barHeight;
+                    let x = 0;
+                    
+                    for (let i = 0; i < bufferLength; i++) {
+                        barHeight = dataArray[i] / 2;
+                        
+                        canvasContext.fillStyle = `rgb(${barHeight + 100}, 50, 150)`;
+                        canvasContext.fillRect(x, visualizer.height - barHeight, barWidth, barHeight);
+                        
+                        x += barWidth + 1;
+                    }
+                }
+                
+                drawVisualizer();
+            } catch (error) {
+                console.error('Error setting up audio context:', error);
+                showStatus('Error initializing audio. Please try refreshing the page.', 'error');
+            }
+        }
+
+        // Start recording
+        async function startRecording() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(stream);
+                audioChunks = [];
+                
+                // Connect stream to analyser for visualization
+                const source = audioContext.createMediaStreamSource(stream);
+                source.connect(analyser);
+                
+                mediaRecorder.ondataavailable = (event) => {
+                    audioChunks.push(event.data);
+                };
+                
+                mediaRecorder.onstop = async () => {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                    const arrayBuffer = await audioBlob.arrayBuffer();
+                    originalAudioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+                    
+                    // Stop all tracks
+                    stream.getTracks().forEach(track => track.stop());
+                    
+                    showStatus('Recording completed! Select a voice effect.', 'success');
+                    enableEffectButtons();
+                    selectEffect('original');
+                };
+                
+                mediaRecorder.start();
+                isRecording = true;
+                recordButton.disabled = true;
+                stopButton.disabled = false;
+                
+                showStatus('Recording... Click stop when finished.', 'info');
+                
+                // Start visualization
+                if (visualizationInterval) clearInterval(visualizationInterval);
+                visualizationInterval = setInterval(() => {
+                    // Visualization is handled by drawVisualizer
+                }, 100);
+                
+            } catch (error) {
+                console.error('Error starting recording:', error);
+                showStatus('Error accessing microphone. Please check permissions.', 'error');
+            }
+        }
+
+        // Stop recording
+        function stopRecording() {
+            if (mediaRecorder && isRecording) {
+                mediaRecorder.stop();
+                isRecording = false;
+                recordButton.disabled = false;
+                stopButton.disabled = true;
+                
+                if (visualizationInterval) {
+                    clearInterval(visualizationInterval);
+                    visualizationInterval = null;
+                }
+            }
+        }
+
+        // Handle file upload
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                try {
+                    const arrayBuffer = e.target.result;
+                    originalAudioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+                    
+                    showStatus('File loaded! Select a voice effect.', 'success');
+                    enableEffectButtons();
+                    selectEffect('original');
+                } catch (error) {
+                    console.error('Error loading file:', error);
+                    showStatus('Error loading audio file. Please try another file.', 'error');
+                }
+            };
+            
+            reader.readAsArrayBuffer(file);
+        }
+
+        // Select voice effect
+        function selectEffect(effectId) {
+            if (!originalAudioBuffer) {
+                showStatus('Please record or upload audio first.', 'error');
                 return;
             }
             
-            playlistElement.innerHTML = '';
+            // Update active effect button
+            document.querySelectorAll('.effect-button').forEach(button => {
+                button.classList.remove('active');
+            });
             
-            playlist.forEach((track, index) => {
-                const trackElement = document.createElement('div');
-                trackElement.className = 'track-item';
-                trackElement.dataset.index = index;
+            document.querySelector(`.effect-button[data-effect="${effectId}"]`).classList.add('active');
+            
+            currentEffect = effectId;
+            applyVoiceEffect(effectId);
+        }
+
+        // Apply voice effect
+        function applyVoiceEffect(effectId) {
+            if (!originalAudioBuffer) return;
+            
+            try {
+                // In a real implementation, we would apply actual audio effects here
+                // For this demo, we'll simulate the effect by modifying playback rate
+                let playbackRate = 1.0;
                 
-                trackElement.innerHTML = `
-                    <i class="fas fa-music"></i>
-                    <div class="track-info">
-                        <div class="track-title">${track.name}</div>
-                        <div class="track-details">
-                            <span>${track.duration}</span>
-                            <span>MP3</span>
-                        </div>
-                    </div>
-                `;
+                switch(effectId) {
+                    case 'deep': playbackRate = 0.7; break;
+                    case 'high': playbackRate = 1.5; break;
+                    case 'chipmunk': playbackRate = 2.0; break;
+                    case 'slow': playbackRate = 0.5; break;
+                    case 'fast': playbackRate = 1.8; break;
+                    default: playbackRate = 1.0;
+                }
                 
-                trackElement.addEventListener('click', function() {
-                    // Remove active class from all tracks
-                    document.querySelectorAll('.track-item').forEach(item => {
-                        item.classList.remove('active');
-                    });
+                // Create a new buffer with modified playback rate
+                const frameCount = Math.floor(originalAudioBuffer.length / playbackRate);
+                modifiedAudioBuffer = audioContext.createBuffer(
+                    originalAudioBuffer.numberOfChannels,
+                    frameCount,
+                    originalAudioBuffer.sampleRate
+                );
+                
+                for (let channel = 0; channel < originalAudioBuffer.numberOfChannels; channel++) {
+                    const inputData = originalAudioBuffer.getChannelData(channel);
+                    const outputData = modifiedAudioBuffer.getChannelData(channel);
                     
-                    // Add active class to clicked track
-                    this.classList.add('active');
-                    
-                    // Load track to the first available deck
-                    if (!deckA.currentTrack) {
-                        loadTrackToDeck('a', index);
-                    } else if (!deckB.currentTrack) {
-                        loadTrackToDeck('b', index);
-                    } else {
-                        // If both decks are occupied, replace the one that's not playing
-                        if (!deckA.isPlaying) {
-                            loadTrackToDeck('a', index);
-                        } else {
-                            loadTrackToDeck('b', index);
-                        }
+                    for (let i = 0; i < frameCount; i++) {
+                        const index = Math.floor(i * playbackRate);
+                        outputData[i] = inputData[index];
                     }
-                });
+                }
                 
-                playlistElement.appendChild(trackElement);
-                track.element = trackElement;
+                // Create a blob URL for the modified audio
+                const audioBlob = audioBufferToWav(modifiedAudioBuffer);
+                const audioUrl = URL.createObjectURL(audioBlob);
+                
+                // Update audio player
+                audioPlayer.src = audioUrl;
+                audioPlayer.load();
+                
+                // Enable download button
+                downloadButton.disabled = false;
+                
+                showStatus(`Applied "${getEffectName(effectId)}" effect!`, 'success');
+                
+            } catch (error) {
+                console.error('Error applying effect:', error);
+                showStatus('Error applying voice effect. Please try another effect.', 'error');
+            }
+        }
+
+        // Get effect name by ID
+        function getEffectName(effectId) {
+            const effect = voiceEffects.find(e => e.id === effectId);
+            return effect ? effect.name : 'Unknown';
+        }
+
+        // Enable effect buttons
+        function enableEffectButtons() {
+            document.querySelectorAll('.effect-button').forEach(button => {
+                button.style.pointerEvents = 'auto';
+                button.style.opacity = '1';
             });
         }
 
-        // Filter playlist based on search input
-        function filterPlaylist() {
-            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+        // Convert AudioBuffer to WAV Blob
+        function audioBufferToWav(buffer) {
+            const numChannels = buffer.numberOfChannels;
+            const length = buffer.length * numChannels * 2;
+            const sampleRate = buffer.sampleRate;
             
-            playlist.forEach((track, index) => {
-                const isVisible = track.name.toLowerCase().includes(searchTerm);
-                track.element.style.display = isVisible ? 'flex' : 'none';
-            });
-        }
-
-        // Load a track to a deck
-        function loadTrackToDeck(deck, trackIndex) {
-            const track = playlist[trackIndex];
-            const deckObj = deck === 'a' ? deckA : deckB;
+            const arrayBuffer = new ArrayBuffer(44 + length);
+            const view = new DataView(arrayBuffer);
             
-            // Stop current track if playing
-            if (deckObj.source) {
-                deckObj.source.stop();
-                deckObj.source = null;
-            }
-            
-            // Reset deck state
-            deckObj.currentTrack = track;
-            deckObj.pausedAt = 0;
-            deckObj.startTime = 0;
-            deckObj.playbackRate = 1.0;
-            
-            // Create audio buffer source
-            if (audioContext) {
-                fetch(track.url)
-                    .then(response => response.arrayBuffer())
-                    .then(arrayBuffer => audioContext.decodeAudioData(arrayBuffer))
-                    .then(audioBuffer => {
-                        deckObj.audio = audioBuffer;
-                        
-                        // Update deck UI
-                        document.getElementById(`bpm-${deck}`).textContent = '--';
-                        
-                        // Reset pitch slider
-                        document.getElementById(`pitch-${deck}`).value = 0;
-                        
-                        // Update play button
-                        const playButton = document.getElementById(`play-${deck}`);
-                        playButton.classList.remove('playing');
-                        playButton.querySelector('i').className = 'fas fa-play';
-                        
-                        // Draw waveform
-                        drawWaveform(deck, audioBuffer);
-                    })
-                    .catch(error => {
-                        console.error('Error loading audio:', error);
-                    });
-            }
-        }
-
-        // Toggle play/pause for a deck
-        function togglePlay(deck) {
-            const deckObj = deck === 'a' ? deckA : deckB;
-            
-            if (!deckObj.audio) return;
-            
-            if (deckObj.isPlaying) {
-                // Pause the track
-                if (deckObj.source) {
-                    deckObj.source.stop();
-                    deckObj.source = null;
-                    deckObj.pausedAt = audioContext.currentTime - deckObj.startTime;
+            // Write WAV header
+            const writeString = (offset, string) => {
+                for (let i = 0; i < string.length; i++) {
+                    view.setUint8(offset + i, string.charCodeAt(i));
                 }
-                deckObj.isPlaying = false;
-                
-                // Update UI
-                const playButton = document.getElementById(`play-${deck}`);
-                playButton.classList.remove('playing');
-                playButton.querySelector('i').className = 'fas fa-play';
-            } else {
-                // Play the track
-                if (audioContext.state === 'suspended') {
-                    audioContext.resume();
+            };
+            
+            writeString(0, 'RIFF');
+            view.setUint32(4, 36 + length, true);
+            writeString(8, 'WAVE');
+            writeString(12, 'fmt ');
+            view.setUint32(16, 16, true);
+            view.setUint16(20, 1, true);
+            view.setUint16(22, numChannels, true);
+            view.setUint32(24, sampleRate, true);
+            view.setUint32(28, sampleRate * numChannels * 2, true);
+            view.setUint16(32, numChannels * 2, true);
+            view.setUint16(34, 16, true);
+            writeString(36, 'data');
+            view.setUint32(40, length, true);
+            
+            // Write audio data
+            let offset = 44;
+            for (let i = 0; i < buffer.length; i++) {
+                for (let channel = 0; channel < numChannels; channel++) {
+                    const sample = Math.max(-1, Math.min(1, buffer.getChannelData(channel)[i]));
+                    view.setInt16(offset, sample < 0 ? sample * 0x8000 : sample * 0x7FFF, true);
+                    offset += 2;
                 }
-                
-                deckObj.source = audioContext.createBufferSource();
-                deckObj.source.buffer = deckObj.audio;
-                deckObj.source.playbackRate.value = deckObj.playbackRate;
-                deckObj.source.connect(deckObj.gainNode);
-                
-                deckObj.startTime = audioContext.currentTime - deckObj.pausedAt;
-                deckObj.source.start(0, deckObj.pausedAt % deckObj.audio.duration);
-                
-                deckObj.isPlaying = true;
-                
-                // Update UI
-                const playButton = document.getElementById(`play-${deck}`);
-                playButton.classList.add('playing');
-                playButton.querySelector('i').className = 'fas fa-pause';
-                
-                // Start updating playhead
-                if (deck === 'a') {
-                    requestAnimationFrame(() => updatePlayhead('a'));
-                } else {
-                    requestAnimationFrame(() => updatePlayhead('b'));
-                }
-                
-                // Handle track end
-                deckObj.source.onended = function() {
-                    deckObj.isPlaying = false;
-                    deckObj.pausedAt = 0;
-                    
-                    // Update UI
-                    const playButton = document.getElementById(`play-${deck}`);
-                    playButton.classList.remove('playing');
-                    playButton.querySelector('i').className = 'fas fa-play';
-                    
-                    // Reset playhead
-                    document.getElementById(`playhead-${deck}`).style.left = '0%';
-                };
-            }
-        }
-
-        // Cue a track (reset to beginning)
-        function cueTrack(deck) {
-            const deckObj = deck === 'a' ? deckA : deckB;
-            
-            if (!deckObj.audio) return;
-            
-            // If playing, stop and reset
-            if (deckObj.isPlaying && deckObj.source) {
-                deckObj.source.stop();
-                deckObj.source = null;
             }
             
-            deckObj.isPlaying = false;
-            deckObj.pausedAt = 0;
-            deckObj.startTime = 0;
-            
-            // Update UI
-            const playButton = document.getElementById(`play-${deck}`);
-            playButton.classList.remove('playing');
-            playButton.querySelector('i').className = 'fas fa-play';
-            
-            // Reset playhead
-            document.getElementById(`playhead-${deck}`).style.left = '0%';
+            return new Blob([arrayBuffer], { type: 'audio/wav' });
         }
 
-        // Sync tracks (set both to same BPM)
-        function syncTracks() {
-            // This is a simplified sync function
-            // In a real app, you would analyze BPM and adjust accordingly
-            if (deckA.isPlaying && deckB.isPlaying) {
-                // Set both to the same playback rate (simplified)
-                const targetRate = deckA.playbackRate;
-                deckB.playbackRate = targetRate;
-                
-                if (deckB.source) {
-                    deckB.source.playbackRate.value = targetRate;
-                }
-                
-                document.getElementById('pitch-b').value = (targetRate - 1) * 100;
-            }
+        // Download modified audio
+        function downloadAudio() {
+            if (!modifiedAudioBuffer) return;
+            
+            const audioBlob = audioBufferToWav(modifiedAudioBuffer);
+            const url = URL.createObjectURL(audioBlob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `voice_changer_${currentEffect}.wav`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showStatus('Audio downloaded successfully!', 'success');
         }
 
-        // Update volume for a deck
-        function updateVolume(deck) {
-            const deckObj = deck === 'a' ? deckA : deckB;
-            const volume = document.getElementById(`volume-${deck}`).value / 100;
+        // Show status message
+        function showStatus(message, type) {
+            statusMessage.textContent = message;
+            statusMessage.className = 'status-message';
             
-            if (deckObj.gainNode) {
-                deckObj.gainNode.gain.value = volume;
-            }
-        }
-
-        // Update crossfader
-        function updateCrossfader() {
-            const crossfaderValue = document.getElementById('crossfader').value / 100;
-            
-            // Simple crossfader: when at 0, only deck A is heard; at 1, only deck B
-            if (deckA.gainNode) {
-                deckA.gainNode.gain.value = 1 - crossfaderValue;
-            }
-            
-            if (deckB.gainNode) {
-                deckB.gainNode.gain.value = crossfaderValue;
-            }
-        }
-
-        // Update pitch (playback rate) for a deck
-        function updatePitch(deck) {
-            const deckObj = deck === 'a' ? deckA : deckB;
-            const pitchValue = parseFloat(document.getElementById(`pitch-${deck}`).value);
-            
-            // Convert pitch percentage to playback rate
-            // 0% = normal speed, positive = faster, negative = slower
-            deckObj.playbackRate = 1 + (pitchValue / 100);
-            
-            if (deckObj.source) {
-                deckObj.source.playbackRate.value = deckObj.playbackRate;
-            }
-            
-            // Update BPM display (simplified)
-            document.getElementById(`bpm-${deck}`).textContent = (128 * deckObj.playbackRate).toFixed(1);
-        }
-
-        // Update gain for a deck
-        function updateGain(deck) {
-            // In a real app, this would adjust the pre-fader gain
-            // For simplicity, we'll just update the volume
-            updateVolume(deck);
-        }
-
-        // Update EQ for a deck
-        function updateEQ(deck) {
-            // In a real app, this would apply EQ filters
-            // This is a placeholder for the EQ functionality
-            console.log(`EQ updated for deck ${deck}`);
-        }
-
-        // Update playhead position
-        function updatePlayhead(deck) {
-            const deckObj = deck === 'a' ? deckA : deckB;
-            const playhead = document.getElementById(`playhead-${deck}`);
-            
-            if (deckObj.isPlaying && deckObj.audio) {
-                const currentTime = audioContext.currentTime - deckObj.startTime;
-                const progress = (currentTime / deckObj.audio.duration) * 100;
-                playhead.style.left = `${Math.min(progress, 100)}%`;
-                
-                // Continue updating
-                requestAnimationFrame(() => updatePlayhead(deck));
-            }
-        }
-
-        // Draw a simple waveform visualization
-        function drawWaveform(deck, audioBuffer) {
-            const waveform = document.getElementById(`waveform-${deck}`);
-            const canvas = document.createElement('canvas');
-            canvas.width = waveform.clientWidth;
-            canvas.height = waveform.clientHeight;
-            
-            // Clear any existing canvas
-            while (waveform.firstChild) {
-                if (waveform.firstChild.id === `playhead-${deck}`) {
+            switch(type) {
+                case 'success':
+                    statusMessage.classList.add('status-success');
                     break;
-                }
-                waveform.removeChild(waveform.firstChild);
+                case 'error':
+                    statusMessage.classList.add('status-error');
+                    break;
+                case 'info':
+                    statusMessage.classList.add('status-info');
+                    break;
             }
-            
-            waveform.appendChild(canvas);
-            waveform.appendChild(document.getElementById(`playhead-${deck}`));
-            
-            const ctx = canvas.getContext('2d');
-            const width = canvas.width;
-            const height = canvas.height;
-            
-            // Get the audio data
-            const data = audioBuffer.getChannelData(0);
-            const step = Math.ceil(data.length / width);
-            const amp = height / 2;
-            
-            // Draw the waveform
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
-            ctx.fillRect(0, 0, width, height);
-            
-            ctx.strokeStyle = 'rgba(52, 152, 219, 0.7)';
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            
-            for (let i = 0; i < width; i++) {
-                let min = 1.0;
-                let max = -1.0;
-                
-                for (let j = 0; j < step; j++) {
-                    const datum = data[(i * step) + j];
-                    if (datum < min) min = datum;
-                    if (datum > max) max = datum;
-                }
-                
-                ctx.moveTo(i, (1 + min) * amp);
-                ctx.lineTo(i, (1 + max) * amp);
-            }
-            
-            ctx.stroke();
         }
 
-        // Format time from seconds to MM:SS
-        function formatTime(seconds) {
-            if (isNaN(seconds)) return "00:00";
-            
-            const mins = Math.floor(seconds / 60);
-            const secs = Math.floor(seconds % 60);
-            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-        }
+        // Initialize the app when the page loads
+        window.addEventListener('load', init);
     </script>
 </body>
 </html>
