@@ -3,542 +3,618 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Asphait Cor Race</title>
+    <title>Water Sort Puzzle</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(to bottom, #1a1a2e, #16213e);
-            color: white;
-            overflow: hidden;
-            height: 100vh;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-        }
-
-        .game-container {
-            position: relative;
-            width: 800px;
-            height: 600px;
-            margin: 0 auto;
-            overflow: hidden;
-            border: 4px solid #3498db;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(52, 152, 219, 0.5);
-        }
-
-        #gameCanvas {
-            background: #2c3e50;
-            display: block;
-        }
-
-        .ui-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
             padding: 20px;
+            color: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            background: linear-gradient(to right, #ff9966, #ff5e62);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .game-info {
             display: flex;
             justify-content: space-between;
-            pointer-events: none;
+            width: 100%;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
-        .score-display, .speed-display {
-            background: rgba(0, 0, 0, 0.6);
-            padding: 10px 20px;
-            border-radius: 10px;
+        .level-info, .moves-info {
             font-size: 1.2rem;
             font-weight: bold;
-            border: 2px solid #e74c3c;
         }
 
-        .game-title {
-            font-size: 3rem;
-            text-align: center;
-            margin-bottom: 20px;
-            color: #e74c3c;
-            text-shadow: 0 0 10px rgba(231, 76, 60, 0.7);
-            letter-spacing: 3px;
+        .game-area {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            width: 100%;
         }
 
-        .instructions {
-            background: rgba(0, 0, 0, 0.7);
+        .tubes-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
             padding: 20px;
-            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
             max-width: 800px;
-            margin-top: 20px;
-            text-align: center;
-            border: 2px solid #3498db;
         }
 
-        .instructions p {
-            margin: 10px 0;
-            font-size: 1.1rem;
+        .tube {
+            width: 80px;
+            height: 300px;
+            display: flex;
+            flex-direction: column-reverse;
+            align-items: center;
+            cursor: pointer;
+            border: 3px solid rgba(255, 255, 255, 0.7);
+            border-bottom: 15px solid rgba(255, 255, 255, 0.7);
+            border-radius: 10px 10px 40px 40px;
+            position: relative;
+            background: rgba(255, 255, 255, 0.1);
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .tube:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.9);
+        }
+
+        .tube.selected {
+            transform: translateY(-10px);
+            border-color: gold;
+            box-shadow: 0 0 15px gold;
+        }
+
+        .water {
+            width: 100%;
+            height: 25%;
+            transition: all 0.5s ease;
+        }
+
+        .tube-top {
+            position: absolute;
+            top: -5px;
+            width: 90px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            z-index: 1;
         }
 
         .controls {
             display: flex;
-            justify-content: center;
-            gap: 40px;
-            margin-top: 10px;
+            flex-direction: column;
+            gap: 15px;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 250px;
         }
 
-        .control-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        button {
+            padding: 12px 20px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            background: linear-gradient(to right, #ff9966, #ff5e62);
+            color: white;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
         }
 
-        .key {
-            background: #2c3e50;
-            padding: 5px 10px;
-            border-radius: 5px;
-            border: 1px solid #3498db;
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
         }
 
-        .screen {
-            position: absolute;
+        button:active {
+            transform: translateY(1px);
+        }
+
+        .instructions {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            max-width: 800px;
+            line-height: 1.6;
+        }
+
+        .instructions h2 {
+            margin-bottom: 15px;
+            color: #ffcc00;
+        }
+
+        .instructions ul {
+            padding-left: 20px;
+        }
+
+        .instructions li {
+            margin-bottom: 10px;
+        }
+
+        .level-complete {
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background: rgba(0, 0, 0, 0.85);
-            z-index: 10;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s;
         }
 
-        .start-screen {
-            background: rgba(26, 26, 46, 0.9);
+        .level-complete.active {
+            opacity: 1;
+            pointer-events: all;
         }
 
-        .game-over-screen {
-            display: none;
+        .celebration {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: pulse 1.5s infinite;
         }
 
-        .btn {
-            background: #e74c3c;
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            font-size: 1.2rem;
-            border-radius: 30px;
-            margin-top: 30px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: bold;
-            letter-spacing: 1px;
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
         }
 
-        .btn:hover {
-            background: #c0392b;
-            transform: scale(1.05);
-            box-shadow: 0 0 15px rgba(231, 76, 60, 0.7);
+        .message {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-align: center;
         }
 
-        .final-score {
-            font-size: 2rem;
-            margin: 20px 0;
-            color: #e74c3c;
+        .level-complete button {
+            font-size: 1.5rem;
+            padding: 15px 30px;
+        }
+
+        @media (max-width: 768px) {
+            .game-area {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .tubes-container {
+                max-width: 100%;
+            }
+            
+            .tube {
+                width: 60px;
+                height: 220px;
+            }
+            
+            .tube-top {
+                width: 70px;
+            }
+            
+            .controls {
+                width: 100%;
+                max-width: 400px;
+            }
         }
     </style>
 </head>
 <body>
-    <h1 class="game-title">ASPHAIT COR RACE</h1>
-    
-    <div class="game-container">
-        <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <div class="container">
+        <header>
+            <h1>Water Sort Puzzle</h1>
+            <p>Sort the colored water until each tube contains only one color</p>
+        </header>
         
-        <div class="ui-overlay">
-            <div class="score-display">SCORE: <span id="score">0</span></div>
-            <div class="speed-display">SPEED: <span id="speed">0</span> MPH</div>
+        <div class="game-info">
+            <div class="level-info">Level: <span id="level">1</span></div>
+            <div class="moves-info">Moves: <span id="moves">0</span></div>
         </div>
         
-        <div class="screen start-screen" id="startScreen">
-            <h2>READY TO RACE?</h2>
-            <p>Navigate through traffic and avoid collisions!</p>
-            <button class="btn" id="startBtn">START RACE</button>
+        <div class="game-area">
+            <div class="tubes-container" id="tubes-container">
+                <!-- Tubes will be generated here -->
+            </div>
+            
+            <div class="controls">
+                <button id="reset-btn">Reset Level</button>
+                <button id="undo-btn">Undo Move</button>
+                <button id="hint-btn">Hint</button>
+                <button id="next-level-btn" disabled>Next Level</button>
+            </div>
         </div>
         
-        <div class="screen game-over-screen" id="gameOverScreen">
-            <h2>RACE OVER!</h2>
-            <p class="final-score">FINAL SCORE: <span id="finalScore">0</span></p>
-            <button class="btn" id="restartBtn">RACE AGAIN</button>
+        <div class="instructions">
+            <h2>How to Play</h2>
+            <ul>
+                <li>Click on a tube to select it</li>
+                <li>Click on another tube to pour water from the selected tube</li>
+                <li>You can only pour water if the target tube has enough space and the top colors match</li>
+                <li>Empty tubes can receive any color</li>
+                <li>Complete the level by sorting all colors into separate tubes</li>
+            </ul>
         </div>
-    </div>
-    
-    <div class="instructions">
-        <p>Use <span class="key">←</span> and <span class="key">→</span> arrow keys to steer your car</p>
-        <p>Avoid colliding with other vehicles</p>
-        <p>Your score increases the longer you survive</p>
+        
+        <div class="level-complete" id="level-complete">
+            <div class="celebration">🎉</div>
+            <div class="message">Level Complete!</div>
+            <button id="continue-btn">Continue</button>
+        </div>
     </div>
 
     <script>
-        // Game variables
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
-        const startScreen = document.getElementById('startScreen');
-        const gameOverScreen = document.getElementById('gameOverScreen');
-        const startBtn = document.getElementById('startBtn');
-        const restartBtn = document.getElementById('restartBtn');
-        const scoreElement = document.getElementById('score');
-        const speedElement = document.getElementById('speed');
-        const finalScoreElement = document.getElementById('finalScore');
-
         // Game state
-        let gameActive = false;
-        let score = 0;
-        let speed = 0;
-        let roadWidth = 2000;
-        let segmentLength = 200;
-        let playerZ = 0;
-        let playerX = 0;
-        let playerSpeed = 0;
-        let maxSpeed = 300;
-        let acceleration = 0.5;
-        let deceleration = 0.3;
-        let cameraHeight = 1000;
-        let cameraDepth = 0.8;
-        let fieldOfView = 100;
-        let segments = [];
-        let obstacles = [];
-        let rumbleWidth = 10;
-        let laneCount = 3;
-        let currentLap = 0;
-        let keys = {};
-        let lastTimestamp = 0;
-
-        // Initialize game
-        function init() {
-            // Create road segments
-            segments = [];
-            for (let i = 0; i < 500; i++) {
-                segments.push({
-                    index: i,
-                    p1: { world: { y: i * segmentLength }, screen: {}, scale: 0 },
-                    p2: { world: { y: (i + 1) * segmentLength }, screen: {}, scale: 0 },
-                    color: Math.floor(i / rumbleWidth) % 2 ? '#333' : '#444',
-                    rumbleColor: Math.floor(i / rumbleWidth) % 2 ? '#bbb' : '#888'
-                });
-            }
-
-            // Create obstacles
-            obstacles = [];
-            for (let i = 0; i < 20; i++) {
-                obstacles.push({
-                    z: Math.random() * 5000 + 1000,
-                    x: (Math.floor(Math.random() * laneCount) - (laneCount - 1) / 2) * 400,
-                    width: 150,
-                    height: 80,
-                    color: `hsl(${Math.random() * 360}, 70%, 50%)`
-                });
-            }
-
-            // Reset player
-            playerZ = 0;
-            playerX = 0;
-            playerSpeed = 0;
-            score = 0;
-            speed = 0;
-            currentLap = 0;
-        }
-
-        // Project 3D point to 2D screen
-        function project(p, cameraX, cameraY, cameraZ) {
-            const scale = fieldOfView / (p.world.y - cameraY);
-            p.screen.x = Math.round((canvas.width / 2) + (scale * p.world.x * canvas.width / 2));
-            p.screen.y = Math.round((canvas.height / 2) - (scale * cameraHeight * canvas.height / 2));
-            p.scale = scale;
-            return p;
-        }
-
-        // Draw a segment
-        function drawSegment(segment) {
-            const x1 = segment.p1.screen.x;
-            const y1 = segment.p1.screen.y;
-            const w1 = segment.p1.scale * roadWidth;
-            const x2 = segment.p2.screen.x;
-            const y2 = segment.p2.screen.y;
-            const w2 = segment.p2.scale * roadWidth;
-
-            // Draw road
-            ctx.fillStyle = segment.color;
-            ctx.beginPath();
-            ctx.moveTo(x1 - w1, y1);
-            ctx.lineTo(x2 - w2, y2);
-            ctx.lineTo(x2 + w2, y2);
-            ctx.lineTo(x1 + w1, y1);
-            ctx.closePath();
-            ctx.fill();
-
-            // Draw rumble strips
-            ctx.fillStyle = segment.rumbleColor;
-            ctx.beginPath();
-            ctx.moveTo(x1 - w1 - rumbleWidth * segment.p1.scale, y1);
-            ctx.lineTo(x2 - w2 - rumbleWidth * segment.p2.scale, y2);
-            ctx.lineTo(x2 - w2, y2);
-            ctx.lineTo(x1 - w1, y1);
-            ctx.closePath();
-            ctx.fill();
-
-            ctx.beginPath();
-            ctx.moveTo(x1 + w1 + rumbleWidth * segment.p1.scale, y1);
-            ctx.lineTo(x2 + w2 + rumbleWidth * segment.p2.scale, y2);
-            ctx.lineTo(x2 + w2, y2);
-            ctx.lineTo(x1 + w1, y1);
-            ctx.closePath();
-            ctx.fill();
-
-            // Draw lane markers
-            if (segment.index % 10 < 5) {
-                ctx.fillStyle = '#fff';
-                const laneW1 = w1 / laneCount;
-                const laneW2 = w2 / laneCount;
-                const laneX1 = x1 - w1 + laneW1;
-                const laneX2 = x2 - w2 + laneW2;
-
-                for (let i = 1; i < laneCount; i++) {
-                    ctx.beginPath();
-                    ctx.moveTo(laneX1 + i * laneW1 * 2, y1);
-                    ctx.lineTo(laneX2 + i * laneW2 * 2, y2);
-                    ctx.lineWidth = 5 * segment.p1.scale;
-                    ctx.strokeStyle = '#fff';
-                    ctx.setLineDash([20 * segment.p1.scale, 20 * segment.p1.scale]);
-                    ctx.stroke();
-                    ctx.setLineDash([]);
+        const gameState = {
+            level: 1,
+            moves: 0,
+            selectedTube: null,
+            tubes: [],
+            moveHistory: [],
+            levels: [
+                // Level 1
+                {
+                    tubes: [
+                        ['red', 'red', 'blue', 'blue'],
+                        ['blue', 'red', 'blue', 'red'],
+                        [],
+                        []
+                    ]
+                },
+                // Level 2
+                {
+                    tubes: [
+                        ['red', 'green', 'blue', 'green'],
+                        ['blue', 'red', 'green', 'blue'],
+                        ['red', 'blue', 'green', 'red'],
+                        [],
+                        []
+                    ]
+                },
+                // Level 3
+                {
+                    tubes: [
+                        ['red', 'yellow', 'blue', 'green'],
+                        ['green', 'red', 'yellow', 'blue'],
+                        ['blue', 'green', 'red', 'yellow'],
+                        ['yellow', 'blue', 'green', 'red'],
+                        [],
+                        []
+                    ]
                 }
-            }
+            ]
+        };
+
+        // DOM elements
+        const tubesContainer = document.getElementById('tubes-container');
+        const levelElement = document.getElementById('level');
+        const movesElement = document.getElementById('moves');
+        const resetBtn = document.getElementById('reset-btn');
+        const undoBtn = document.getElementById('undo-btn');
+        const hintBtn = document.getElementById('hint-btn');
+        const nextLevelBtn = document.getElementById('next-level-btn');
+        const levelComplete = document.getElementById('level-complete');
+        const continueBtn = document.getElementById('continue-btn');
+
+        // Initialize the game
+        function initGame() {
+            loadLevel(gameState.level);
+            updateUI();
+            setupEventListeners();
         }
 
-        // Draw player's car
-        function drawPlayer() {
-            const segment = findSegment(playerZ);
-            const scale = fieldOfView / (segment.p2.world.y - playerZ);
-            const carWidth = 100 * scale;
-            const carHeight = 50 * scale;
-            const carX = canvas.width / 2 + (playerX * scale * canvas.width / 2) - carWidth / 2;
-            const carY = canvas.height / 2 - (cameraHeight * scale * canvas.height / 2) - carHeight;
-
-            // Car body
-            ctx.fillStyle = '#e74c3c';
-            ctx.fillRect(carX, carY, carWidth, carHeight);
-            
-            // Car details
-            ctx.fillStyle = '#2c3e50';
-            ctx.fillRect(carX + 10, carY + 5, carWidth - 20, 10);
-            ctx.fillRect(carX + 10, carY + carHeight - 15, carWidth - 20, 10);
-            
-            // Windows
-            ctx.fillStyle = '#3498db';
-            ctx.fillRect(carX + 15, carY + 15, carWidth - 30, carHeight - 30);
-            
-            // Headlights
-            ctx.fillStyle = '#f1c40f';
-            ctx.fillRect(carX + 5, carY + 15, 5, 5);
-            ctx.fillRect(carX + carWidth - 10, carY + 15, 5, 5);
-            
-            // Taillights
-            ctx.fillStyle = '#e74c3c';
-            ctx.fillRect(carX + 5, carY + carHeight - 20, 5, 5);
-            ctx.fillRect(carX + carWidth - 10, carY + carHeight - 20, 5, 5);
-        }
-
-        // Draw obstacles
-        function drawObstacles() {
-            for (let i = 0; i < obstacles.length; i++) {
-                const obstacle = obstacles[i];
-                const segment = findSegment(obstacle.z);
-                const scale = fieldOfView / (segment.p2.world.y - playerZ);
-                const obstacleWidth = obstacle.width * scale;
-                const obstacleHeight = obstacle.height * scale;
-                const obstacleX = canvas.width / 2 + (obstacle.x * scale * canvas.width / 2) - obstacleWidth / 2;
-                const obstacleY = canvas.height / 2 - (cameraHeight * scale * canvas.height / 2) - obstacleHeight;
-
-                // Only draw if obstacle is in front of player
-                if (obstacle.z > playerZ) {
-                    ctx.fillStyle = obstacle.color;
-                    ctx.fillRect(obstacleX, obstacleY, obstacleWidth, obstacleHeight);
-                    
-                    // Add details to obstacle
-                    ctx.fillStyle = '#2c3e50';
-                    ctx.fillRect(obstacleX + 10, obstacleY + 10, obstacleWidth - 20, 10);
-                    ctx.fillRect(obstacleX + 10, obstacleY + obstacleHeight - 20, obstacleWidth - 20, 10);
-                    
-                    ctx.fillStyle = '#3498db';
-                    ctx.fillRect(obstacleX + 15, obstacleY + 25, obstacleWidth - 30, obstacleHeight - 50);
-                }
-            }
-        }
-
-        // Find segment at Z position
-        function findSegment(z) {
-            return segments[Math.floor(z / segmentLength) % segments.length];
-        }
-
-        // Check collisions
-        function checkCollisions() {
-            const playerSegment = findSegment(playerZ);
-            const playerScale = fieldOfView / (playerSegment.p2.world.y - playerZ);
-            const playerWidth = 100 * playerScale;
-            
-            for (let i = 0; i < obstacles.length; i++) {
-                const obstacle = obstacles[i];
-                const segment = findSegment(obstacle.z);
-                const scale = fieldOfView / (segment.p2.world.y - playerZ);
-                const obstacleWidth = obstacle.width * scale;
-                
-                // Check if obstacle is close enough to player
-                if (obstacle.z > playerZ && obstacle.z < playerZ + 500) {
-                    const playerLeft = playerX * scale * canvas.width / 2 - playerWidth / 2;
-                    const playerRight = playerX * scale * canvas.width / 2 + playerWidth / 2;
-                    const obstacleLeft = obstacle.x * scale * canvas.width / 2 - obstacleWidth / 2;
-                    const obstacleRight = obstacle.x * scale * canvas.width / 2 + obstacleWidth / 2;
-                    
-                    // Check for collision
-                    if (playerRight > obstacleLeft && playerLeft < obstacleRight) {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-
-        // Update game state
-        function update(timestamp) {
-            if (!gameActive) return;
-            
-            const deltaTime = timestamp - lastTimestamp;
-            lastTimestamp = timestamp;
-            
-            // Update player speed
-            if (keys['ArrowUp']) {
-                playerSpeed = Math.min(playerSpeed + acceleration, maxSpeed);
-            } else if (keys['ArrowDown']) {
-                playerSpeed = Math.max(playerSpeed - deceleration * 2, 0);
-            } else {
-                playerSpeed = Math.max(playerSpeed - deceleration, 0);
-            }
-            
-            // Update player position
-            if (keys['ArrowLeft']) {
-                playerX = Math.max(playerX - 0.02, -1);
-            } else if (keys['ArrowRight']) {
-                playerX = Math.min(playerX + 0.02, 1);
-            }
-            
-            // Move player forward
-            playerZ += playerSpeed;
-            
-            // Update score based on distance
-            score += Math.floor(playerSpeed / 10);
-            scoreElement.textContent = score;
-            
-            // Update speed display
-            speed = Math.floor(playerSpeed * 2);
-            speedElement.textContent = speed;
-            
-            // Check for collisions
-            if (checkCollisions()) {
-                endGame();
+        // Load a specific level
+        function loadLevel(level) {
+            const levelData = gameState.levels[level - 1];
+            if (!levelData) {
+                // If no more levels, show completion message
+                levelComplete.querySelector('.message').textContent = 'All Levels Completed!';
+                levelComplete.classList.add('active');
                 return;
             }
             
-            // Move obstacles
-            for (let i = 0; i < obstacles.length; i++) {
-                obstacles[i].z -= playerSpeed;
+            gameState.tubes = JSON.parse(JSON.stringify(levelData.tubes));
+            gameState.moves = 0;
+            gameState.selectedTube = null;
+            gameState.moveHistory = [];
+            
+            renderTubes();
+            updateUI();
+        }
+
+        // Render tubes in the container
+        function renderTubes() {
+            tubesContainer.innerHTML = '';
+            
+            gameState.tubes.forEach((tube, index) => {
+                const tubeElement = document.createElement('div');
+                tubeElement.className = 'tube';
+                tubeElement.dataset.index = index;
                 
-                // Reset obstacle if it's behind the player
-                if (obstacles[i].z < playerZ - 1000) {
-                    obstacles[i].z = playerZ + 10000 + Math.random() * 5000;
-                    obstacles[i].x = (Math.floor(Math.random() * laneCount) - (laneCount - 1) / 2) * 400;
+                // Add tube top
+                const tubeTop = document.createElement('div');
+                tubeTop.className = 'tube-top';
+                tubeElement.appendChild(tubeTop);
+                
+                // Add water layers
+                for (let i = 0; i < 4; i++) {
+                    const water = document.createElement('div');
+                    water.className = 'water';
+                    
+                    if (i < tube.length) {
+                        water.style.backgroundColor = getColorCode(tube[i]);
+                    } else {
+                        water.style.backgroundColor = 'transparent';
+                    }
+                    
+                    tubeElement.appendChild(water);
+                }
+                
+                tubesContainer.appendChild(tubeElement);
+            });
+        }
+
+        // Get color code from color name
+        function getColorCode(color) {
+            const colors = {
+                'red': '#ff4757',
+                'blue': '#3742fa',
+                'green': '#2ed573',
+                'yellow': '#ffa502',
+                'purple': '#a55eea',
+                'orange': '#ff9f1a',
+                'pink': '#ff6b81',
+                'cyan': '#17c0eb'
+            };
+            
+            return colors[color] || '#ffffff';
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Tube click events
+            tubesContainer.addEventListener('click', handleTubeClick);
+            
+            // Button events
+            resetBtn.addEventListener('click', () => {
+                loadLevel(gameState.level);
+            });
+            
+            undoBtn.addEventListener('click', undoMove);
+            
+            hintBtn.addEventListener('click', showHint);
+            
+            nextLevelBtn.addEventListener('click', () => {
+                gameState.level++;
+                loadLevel(gameState.level);
+                nextLevelBtn.disabled = true;
+            });
+            
+            continueBtn.addEventListener('click', () => {
+                levelComplete.classList.remove('active');
+                nextLevelBtn.disabled = false;
+            });
+        }
+
+        // Handle tube click
+        function handleTubeClick(e) {
+            const tubeElement = e.target.closest('.tube');
+            if (!tubeElement) return;
+            
+            const tubeIndex = parseInt(tubeElement.dataset.index);
+            
+            // If no tube is selected, select this one
+            if (gameState.selectedTube === null) {
+                // Only select non-empty tubes
+                if (gameState.tubes[tubeIndex].length > 0) {
+                    gameState.selectedTube = tubeIndex;
+                    tubeElement.classList.add('selected');
+                }
+            } 
+            // If the same tube is clicked again, deselect it
+            else if (gameState.selectedTube === tubeIndex) {
+                gameState.selectedTube = null;
+                tubeElement.classList.remove('selected');
+            } 
+            // If a different tube is clicked, try to pour
+            else {
+                const sourceIndex = gameState.selectedTube;
+                const targetIndex = tubeIndex;
+                
+                // Save current state for undo
+                gameState.moveHistory.push({
+                    tubes: JSON.parse(JSON.stringify(gameState.tubes)),
+                    moves: gameState.moves
+                });
+                
+                // Try to pour
+                if (pourWater(sourceIndex, targetIndex)) {
+                    gameState.moves++;
+                    
+                    // Check if level is complete
+                    if (isLevelComplete()) {
+                        levelComplete.classList.add('active');
+                        nextLevelBtn.disabled = false;
+                    }
+                }
+                
+                // Deselect the tube
+                document.querySelector(`.tube[data-index="${sourceIndex}"]`).classList.remove('selected');
+                gameState.selectedTube = null;
+                
+                updateUI();
+            }
+        }
+
+        // Pour water from source to target tube
+        function pourWater(sourceIndex, targetIndex) {
+            const sourceTube = gameState.tubes[sourceIndex];
+            const targetTube = gameState.tubes[targetIndex];
+            
+            // Check if source tube is empty
+            if (sourceTube.length === 0) return false;
+            
+            // Check if target tube is full
+            if (targetTube.length === 4) return false;
+            
+            // Get the top color from source tube
+            const topColor = sourceTube[sourceTube.length - 1];
+            
+            // Check if target tube is empty or has the same top color
+            if (targetTube.length > 0 && targetTube[targetTube.length - 1] !== topColor) {
+                return false;
+            }
+            
+            // Calculate how much water we can pour
+            let pourAmount = 1;
+            
+            // Check how many consecutive same colors are at the top of source tube
+            for (let i = sourceTube.length - 2; i >= 0; i--) {
+                if (sourceTube[i] === topColor) {
+                    pourAmount++;
+                } else {
+                    break;
                 }
             }
             
-            // Draw everything
-            draw();
+            // Adjust pour amount based on available space in target tube
+            pourAmount = Math.min(pourAmount, 4 - targetTube.length);
             
-            // Continue game loop
-            requestAnimationFrame(update);
-        }
-
-        // Draw everything
-        function draw() {
-            // Clear canvas
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            // Draw sky
-            ctx.fillStyle = '#87CEEB';
-            ctx.fillRect(0, 0, canvas.width, canvas.height / 2);
-            
-            // Draw road segments
-            const baseSegment = findSegment(playerZ);
-            const basePercent = (playerZ % segmentLength) / segmentLength;
-            
-            for (let n = 0; n < 100; n++) {
-                const segment = segments[(baseSegment.index + n) % segments.length];
-                const clip = (n === 0) ? basePercent : 0;
-                
-                project(segment.p1, playerX, playerZ - (n < 0 ? segmentLength : 0), cameraDepth);
-                project(segment.p2, playerX, playerZ - (n < 0 ? 0 : -segmentLength), cameraDepth);
-                
-                drawSegment(segment);
+            // Pour the water
+            for (let i = 0; i < pourAmount; i++) {
+                targetTube.push(sourceTube.pop());
             }
             
-            // Draw obstacles
-            drawObstacles();
+            // Re-render tubes
+            renderTubes();
             
-            // Draw player
-            drawPlayer();
+            return true;
         }
 
-        // Start game
-        function startGame() {
-            init();
-            gameActive = true;
-            startScreen.style.display = 'none';
-            gameOverScreen.style.display = 'none';
-            lastTimestamp = performance.now();
-            requestAnimationFrame(update);
-        }
-
-        // End game
-        function endGame() {
-            gameActive = false;
-            finalScoreElement.textContent = score;
-            gameOverScreen.style.display = 'flex';
-        }
-
-        // Event listeners
-        startBtn.addEventListener('click', startGame);
-        restartBtn.addEventListener('click', startGame);
-
-        window.addEventListener('keydown', (e) => {
-            keys[e.key] = true;
-        });
-
-        window.addEventListener('keyup', (e) => {
-            keys[e.key] = false;
-        });
-
-        // Prevent arrow key scrolling
-        window.addEventListener('keydown', (e) => {
-            if(['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].indexOf(e.key) > -1) {
-                e.preventDefault();
+        // Check if level is complete
+        function isLevelComplete() {
+            for (const tube of gameState.tubes) {
+                // If tube is not empty and not full of same color, level is not complete
+                if (tube.length > 0) {
+                    const color = tube[0];
+                    for (let i = 1; i < tube.length; i++) {
+                        if (tube[i] !== color) {
+                            return false;
+                        }
+                    }
+                }
             }
-        }, false);
+            return true;
+        }
 
-        // Initialize the game
-        init();
-        draw();
+        // Undo the last move
+        function undoMove() {
+            if (gameState.moveHistory.length === 0) return;
+            
+            const lastState = gameState.moveHistory.pop();
+            gameState.tubes = lastState.tubes;
+            gameState.moves = lastState.moves;
+            
+            renderTubes();
+            updateUI();
+        }
+
+        // Show a hint
+        function showHint() {
+            // Simple hint system - highlight a valid move
+            for (let i = 0; i < gameState.tubes.length; i++) {
+                const sourceTube = gameState.tubes[i];
+                if (sourceTube.length === 0) continue;
+                
+                const topColor = sourceTube[sourceTube.length - 1];
+                
+                for (let j = 0; j < gameState.tubes.length; j++) {
+                    if (i === j) continue;
+                    
+                    const targetTube = gameState.tubes[j];
+                    
+                    // Check if this is a valid move
+                    if (targetTube.length < 4 && 
+                        (targetTube.length === 0 || targetTube[targetTube.length - 1] === topColor)) {
+                        
+                        // Highlight the tubes
+                        const sourceElement = document.querySelector(`.tube[data-index="${i}"]`);
+                        const targetElement = document.querySelector(`.tube[data-index="${j}"]`);
+                        
+                        sourceElement.style.borderColor = 'gold';
+                        targetElement.style.borderColor = 'gold';
+                        
+                        setTimeout(() => {
+                            sourceElement.style.borderColor = '';
+                            targetElement.style.borderColor = '';
+                        }, 2000);
+                        
+                        return;
+                    }
+                }
+            }
+        }
+
+        // Update UI elements
+        function updateUI() {
+            levelElement.textContent = gameState.level;
+            movesElement.textContent = gameState.moves;
+            
+            // Enable/disable undo button
+            undoBtn.disabled = gameState.moveHistory.length === 0;
+        }
+
+        // Initialize the game when page loads
+        window.addEventListener('DOMContentLoaded', initGame);
     </script>
 </body>
 </html>
