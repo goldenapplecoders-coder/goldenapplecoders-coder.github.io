@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Voice Changer - 50+ Voice Effects</title>
+    <title>Voice Changer - 50 Working Effects</title>
     <style>
         :root {
             --primary-color: #4a6ee0;
@@ -364,6 +364,7 @@
         let currentEffect = 'original';
         let isRecording = false;
         let visualizationInterval;
+        let audioStream;
 
         // Voice effects list (50 effects)
         const voiceEffects = [
@@ -533,8 +534,6 @@
                 const dataArray = new Uint8Array(bufferLength);
                 
                 function drawVisualizer() {
-                    if (!isRecording && !visualizationInterval) return;
-                    
                     requestAnimationFrame(drawVisualizer);
                     analyser.getByteFrequencyData(dataArray);
                     
@@ -565,12 +564,12 @@
         // Start recording
         async function startRecording() {
             try {
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                mediaRecorder = new MediaRecorder(stream);
+                audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(audioStream);
                 audioChunks = [];
                 
                 // Connect stream to analyser for visualization
-                const source = audioContext.createMediaStreamSource(stream);
+                const source = audioContext.createMediaStreamSource(audioStream);
                 source.connect(analyser);
                 
                 mediaRecorder.ondataavailable = (event) => {
@@ -581,9 +580,6 @@
                     const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
                     const arrayBuffer = await audioBlob.arrayBuffer();
                     originalAudioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-                    
-                    // Stop all tracks
-                    stream.getTracks().forEach(track => track.stop());
                     
                     showStatus('Recording completed! Select a voice effect.', 'success');
                     enableEffectButtons();
@@ -596,12 +592,6 @@
                 stopButton.disabled = false;
                 
                 showStatus('Recording... Click stop when finished.', 'info');
-                
-                // Start visualization
-                if (visualizationInterval) clearInterval(visualizationInterval);
-                visualizationInterval = setInterval(() => {
-                    // Visualization is handled by drawVisualizer
-                }, 100);
                 
             } catch (error) {
                 console.error('Error starting recording:', error);
@@ -617,9 +607,9 @@
                 recordButton.disabled = false;
                 stopButton.disabled = true;
                 
-                if (visualizationInterval) {
-                    clearInterval(visualizationInterval);
-                    visualizationInterval = null;
+                // Stop all tracks
+                if (audioStream) {
+                    audioStream.getTracks().forEach(track => track.stop());
                 }
             }
         }
@@ -670,53 +660,945 @@
             if (!originalAudioBuffer) return;
             
             try {
-                // In a real implementation, we would apply actual audio effects here
-                // For this demo, we'll simulate the effect by modifying playback rate
-                let playbackRate = 1.0;
-                
-                switch(effectId) {
-                    case 'deep': playbackRate = 0.7; break;
-                    case 'high': playbackRate = 1.5; break;
-                    case 'chipmunk': playbackRate = 2.0; break;
-                    case 'slow': playbackRate = 0.5; break;
-                    case 'fast': playbackRate = 1.8; break;
-                    default: playbackRate = 1.0;
-                }
-                
-                // Create a new buffer with modified playback rate
-                const frameCount = Math.floor(originalAudioBuffer.length / playbackRate);
-                modifiedAudioBuffer = audioContext.createBuffer(
+                // Create offline context for processing
+                const offlineContext = new OfflineAudioContext(
                     originalAudioBuffer.numberOfChannels,
-                    frameCount,
+                    originalAudioBuffer.length,
                     originalAudioBuffer.sampleRate
                 );
                 
-                for (let channel = 0; channel < originalAudioBuffer.numberOfChannels; channel++) {
-                    const inputData = originalAudioBuffer.getChannelData(channel);
-                    const outputData = modifiedAudioBuffer.getChannelData(channel);
-                    
-                    for (let i = 0; i < frameCount; i++) {
-                        const index = Math.floor(i * playbackRate);
-                        outputData[i] = inputData[index];
-                    }
+                const source = offlineContext.createBufferSource();
+                source.buffer = originalAudioBuffer;
+                
+                // Apply effects based on selection
+                let effectNode = source;
+                
+                switch(effectId) {
+                    case 'original':
+                        // No effect
+                        break;
+                    case 'deep':
+                        effectNode = createPitchShift(offlineContext, source, 0.7);
+                        break;
+                    case 'high':
+                        effectNode = createPitchShift(offlineContext, source, 1.5);
+                        break;
+                    case 'robot':
+                        effectNode = createRobotEffect(offlineContext, source);
+                        break;
+                    case 'alien':
+                        effectNode = createAlienEffect(offlineContext, source);
+                        break;
+                    case 'bee':
+                        effectNode = createBeeEffect(offlineContext, source);
+                        break;
+                    case 'helium':
+                        effectNode = createPitchShift(offlineContext, source, 2.0);
+                        break;
+                    case 'monster':
+                        effectNode = createMonsterEffect(offlineContext, source);
+                        break;
+                    case 'chipmunk':
+                        effectNode = createPitchShift(offlineContext, source, 1.8);
+                        break;
+                    case 'slow':
+                        effectNode = createPitchShift(offlineContext, source, 0.5);
+                        break;
+                    case 'fast':
+                        effectNode = createPitchShift(offlineContext, source, 1.8);
+                        break;
+                    case 'echo':
+                        effectNode = createEchoEffect(offlineContext, source);
+                        break;
+                    case 'reverb':
+                        effectNode = createReverbEffect(offlineContext, source);
+                        break;
+                    case 'telephone':
+                        effectNode = createTelephoneEffect(offlineContext, source);
+                        break;
+                    case 'radio':
+                        effectNode = createRadioEffect(offlineContext, source);
+                        break;
+                    case 'underwater':
+                        effectNode = createUnderwaterEffect(offlineContext, source);
+                        break;
+                    case 'tunnel':
+                        effectNode = createTunnelEffect(offlineContext, source);
+                        break;
+                    case 'space':
+                        effectNode = createSpaceEffect(offlineContext, source);
+                        break;
+                    case 'whisper':
+                        effectNode = createWhisperEffect(offlineContext, source);
+                        break;
+                    case 'megaphone':
+                        effectNode = createMegaphoneEffect(offlineContext, source);
+                        break;
+                    case 'karaoke':
+                        effectNode = createKaraokeEffect(offlineContext, source);
+                        break;
+                    case 'choir':
+                        effectNode = createChoirEffect(offlineContext, source);
+                        break;
+                    case 'duet':
+                        effectNode = createDuetEffect(offlineContext, source);
+                        break;
+                    case 'harmony':
+                        effectNode = createHarmonyEffect(offlineContext, source);
+                        break;
+                    case 'vibrato':
+                        effectNode = createVibratoEffect(offlineContext, source);
+                        break;
+                    case 'tremolo':
+                        effectNode = createTremoloEffect(offlineContext, source);
+                        break;
+                    case 'chorus':
+                        effectNode = createChorusEffect(offlineContext, source);
+                        break;
+                    case 'flanger':
+                        effectNode = createFlangerEffect(offlineContext, source);
+                        break;
+                    case 'phaser':
+                        effectNode = createPhaserEffect(offlineContext, source);
+                        break;
+                    case 'distortion':
+                        effectNode = createDistortionEffect(offlineContext, source);
+                        break;
+                    case 'fuzz':
+                        effectNode = createFuzzEffect(offlineContext, source);
+                        break;
+                    case 'overdrive':
+                        effectNode = createOverdriveEffect(offlineContext, source);
+                        break;
+                    case 'bitcrusher':
+                        effectNode = createBitcrusherEffect(offlineContext, source);
+                        break;
+                    case 'vinyl':
+                        effectNode = createVinylEffect(offlineContext, source);
+                        break;
+                    case 'tape':
+                        effectNode = createTapeEffect(offlineContext, source);
+                        break;
+                    case 'gramophone':
+                        effectNode = createGramophoneEffect(offlineContext, source);
+                        break;
+                    case 'male':
+                        effectNode = createMaleEffect(offlineContext, source);
+                        break;
+                    case 'female':
+                        effectNode = createFemaleEffect(offlineContext, source);
+                        break;
+                    case 'child':
+                        effectNode = createChildEffect(offlineContext, source);
+                        break;
+                    case 'old':
+                        effectNode = createOldEffect(offlineContext, source);
+                        break;
+                    case 'demon':
+                        effectNode = createDemonEffect(offlineContext, source);
+                        break;
+                    case 'angel':
+                        effectNode = createAngelEffect(offlineContext, source);
+                        break;
+                    case 'ghost':
+                        effectNode = createGhostEffect(offlineContext, source);
+                        break;
+                    case 'vampire':
+                        effectNode = createVampireEffect(offlineContext, source);
+                        break;
+                    case 'werewolf':
+                        effectNode = createWerewolfEffect(offlineContext, source);
+                        break;
+                    case 'dinosaur':
+                        effectNode = createDinosaurEffect(offlineContext, source);
+                        break;
+                    case 'squirrel':
+                        effectNode = createSquirrelEffect(offlineContext, source);
+                        break;
+                    case 'duck':
+                        effectNode = createDuckEffect(offlineContext, source);
+                        break;
+                    case 'cat':
+                        effectNode = createCatEffect(offlineContext, source);
+                        break;
+                    case 'dog':
+                        effectNode = createDogEffect(offlineContext, source);
+                        break;
+                    default:
+                        // No effect
+                        break;
                 }
                 
-                // Create a blob URL for the modified audio
-                const audioBlob = audioBufferToWav(modifiedAudioBuffer);
-                const audioUrl = URL.createObjectURL(audioBlob);
+                // Connect to destination and render
+                effectNode.connect(offlineContext.destination);
+                source.start(0);
                 
-                // Update audio player
-                audioPlayer.src = audioUrl;
-                audioPlayer.load();
-                
-                // Enable download button
-                downloadButton.disabled = false;
-                
-                showStatus(`Applied "${getEffectName(effectId)}" effect!`, 'success');
+                offlineContext.startRendering().then(renderedBuffer => {
+                    modifiedAudioBuffer = renderedBuffer;
+                    
+                    // Create a blob URL for the modified audio
+                    const audioBlob = audioBufferToWav(modifiedAudioBuffer);
+                    const audioUrl = URL.createObjectURL(audioBlob);
+                    
+                    // Update audio player
+                    audioPlayer.src = audioUrl;
+                    audioPlayer.load();
+                    
+                    // Enable download button
+                    downloadButton.disabled = false;
+                    
+                    showStatus(`Applied "${getEffectName(effectId)}" effect!`, 'success');
+                });
                 
             } catch (error) {
                 console.error('Error applying effect:', error);
                 showStatus('Error applying voice effect. Please try another effect.', 'error');
+            }
+        }
+
+        // Effect creation functions
+        function createPitchShift(context, source, rate) {
+            const pitchShifter = context.createBufferSource();
+            pitchShifter.buffer = source.buffer;
+            pitchShifter.playbackRate.value = rate;
+            return pitchShifter;
+        }
+
+        function createRobotEffect(context, source) {
+            const oscillator = context.createOscillator();
+            oscillator.type = 'sawtooth';
+            oscillator.frequency.value = 100;
+            
+            const modulator = context.createGain();
+            modulator.gain.value = 0.5;
+            
+            source.connect(modulator);
+            oscillator.connect(modulator.gain);
+            oscillator.start();
+            
+            return modulator;
+        }
+
+        function createAlienEffect(context, source) {
+            const filter = context.createBiquadFilter();
+            filter.type = 'bandpass';
+            filter.frequency.value = 1000;
+            filter.Q.value = 10;
+            
+            const oscillator = context.createOscillator();
+            oscillator.type = 'sine';
+            oscillator.frequency.value = 50;
+            
+            const modulator = context.createGain();
+            modulator.gain.value = 0.3;
+            
+            oscillator.connect(modulator);
+            modulator.connect(filter.frequency);
+            
+            source.connect(filter);
+            oscillator.start();
+            
+            return filter;
+        }
+
+        function createBeeEffect(context, source) {
+            const oscillator = context.createOscillator();
+            oscillator.type = 'sawtooth';
+            oscillator.frequency.value = 200;
+            
+            const modulator = context.createGain();
+            modulator.gain.value = 0.3;
+            
+            const filter = context.createBiquadFilter();
+            filter.type = 'bandpass';
+            filter.frequency.value = 800;
+            filter.Q.value = 5;
+            
+            source.connect(modulator);
+            oscillator.connect(modulator.gain);
+            modulator.connect(filter);
+            oscillator.start();
+            
+            return filter;
+        }
+
+        function createMonsterEffect(context, source) {
+            const pitchShifter = createPitchShift(context, source, 0.5);
+            
+            const distortion = context.createWaveShaper();
+            distortion.curve = makeDistortionCurve(400);
+            distortion.oversample = '4x';
+            
+            pitchShifter.connect(distortion);
+            
+            return distortion;
+        }
+
+        function createEchoEffect(context, source) {
+            const delay = context.createDelay();
+            delay.delayTime.value = 0.3;
+            
+            const feedback = context.createGain();
+            feedback.gain.value = 0.5;
+            
+            const merger = context.createChannelMerger(2);
+            
+            source.connect(merger, 0, 0);
+            source.connect(delay);
+            delay.connect(feedback);
+            feedback.connect(delay);
+            delay.connect(merger, 0, 1);
+            
+            return merger;
+        }
+
+        function createReverbEffect(context, source) {
+            const convolver = context.createConvolver();
+            
+            // Create a simple impulse response for reverb
+            const sampleRate = context.sampleRate;
+            const length = sampleRate * 2;
+            const impulse = context.createBuffer(2, length, sampleRate);
+            const left = impulse.getChannelData(0);
+            const right = impulse.getChannelData(1);
+            
+            for (let i = 0; i < length; i++) {
+                left[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / length, 2);
+                right[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / length, 2);
+            }
+            
+            convolver.buffer = impulse;
+            source.connect(convolver);
+            
+            return convolver;
+        }
+
+        function createTelephoneEffect(context, source) {
+            const lowPass = context.createBiquadFilter();
+            lowPass.type = 'lowpass';
+            lowPass.frequency.value = 3000;
+            
+            const highPass = context.createBiquadFilter();
+            highPass.type = 'highpass';
+            highPass.frequency.value = 500;
+            
+            source.connect(highPass);
+            highPass.connect(lowPass);
+            
+            return lowPass;
+        }
+
+        function createRadioEffect(context, source) {
+            const bandPass = context.createBiquadFilter();
+            bandPass.type = 'bandpass';
+            bandPass.frequency.value = 1000;
+            bandPass.Q.value = 1;
+            
+            const distortion = context.createWaveShaper();
+            distortion.curve = makeDistortionCurve(100);
+            
+            source.connect(bandPass);
+            bandPass.connect(distortion);
+            
+            return distortion;
+        }
+
+        function createUnderwaterEffect(context, source) {
+            const lowPass = context.createBiquadFilter();
+            lowPass.type = 'lowpass';
+            lowPass.frequency.value = 800;
+            
+            const oscillator = context.createOscillator();
+            oscillator.type = 'sine';
+            oscillator.frequency.value = 5;
+            
+            const modulator = context.createGain();
+            modulator.gain.value = 50;
+            
+            oscillator.connect(modulator);
+            modulator.connect(lowPass.frequency);
+            
+            source.connect(lowPass);
+            oscillator.start();
+            
+            return lowPass;
+        }
+
+        function createTunnelEffect(context, source) {
+            const delay = context.createDelay();
+            delay.delayTime.value = 0.5;
+            
+            const feedback = context.createGain();
+            feedback.gain.value = 0.7;
+            
+            const lowPass = context.createBiquadFilter();
+            lowPass.type = 'lowpass';
+            lowPass.frequency.value = 1000;
+            
+            source.connect(delay);
+            delay.connect(feedback);
+            feedback.connect(delay);
+            delay.connect(lowPass);
+            
+            const merger = context.createChannelMerger(2);
+            source.connect(merger, 0, 0);
+            lowPass.connect(merger, 0, 1);
+            
+            return merger;
+        }
+
+        function createSpaceEffect(context, source) {
+            const delay = context.createDelay();
+            delay.delayTime.value = 0.8;
+            
+            const feedback = context.createGain();
+            feedback.gain.value = 0.9;
+            
+            const lowPass = context.createBiquadFilter();
+            lowPass.type = 'lowpass';
+            lowPass.frequency.value = 1500;
+            
+            source.connect(delay);
+            delay.connect(feedback);
+            feedback.connect(delay);
+            delay.connect(lowPass);
+            
+            return lowPass;
+        }
+
+        function createWhisperEffect(context, source) {
+            const highPass = context.createBiquadFilter();
+            highPass.type = 'highpass';
+            highPass.frequency.value = 1000;
+            
+            const gain = context.createGain();
+            gain.gain.value = 0.7;
+            
+            source.connect(highPass);
+            highPass.connect(gain);
+            
+            return gain;
+        }
+
+        function createMegaphoneEffect(context, source) {
+            const bandPass = context.createBiquadFilter();
+            bandPass.type = 'bandpass';
+            bandPass.frequency.value = 1500;
+            bandPass.Q.value = 2;
+            
+            const distortion = context.createWaveShaper();
+            distortion.curve = makeDistortionCurve(50);
+            
+            source.connect(bandPass);
+            bandPass.connect(distortion);
+            
+            return distortion;
+        }
+
+        function createKaraokeEffect(context, source) {
+            const delay = context.createDelay();
+            delay.delayTime.value = 0.1;
+            
+            const feedback = context.createGain();
+            feedback.gain.value = 0.3;
+            
+            source.connect(delay);
+            delay.connect(feedback);
+            feedback.connect(delay);
+            
+            const merger = context.createChannelMerger(2);
+            source.connect(merger, 0, 0);
+            delay.connect(merger, 0, 1);
+            
+            return merger;
+        }
+
+        function createChoirEffect(context, source) {
+            const pitch1 = createPitchShift(context, source, 1.05);
+            const pitch2 = createPitchShift(context, source, 0.95);
+            
+            const merger = context.createChannelMerger(2);
+            
+            source.connect(merger, 0, 0);
+            pitch1.connect(merger, 0, 0);
+            pitch2.connect(merger, 0, 1);
+            
+            return merger;
+        }
+
+        function createDuetEffect(context, source) {
+            const delay = context.createDelay();
+            delay.delayTime.value = 0.2;
+            
+            const pitchShift = createPitchShift(context, source, 1.1);
+            
+            const merger = context.createChannelMerger(2);
+            source.connect(merger, 0, 0);
+            delay.connect(merger, 0, 1);
+            pitchShift.connect(merger, 0, 1);
+            
+            return merger;
+        }
+
+        function createHarmonyEffect(context, source) {
+            const pitch1 = createPitchShift(context, source, 1.2);
+            const pitch2 = createPitchShift(context, source, 0.8);
+            
+            const merger = context.createChannelMerger(2);
+            source.connect(merger, 0, 0);
+            pitch1.connect(merger, 0, 0);
+            pitch2.connect(merger, 0, 1);
+            
+            return merger;
+        }
+
+        function createVibratoEffect(context, source) {
+            const oscillator = context.createOscillator();
+            oscillator.frequency.value = 5;
+            
+            const modulator = context.createGain();
+            modulator.gain.value = 0.02;
+            
+            const delay = context.createDelay();
+            delay.delayTime.value = 0.01;
+            
+            oscillator.connect(modulator);
+            modulator.connect(delay.delayTime);
+            
+            source.connect(delay);
+            oscillator.start();
+            
+            return delay;
+        }
+
+        function createTremoloEffect(context, source) {
+            const oscillator = context.createOscillator();
+            oscillator.frequency.value = 5;
+            
+            const modulator = context.createGain();
+            modulator.gain.value = 0.5;
+            
+            const gain = context.createGain();
+            gain.gain.value = 1;
+            
+            oscillator.connect(modulator);
+            modulator.connect(gain.gain);
+            
+            source.connect(gain);
+            oscillator.start();
+            
+            return gain;
+        }
+
+        function createChorusEffect(context, source) {
+            const delay1 = context.createDelay();
+            delay1.delayTime.value = 0.03;
+            
+            const delay2 = context.createDelay();
+            delay2.delayTime.value = 0.05;
+            
+            const oscillator1 = context.createOscillator();
+            oscillator1.frequency.value = 1.5;
+            
+            const oscillator2 = context.createOscillator();
+            oscillator2.frequency.value = 1;
+            
+            const modulator1 = context.createGain();
+            modulator1.gain.value = 0.01;
+            
+            const modulator2 = context.createGain();
+            modulator2.gain.value = 0.01;
+            
+            oscillator1.connect(modulator1);
+            modulator1.connect(delay1.delayTime);
+            
+            oscillator2.connect(modulator2);
+            modulator2.connect(delay2.delayTime);
+            
+            const merger = context.createChannelMerger(2);
+            source.connect(merger, 0, 0);
+            source.connect(delay1);
+            source.connect(delay2);
+            delay1.connect(merger, 0, 0);
+            delay2.connect(merger, 0, 1);
+            
+            oscillator1.start();
+            oscillator2.start();
+            
+            return merger;
+        }
+
+        function createFlangerEffect(context, source) {
+            const delay = context.createDelay();
+            delay.delayTime.value = 0.01;
+            
+            const oscillator = context.createOscillator();
+            oscillator.frequency.value = 0.2;
+            
+            const modulator = context.createGain();
+            modulator.gain.value = 0.005;
+            
+            const feedback = context.createGain();
+            feedback.gain.value = 0.5;
+            
+            oscillator.connect(modulator);
+            modulator.connect(delay.delayTime);
+            
+            source.connect(delay);
+            delay.connect(feedback);
+            feedback.connect(delay);
+            
+            const merger = context.createChannelMerger(2);
+            source.connect(merger, 0, 0);
+            delay.connect(merger, 0, 1);
+            
+            oscillator.start();
+            
+            return merger;
+        }
+
+        function createPhaserEffect(context, source) {
+            const filters = [];
+            const stages = 4;
+            
+            for (let i = 0; i < stages; i++) {
+                const filter = context.createBiquadFilter();
+                filter.type = 'allpass';
+                filter.frequency.value = 350;
+                filters.push(filter);
+            }
+            
+            const oscillator = context.createOscillator();
+            oscillator.frequency.value = 0.5;
+            
+            const modulator = context.createGain();
+            modulator.gain.value = 1000;
+            
+            oscillator.connect(modulator);
+            
+            filters.forEach(filter => {
+                modulator.connect(filter.frequency);
+            });
+            
+            let node = source;
+            filters.forEach(filter => {
+                node.connect(filter);
+                node = filter;
+            });
+            
+            oscillator.start();
+            
+            return node;
+        }
+
+        function createDistortionEffect(context, source) {
+            const distortion = context.createWaveShaper();
+            distortion.curve = makeDistortionCurve(400);
+            distortion.oversample = '4x';
+            
+            source.connect(distortion);
+            
+            return distortion;
+        }
+
+        function createFuzzEffect(context, source) {
+            const distortion = context.createWaveShaper();
+            distortion.curve = makeDistortionCurve(800);
+            distortion.oversample = '4x';
+            
+            source.connect(distortion);
+            
+            return distortion;
+        }
+
+        function createOverdriveEffect(context, source) {
+            const distortion = context.createWaveShaper();
+            distortion.curve = makeDistortionCurve(200);
+            distortion.oversample = '4x';
+            
+            source.connect(distortion);
+            
+            return distortion;
+        }
+
+        function createBitcrusherEffect(context, source) {
+            const bitCrusher = new BitCrusherNode(context, {
+                bits: 4,
+                frequency: 0.5
+            });
+            
+            source.connect(bitCrusher);
+            
+            return bitCrusher;
+        }
+
+        function createVinylEffect(context, source) {
+            const oscillator = context.createOscillator();
+            oscillator.type = 'sine';
+            oscillator.frequency.value = 0.5;
+            
+            const modulator = context.createGain();
+            modulator.gain.value = 0.01;
+            
+            const gain = context.createGain();
+            
+            oscillator.connect(modulator);
+            modulator.connect(gain.gain);
+            
+            source.connect(gain);
+            oscillator.start();
+            
+            return gain;
+        }
+
+        function createTapeEffect(context, source) {
+            const lowPass = context.createBiquadFilter();
+            lowPass.type = 'lowpass';
+            lowPass.frequency.value = 4000;
+            
+            const highPass = context.createBiquadFilter();
+            highPass.type = 'highpass';
+            highPass.frequency.value = 100;
+            
+            source.connect(highPass);
+            highPass.connect(lowPass);
+            
+            return lowPass;
+        }
+
+        function createGramophoneEffect(context, source) {
+            const lowPass = context.createBiquadFilter();
+            lowPass.type = 'lowpass';
+            lowPass.frequency.value = 2000;
+            
+            const highPass = context.createBiquadFilter();
+            highPass.type = 'highpass';
+            highPass.frequency.value = 300;
+            
+            const oscillator = context.createOscillator();
+            oscillator.type = 'sine';
+            oscillator.frequency.value = 0.3;
+            
+            const modulator = context.createGain();
+            modulator.gain.value = 0.05;
+            
+            oscillator.connect(modulator);
+            modulator.connect(lowPass.frequency);
+            
+            source.connect(highPass);
+            highPass.connect(lowPass);
+            oscillator.start();
+            
+            return lowPass;
+        }
+
+        function createMaleEffect(context, source) {
+            return createPitchShift(context, source, 0.8);
+        }
+
+        function createFemaleEffect(context, source) {
+            return createPitchShift(context, source, 1.3);
+        }
+
+        function createChildEffect(context, source) {
+            return createPitchShift(context, source, 1.5);
+        }
+
+        function createOldEffect(context, source) {
+            const pitchShift = createPitchShift(context, source, 0.9);
+            
+            const tremolo = createTremoloEffect(context, pitchShift);
+            
+            return tremolo;
+        }
+
+        function createDemonEffect(context, source) {
+            const pitchShift = createPitchShift(context, source, 0.6);
+            
+            const distortion = context.createWaveShaper();
+            distortion.curve = makeDistortionCurve(500);
+            
+            pitchShift.connect(distortion);
+            
+            return distortion;
+        }
+
+        function createAngelEffect(context, source) {
+            const pitchShift = createPitchShift(context, source, 1.2);
+            
+            const reverb = createReverbEffect(context, pitchShift);
+            
+            return reverb;
+        }
+
+        function createGhostEffect(context, source) {
+            const pitchShift = createPitchShift(context, source, 1.1);
+            
+            const delay = context.createDelay();
+            delay.delayTime.value = 0.5;
+            
+            const feedback = context.createGain();
+            feedback.gain.value = 0.7;
+            
+            pitchShift.connect(delay);
+            delay.connect(feedback);
+            feedback.connect(delay);
+            
+            const merger = context.createChannelMerger(2);
+            pitchShift.connect(merger, 0, 0);
+            delay.connect(merger, 0, 1);
+            
+            return merger;
+        }
+
+        function createVampireEffect(context, source) {
+            const pitchShift = createPitchShift(context, source, 0.8);
+            
+            const reverb = createReverbEffect(context, pitchShift);
+            
+            return reverb;
+        }
+
+        function createWerewolfEffect(context, source) {
+            const pitchShift = createPitchShift(context, source, 0.5);
+            
+            const distortion = context.createWaveShaper();
+            distortion.curve = makeDistortionCurve(300);
+            
+            pitchShift.connect(distortion);
+            
+            return distortion;
+        }
+
+        function createDinosaurEffect(context, source) {
+            const pitchShift = createPitchShift(context, source, 0.4);
+            
+            const distortion = context.createWaveShaper();
+            distortion.curve = makeDistortionCurve(200);
+            
+            pitchShift.connect(distortion);
+            
+            return distortion;
+        }
+
+        function createSquirrelEffect(context, source) {
+            return createPitchShift(context, source, 2.0);
+        }
+
+        function createDuckEffect(context, source) {
+            const pitchShift = createPitchShift(context, source, 1.8);
+            
+            const bandPass = context.createBiquadFilter();
+            bandPass.type = 'bandpass';
+            bandPass.frequency.value = 1500;
+            bandPass.Q.value = 10;
+            
+            pitchShift.connect(bandPass);
+            
+            return bandPass;
+        }
+
+        function createCatEffect(context, source) {
+            const pitchShift = createPitchShift(context, source, 1.7);
+            
+            const bandPass = context.createBiquadFilter();
+            bandPass.type = 'bandpass';
+            bandPass.frequency.value = 1200;
+            bandPass.Q.value = 8;
+            
+            pitchShift.connect(bandPass);
+            
+            return bandPass;
+        }
+
+        function createDogEffect(context, source) {
+            const pitchShift = createPitchShift(context, source, 0.7);
+            
+            const bandPass = context.createBiquadFilter();
+            bandPass.type = 'bandpass';
+            bandPass.frequency.value = 800;
+            bandPass.Q.value = 5;
+            
+            pitchShift.connect(bandPass);
+            
+            return bandPass;
+        }
+
+        // Helper function to create distortion curve
+        function makeDistortionCurve(amount) {
+            const samples = 44100;
+            const curve = new Float32Array(samples);
+            const deg = Math.PI / 180;
+            
+            for (let i = 0; i < samples; i++) {
+                const x = i * 2 / samples - 1;
+                curve[i] = (3 + amount) * x * 20 * deg / (Math.PI + amount * Math.abs(x));
+            }
+            
+            return curve;
+        }
+
+        // BitCrusherNode implementation
+        class BitCrusherNode extends AudioWorkletNode {
+            constructor(context, options = {}) {
+                super(context, 'bitcrusher-processor', {
+                    parameterData: {
+                        bits: options.bits || 8,
+                        frequency: options.frequency || 0.5
+                    }
+                });
+            }
+        }
+
+        // Register the AudioWorklet processor
+        async function registerAudioWorklet() {
+            if (audioContext.audioWorklet) {
+                try {
+                    await audioContext.audioWorklet.addModule(`
+                        class BitCrusherProcessor extends AudioWorkletProcessor {
+                            static get parameterDescriptors() {
+                                return [
+                                    { name: 'bits', defaultValue: 8, minValue: 1, maxValue: 16 },
+                                    { name: 'frequency', defaultValue: 0.5, minValue: 0, maxValue: 1 }
+                                ];
+                            }
+                            
+                            constructor() {
+                                super();
+                                this.phase = 0;
+                                this.lastValue = 0;
+                            }
+                            
+                            process(inputs, outputs, parameters) {
+                                const input = inputs[0];
+                                const output = outputs[0];
+                                const bits = parameters.bits[0];
+                                const frequency = parameters.frequency[0];
+                                
+                                for (let channel = 0; channel < input.length; channel++) {
+                                    const inputChannel = input[channel];
+                                    const outputChannel = output[channel];
+                                    const step = Math.pow(0.5, bits);
+                                    
+                                    for (let i = 0; i < inputChannel.length; i++) {
+                                        this.phase += frequency;
+                                        if (this.phase >= 1.0) {
+                                            this.phase -= 1.0;
+                                            this.lastValue = step * Math.floor(inputChannel[i] / step + 0.5);
+                                        }
+                                        outputChannel[i] = this.lastValue;
+                                    }
+                                }
+                                
+                                return true;
+                            }
+                        }
+                        
+                        registerProcessor('bitcrusher-processor', BitCrusherProcessor);
+                    `);
+                } catch (error) {
+                    console.error('Error registering AudioWorklet:', error);
+                }
             }
         }
 
@@ -813,7 +1695,10 @@
         }
 
         // Initialize the app when the page loads
-        window.addEventListener('load', init);
+        window.addEventListener('load', () => {
+            init();
+            registerAudioWorklet();
+        });
     </script>
 </body>
 </html>
