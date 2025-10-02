@@ -3,783 +3,379 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Caller</title>
+    <title>System Terminal</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Courier New', monospace;
         }
-
+        
         body {
-            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
-            color: white;
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        header p {
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
-
-        .main-content {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-
-        .call-section {
-            flex: 1;
-            min-width: 300px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        }
-
-        .call-logs {
-            flex: 1;
-            min-width: 300px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        }
-
-        .section-title {
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .input-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
-
-        .phone-input {
-            display: flex;
-            gap: 10px;
-        }
-
-        select, input {
-            padding: 12px 15px;
-            border-radius: 8px;
-            border: none;
-            background: rgba(255, 255, 255, 0.9);
-            font-size: 1rem;
-            color: #333;
-            outline: none;
-            transition: all 0.3s ease;
-        }
-
-        select {
-            flex: 0 0 120px;
-        }
-
-        input {
-            flex: 1;
-        }
-
-        select:focus, input:focus {
-            box-shadow: 0 0 0 2px #4a9eff;
-        }
-
-        .call-btn {
-            width: 100%;
-            padding: 15px;
-            background: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 10px;
-        }
-
-        .call-btn:hover {
-            background: #45a049;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        .call-btn:disabled {
-            background: #cccccc;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        .video-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            margin-top: 30px;
-        }
-
-        .video-wrapper {
-            flex: 1;
-            min-width: 250px;
-            position: relative;
-            border-radius: 10px;
-            overflow: hidden;
-            background: #000;
-            aspect-ratio: 4/3;
-        }
-
-        .video-wrapper h3 {
-            position: absolute;
-            bottom: 10px;
-            left: 10px;
-            background: rgba(0, 0, 0, 0.5);
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 0.9rem;
-        }
-
-        video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .call-controls {
+            background-color: #000;
+            color: #0f0;
+            height: 100vh;
             display: flex;
             justify-content: center;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .control-btn {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            border: none;
-            display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            overflow: hidden;
         }
-
-        .end-call {
-            background: #f44336;
-            color: white;
+        
+        .terminal-container {
+            width: 90%;
+            max-width: 800px;
+            height: 500px;
+            background-color: #000;
+            border: 2px solid #0f0;
+            border-radius: 5px;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+            overflow: hidden;
+            position: relative;
         }
-
-        .mute, .video-off {
-            background: #555;
-            color: white;
-        }
-
-        .control-btn:hover {
-            transform: scale(1.1);
-        }
-
-        .logs-list {
-            max-height: 400px;
-            overflow-y: auto;
-        }
-
-        .log-item {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 10px;
+        
+        .terminal-header {
+            background-color: #111;
+            padding: 10px;
+            border-bottom: 1px solid #0f0;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-
-        .log-info {
+        
+        .terminal-title {
+            font-size: 14px;
+            color: #0f0;
+        }
+        
+        .terminal-controls {
             display: flex;
-            flex-direction: column;
+            gap: 10px;
         }
-
-        .log-number {
-            font-weight: 600;
-            font-size: 1.1rem;
+        
+        .control {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
         }
-
-        .log-details {
-            font-size: 0.9rem;
-            opacity: 0.8;
-            margin-top: 5px;
+        
+        .close {
+            background-color: #ff5f56;
         }
-
-        .log-status {
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
+        
+        .minimize {
+            background-color: #ffbd2e;
         }
-
-        .incoming {
-            background: rgba(76, 175, 80, 0.3);
-            color: #4CAF50;
+        
+        .maximize {
+            background-color: #27ca3f;
         }
-
-        .outgoing {
-            background: rgba(33, 150, 243, 0.3);
-            color: #2196F3;
+        
+        .terminal-body {
+            padding: 20px;
+            height: calc(100% - 40px);
+            overflow-y: auto;
         }
-
-        .missed {
-            background: rgba(244, 67, 54, 0.3);
-            color: #f44336;
+        
+        .prompt {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
         }
-
-        .no-logs {
+        
+        .prompt-text {
+            color: #0f0;
+            margin-right: 10px;
+        }
+        
+        .input-line {
+            display: flex;
+            align-items: center;
+        }
+        
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 16px;
+            background-color: #0f0;
+            animation: blink 1s infinite;
+            margin-left: 2px;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        
+        .output {
+            white-space: pre-wrap;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+        
+        .typing {
+            display: inline-block;
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 2px solid #0f0;
+            animation: typing 0.1s steps(1, end);
+        }
+        
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        
+        .shiver {
+            animation: shiver 0.1s infinite;
+        }
+        
+        @keyframes shiver {
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(2px, 2px); }
+            50% { transform: translate(0, 0); }
+            75% { transform: translate(-2px, -2px); }
+            100% { transform: translate(0, 0); }
+        }
+        
+        .low-signal {
+            position: relative;
+        }
+        
+        .low-signal::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(transparent 0%, rgba(0, 255, 0, 0.1) 50%, transparent 100%);
+            background-size: 100% 4px;
+            animation: scan 2s linear infinite;
+            pointer-events: none;
+        }
+        
+        .low-signal::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.15) 0px,
+                rgba(0, 0, 0, 0.15) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+        }
+        
+        @keyframes scan {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            color: #f00;
+            font-size: 24px;
             text-align: center;
             padding: 20px;
-            opacity: 0.7;
         }
-
-        footer {
-            text-align: center;
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
-            font-size: 0.9rem;
-            opacity: 0.7;
+        
+        .modal-content {
+            background-color: #000;
+            border: 2px solid #f00;
+            padding: 30px;
+            border-radius: 5px;
+            max-width: 500px;
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.5);
         }
-
-        @media (max-width: 768px) {
-            .main-content {
-                flex-direction: column;
-            }
-            
-            .video-container {
-                flex-direction: column;
-            }
+        
+        .warning {
+            color: #f00;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+        
+        .modal-text {
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+        
+        .access-denied {
+            color: #ff0;
+            font-size: 32px;
+            font-weight: bold;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Video Caller</h1>
-            <p>Make video calls to anyone, anywhere in the world</p>
-        </header>
-
-        <div class="main-content">
-            <div class="call-section">
-                <h2 class="section-title">Make a Call</h2>
-                
-                <div class="input-group">
-                    <label for="country-code">Country Code</label>
-                    <select id="country-code">
-                        <!-- Country codes will be populated by JavaScript -->
-                    </select>
-                </div>
-                
-                <div class="input-group">
-                    <label for="phone-number">Phone Number</label>
-                    <div class="phone-input">
-                        <input type="text" id="phone-number" placeholder="Enter phone number">
-                    </div>
-                </div>
-                
-                <button id="call-btn" class="call-btn">Start Video Call</button>
-                
-                <div class="video-container">
-                    <div class="video-wrapper">
-                        <video id="local-video" autoplay muted></video>
-                        <h3>You</h3>
-                    </div>
-                    <div class="video-wrapper">
-                        <video id="remote-video" autoplay></video>
-                        <h3>Remote User</h3>
-                    </div>
-                </div>
-                
-                <div class="call-controls" style="display: none;" id="call-controls">
-                    <button class="control-btn mute" id="mute-btn">🎤</button>
-                    <button class="control-btn video-off" id="video-off-btn">📹</button>
-                    <button class="control-btn end-call" id="end-call-btn">📞</button>
-                </div>
+    <div class="terminal-container">
+        <div class="terminal-header">
+            <div class="terminal-title">SYSTEM TERMINAL v2.1.7</div>
+            <div class="terminal-controls">
+                <div class="control close"></div>
+                <div class="control minimize"></div>
+                <div class="control maximize"></div>
             </div>
-            
-            <div class="call-logs">
-                <h2 class="section-title">Recent Calls</h2>
-                <div class="logs-list" id="logs-list">
-                    <!-- Call logs will be populated by JavaScript -->
+        </div>
+        <div class="terminal-body" id="terminalBody">
+            <div class="prompt">
+                <span class="prompt-text">user@system:~$</span>
+                <div class="input-line">
+                    <input type="text" id="commandInput" autofocus>
+                    <span class="cursor"></span>
                 </div>
             </div>
         </div>
-        
-        <footer>
-            <p>Video Caller &copy; 2023 | Connect with anyone, anywhere</p>
-        </footer>
+    </div>
+    
+    <div class="modal" id="alertModal">
+        <div class="modal-content">
+            <div class="warning">⚠ SECURITY BREACH DETECTED ⚠</div>
+            <div class="modal-text">
+                Unauthorized access to system detected.<br>
+                Your activities have been logged and reported.<br>
+                Law enforcement has been notified.
+            </div>
+            <div class="access-denied">ACCESS DENIED</div>
+        </div>
     </div>
 
     <script>
-        // Country codes data
-        const countryCodes = [
-            { code: "+1", name: "USA" },
-            { code: "+44", name: "UK" },
-            { code: "+91", name: "India" },
-            { code: "+86", name: "China" },
-            { code: "+49", name: "Germany" },
-            { code: "+33", name: "France" },
-            { code: "+81", name: "Japan" },
-            { code: "+7", name: "Russia" },
-            { code: "+55", name: "Brazil" },
-            { code: "+61", name: "Australia" },
-            { code: "+34", name: "Spain" },
-            { code: "+39", name: "Italy" },
-            { code: "+82", name: "South Korea" },
-            { code: "+52", name: "Mexico" },
-            { code: "+31", name: "Netherlands" },
-            { code: "+46", name: "Sweden" },
-            { code: "+41", name: "Switzerland" },
-            { code: "+971", name: "UAE" },
-            { code: "+966", name: "Saudi Arabia" },
-            { code: "+20", name: "Egypt" },
-            { code: "+27", name: "South Africa" },
-            { code: "+234", name: "Nigeria" },
-            { code: "+254", name: "Kenya" },
-            { code: "+62", name: "Indonesia" },
-            { code: "+60", name: "Malaysia" },
-            { code: "+63", name: "Philippines" },
-            { code: "+65", name: "Singapore" },
-            { code: "+66", name: "Thailand" },
-            { code: "+84", name: "Vietnam" },
-            { code: "+90", name: "Turkey" },
-            { code: "+98", name: "Iran" },
-            { code: "+972", name: "Israel" },
-            { code: "+351", name: "Portugal" },
-            { code: "+353", name: "Ireland" },
-            { code: "+45", name: "Denmark" },
-            { code: "+47", name: "Norway" },
-            { code: "+358", name: "Finland" },
-            { code: "+48", name: "Poland" },
-            { code: "+420", name: "Czech Republic" },
-            { code: "+36", name: "Hungary" },
-            { code: "+40", name: "Romania" },
-            { code: "+380", name: "Ukraine" },
-            { code: "+375", name: "Belarus" },
-            { code: "+370", name: "Lithuania" },
-            { code: "+371", name: "Latvia" },
-            { code: "+372", name: "Estonia" },
-            { code: "+386", name: "Slovenia" },
-            { code: "+385", name: "Croatia" },
-            { code: "+381", name: "Serbia" },
-            { code: "+382", name: "Montenegro" },
-            { code: "+387", name: "Bosnia and Herzegovina" },
-            { code: "+389", name: "North Macedonia" },
-            { code: "+355", name: "Albania" },
-            { code: "+373", name: "Moldova" },
-            { code: "+374", name: "Armenia" },
-            { code: "+994", name: "Azerbaijan" },
-            { code: "+995", name: "Georgia" },
-            { code: "+976", name: "Mongolia" },
-            { code: "+850", name: "North Korea" },
-            { code: "+93", name: "Afghanistan" },
-            { code: "+92", name: "Pakistan" },
-            { code: "+880", name: "Bangladesh" },
-            { code: "+94", name: "Sri Lanka" },
-            { code: "+977", name: "Nepal" },
-            { code: "+975", name: "Bhutan" },
-            { code: "+960", name: "Maldives" },
-            { code: "+967", name: "Yemen" },
-            { code: "+968", name: "Oman" },
-            { code: "+974", name: "Qatar" },
-            { code: "+965", name: "Kuwait" },
-            { code: "+973", name: "Bahrain" },
-            { code: "+962", name: "Jordan" },
-            { code: "+961", name: "Lebanon" },
-            { code: "+963", name: "Syria" },
-            { code: "+964", name: "Iraq" },
-            { code: "+218", name: "Libya" },
-            { code: "+213", name: "Algeria" },
-            { code: "+216", name: "Tunisia" },
-            { code: "+212", name: "Morocco" },
-            { code: "+221", name: "Senegal" },
-            { code: "+223", name: "Mali" },
-            { code: "+224", name: "Guinea" },
-            { code: "+225", name: "Ivory Coast" },
-            { code: "+226", name: "Burkina Faso" },
-            { code: "+227", name: "Niger" },
-            { code: "+228", name: "Togo" },
-            { code: "+229", name: "Benin" },
-            { code: "+230", name: "Mauritius" },
-            { code: "+231", name: "Liberia" },
-            { code: "+232", name: "Sierra Leone" },
-            { code: "+233", name: "Ghana" },
-            { code: "+234", name: "Nigeria" },
-            { code: "+235", name: "Chad" },
-            { code: "+236", name: "Central African Republic" },
-            { code: "+237", name: "Cameroon" },
-            { code: "+238", name: "Cape Verde" },
-            { code: "+239", name: "Sao Tome and Principe" },
-            { code: "+240", name: "Equatorial Guinea" },
-            { code: "+241", name: "Gabon" },
-            { code: "+242", name: "Republic of the Congo" },
-            { code: "+243", name: "DR Congo" },
-            { code: "+244", name: "Angola" },
-            { code: "+245", name: "Guinea-Bissau" },
-            { code: "+246", name: "British Indian Ocean Territory" },
-            { code: "+247", name: "Ascension Island" },
-            { code: "+248", name: "Seychelles" },
-            { code: "+249", name: "Sudan" },
-            { code: "+250", name: "Rwanda" },
-            { code: "+251", name: "Ethiopia" },
-            { code: "+252", name: "Somalia" },
-            { code: "+253", name: "Djibouti" },
-            { code: "+254", name: "Kenya" },
-            { code: "+255", name: "Tanzania" },
-            { code: "+256", name: "Uganda" },
-            { code: "+257", name: "Burundi" },
-            { code: "+258", name: "Mozambique" },
-            { code: "+260", name: "Zambia" },
-            { code: "+261", name: "Madagascar" },
-            { code: "+262", name: "Reunion" },
-            { code: "+263", name: "Zimbabwe" },
-            { code: "+264", name: "Namibia" },
-            { code: "+265", name: "Malawi" },
-            { code: "+266", name: "Lesotho" },
-            { code: "+267", name: "Botswana" },
-            { code: "+268", name: "Swaziland" },
-            { code: "+269", name: "Comoros" },
-            { code: "+290", name: "Saint Helena" },
-            { code: "+291", name: "Eritrea" },
-            { code: "+297", name: "Aruba" },
-            { code: "+298", name: "Faroe Islands" },
-            { code: "+299", name: "Greenland" },
-            { code: "+350", name: "Gibraltar" },
-            { code: "+352", name: "Luxembourg" },
-            { code: "+354", name: "Iceland" },
-            { code: "+355", name: "Albania" },
-            { code: "+356", name: "Malta" },
-            { code: "+357", name: "Cyprus" },
-            { code: "+358", name: "Finland" },
-            { code: "+359", name: "Bulgaria" },
-            { code: "+370", name: "Lithuania" },
-            { code: "+371", name: "Latvia" },
-            { code: "+372", name: "Estonia" },
-            { code: "+373", name: "Moldova" },
-            { code: "+374", name: "Armenia" },
-            { code: "+375", name: "Belarus" },
-            { code: "+376", name: "Andorra" },
-            { code: "+377", name: "Monaco" },
-            { code: "+378", name: "San Marino" },
-            { code: "+379", name: "Vatican City" },
-            { code: "+380", name: "Ukraine" },
-            { code: "+381", name: "Serbia" },
-            { code: "+382", name: "Montenegro" },
-            { code: "+383", name: "Kosovo" },
-            { code: "+385", name: "Croatia" },
-            { code: "+386", name: "Slovenia" },
-            { code: "+387", name: "Bosnia and Herzegovina" },
-            { code: "+389", name: "North Macedonia" },
-            { code: "+420", name: "Czech Republic" },
-            { code: "+421", name: "Slovakia" },
-            { code: "+423", name: "Liechtenstein" },
-            { code: "+500", name: "Falkland Islands" },
-            { code: "+501", name: "Belize" },
-            { code: "+502", name: "Guatemala" },
-            { code: "+503", name: "El Salvador" },
-            { code: "+504", name: "Honduras" },
-            { code: "+505", name: "Nicaragua" },
-            { code: "+506", name: "Costa Rica" },
-            { code: "+507", name: "Panama" },
-            { code: "+508", name: "Saint Pierre and Miquelon" },
-            { code: "+509", name: "Haiti" },
-            { code: "+590", name: "Guadeloupe" },
-            { code: "+591", name: "Bolivia" },
-            { code: "+592", name: "Guyana" },
-            { code: "+593", name: "Ecuador" },
-            { code: "+594", name: "French Guiana" },
-            { code: "+595", name: "Paraguay" },
-            { code: "+596", name: "Martinique" },
-            { code: "+597", name: "Suriname" },
-            { code: "+598", name: "Uruguay" },
-            { code: "+599", name: "Caribbean Netherlands" },
-            { code: "+670", name: "East Timor" },
-            { code: "+672", name: "Norfolk Island" },
-            { code: "+673", name: "Brunei" },
-            { code: "+674", name: "Nauru" },
-            { code: "+675", name: "Papua New Guinea" },
-            { code: "+676", name: "Tonga" },
-            { code: "+677", name: "Solomon Islands" },
-            { code: "+678", name: "Vanuatu" },
-            { code: "+679", name: "Fiji" },
-            { code: "+680", name: "Palau" },
-            { code: "+681", name: "Wallis and Futuna" },
-            { code: "+682", name: "Cook Islands" },
-            { code: "+683", name: "Niue" },
-            { code: "+685", name: "Samoa" },
-            { code: "+686", name: "Kiribati" },
-            { code: "+687", name: "New Caledonia" },
-            { code: "+688", name: "Tuvalu" },
-            { code: "+689", name: "French Polynesia" },
-            { code: "+690", name: "Tokelau" },
-            { code: "+691", name: "Micronesia" },
-            { code: "+692", name: "Marshall Islands" },
-            { code: "+850", name: "North Korea" },
-            { code: "+852", name: "Hong Kong" },
-            { code: "+853", name: "Macau" },
-            { code: "+855", name: "Cambodia" },
-            { code: "+856", name: "Laos" },
-            { code: "+880", name: "Bangladesh" },
-            { code: "+886", name: "Taiwan" },
-            { code: "+960", name: "Maldives" },
-            { code: "+961", name: "Lebanon" },
-            { code: "+962", name: "Jordan" },
-            { code: "+963", name: "Syria" },
-            { code: "+964", name: "Iraq" },
-            { code: "+965", name: "Kuwait" },
-            { code: "+966", name: "Saudi Arabia" },
-            { code: "+967", name: "Yemen" },
-            { code: "+968", name: "Oman" },
-            { code: "+970", name: "Palestine" },
-            { code: "+971", name: "United Arab Emirates" },
-            { code: "+972", name: "Israel" },
-            { code: "+973", name: "Bahrain" },
-            { code: "+974", name: "Qatar" },
-            { code: "+975", name: "Bhutan" },
-            { code: "+976", name: "Mongolia" },
-            { code: "+977", name: "Nepal" },
-            { code: "+992", name: "Tajikistan" },
-            { code: "+993", name: "Turkmenistan" },
-            { code: "+994", name: "Azerbaijan" },
-            { code: "+995", name: "Georgia" },
-            { code: "+996", name: "Kyrgyzstan" },
-            { code: "+998", name: "Uzbekistan" }
-        ];
-
-        // DOM Elements
-        const countryCodeSelect = document.getElementById('country-code');
-        const phoneNumberInput = document.getElementById('phone-number');
-        const callBtn = document.getElementById('call-btn');
-        const localVideo = document.getElementById('local-video');
-        const remoteVideo = document.getElementById('remote-video');
-        const callControls = document.getElementById('call-controls');
-        const muteBtn = document.getElementById('mute-btn');
-        const videoOffBtn = document.getElementById('video-off-btn');
-        const endCallBtn = document.getElementById('end-call-btn');
-        const logsList = document.getElementById('logs-list');
-
-        // State variables
-        let isCallActive = false;
-        let isMuted = false;
-        let isVideoOff = false;
-        let localStream = null;
-        let callLogs = JSON.parse(localStorage.getItem('callLogs')) || [];
-
-        // Initialize the app
-        function init() {
-            populateCountryCodes();
-            renderCallLogs();
-            setupEventListeners();
-            requestCameraAccess();
-        }
-
-        // Populate country codes dropdown
-        function populateCountryCodes() {
-            countryCodes.forEach(country => {
-                const option = document.createElement('option');
-                option.value = country.code;
-                option.textContent = `${country.code} (${country.name})`;
-                countryCodeSelect.appendChild(option);
+        document.addEventListener('DOMContentLoaded', function() {
+            const terminalBody = document.getElementById('terminalBody');
+            const commandInput = document.getElementById('commandInput');
+            const alertModal = document.getElementById('alertModal');
+            
+            // Focus on input field
+            commandInput.focus();
+            
+            // Handle command input
+            commandInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    const command = commandInput.value.trim();
+                    if (command) {
+                        // Display the command
+                        displayCommand(command);
+                        
+                        // Clear input
+                        commandInput.value = '';
+                        
+                        // Start the hacking simulation
+                        startHackingSimulation();
+                    }
+                }
             });
             
-            // Set default to USA
-            countryCodeSelect.value = '+1';
-        }
-
-        // Set up event listeners
-        function setupEventListeners() {
-            callBtn.addEventListener('click', handleCallButton);
-            muteBtn.addEventListener('click', toggleMute);
-            videoOffBtn.addEventListener('click', toggleVideo);
-            endCallBtn.addEventListener('click', endCall);
-            phoneNumberInput.addEventListener('input', validatePhoneNumber);
-        }
-
-        // Validate phone number input
-        function validatePhoneNumber() {
-            const phoneNumber = phoneNumberInput.value;
-            const isValid = /^\d{7,15}$/.test(phoneNumber);
-            callBtn.disabled = !isValid;
-            
-            if (phoneNumber && !isValid) {
-                phoneNumberInput.style.boxShadow = '0 0 0 2px #f44336';
-            } else {
-                phoneNumberInput.style.boxShadow = '';
-            }
-        }
-
-        // Request camera access
-        function requestCameraAccess() {
-            navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-                .then(stream => {
-                    localStream = stream;
-                    localVideo.srcObject = stream;
-                })
-                .catch(error => {
-                    console.error('Error accessing media devices:', error);
-                    alert('Unable to access camera and microphone. Please check permissions.');
-                });
-        }
-
-        // Handle call button click
-        function handleCallButton() {
-            if (isCallActive) {
-                endCall();
-            } else {
-                startCall();
-            }
-        }
-
-        // Start a call
-        function startCall() {
-            const countryCode = countryCodeSelect.value;
-            const phoneNumber = phoneNumberInput.value;
-            const fullNumber = `${countryCode}${phoneNumber}`;
-            
-            if (!phoneNumber) {
-                alert('Please enter a phone number');
-                return;
-            }
-            
-            // Update UI for active call
-            isCallActive = true;
-            callBtn.textContent = 'End Call';
-            callControls.style.display = 'flex';
-            phoneNumberInput.disabled = true;
-            countryCodeSelect.disabled = true;
-            
-            // Simulate remote video (in a real app, this would be the remote stream)
-            remoteVideo.srcObject = localStream;
-            
-            // Add call to logs
-            addCallLog(fullNumber, 'outgoing');
-        }
-
-        // End the current call
-        function endCall() {
-            isCallActive = false;
-            callBtn.textContent = 'Start Video Call';
-            callControls.style.display = 'none';
-            phoneNumberInput.disabled = false;
-            countryCodeSelect.disabled = false;
-            
-            // Stop remote video (in a real app, you'd stop the remote stream)
-            remoteVideo.srcObject = null;
-        }
-
-        // Toggle mute
-        function toggleMute() {
-            isMuted = !isMuted;
-            const audioTracks = localStream.getAudioTracks();
-            audioTracks.forEach(track => {
-                track.enabled = !isMuted;
-            });
-            
-            muteBtn.textContent = isMuted ? '🎤🔇' : '🎤';
-            muteBtn.style.background = isMuted ? '#f44336' : '#555';
-        }
-
-        // Toggle video
-        function toggleVideo() {
-            isVideoOff = !isVideoOff;
-            const videoTracks = localStream.getVideoTracks();
-            videoTracks.forEach(track => {
-                track.enabled = !isVideoOff;
-            });
-            
-            videoOffBtn.textContent = isVideoOff ? '📹❌' : '📹';
-            videoOffBtn.style.background = isVideoOff ? '#f44336' : '#555';
-        }
-
-        // Add a call to the logs
-        function addCallLog(number, type) {
-            const now = new Date();
-            const call = {
-                id: Date.now(),
-                number: number,
-                type: type,
-                date: now.toLocaleDateString(),
-                time: now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-                duration: type === 'outgoing' ? '2:45' : '1:30' // Simulated duration
-            };
-            
-            callLogs.unshift(call);
-            
-            // Keep only last 20 calls
-            if (callLogs.length > 20) {
-                callLogs = callLogs.slice(0, 20);
-            }
-            
-            // Save to localStorage
-            localStorage.setItem('callLogs', JSON.stringify(callLogs));
-            
-            // Update UI
-            renderCallLogs();
-        }
-
-        // Render call logs
-        function renderCallLogs() {
-            if (callLogs.length === 0) {
-                logsList.innerHTML = '<div class="no-logs">No recent calls</div>';
-                return;
-            }
-            
-            logsList.innerHTML = '';
-            callLogs.forEach(log => {
-                const logItem = document.createElement('div');
-                logItem.className = 'log-item';
-                
-                const statusClass = log.type === 'outgoing' ? 'outgoing' : 
-                                  log.type === 'incoming' ? 'incoming' : 'missed';
-                
-                logItem.innerHTML = `
-                    <div class="log-info">
-                        <div class="log-number">${log.number}</div>
-                        <div class="log-details">${log.date} at ${log.time} • ${log.duration}</div>
-                    </div>
-                    <div class="log-status ${statusClass}">${log.type}</div>
+            function displayCommand(command) {
+                const commandLine = document.createElement('div');
+                commandLine.className = 'prompt';
+                commandLine.innerHTML = `
+                    <span class="prompt-text">user@system:~$</span>
+                    <span>${command}</span>
                 `;
+                terminalBody.appendChild(commandLine);
+            }
+            
+            function startHackingSimulation() {
+                // Define the messages to display with typewriter effect
+                const messages = [
+                    "Initializing system scan...",
+                    "System........... minimized",
+                    "Firewall.......... bypassed",
+                    "Virolla.......... installed",
+                    "Encryption....... cracked",
+                    "Root access....... obtained",
+                    "Data............. extracted",
+                    "Internet......... attacked",
+                    "Tracking......... activated",
+                    "Backdoor......... installed"
+                ];
                 
-                logsList.appendChild(logItem);
-            });
-        }
-
-        // Initialize the app when DOM is loaded
-        document.addEventListener('DOMContentLoaded', init);
+                let currentMessageIndex = 0;
+                
+                function typeNextMessage() {
+                    if (currentMessageIndex < messages.length) {
+                        const messageDiv = document.createElement('div');
+                        messageDiv.className = 'output';
+                        terminalBody.appendChild(messageDiv);
+                        
+                        typeWriterEffect(messageDiv, messages[currentMessageIndex], () => {
+                            currentMessageIndex++;
+                            setTimeout(typeNextMessage, 500);
+                        });
+                    } else {
+                        // All messages typed, start effects
+                        startEffects();
+                    }
+                }
+                
+                // Start typing the first message
+                setTimeout(typeNextMessage, 1000);
+            }
+            
+            function typeWriterEffect(element, text, callback) {
+                let i = 0;
+                const speed = 50; // typing speed in ms
+                
+                function type() {
+                    if (i < text.length) {
+                        element.textContent += text.charAt(i);
+                        i++;
+                        setTimeout(type, speed);
+                    } else {
+                        if (callback) callback();
+                    }
+                }
+                
+                type();
+            }
+            
+            function startEffects() {
+                // Add shiver effect
+                terminalBody.parentElement.classList.add('shiver');
+                
+                // After shivering, add low signal effect
+                setTimeout(() => {
+                    terminalBody.parentElement.classList.remove('shiver');
+                    terminalBody.parentElement.classList.add('low-signal');
+                    
+                    // Add event listener for screen tap/click to show alert
+                    document.addEventListener('click', showAlert);
+                }, 2000);
+            }
+            
+            function showAlert() {
+                // Remove event listener to prevent multiple triggers
+                document.removeEventListener('click', showAlert);
+                
+                // Show the alert modal
+                alertModal.style.display = 'flex';
+                
+                // Prevent closing the modal
+                document.addEventListener('contextmenu', preventClose);
+                document.addEventListener('keydown', preventClose);
+            }
+            
+            function preventClose(e) {
+                e.preventDefault();
+                return false;
+            }
+        });
     </script>
 </body>
 </html>
