@@ -1,292 +1,1158 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Draught - Checkers Game</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #222;
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    #welcome {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.9);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      z-index: 10;
-    }
-    #welcome h1 {
-      font-size: 3em;
-      margin-bottom: 20px;
-    }
-    .mode-btn {
-      padding: 15px 30px;
-      margin: 10px;
-      font-size: 1.2em;
-      cursor: pointer;
-      background: #444;
-      border: none;
-      color: white;
-      border-radius: 8px;
-    }
-    .mode-btn:hover {
-      background: #666;
-    }
-    #game {
-      margin-top: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    #board {
-      display: grid;
-      grid-template-columns: repeat(8, 60px);
-      grid-template-rows: repeat(8, 60px);
-      border: 4px solid #fff;
-    }
-    .square {
-      width: 60px;
-      height: 60px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    .white { background-color: #eee; }
-    .black { background-color: #333; }
-    .piece {
-      width: 45px;
-      height: 45px;
-      border-radius: 50%;
-      cursor: pointer;
-    }
-    .red { background-color: red; }
-    .black-piece { background-color: black; }
-    .king {
-      background-color: yellow !important;
-      position: relative;
-    }
-    .king::after {
-      content: '\f521';
-      font-family: 'Font Awesome 6 Free';
-      font-weight: 900;
-      position: absolute;
-      top: 5px;
-      left: 50%;
-      transform: translateX(-50%);
-      color: black;
-      font-size: 20px;
-    }
-    #controls {
-      margin-top: 10px;
-    }
-    #pauseBtn {
-      padding: 10px 20px;
-      font-size: 1em;
-      cursor: pointer;
-      background: #555;
-      border: none;
-      color: white;
-      border-radius: 6px;
-    }
-    #status {
-      margin-top: 10px;
-      font-size: 1.2em;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connectivity Services Hub</title>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #7209b7;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4cc9f0;
+            --warning: #f72585;
+            --gray: #6c757d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fb;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            font-size: 2rem;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+        
+        nav ul li a:hover {
+            opacity: 0.8;
+        }
+        
+        .hero {
+            padding: 4rem 0;
+            text-align: center;
+            background-color: white;
+            border-radius: 0 0 20px 20px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            color: var(--gray);
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .service-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.07);
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-align: center;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .service-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+        
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+        
+        .service-card p {
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        
+        .btn:hover {
+            background-color: var(--secondary);
+            transform: scale(1.05);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .service-content {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.07);
+        }
+        
+        .tab-container {
+            margin-bottom: 2rem;
+        }
+        
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #e0e0e0;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .tab {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--gray);
+            transition: color 0.3s, border-bottom 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .tab.active {
+            color: var(--primary);
+            border-bottom: 3px solid var(--primary);
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 1rem 0;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .device-list, .network-list, .vpn-list {
+            margin-top: 1.5rem;
+        }
+        
+        .device-item, .network-item, .vpn-server {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            transition: background-color 0.2s;
+        }
+        
+        .device-item:hover, .network-item:hover, .vpn-server:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .device-icon, .network-icon, .vpn-icon {
+            font-size: 1.8rem;
+            margin-right: 1rem;
+            color: var(--primary);
+        }
+        
+        .device-info, .network-info, .vpn-info {
+            flex: 1;
+        }
+        
+        .device-name, .network-name, .vpn-name {
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+        
+        .device-details, .network-details, .vpn-details {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+        
+        .status {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .status.connected {
+            background-color: rgba(76, 201, 240, 0.2);
+            color: var(--success);
+        }
+        
+        .status.disconnected {
+            background-color: rgba(247, 37, 133, 0.2);
+            color: var(--warning);
+        }
+        
+        .status.available {
+            background-color: rgba(67, 97, 238, 0.2);
+            color: var(--primary);
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: var(--primary);
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(30px);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .hotspot-config {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        
+        .hotspot-status {
+            background-color: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .hotspot-status h4 {
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+        
+        .hotspot-clients {
+            margin-top: 1.5rem;
+        }
+        
+        .client-item {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem;
+            background-color: white;
+            border-radius: 8px;
+            margin-bottom: 0.8rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        .client-icon {
+            font-size: 1.5rem;
+            margin-right: 0.8rem;
+            color: var(--accent);
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 3rem 0;
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+        }
+        
+        .footer-section p {
+            color: #adb5bd;
+            margin-bottom: 1rem;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-links a {
+            color: #adb5bd;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #495057;
+            color: #adb5bd;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 1rem;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 0 0.8rem;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hotspot-config {
+                grid-template-columns: 1fr;
+            }
+            
+            .tabs {
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+        }
+    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-  <div id="welcome">
-    <h1>Draught</h1>
-    <button class="mode-btn" onclick="startGame('single')">Single Player</button>
-    <button class="mode-btn" onclick="startGame('multi')">Multiplayer</button>
-  </div>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-wifi"></i>
+                    <span>ConnectHub</span>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#bluetooth">Bluetooth</a></li>
+                        <li><a href="#wifi">Wi-Fi</a></li>
+                        <li><a href="#hotspot">Hotspot</a></li>
+                        <li><a href="#vpn">VPN</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
 
-  <div id="game">
-    <div id="board"></div>
-    <div id="controls">
-      <button id="pauseBtn" onclick="toggleWelcome()">Pause</button>
+    <section class="hero">
+        <div class="container">
+            <h1>All Your Connectivity Needs in One Place</h1>
+            <p>Manage Bluetooth, Wi-Fi, Hotspot, and VPN services seamlessly without leaving this website. Everything you need for your connectivity is right here.</p>
+            <a href="#services" class="btn">Get Started</a>
+        </div>
+    </section>
+
+    <div class="container">
+        <section id="services" class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-bluetooth"></i>
+                </div>
+                <h3>Bluetooth Services</h3>
+                <p>Discover, connect and manage your Bluetooth devices with ease. Pair new devices and manage existing connections.</p>
+                <a href="#bluetooth" class="btn">Manage Bluetooth</a>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-wifi"></i>
+                </div>
+                <h3>Wi-Fi Services</h3>
+                <p>Scan for available networks, connect to Wi-Fi, and manage your network preferences all in one place.</p>
+                <a href="#wifi" class="btn">Manage Wi-Fi</a>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-hotspot"></i>
+                </div>
+                <h3>Hotspot Services</h3>
+                <p>Create a personal hotspot, configure settings, and manage connected devices with our intuitive interface.</p>
+                <a href="#hotspot" class="btn">Manage Hotspot</a>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>VPN Services</h3>
+                <p>Secure your connection with our VPN service. Choose from multiple servers and protect your privacy.</p>
+                <a href="#vpn" class="btn">Manage VPN</a>
+            </div>
+        </section>
+
+        <section id="bluetooth" class="service-content">
+            <h2>Bluetooth Services</h2>
+            <p>Manage your Bluetooth devices and connections</p>
+            
+            <div class="tab-container">
+                <div class="tabs">
+                    <div class="tab active" data-tab="devices">Devices</div>
+                    <div class="tab" data-tab="pairing">Pair New Device</div>
+                    <div class="tab" data-tab="settings">Settings</div>
+                </div>
+                
+                <div class="tab-content active" id="devices">
+                    <div class="device-controls">
+                        <button class="btn" id="scan-bluetooth">
+                            <i class="fas fa-search"></i> Scan for Devices
+                        </button>
+                    </div>
+                    
+                    <div class="device-list" id="bluetooth-devices">
+                        <div class="device-item">
+                            <div class="device-icon">
+                                <i class="fas fa-headphones"></i>
+                            </div>
+                            <div class="device-info">
+                                <div class="device-name">Wireless Headphones</div>
+                                <div class="device-details">Connected • Battery: 85%</div>
+                            </div>
+                            <div class="device-actions">
+                                <span class="status connected">Connected</span>
+                                <button class="btn btn-outline" style="margin-left: 10px;">Disconnect</button>
+                            </div>
+                        </div>
+                        
+                        <div class="device-item">
+                            <div class="device-icon">
+                                <i class="fas fa-keyboard"></i>
+                            </div>
+                            <div class="device-info">
+                                <div class="device-name">Bluetooth Keyboard</div>
+                                <div class="device-details">Paired • Last used: 2 hours ago</div>
+                            </div>
+                            <div class="device-actions">
+                                <span class="status available">Available</span>
+                                <button class="btn" style="margin-left: 10px;">Connect</button>
+                            </div>
+                        </div>
+                        
+                        <div class="device-item">
+                            <div class="device-icon">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <div class="device-info">
+                                <div class="device-name">Smartphone</div>
+                                <div class="device-details">Paired • Signal: Strong</div>
+                            </div>
+                            <div class="device-actions">
+                                <span class="status disconnected">Disconnected</span>
+                                <button class="btn" style="margin-left: 10px;">Connect</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="pairing">
+                    <p>Make your device discoverable and click the button below to search for nearby Bluetooth devices.</p>
+                    <button class="btn" style="margin: 1.5rem 0;">
+                        <i class="fas fa-search"></i> Start Device Discovery
+                    </button>
+                    
+                    <div class="form-group">
+                        <label for="pairing-code">Pairing Code (if required)</label>
+                        <input type="text" id="pairing-code" class="form-control" placeholder="Enter pairing code">
+                    </div>
+                    
+                    <button class="btn">Complete Pairing</button>
+                </div>
+                
+                <div class="tab-content" id="settings">
+                    <div class="form-group">
+                        <label>Bluetooth Status</label>
+                        <div style="display: flex; align-items: center; margin-top: 0.5rem;">
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                            <span style="margin-left: 10px;">Bluetooth is ON</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="device-name">Device Name</label>
+                        <input type="text" id="device-name" class="form-control" value="My Computer">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Visibility</label>
+                        <div style="display: flex; align-items: center; margin-top: 0.5rem;">
+                            <label class="toggle-switch">
+                                <input type="checkbox">
+                                <span class="slider"></span>
+                            </label>
+                            <span style="margin-left: 10px;">Make device discoverable</span>
+                        </div>
+                    </div>
+                    
+                    <button class="btn">Save Settings</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="wifi" class="service-content">
+            <h2>Wi-Fi Services</h2>
+            <p>Manage your Wi-Fi connections and networks</p>
+            
+            <div class="tab-container">
+                <div class="tabs">
+                    <div class="tab active" data-tab="networks">Available Networks</div>
+                    <div class="tab" data-tab="saved">Saved Networks</div>
+                    <div class="tab" data-tab="wifi-settings">Settings</div>
+                </div>
+                
+                <div class="tab-content active" id="networks">
+                    <div class="device-controls">
+                        <button class="btn" id="scan-wifi">
+                            <i class="fas fa-sync-alt"></i> Refresh Networks
+                        </button>
+                    </div>
+                    
+                    <div class="network-list">
+                        <div class="network-item">
+                            <div class="network-icon">
+                                <i class="fas fa-wifi"></i>
+                            </div>
+                            <div class="network-info">
+                                <div class="network-name">Home Network</div>
+                                <div class="network-details">Secured • Signal: Excellent</div>
+                            </div>
+                            <div class="network-actions">
+                                <span class="status connected">Connected</span>
+                            </div>
+                        </div>
+                        
+                        <div class="network-item">
+                            <div class="network-icon">
+                                <i class="fas fa-wifi"></i>
+                            </div>
+                            <div class="network-info">
+                                <div class="network-name">Office Wi-Fi</div>
+                                <div class="network-details">Secured • Signal: Good</div>
+                            </div>
+                            <div class="network-actions">
+                                <button class="btn">Connect</button>
+                            </div>
+                        </div>
+                        
+                        <div class="network-item">
+                            <div class="network-icon">
+                                <i class="fas fa-wifi"></i>
+                            </div>
+                            <div class="network-info">
+                                <div class="network-name">Free Public Wi-Fi</div>
+                                <div class="network-details">Open • Signal: Fair</div>
+                            </div>
+                            <div class="network-actions">
+                                <button class="btn">Connect</button>
+                            </div>
+                        </div>
+                        
+                        <div class="network-item">
+                            <div class="network-icon">
+                                <i class="fas fa-wifi"></i>
+                            </div>
+                            <div class="network-info">
+                                <div class="network-name">Cafe Network</div>
+                                <div class="network-details">Secured • Signal: Weak</div>
+                            </div>
+                            <div class="network-actions">
+                                <button class="btn">Connect</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="saved">
+                    <p>Your saved Wi-Fi networks will appear here for quick connection.</p>
+                    
+                    <div class="network-list">
+                        <div class="network-item">
+                            <div class="network-icon">
+                                <i class="fas fa-wifi"></i>
+                            </div>
+                            <div class="network-info">
+                                <div class="network-name">Home Network</div>
+                                <div class="network-details">Auto-connect enabled</div>
+                            </div>
+                            <div class="network-actions">
+                                <button class="btn btn-outline">Forget</button>
+                            </div>
+                        </div>
+                        
+                        <div class="network-item">
+                            <div class="network-icon">
+                                <i class="fas fa-wifi"></i>
+                            </div>
+                            <div class="network-info">
+                                <div class="network-name">Parents' House</div>
+                                <div class="network-details">Auto-connect enabled</div>
+                            </div>
+                            <div class="network-actions">
+                                <button class="btn btn-outline">Forget</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="wifi-settings">
+                    <div class="form-group">
+                        <label>Wi-Fi Status</label>
+                        <div style="display: flex; align-items: center; margin-top: 0.5rem;">
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                            <span style="margin-left: 10px;">Wi-Fi is ON</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Auto-connect to known networks</label>
+                        <div style="display: flex; align-items: center; margin-top: 0.5rem;">
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                            <span style="margin-left: 10px;">Enabled</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Notify about open networks</label>
+                        <div style="display: flex; align-items: center; margin-top: 0.5rem;">
+                            <label class="toggle-switch">
+                                <input type="checkbox">
+                                <span class="slider"></span>
+                            </label>
+                            <span style="margin-left: 10px;">Disabled</span>
+                        </div>
+                    </div>
+                    
+                    <button class="btn">Save Settings</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="hotspot" class="service-content">
+            <h2>Hotspot Services</h2>
+            <p>Create and manage your personal hotspot</p>
+            
+            <div class="hotspot-config">
+                <div>
+                    <div class="form-group">
+                        <label>Hotspot Status</label>
+                        <div style="display: flex; align-items: center; margin-top: 0.5rem;">
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="hotspot-toggle">
+                                <span class="slider"></span>
+                            </label>
+                            <span style="margin-left: 10px;" id="hotspot-status">Hotspot is OFF</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="hotspot-name">Hotspot Name (SSID)</label>
+                        <input type="text" id="hotspot-name" class="form-control" value="MyPersonalHotspot">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="hotspot-password">Password</label>
+                        <input type="password" id="hotspot-password" class="form-control" value="password123">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="hotspot-band">Band</label>
+                        <select id="hotspot-band" class="form-control">
+                            <option>2.4 GHz</option>
+                            <option>5 GHz</option>
+                            <option>Auto</option>
+                        </select>
+                    </div>
+                    
+                    <button class="btn">Save Configuration</button>
+                </div>
+                
+                <div class="hotspot-status">
+                    <h4>Hotspot Information</h4>
+                    <div style="text-align: left; margin-top: 1.5rem;">
+                        <p><strong>Status:</strong> <span id="status-display">Inactive</span></p>
+                        <p><strong>Name:</strong> MyPersonalHotspot</p>
+                        <p><strong>Security:</strong> WPA2-Personal</p>
+                        <p><strong>Band:</strong> 2.4 GHz</p>
+                        <p><strong>IP Address:</strong> 192.168.43.1</p>
+                    </div>
+                    
+                    <div class="hotspot-clients">
+                        <h4>Connected Devices</h4>
+                        <div class="client-item">
+                            <div class="client-icon">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <div class="client-info">
+                                <div class="device-name">Android Phone</div>
+                                <div class="device-details">IP: 192.168.43.45</div>
+                            </div>
+                        </div>
+                        
+                        <div class="client-item">
+                            <div class="client-icon">
+                                <i class="fas fa-laptop"></i>
+                            </div>
+                            <div class="client-info">
+                                <div class="device-name">MacBook Pro</div>
+                                <div class="device-details">IP: 192.168.43.102</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="vpn" class="service-content">
+            <h2>VPN Services</h2>
+            <p>Secure your connection with our VPN service</p>
+            
+            <div class="tab-container">
+                <div class="tabs">
+                    <div class="tab active" data-tab="connect">Connect</div>
+                    <div class="tab" data-tab="servers">Servers</div>
+                    <div class="tab" data-tab="vpn-settings">Settings</div>
+                </div>
+                
+                <div class="tab-content active" id="connect">
+                    <div style="text-align: center; padding: 2rem 0;">
+                        <div class="vpn-status" style="margin-bottom: 2rem;">
+                            <h3 style="color: var(--warning); margin-bottom: 1rem;">VPN Disconnected</h3>
+                            <p>Your internet connection is not secure</p>
+                        </div>
+                        
+                        <button class="btn" id="vpn-connect" style="padding: 1rem 2rem; font-size: 1.2rem;">
+                            <i class="fas fa-shield-alt"></i> Connect to VPN
+                        </button>
+                        
+                        <div style="margin-top: 2rem;">
+                            <p><strong>Selected Server:</strong> United States - New York</p>
+                            <p><strong>Protocol:</strong> OpenVPN</p>
+                            <p><strong>Data Usage:</strong> 2.3 GB this month</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="servers">
+                    <p>Choose from our global network of secure VPN servers</p>
+                    
+                    <div class="vpn-list">
+                        <div class="vpn-server">
+                            <div class="vpn-icon">
+                                <i class="fas fa-flag-usa"></i>
+                            </div>
+                            <div class="vpn-info">
+                                <div class="vpn-name">United States - New York</div>
+                                <div class="vpn-details">Ping: 45ms • Load: 32%</div>
+                            </div>
+                            <div class="vpn-actions">
+                                <span class="status available">Recommended</span>
+                                <button class="btn" style="margin-left: 10px;">Select</button>
+                            </div>
+                        </div>
+                        
+                        <div class="vpn-server">
+                            <div class="vpn-icon">
+                                <i class="fas fa-flag-usa"></i>
+                            </div>
+                            <div class="vpn-info">
+                                <div class="vpn-name">United States - Los Angeles</div>
+                                <div class="vpn-details">Ping: 78ms • Load: 45%</div>
+                            </div>
+                            <div class="vpn-actions">
+                                <button class="btn">Select</button>
+                            </div>
+                        </div>
+                        
+                        <div class="vpn-server">
+                            <div class="vpn-icon">
+                                <i class="fas fa-flag-uk"></i>
+                            </div>
+                            <div class="vpn-info">
+                                <div class="vpn-name">United Kingdom - London</div>
+                                <div class="vpn-details">Ping: 25ms • Load: 28%</div>
+                            </div>
+                            <div class="vpn-actions">
+                                <button class="btn">Select</button>
+                            </div>
+                        </div>
+                        
+                        <div class="vpn-server">
+                            <div class="vpn-icon">
+                                <i class="fas fa-flag"></i>
+                            </div>
+                            <div class="vpn-info">
+                                <div class="vpn-name">Germany - Frankfurt</div>
+                                <div class="vpn-details">Ping: 32ms • Load: 39%</div>
+                            </div>
+                            <div class="vpn-actions">
+                                <button class="btn">Select</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="vpn-settings">
+                    <div class="form-group">
+                        <label for="vpn-protocol">VPN Protocol</label>
+                        <select id="vpn-protocol" class="form-control">
+                            <option>OpenVPN</option>
+                            <option>WireGuard</option>
+                            <option>IKEv2</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Auto-connect on startup</label>
+                        <div style="display: flex; align-items: center; margin-top: 0.5rem;">
+                            <label class="toggle-switch">
+                                <input type="checkbox">
+                                <span class="slider"></span>
+                            </label>
+                            <span style="margin-left: 10px;">Enabled</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Kill Switch (Block internet if VPN disconnects)</label>
+                        <div style="display: flex; align-items: center; margin-top: 0.5rem;">
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                            <span style="margin-left: 10px;">Enabled</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Split Tunneling</label>
+                        <div style="display: flex; align-items: center; margin-top: 0.5rem;">
+                            <label class="toggle-switch">
+                                <input type="checkbox">
+                                <span class="slider"></span>
+                            </label>
+                            <span style="margin-left: 10px;">Disabled</span>
+                        </div>
+                    </div>
+                    
+                    <button class="btn">Save Settings</button>
+                </div>
+            </div>
+        </section>
     </div>
-    <div id="status">Welcome to Draught!</div>
-  </div>
 
-  <script>
-    const board = document.getElementById('board');
-    const status = document.getElementById('status');
-    const welcome = document.getElementById('welcome');
-    let mode = '';
-    let turn = 'red';
-    let selected = null;
-    let squares = [];
-    let botEnabled = false;
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>ConnectHub</h3>
+                    <p>Your all-in-one solution for managing connectivity services directly from your browser.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#bluetooth">Bluetooth Services</a></li>
+                        <li><a href="#wifi">Wi-Fi Services</a></li>
+                        <li><a href="#hotspot">Hotspot Services</a></li>
+                        <li><a href="#vpn">VPN Services</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 ConnectHub. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
 
-    function startGame(selectedMode) {
-      mode = selectedMode;
-      botEnabled = mode === 'single';
-      welcome.style.display = 'none';
-      initBoard();
-      updateStatus();
-    }
-
-    function toggleWelcome() {
-      welcome.style.display = 'flex';
-    }
-
-    function initBoard() {
-      board.innerHTML = '';
-      squares = [];
-      for (let row = 0; row < 8; row++) {
-        for (let col = 0; col < 8; col++) {
-          const square = document.createElement('div');
-          square.classList.add('square', (row + col) % 2 === 0 ? 'white' : 'black');
-          square.dataset.row = row;
-          square.dataset.col = col;
-          square.addEventListener('click', () => handleClick(row, col));
-          board.appendChild(square);
-          squares.push(square);
-        }
-      }
-      placePieces();
-    }
-
-    function placePieces() {
-      for (let i = 0; i < 24; i++) {
-        const row = Math.floor(i / 4);
-        const col = (i % 4) * 2 + ((row + 1) % 2);
-        createPiece(row, col, 'black-piece');
-      }
-      for (let i = 0; i < 24; i++) {
-        const row = 7 - Math.floor(i / 4);
-        const col = (i % 4) * 2 + ((row + 1) % 2);
-        createPiece(row, col, 'red');
-      }
-    }
-
-    function createPiece(row, col, color) {
-      const piece = document.createElement('div');
-      piece.classList.add('piece', color);
-      piece.dataset.color = color;
-      getSquare(row, col).appendChild(piece);
-    }
-
-    function getSquare(row, col) {
-      return squares[row * 8 + col];
-    }
-
-    function handleClick(row, col) {
-      const square = getSquare(row, col);
-      const piece = square.querySelector('.piece');
-
-      if (selected) {
-        if (isValidMove(selected, row, col)) {
-          movePiece(selected, row, col);
-          selected = null;
-          switchTurn();
-          updateStatus();
-          if (botEnabled && turn === 'black-piece') {
-            setTimeout(botMove, 500);
-          }
-        } else {
-          selected = null;
-        }
-      } else if (piece && piece.dataset.color === turn) {
-        selected = { piece, row, col };
-      }
-    }
-
-    function isValidMove(sel, row, col) {
-      const target = getSquare(row, col);
-      if (target.querySelector('.piece')) return false;
-
-      const dr = row - sel.row;
-      const dc = col - sel.col;
-      const absDr = Math.abs(dr);
-      const absDc = Math.abs(dc);
-
-      if (absDr === 1 && absDc === 1) return true;
-
-      if (absDr === 2 && absDc === 2) {
-        const midRow = (row + sel.row) / 2;
-        const midCol = (col + sel.col) / 2;
-        const midPiece = getSquare(midRow, midCol).querySelector('.piece');
-        if (midPiece && midPiece.dataset.color !== sel.piece.dataset.color) {
-          getSquare(midRow, midCol).innerHTML = '';
-          return true;
-        }
-      }
-      return false;
-    }
-
-    function movePiece(sel, row, col) {
-      getSquare(sel.row, sel.col).innerHTML = '';
-      getSquare(row, col).appendChild(sel.piece);
-      if ((sel.piece.dataset.color === 'red' && row === 0) ||
-          (sel.piece.dataset.color === 'black-piece' && row === 7)) {
-        sel.piece.classList.add('king');
-      }
-    }
-
-    function switchTurn() {
-      turn = turn === 'red' ? 'black-piece' : 'red';
-    }
-
-    function updateStatus() {
-      status.textContent = ${turn === 'red' ? 'Red' : 'Black'}'s turn;
-    }
-
-    function botMove() {
-      const pieces = Array.from(document.querySelectorAll(.piece.${turn}));
-      for (let piece of pieces) {
-        const parent = piece.parentElement;
-        const row = parseInt(parent.dataset.row);
-        const col = parseInt(parent.dataset.col);
-        const directions = [[1,1],[1,-1],[2,2],[2,-2]];
-        for (let [dr, dc] of directions) {
-          const newRow = row + dr;
-          const newCol = col + dc;
-          if (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8) {const targetSquare = getSquare(newRow, newCol);
-            if (!targetSquare.querySelector('.piece')) {
-              const midRow = (row + newRow) / 2;
-              const midCol = (col + newCol) / 2;
-              const midSquare = getSquare(midRow, midCol);
-              const midPiece = midSquare.querySelector('.piece');
-              if (Math.abs(dr) === 2 && midPiece && midPiece.dataset.color !== turn) {
-                // Capture move
-                midSquare.innerHTML = '';
-                targetSquare.appendChild(piece);
-                parent.innerHTML = '';
-                if ((turn === 'black-piece' && newRow === 7) || (turn === 'red' && newRow === 0)) {
-                  piece.classList.add('king');
-                }
-                switchTurn();
-                updateStatus();
-                return;
-              } else if (Math.abs(dr) === 1) {
-                // Simple move
-                targetSquare.appendChild(piece);
-                parent.innerHTML = '';
-                if ((turn === 'black-piece' && newRow === 7) || (turn === 'red' && newRow === 0)) {
-                  piece.classList.add('king');
-                }
-                switchTurn();
-                updateStatus();
-                return;
-              }
+    <script>
+        // Tab functionality
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs and contents
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked tab
+                tab.classList.add('active');
+                
+                // Show corresponding content
+                const tabId = tab.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+        
+        // Hotspot toggle functionality
+        const hotspotToggle = document.getElementById('hotspot-toggle');
+        const hotspotStatus = document.getElementById('hotspot-status');
+        const statusDisplay = document.getElementById('status-display');
+        
+        hotspotToggle.addEventListener('change', function() {
+            if (this.checked) {
+                hotspotStatus.textContent = 'Hotspot is ON';
+                statusDisplay.textContent = 'Active';
+                statusDisplay.style.color = 'var(--success)';
+            } else {
+                hotspotStatus.textContent = 'Hotspot is OFF';
+                statusDisplay.textContent = 'Inactive';
+                statusDisplay.style.color = 'var(--warning)';
             }
-          }
+        });
+        
+        // VPN connect functionality
+        const vpnConnect = document.getElementById('vpn-connect');
+        let vpnConnected = false;
+        
+        vpnConnect.addEventListener('click', function() {
+            if (!vpnConnected) {
+                this.innerHTML = '<i class="fas fa-shield-alt"></i> Disconnect VPN';
+                this.style.backgroundColor = 'var(--warning)';
+                document.querySelector('.vpn-status h3').textContent = 'VPN Connected';
+                document.querySelector('.vpn-status h3').style.color = 'var(--success)';
+                document.querySelector('.vpn-status p').textContent = 'Your connection is now secure';
+                vpnConnected = true;
+            } else {
+                this.innerHTML = '<i class="fas fa-shield-alt"></i> Connect to VPN';
+                this.style.backgroundColor = 'var(--primary)';
+                document.querySelector('.vpn-status h3').textContent = 'VPN Disconnected';
+                document.querySelector('.vpn-status h3').style.color = 'var(--warning)';
+                document.querySelector('.vpn-status p').textContent = 'Your internet connection is not secure';
+                vpnConnected = false;
+            }
+        });
+        
+        // Bluetooth scan simulation
+        document.getElementById('scan-bluetooth').addEventListener('click', function() {
+            const deviceList = document.getElementById('bluetooth-devices');
+            const newDevice = document.createElement('div');
+            newDevice.className = 'device-item';
+            newDevice.innerHTML = `
+                <div class="device-icon">
+                    <i class="fas fa-headphones"></i>
+                </div>
+                <div class="device-info">
+                    <div class="device-name">New Bluetooth Speaker</div>
+                    <div class="device-details">Available • Signal: Strong</div>
+                </div>
+                <div class="device-actions">
+                    <span class="status available">Available</span>
+                    <button class="btn" style="margin-left: 10px;">Pair</button>
+                </div>
+            `;
+            deviceList.appendChild(newDevice);
+            
+            // Show a temporary notification
+            showNotification('Bluetooth scan completed. New devices found.');
+        });
+        
+        // Wi-Fi scan simulation
+        document.getElementById('scan-wifi').addEventListener('click', function() {
+            // Show a temporary notification
+            showNotification('Wi-Fi networks refreshed.');
+        });
+        
+        // Notification function
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background-color: var(--primary);
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                z-index: 1000;
+                transition: opacity 0.3s;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
         }
-      }
-    }
-  </script>
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
 </body>
 </html>
