@@ -178,6 +178,12 @@
         .custom-table th {
             background-color: #f2f2f2;
         }
+        
+        .file-format-info {
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
@@ -256,7 +262,7 @@
     <!-- Editor Area -->
     <div class="container-fluid h-100 px-0">
         <div id="editor" contenteditable="true">
-            <h1>Welcome to Golden Word</h1>
+            <h1>Welcome to Document Creator</h1>
             <p>Start typing your document here. Use the toolbar above to format your text or the + button to insert elements.</p>
             <p>When you're ready to save, click the Save button in the top right corner.</p>
         </div>
@@ -281,7 +287,7 @@
     
     <!-- Document Name Modal -->
     <div class="modal fade" id="documentNameModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Save Document</h5>
@@ -295,50 +301,17 @@
                     <div class="mb-3">
                         <label for="extensionSelect" class="form-label">File Extension:</label>
                         <select class="form-select" id="extensionSelect">
-                            <optgroup label="Word Processing">
-                                <option value=".docx">.docx - Microsoft Word (Modern)</option>
-                                <option value=".doc">.doc - Microsoft Word (Legacy)</option>
-                                <option value=".pdf">.pdf - Portable Document Format</option>
-                                <option value=".txt">.txt - Plain Text File</option>
-                                <option value=".rtf">.rtf - Rich Text Format</option>
-                                <option value=".odt">.odt - OpenDocument Text</option>
-                                <option value=".pages">.pages - Apple Pages</option>
-                                <option value=".wpd">.wpd - WordPerfect</option>
-                                <option value=".tex">.tex - LaTeX Document</option>
-                                <option value=".html">.html - Web Page</option>
-                            </optgroup>
-                            <optgroup label="Spreadsheets">
-                                <option value=".xlsx">.xlsx - Microsoft Excel (Modern)</option>
-                                <option value=".xls">.xls - Microsoft Excel (Legacy)</option>
-                                <option value=".ods">.ods - OpenDocument Spreadsheet</option>
-                                <option value=".csv">.csv - Comma-Separated Values</option>
-                                <option value=".numbers">.numbers - Apple Numbers</option>
-                            </optgroup>
-                            <optgroup label="Presentations">
-                                <option value=".pptx">.pptx - Microsoft PowerPoint (Modern)</option>
-                                <option value=".ppt">.ppt - Microsoft PowerPoint (Legacy)</option>
-                                <option value=".odp">.odp - OpenDocument Presentation</option>
-                                <option value=".key">.key - Apple Keynote</option>
-                            </optgroup>
-                            <optgroup label="Publishing & Layout">
-                                <option value=".indd">.indd - Adobe InDesign</option>
-                                <option value=".pub">.pub - Microsoft Publisher</option>
-                                <option value=".ai">.ai - Adobe Illustrator</option>
-                                <option value=".eps">.eps - Encapsulated PostScript</option>
-                            </optgroup>
-                            <optgroup label="eBooks">
-                                <option value=".epub">.epub - eBook Format</option>
-                                <option value=".mobi">.mobi - Kindle Format (Legacy)</option>
-                                <option value=".azw3">.azw3 - Amazon Kindle</option>
-                            </optgroup>
-                            <optgroup label="Data & Config">
-                                <option value=".xml">.xml - eXtensible Markup Language</option>
-                                <option value=".json">.json - JavaScript Object Notation</option>
-                                <option value=".ini">.ini - Initialization File</option>
-                                <option value=".config">.config - Configuration File</option>
-                                <option value=".log">.log - Log File</option>
-                            </optgroup>
+                            <option value=".html">.html - Web Page (with formatting)</option>
+                            <option value=".txt">.txt - Plain Text (no formatting)</option>
+                            <option value=".css">.css - CSS Stylesheet</option>
+                            <option value=".js">.js - JavaScript File</option>
+                            <option value=".xml">.xml - XML Document</option>
+                            <option value=".log">.log - Log File</option>
+                            <option value=".doc">.doc - Text Document (limited formatting)</option>
                         </select>
+                        <div class="file-format-info" id="formatInfo">
+                            HTML format preserves all formatting and styling.
+                        </div>
                     </div>
                     <div class="warning-message" id="extensionWarning">
                         Please add a file extension to your file name.
@@ -380,7 +353,6 @@
         <button class="dropdown-item" type="button" data-element="shape"><i class="bi bi-square me-2"></i>Shape</button>
         <button class="dropdown-item" type="button" data-element="textbox"><i class="bi bi-text-paragraph me-2"></i>Text Box</button>
         <button class="dropdown-item" type="button" data-element="line"><i class="bi bi-dash-lg me-2"></i>Line</button>
-        <button class="dropdown-item" type="button" data-element="chart"><i class="bi bi-bar-chart me-2"></i>Chart</button>
         <button class="dropdown-item" type="button" data-element="link"><i class="bi bi-link me-2"></i>Hyperlink</button>
         <button class="dropdown-item" type="button" data-element="symbol"><i class="bi bi-asterisk me-2"></i>Special Character</button>
     </div>
@@ -394,6 +366,7 @@
             // Editor elements
             const editor = document.getElementById('editor');
             const wordCountElement = document.getElementById('wordCount');
+            const formatInfo = document.getElementById('formatInfo');
             
             // Modal elements
             const documentNameModal = new bootstrap.Modal(document.getElementById('documentNameModal'));
@@ -427,6 +400,38 @@
                 editor.style.transformOrigin = '0 0';
                 zoomLevelElement.textContent = `${currentZoom}%`;
             }
+            
+            // Update format info when extension changes
+            $('#extensionSelect').change(function() {
+                const extension = $(this).val();
+                let infoText = '';
+                
+                switch(extension) {
+                    case '.html':
+                        infoText = 'HTML format preserves all formatting and styling.';
+                        break;
+                    case '.txt':
+                        infoText = 'Plain text format removes all formatting.';
+                        break;
+                    case '.css':
+                        infoText = 'CSS format for stylesheets. Content will be saved as CSS.';
+                        break;
+                    case '.js':
+                        infoText = 'JavaScript format for code files. Content will be saved as JS.';
+                        break;
+                    case '.xml':
+                        infoText = 'XML format for structured data. Basic HTML structure will be converted.';
+                        break;
+                    case '.log':
+                        infoText = 'Log format for text logs. Plain text with timestamp.';
+                        break;
+                    case '.doc':
+                        infoText = 'Text document format. Limited formatting support.';
+                        break;
+                }
+                
+                formatInfo.textContent = infoText;
+            });
             
             // Word count functionality
             function updateWordCount() {
@@ -576,10 +581,6 @@
                         case 'line':
                             elementPlaceholder.innerHTML = '<hr style="border-top: 2px solid #f06292; margin: 10px 0;">';
                             break;
-                        case 'chart':
-                            elementPlaceholder.innerHTML = '<i class="bi bi-bar-chart me-2"></i>Chart Placeholder';
-                            // In a real implementation, you would use a charting library here
-                            break;
                         case 'link':
                             const url = prompt('Enter URL:');
                             if (url) {
@@ -636,10 +637,49 @@
                 const fileName = $('#filename').val().trim();
                 const extension = $('#extensionSelect').val();
                 const fullFileName = fileName + extension;
-                const content = editor.innerHTML;
+                let content = editor.innerHTML;
+                let mimeType = 'text/html';
+                
+                // Format content based on file extension
+                switch(extension) {
+                    case '.txt':
+                        content = editor.innerText || editor.textContent;
+                        mimeType = 'text/plain';
+                        break;
+                    case '.css':
+                        content = "/* CSS Stylesheet created with Document Creator */\n\n" + 
+                                 (editor.innerText || editor.textContent);
+                        mimeType = 'text/css';
+                        break;
+                    case '.js':
+                        content = "// JavaScript file created with Document Creator\n\n" + 
+                                 (editor.innerText || editor.textContent);
+                        mimeType = 'application/javascript';
+                        break;
+                    case '.xml':
+                        // Basic conversion to XML structure
+                        content = '<?xml version="1.0" encoding="UTF-8"?>\n<document>\n' +
+                                 '<title>Document</title>\n<content>\n' +
+                                 (editor.innerText || editor.textContent).replace(/</g, '&lt;').replace(/>/g, '&gt;') +
+                                 '\n</content>\n</document>';
+                        mimeType = 'application/xml';
+                        break;
+                    case '.log':
+                        const timestamp = new Date().toISOString();
+                        content = `[${timestamp}] LOG ENTRY:\n${editor.innerText || editor.textContent}`;
+                        mimeType = 'text/plain';
+                        break;
+                    case '.doc':
+                        content = editor.innerText || editor.textContent;
+                        mimeType = 'application/msword';
+                        break;
+                    default:
+                        // HTML format - keep as is
+                        mimeType = 'text/html';
+                }
                 
                 // Create and download the file
-                const blob = new Blob([content], { type: 'text/html' });
+                const blob = new Blob([content], { type: mimeType });
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
