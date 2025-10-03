@@ -5,348 +5,957 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DizzMuxic | Dizzer J</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    body {
+    :root {
+      --primary: #8a2be2;
+      --primary-light: #9d4edd;
+      --secondary: #00f5ff;
+      --dark: #121212;
+      --dark-alt: #1e1e1e;
+      --light: #f5f5f5;
+      --gray: #a0a0a0;
+      --transition: all 0.3s ease;
+    }
+    
+    * {
       margin: 0;
-      font-family: 'Rajdhani', sans-serif;
-      background: linear-gradient(to right, #1f1c2c, #928dab);
-      color: #fff;
+      padding: 0;
+      box-sizing: border-box;
     }
-    .navbar {
-      background-color: #111;
-      padding: 1rem;
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--dark);
+      color: var(--light);
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    /* Header & Navigation */
+    header {
+      background-color: rgba(18, 18, 18, 0.95);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .header-content {
       display: flex;
-      justify-content: center;
-      gap: 2rem;
-      border-bottom: 2px solid #00f7ff;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
     }
-    .navbar a {
-      color: #00f7ff;
+    
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--light);
       text-decoration: none;
-      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .logo span {
+      color: var(--primary);
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+    }
+    
+    .nav-links a {
+      color: var(--light);
+      text-decoration: none;
+      font-weight: 500;
+      position: relative;
+      padding: 0.5rem 0;
+      transition: var(--transition);
+    }
+    
+    .nav-links a:after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: var(--primary);
+      transition: var(--transition);
+    }
+    
+    .nav-links a:hover:after,
+    .nav-links a.active:after {
+      width: 100%;
+    }
+    
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--primary);
+    }
+    
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--light);
+      font-size: 1.5rem;
       cursor: pointer;
     }
-    .navbar a:hover {
-      color: #fff;
+    
+    /* Hero Section */
+    .hero {
+      padding: 5rem 0;
+      background: linear-gradient(135deg, var(--dark) 0%, var(--dark-alt) 100%);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
     }
-    .container {
-      max-width: 900px;
-      margin: auto;
-      padding: 2rem;
+    
+    .hero:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 30% 30%, var(--primary) 0%, transparent 50%);
+      opacity: 0.1;
     }
-    .section {
-      display: none;
+    
+    .hero-content {
+      max-width: 800px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
     }
-    .active {
-      display: block;
+    
+    .hero h1 {
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
-    .card {
-      background-color: #2c2c3c;
-      border: 1px solid #00f7ff;
-      border-radius: 10px;
-      padding: 1.5rem;
+    
+    .hero p {
+      font-size: 1.2rem;
+      color: var(--gray);
       margin-bottom: 2rem;
-      box-shadow: 0 0 10px #00f7ff55;
     }
-    h1, h2 {
-      color: #00f7ff;
+    
+    .cta-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+    
+    .btn {
+      padding: 0.8rem 1.8rem;
+      border-radius: 50px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .btn-primary {
+      background-color: var(--primary);
+      color: var(--light);
+    }
+    
+    .btn-primary:hover {
+      background-color: var(--primary-light);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(138, 43, 226, 0.3);
+    }
+    
+    .btn-secondary {
+      background-color: transparent;
+      color: var(--light);
+      border: 2px solid var(--primary);
+    }
+    
+    .btn-secondary:hover {
+      background-color: rgba(138, 43, 226, 0.1);
+      transform: translateY(-3px);
+    }
+    
+    /* Section Styling */
+    .section {
+      padding: 5rem 0;
+    }
+    
+    .section-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 3rem;
+      text-align: center;
+      position: relative;
+    }
+    
+    .section-title:after {
+      content: '';
+      position: absolute;
+      width: 80px;
+      height: 4px;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 2px;
+    }
+    
+    /* Music Grid */
+    .music-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+    
+    .track-card {
+      background-color: var(--dark-alt);
+      border-radius: 15px;
+      overflow: hidden;
+      transition: var(--transition);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    .track-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    }
+    
+    .track-header {
+      padding: 1.5rem;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    }
+    
+    .track-header h3 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .track-body {
+      padding: 1.5rem;
+    }
+    
+    .track-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
       margin-bottom: 1rem;
     }
-    .track-meta {
-      font-size: 0.95rem;
-      line-height: 1.6;
-      margin-top: 0.5rem;
+    
+    .meta-item {
+      display: flex;
+      flex-direction: column;
     }
+    
+    .meta-label {
+      font-size: 0.8rem;
+      color: var(--gray);
+      margin-bottom: 0.2rem;
+    }
+    
+    .meta-value {
+      font-weight: 600;
+    }
+    
+    .track-stats {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .stat {
+      text-align: center;
+    }
+    
+    .stat-value {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--gray);
+    }
+    
     .download-btn {
-      display: inline-block;
-      background-color: #00f7ff;
-      color: #111;
-      padding: 0.5rem 1rem;
-      border-radius: 5px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background-color: var(--primary);
+      color: var(--light);
+      padding: 0.6rem 1.2rem;
+      border-radius: 50px;
       text-decoration: none;
-      font-weight: bold;
-      margin-top: 0.5rem;
+      font-weight: 600;
+      transition: var(--transition);
+      margin-top: 1rem;
     }
+    
     .download-btn:hover {
-      background-color: #00c7cc;
+      background-color: var(--primary-light);
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(138, 43, 226, 0.3);
     }
+    
+    /* Video Grid */
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 2rem;
+    }
+    
+    .video-card {
+      background-color: var(--dark-alt);
+      border-radius: 15px;
+      overflow: hidden;
+      transition: var(--transition);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    .video-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    }
+    
+    .video-thumbnail {
+      position: relative;
+      height: 200px;
+      background-color: var(--dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .video-thumbnail i {
+      font-size: 3rem;
+      color: var(--primary);
+      opacity: 0.7;
+    }
+    
+    .video-content {
+      padding: 1.5rem;
+    }
+    
+    .video-content h3 {
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    /* Comments Section */
+    .comments-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
     .comment {
       display: flex;
-      align-items: flex-start;
       gap: 1rem;
-      margin-bottom: 1.5rem;
+      margin-bottom: 2rem;
+      padding: 1.5rem;
+      background-color: var(--dark-alt);
+      border-radius: 15px;
+      transition: var(--transition);
     }
-    .comment i {
-      font-size: 30px;
-      color: #00f7ff;
+    
+    .comment:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     }
+    
+    .comment-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--light);
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    
     .comment-content {
-      background-color: #1a1a2e;
-      padding: 1rem;
-      border-radius: 8px;
-      border-left: 4px solid #00f7ff;
+      flex: 1;
     }
-    .reply-label {
-      font-size: 0.85rem;
-      color: #aaa;
-      margin-bottom: 0.3rem;
+    
+    .comment-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
+    
+    .comment-author {
+      font-weight: 600;
+    }
+    
+    .comment-reply {
+      font-size: 0.8rem;
+      color: var(--gray);
       font-style: italic;
+      margin-bottom: 0.5rem;
     }
+    
+    .comment-text {
+      color: var(--light);
+    }
+    
+    /* Footer */
     footer {
+      background-color: var(--dark-alt);
+      padding: 3rem 0;
       text-align: center;
-      padding: 1rem;
-      border-top: 1px solid #00f7ff;
-      margin-top: 3rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .footer-content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .social-link {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background-color: var(--dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--light);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+    
+    .social-link:hover {
+      background-color: var(--primary);
+      transform: translateY(-5px);
+    }
+    
+    .copyright {
+      color: var(--gray);
+      font-size: 0.9rem;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: var(--dark);
+        flex-direction: column;
+        padding: 1rem 0;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+      }
+      
+      .nav-links.active {
+        display: flex;
+      }
+      
+      .nav-links a {
+        padding: 1rem 2rem;
+      }
+      
+      .mobile-menu-btn {
+        display: block;
+      }
+      
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+      
+      .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+      
+      .music-grid,
+      .video-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
-  <nav class="navbar">
-    <a onclick="showSection('music')">🎧 Music</a>
-    <a onclick="showSection('videos')">🎬 Videos</a>
-    <a onclick="showSection('comments')">💬 Comments</a>
-  </nav>
-
-  <div class="container">
-    <!-- MUSIC (Homepage) -->
-    <div id="music" class="section active">
-      <div class="card">
-        <h1>DizzMuxic by Dizzer J</h1>
-        <p>Welcome to the sonic lab of Golden Apple’s music-coder. DizzMuxic blends rhythm, logic, and emotion into tracks that power your mind and move your soul.</p>
-        <p>Each track is crafted for flow, focus, and fire — whether you're coding, creating, or cruising.</p>
-      </div>
-
-      <div class="card">
-        <h2>Shoot to Kill</h2>
-        <p>A fusion of trap beats and synth layers. Perfect for vybs in flow state.</p>
-        <div class="track-meta">
-          <strong>Release Date:</strong> Aug 12, 2024<br>
-          <strong>Album:</strong> Pretty Girls<br>
-          <strong>Duration:</strong> 3:42<br>
-          <strong>Type:</strong> Dancehall<br>
-          <strong>Listeners:</strong> 12,430<br>
-          <strong>Likes:</strong> 1.4M
-        </div>
-        <a href="stk.mp3" download class="download-btn"><i class="fas fa-download"></i> Download STK</a>
-      </div>
-
-      <div class="card">
-        <h2>Bisambi ft Page Vybz</h2>
-        <p>Deep bass meets rhyming melodies. Ideal for adults.</p>
-        <div class="track-meta">
-          <strong>Release Date:</strong> May 8, 2025<br>
-          <strong>Album:</strong> Pretty Girls<br>
-          <strong>Duration:</strong> 4:05<br>
-          <strong>Type:</strong> Drill<br>
-          <strong>Listeners:</strong> 9,870<br>
-          <strong>Likes:</strong> 12K
-        </div>
-        <a href="bsm.mp3" download class="download-btn"><i class="fas fa-download"></i> Download BSM</a>
-      </div>
-
-      <div class="card">
-        <h2>Champs Of Mityana </h2>
-        <p>Ambient synths with cosmic vibes. Designed for creative school sessions.</p>
-        <div class="track-meta">
-          <strong>Release Date:</strong> Mar 3, 2024<br>
-          <strong>Album:</strong> No Album<br>
-          <strong>Duration:</strong> 2:10<br>
-          <strong>Type:</strong> Jazz<br>
-          <strong>Listeners:</strong> 7,540<br>
-          <strong>Likes:</strong> 980
-        </div>
-        <a href="ssm.mp3" download class="download-btn" onclick="alert('audio unpublished!')"><i class="fas fa-download"></i> Download SSM</a>
-      </div>
-
-      <div class="card">
-        <h2>Ekyiti ft Page Vybz</h2>
-        <p>High-energy electro beats for powering through logic challenges.</p>
-        <div class="track-meta">
-          <strong>Release Date:</strong> August 18, 2024<br>
-          <strong>Album:</strong> Pretty Girls<br>
-          <strong>Duration:</strong> 1:58<br>
-          <strong>Type:</strong> Drill<br>
-          <strong>Listeners:</strong> 10,220<br>
-          <strong>Likes:</strong> 1,430
-        </div>
-        <a href="ekt.mp3" download class="download-btn"><i class="fas fa-download"></i> Download EKT</a>
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <div class="header-content">
+        <a href="#" class="logo">
+          <i class="fas fa-music"></i>
+          Dizz<span>Muxic</span>
+        </a>
+        
+        <nav>
+          <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <i class="fas fa-bars"></i>
+          </button>
+          <div class="nav-links" id="navLinks">
+            <a href="#music" class="active">Music</a>
+            <a href="#videos">Videos</a>
+            <a href="#comments">Comments</a>
+          </div>
+        </nav>
       </div>
     </div>
+  </header>
 
-    <!-- VIDEOS -->
-    <div id="videos" class="section">
-      <div class="card">
-        <h2>🎬 Shoot to Kill (STK)</h2>
-        <video controls width="100%">
-          <source src="stk.mp4" type="video/mp4">
-        </video>
-      </div>
-
-      <div class="card">
-        <h2>🎬 Byisambi (BSM)</h2>
-        <video controls width="100%">
-          <source src="bsm.mp4" type="video/mp4">
-        </video>
-      </div>
-
-      <div class="card">
-        <h2>🎬 Champs of Mityana (SSM)</h2>
-        <video controls width="100%">
-          <source src="ssm.mp4" type="video/mp4">
-        </video>
-      </div>
-
-      <div class="card">
-        <h2>🎬 Ekyiti (EKT)</h2>
-        <video controls width="100%">
-          <source src="ekt.mp4" type="video/mp4">
-        </video>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1>Dizzer J</h1>
+        <p>Blending rhythm, logic, and emotion into tracks that power your mind and move your soul.</p>
+        <div class="cta-buttons">
+          <a href="#music" class="btn btn-primary">
+            <i class="fas fa-headphones"></i> Listen Now
+          </a>
+          <a href="#videos" class="btn btn-secondary">
+            <i class="fas fa-play-circle"></i> Watch Videos
+          </a>
+        </div>
       </div>
     </div>
+  </section>
 
-    <!-- COMMENTS -->
-    <div id="comments" class="section">
-      <div class="card">
-        <h2>💬 Listener Comments</h2>
-<div class="comment">
-          <i class="fas fa-user-circle"></i>
-          <div class="comment-content">
-            <strong>@AtimPaul</strong><br>
-            <div class="reply-label">In reply to... STK</div>
-            "Just know ur on fire man"
+  <!-- Music Section -->
+  <section class="section" id="music">
+    <div class="container">
+      <h2 class="section-title">Latest Tracks</h2>
+      
+      <div class="music-grid">
+        <!-- Track 1 -->
+        <div class="track-card">
+          <div class="track-header">
+            <h3>Shoot to Kill</h3>
+            <p>A fusion of trap beats and synth layers</p>
+          </div>
+          <div class="track-body">
+            <div class="track-meta">
+              <div class="meta-item">
+                <span class="meta-label">Release Date</span>
+                <span class="meta-value">Aug 12, 2024</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Album</span>
+                <span class="meta-value">Pretty Girls</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Duration</span>
+                <span class="meta-value">3:42</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Genre</span>
+                <span class="meta-value">Dancehall</span>
+              </div>
+            </div>
+            
+            <div class="track-stats">
+              <div class="stat">
+                <div class="stat-value">12.4K</div>
+                <div class="stat-label">Listeners</div>
+              </div>
+              <div class="stat">
+                <div class="stat-value">1.4M</div>
+                <div class="stat-label">Likes</div>
+              </div>
+            </div>
+            
+            <a href="stk.mp3" download class="download-btn">
+              <i class="fas fa-download"></i> Download
+            </a>
           </div>
         </div>
-<div class="comment">
-          <i class="fas fa-user-circle"></i>
-          <div class="comment-content">
-            <strong>@Cute_her</strong><br>
-            <div class="reply-label">In reply to... STK</div>
-            "🤟🤟🤟"
+        
+        <!-- Track 2 -->
+        <div class="track-card">
+          <div class="track-header">
+            <h3>Bisambi ft Page Vybz</h3>
+            <p>Deep bass meets rhyming melodies</p>
+          </div>
+          <div class="track-body">
+            <div class="track-meta">
+              <div class="meta-item">
+                <span class="meta-label">Release Date</span>
+                <span class="meta-value">May 8, 2025</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Album</span>
+                <span class="meta-value">Pretty Girls</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Duration</span>
+                <span class="meta-value">4:05</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Genre</span>
+                <span class="meta-value">Drill</span>
+              </div>
+            </div>
+            
+            <div class="track-stats">
+              <div class="stat">
+                <div class="stat-value">9.8K</div>
+                <div class="stat-label">Listeners</div>
+              </div>
+              <div class="stat">
+                <div class="stat-value">12K</div>
+                <div class="stat-label">Likes</div>
+              </div>
+            </div>
+            
+            <a href="bsm.mp3" download class="download-btn">
+              <i class="fas fa-download"></i> Download
+            </a>
           </div>
         </div>
-<div class="comment">
-          <i class="fas fa-user-circle"></i>
-          <div class="comment-content">
-            <strong>@Sam133</strong><br>
-            <div class="reply-label">In reply to... STK</div>
-            "What are you shooting to kill?"
+        
+        <!-- Track 3 -->
+        <div class="track-card">
+          <div class="track-header">
+            <h3>Champs Of Mityana</h3>
+            <p>Ambient synths with cosmic vibes</p>
+          </div>
+          <div class="track-body">
+            <div class="track-meta">
+              <div class="meta-item">
+                <span class="meta-label">Release Date</span>
+                <span class="meta-value">Mar 3, 2024</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Album</span>
+                <span class="meta-value">No Album</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Duration</span>
+                <span class="meta-value">2:10</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Genre</span>
+                <span class="meta-value">Jazz</span>
+              </div>
+            </div>
+            
+            <div class="track-stats">
+              <div class="stat">
+                <div class="stat-value">7.5K</div>
+                <div class="stat-label">Listeners</div>
+              </div>
+              <div class="stat">
+                <div class="stat-value">980</div>
+                <div class="stat-label">Likes</div>
+              </div>
+            </div>
+            
+            <a href="ssm.mp3" download class="download-btn" onclick="alert('audio unpublished!')">
+              <i class="fas fa-download"></i> Download
+            </a>
           </div>
         </div>
-<div class="comment">
-          <i class="fas fa-user-circle"></i>
-          <div class="comment-content">
-            <strong>@Tonnyfashions</strong><br>
-            <div class="reply-label">In reply to @Sam133 [You are ..]</div>
-            "Inbox me for shoes delivery. Bikumba"
+        
+        <!-- Track 4 -->
+        <div class="track-card">
+          <div class="track-header">
+            <h3>Ekyiti ft Page Vybz</h3>
+            <p>High-energy electro beats</p>
           </div>
-        </div>
-<div class="comment">
-          <i class="fas fa-user-circle"></i>
-          <div class="comment-content">
-            <strong>@Sam133</strong><br>
-            <div class="reply-label">In reply to... STK</div>
-            "You are talented, keep it up man"
-          </div>
-        </div>
-<div class="comment">
-          <i class="fas fa-user-circle"></i>
-          <div class="comment-content">
-            <strong>@ariana_ela</strong><br>
-            <div class="reply-label">In reply to... STK</div>
-            "STK is 🔥! The beat drop at 1:20 gave me goosebumps. This is so cool."
-          </div>
-        </div>
-<div class="comment">
-          <i class="fas fa-user-circle"></i>
-          <div class="comment-content">
-            <strong>@i_am_dizzer_j</strong><br>
-            <div class="reply-label">In reply to @Pine❤️[We are n...</div>
-            "I'll drop"
-          </div>
-        </div>
-<div class="comment">
-          <i class="fas fa-user-circle"></i>
-          <div class="comment-content">
-            <strong>@metaMoneyMachine</strong><br>
-            <div class="reply-label">In reply to @Pine❤️[We are n...</div>
-            "And Kiti"
-          </div>
-        </div>
-<div class="comment">
-          <i class="fas fa-user-circle"></i>
-          <div class="comment-content">
-            <strong>@Pine❤️</strong><br>
-            <div class="reply-label">In reply to... STK</div>
-            "We are not seeing Bisabi"
-          </div>
-        </div>
-<div class="comment">
-          <i class="fas fa-user-circle"></i>
-          <div class="comment-content">
-            <strong>@omaletTimes</strong><br>
-            <div class="reply-label">In reply to... STK</div>
-            "Is pretty girls out?"
-          </div>
-        </div>
-<div class="comment">
-          <i class="fas fa-user-circle"></i>
-          <div class="comment-content">
-            <strong>@i_am_page</strong><br>
-            <div class="reply-label">In reply to... STK</div>
-            "👌🤟🤟🤟
- Bigup"
-          </div>
-        </div>
-
-        <div class="comment">
-          <i class="fas fa-user-circle"></i>
-          <div class="comment-content">
-            <strong>@SynthQueen</strong><br>
-            <div class="reply-label">In reply to... BSM</div>
-            "BSM is smooth but lacks punch. Could use more layering in the mid-range."
-          </div>
-        </div>
-
-        <div class="comment">
-          <i class="fas fa-user-circle"></i>
-          <div class="comment-content">
-          <strong>@see_me</strong><br>
-            <div class="reply-label">In reply to... SSM</div>
-            "SSM made guys chill, bya kawani. Not champions"
-          </div>
-        </div>
-
-        <div class="comment">
-          <i class="fas fa-user-circle"></i>
-          <div class="comment-content">
-<strong>@EchoByte</strong><br>
-            <div class="reply-label">In reply to... EKT</div>
-                        "Kikume pola"
-          </div>
-        </div>
-
-        <div class="comment">
-          <i class="fas fa-user-circle"></i>
-          <div class="comment-content">
-            <strong>@BassCritic</strong><br>
-            <div class="reply-label">In reply to Bisambi...</div>
-            "BSM didn’t hit like I expected. Maybe it's just not my vibe, but production is clean."
+          <div class="track-body">
+            <div class="track-meta">
+              <div class="meta-item">
+                <span class="meta-label">Release Date</span>
+                <span class="meta-value">Aug 18, 2024</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Album</span>
+                <span class="meta-value">Pretty Girls</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Duration</span>
+                <span class="meta-value">1:58</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Genre</span>
+                <span class="meta-value">Drill</span>
+              </div>
+            </div>
+            
+            <div class="track-stats">
+              <div class="stat">
+                <div class="stat-value">10.2K</div>
+                <div class="stat-label">Listeners</div>
+              </div>
+              <div class="stat">
+                <div class="stat-value">1.4K</div>
+                <div class="stat-label">Likes</div>
+              </div>
+            </div>
+            
+            <a href="ekt.mp3" download class="download-btn">
+              <i class="fas fa-download"></i> Download
+            </a>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </section>
 
+  <!-- Videos Section -->
+  <section class="section" id="videos">
+    <div class="container">
+      <h2 class="section-title">Music Videos</h2>
+      
+      <div class="video-grid">
+        <!-- Video 1 -->
+        <div class="video-card">
+          <div class="video-thumbnail">
+            <i class="fas fa-play-circle"></i>
+          </div>
+          <div class="video-content">
+            <h3>Shoot to Kill (STK)</h3>
+            <p>A fusion of trap beats and synth layers</p>
+          </div>
+        </div>
+        
+        <!-- Video 2 -->
+        <div class="video-card">
+          <div class="video-thumbnail">
+            <i class="fas fa-play-circle"></i>
+          </div>
+          <div class="video-content">
+            <h3>Byisambi (BSM)</h3>
+            <p>Deep bass meets rhyming melodies</p>
+          </div>
+        </div>
+        
+        <!-- Video 3 -->
+        <div class="video-card">
+          <div class="video-thumbnail">
+            <i class="fas fa-play-circle"></i>
+          </div>
+          <div class="video-content">
+            <h3>Champs of Mityana (SSM)</h3>
+            <p>Ambient synths with cosmic vibes</p>
+          </div>
+        </div>
+        
+        <!-- Video 4 -->
+        <div class="video-card">
+          <div class="video-thumbnail">
+            <i class="fas fa-play-circle"></i>
+          </div>
+          <div class="video-content">
+            <h3>Ekyiti (EKT)</h3>
+            <p>High-energy electro beats</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comments Section -->
+  <section class="section" id="comments">
+    <div class="container">
+      <h2 class="section-title">Listener Comments</h2>
+      
+      <div class="comments-container">
+        <!-- Comment 1 -->
+        <div class="comment">
+          <div class="comment-avatar">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="comment-content">
+            <div class="comment-header">
+              <span class="comment-author">@AtimPaul</span>
+            </div>
+            <div class="comment-reply">In reply to STK</div>
+            <p class="comment-text">"Just know ur on fire man"</p>
+          </div>
+        </div>
+        
+        <!-- Comment 2 -->
+        <div class="comment">
+          <div class="comment-avatar">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="comment-content">
+            <div class="comment-header">
+              <span class="comment-author">@Cute_her</span>
+            </div>
+            <div class="comment-reply">In reply to STK</div>
+            <p class="comment-text">"🤟🤟🤟"</p>
+          </div>
+        </div>
+        
+        <!-- Comment 3 -->
+        <div class="comment">
+          <div class="comment-avatar">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="comment-content">
+            <div class="comment-header">
+              <span class="comment-author">@Sam133</span>
+            </div>
+            <div class="comment-reply">In reply to STK</div>
+            <p class="comment-text">"What are you shooting to kill?"</p>
+          </div>
+        </div>
+        
+        <!-- Comment 4 -->
+        <div class="comment">
+          <div class="comment-avatar">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="comment-content">
+            <div class="comment-header">
+              <span class="comment-author">@ariana_ela</span>
+            </div>
+            <div class="comment-reply">In reply to STK</div>
+            <p class="comment-text">"STK is 🔥! The beat drop at 1:20 gave me goosebumps. This is so cool."</p>
+          </div>
+        </div>
+        
+        <!-- Comment 5 -->
+        <div class="comment">
+          <div class="comment-avatar">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="comment-content">
+            <div class="comment-header">
+              <span class="comment-author">@SynthQueen</span>
+            </div>
+            <div class="comment-reply">In reply to BSM</div>
+            <p class="comment-text">"BSM is smooth but lacks punch. Could use more layering in the mid-range."</p>
+          </div>
+        </div>
+        
+        <!-- Comment 6 -->
+        <div class="comment">
+          <div class="comment-avatar">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="comment-content">
+            <div class="comment-header">
+              <span class="comment-author">@see_me</span>
+            </div>
+            <div class="comment-reply">In reply to SSM</div>
+            <p class="comment-text">"SSM made guys chill, bya kawani. Not champions"</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
   <footer>
-    <p>© 2025 Dizzer J | Golden Apple Technologies</p>
+    <div class="container">
+      <div class="footer-content">
+        <div class="social-links">
+          <a href="#" class="social-link">
+            <i class="fab fa-spotify"></i>
+          </a>
+          <a href="#" class="social-link">
+            <i class="fab fa-youtube"></i>
+          </a>
+          <a href="#" class="social-link">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="#" class="social-link">
+            <i class="fab fa-tiktok"></i>
+          </a>
+        </div>
+        <p class="copyright">© 2025 Dizzer J | Golden Apple Technologies</p>
+      </div>
+    </div>
   </footer>
 
   <script>
-    function showSection(id) {
-      document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-    }
+    // Mobile menu toggle
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const navLinks = document.getElementById('navLinks');
+    
+    mobileMenuBtn.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+    });
+    
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          window.scrollTo({
+            top: targetElement.offsetTop - 80,
+            behavior: 'smooth'
+          });
+          
+          // Close mobile menu if open
+          navLinks.classList.remove('active');
+        }
+      });
+    });
+    
+    // Update active navigation link on scroll
+    window.addEventListener('scroll', () => {
+      const sections = document.querySelectorAll('section');
+      const navLinks = document.querySelectorAll('.nav-links a');
+      
+      let currentSection = '';
+      
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop - 100;
+        const sectionHeight = section.clientHeight;
+        
+        if (pageYOffset >= sectionTop && pageYOffset < sectionTop + sectionHeight) {
+          currentSection = section.getAttribute('id');
+        }
+      });
+      
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${currentSection}`) {
+          link.classList.add('active');
+        }
+      });
+    });
   </script>
 </body>
 </html>
