@@ -3,550 +3,302 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Real Bluetooth Device Scanner</title>
+    <title>Document Creator</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
+        /* Basic styling for the editor */
         body {
-            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
-            color: white;
-            min-height: 100vh;
-            padding: 20px;
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            line-height: 1.6;
         }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            background: rgba(0, 0, 0, 0.7);
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
-        }
-
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            background: linear-gradient(to right, #fdbb2d, #b21f1f);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .subtitle {
-            font-size: 1.2rem;
-            opacity: 0.8;
-        }
-
-        .card {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-            backdrop-filter: blur(10px);
-        }
-
-        .card h2 {
-            margin-bottom: 15px;
-            color: #fdbb2d;
-        }
-
-        .controls {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        button {
-            background: linear-gradient(to right, #1a2a6c, #b21f1f);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 50px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        button:active {
-            transform: translateY(1px);
-        }
-
-        button:disabled {
-            background: #555;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        #status {
-            padding: 10px;
-            border-radius: 5px;
-            margin: 15px 0;
-            text-align: center;
-            font-weight: bold;
-        }
-
-        .status-connected {
-            background: rgba(76, 175, 80, 0.3);
-            color: #4CAF50;
-        }
-
-        .status-disconnected {
-            background: rgba(244, 67, 54, 0.3);
-            color: #f44336;
-        }
-
-        .status-scanning {
-            background: rgba(33, 150, 243, 0.3);
-            color: #2196F3;
-        }
-
-        .device-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .device-item {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
+        #editor {
+            width: 100%;
+            height: 300px;
             padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-family: inherit;
+            resize: vertical;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            border: 1px solid transparent;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
         }
 
-        .device-item:hover {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: #fdbb2d;
-        }
-
-        .device-item.active {
-            background: rgba(253, 187, 45, 0.2);
-            border-color: #fdbb2d;
-        }
-
-        .device-name {
-            font-weight: bold;
-            font-size: 1.1rem;
-            margin-bottom: 5px;
-        }
-
-        .device-id {
-            font-size: 0.9rem;
-            opacity: 0.7;
-            font-family: monospace;
-            word-break: break-all;
-        }
-
-        .device-rssi {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            margin-top: 8px;
-            font-size: 0.9rem;
-        }
-
-        .signal-bar {
-            width: 60px;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 2px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .signal-strength {
+        /* Modal styles - based on W3Schools example [citation:2] */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
             height: 100%;
-            background: #4CAF50;
-            border-radius: 2px;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
         }
-
-        .device-info {
-            margin-top: 20px;
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 0;
+            border: 1px solid #888;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+            animation-name: animatetop;
+            animation-duration: 0.4s;
+        }
+        @keyframes animatetop {
+            from {top: -300px; opacity: 0}
+            to {top: 0; opacity: 1}
+        }
+        .modal-header {
+            padding: 16px;
+            background-color: #5cb85c;
+            color: white;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-header h2 {
+            margin: 0;
+        }
+        .close {
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+        }
+        .close:hover {
+            color: #eee;
+        }
+        .modal-body {
+            padding: 20px;
+        }
+        .modal-footer {
+            padding: 16px;
+            background-color: #f5f5f5;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input[type="text"], select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        .input-with-dropdown {
+            display: flex;
+            gap: 10px;
+        }
+        .input-with-dropdown input {
+            flex: 1;
+        }
+        .input-with-dropdown select {
+            width: auto;
+            min-width: 120px;
+        }
+        .warning {
+            color: #d9534f;
+            font-size: 14px;
+            margin-top: 5px;
             display: none;
         }
-
-        .device-info.active {
-            display: block;
+        .btn-secondary {
+            background-color: #6c757d;
         }
-
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 10px;
-            margin-top: 15px;
+        .btn-secondary:hover {
+            background-color: #5a6268;
         }
-
-        .info-item {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 10px;
-            border-radius: 5px;
-        }
-
-        .info-label {
-            font-size: 0.8rem;
-            opacity: 0.7;
-        }
-
-        .info-value {
+        .filename-preview {
             font-weight: bold;
-            margin-top: 5px;
+            color: #2c3e50;
             word-break: break-all;
-        }
-
-        .no-devices {
-            text-align: center;
-            padding: 30px;
-            opacity: 0.7;
-        }
-
-        .spinner {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: #fff;
-            animation: spin 1s ease-in-out infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        footer {
-            text-align: center;
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
-            font-size: 0.9rem;
-            opacity: 0.7;
-        }
-
-        @media (max-width: 600px) {
-            .container {
-                padding: 15px;
-            }
-            
-            h1 {
-                font-size: 1.8rem;
-            }
-            
-            .controls {
-                flex-direction: column;
-            }
-            
-            button {
-                width: 100%;
-                justify-content: center;
-            }
+            margin: 15px 0;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Real Bluetooth Device Scanner</h1>
-            <p class="subtitle">Scan for and connect to real Bluetooth devices using the Web Bluetooth API</p>
-        </header>
+    <!-- Main Editor -->
+    <h1>Document Creator</h1>
+    <textarea id="editor" placeholder="Start typing your document here..."></textarea>
+    <button id="saveBtn">Save Document</button>
 
-        <div class="card">
-            <h2>Controls</h2>
-            <div class="controls">
-                <button id="scanBtn">
-                    <span class="spinner" style="display: none;"></span>
-                    Scan for Devices
-                </button>
-                <button id="connectBtn" disabled>Connect to Device</button>
-                <button id="disconnectBtn" disabled>Disconnect</button>
-                <button id="resetBtn">Reset</button>
+    <!-- Document Name Modal -->
+    <div id="documentNameModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Save Document</h2>
+                <span class="close" id="closeNameModal">&times;</span>
             </div>
-
-            <div id="status" class="status-disconnected">Disconnected - Ready to scan</div>
-        </div>
-
-        <div class="card">
-            <h2>Available Bluetooth Devices</h2>
-            <div id="deviceList" class="device-list">
-                <div class="no-devices">No devices found. Click "Scan for Devices" to start scanning.</div>
-            </div>
-        </div>
-
-        <div id="deviceInfo" class="device-info card">
-            <h2>Device Information</h2>
-            <div class="info-grid">
-                <div class="info-item">
-                    <div class="info-label">Device Name</div>
-                    <div id="infoName" class="info-value">-</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label">Device ID</div>
-                    <div id="infoId" class="info-value">-</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label">Connected</div>
-                    <div id="infoConnected" class="info-value">-</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label">Signal Strength</div>
-                    <div id="infoRSSI" class="info-value">-</div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="filename">File Name:</label>
+                    <div class="input-with-dropdown">
+                        <input type="text" id="filename" placeholder="Enter file name">
+                        <select id="extension">
+                            <option value=".txt">.txt</option>
+                            <option value=".pdf">.pdf</option>
+                            <option value=".docx">.docx</option>
+                            <option value=".html">.html</option>
+                        </select>
+                    </div>
+                    <div id="extensionWarning" class="warning">
+                        Please select a file extension from the dropdown.
+                    </div>
                 </div>
             </div>
+            <div class="modal-footer">
+                <button id="cancelNameBtn" class="btn-secondary">Cancel</button>
+                <button id="proceedToConfirmBtn">Next</button>
+            </div>
         </div>
+    </div>
 
-        <footer>
-            <p>This website uses the Web Bluetooth API to interact with real Bluetooth devices.</p>
-            <p>Note: Web Bluetooth API is only available in secure contexts (HTTPS) and supported browsers.</p>
-        </footer>
+    <!-- Confirmation Modal -->
+    <div id="confirmationModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Confirm Save</h2>
+                <span class="close" id="closeConfirmModal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>You are saving this file as <span id="filenamePreview" class="filename-preview"></span> on your device storage in Downloads.</p>
+                <p>Click Save to continue or Discard to cancel.</p>
+            </div>
+            <div class="modal-footer">
+                <button id="discardBtn" class="btn-secondary">Discard</button>
+                <button id="finalSaveBtn">Save</button>
+            </div>
+        </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // DOM Elements
-            const scanBtn = document.getElementById('scanBtn');
-            const connectBtn = document.getElementById('connectBtn');
-            const disconnectBtn = document.getElementById('disconnectBtn');
-            const resetBtn = document.getElementById('resetBtn');
-            const statusDiv = document.getElementById('status');
-            const deviceList = document.getElementById('deviceList');
-            const deviceInfo = document.getElementById('deviceInfo');
-            const infoName = document.getElementById('infoName');
-            const infoId = document.getElementById('infoId');
-            const infoConnected = document.getElementById('infoConnected');
-            const infoRSSI = document.getElementById('infoRSSI');
+        // DOM Elements
+        const saveBtn = document.getElementById('saveBtn');
+        const documentNameModal = document.getElementById('documentNameModal');
+        const confirmationModal = document.getElementById('confirmationModal');
+        const closeNameModal = document.getElementById('closeNameModal');
+        const closeConfirmModal = document.getElementById('closeConfirmModal');
+        const cancelNameBtn = document.getElementById('cancelNameBtn');
+        const proceedToConfirmBtn = document.getElementById('proceedToConfirmBtn');
+        const discardBtn = document.getElementById('discardBtn');
+        const finalSaveBtn = document.getElementById('finalSaveBtn');
+        const filenameInput = document.getElementById('filename');
+        const extensionSelect = document.getElementById('extension');
+        const extensionWarning = document.getElementById('extensionWarning');
+        const filenamePreview = document.getElementById('filenamePreview');
+
+        // Open document name modal when Save button is clicked
+        saveBtn.addEventListener('click', function() {
+            documentNameModal.style.display = 'block';
+        });
+
+        // Close document name modal
+        closeNameModal.addEventListener('click', closeNameModalFunc);
+        cancelNameBtn.addEventListener('click', closeNameModalFunc);
+
+        function closeNameModalFunc() {
+            documentNameModal.style.display = 'none';
+            // Reset form
+            filenameInput.value = '';
+            extensionWarning.style.display = 'none';
+        }
+
+        // Close confirmation modal
+        closeConfirmModal.addEventListener('click', closeConfirmModalFunc);
+        discardBtn.addEventListener('click', closeConfirmModalFunc);
+
+        function closeConfirmModalFunc() {
+            confirmationModal.style.display = 'none';
+        }
+
+        // Proceed to confirmation modal
+        proceedToConfirmBtn.addEventListener('click', function() {
+            const fileName = filenameInput.value.trim();
             
-            // State variables
-            let selectedDevice = null;
-            let connectedDevice = null;
-            let devices = [];
-            let isScanning = false;
-            const spinner = scanBtn.querySelector('.spinner');
+            // File extension validation using regex [citation:1][citation:4]
+            const hasExtension = /\.\w+$/.test(fileName);
             
-            // Check browser support
-            if (!navigator.bluetooth) {
-                statusDiv.textContent = 'Web Bluetooth API is not supported by your browser.';
-                statusDiv.className = 'status-disconnected';
-                scanBtn.disabled = true;
-                return;
+            if (hasExtension) {
+                extensionWarning.style.display = 'none';
+                // Show confirmation modal
+                documentNameModal.style.display = 'none';
+                filenamePreview.textContent = fileName;
+                confirmationModal.style.display = 'block';
+            } else {
+                extensionWarning.style.display = 'block';
             }
+        });
+
+        // Final save functionality
+        finalSaveBtn.addEventListener('click', function() {
+            const content = document.getElementById('editor').value;
+            const fileName = filenameInput.value.trim();
             
-            // Event Listeners
-            scanBtn.addEventListener('click', startScan);
-            connectBtn.addEventListener('click', connectToDevice);
-            disconnectBtn.addEventListener('click', disconnectDevice);
-            resetBtn.addEventListener('click', resetScanner);
+            // Create a blob and download the file [citation:8]
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
             
-            // Functions
-            function startScan() {
-                if (isScanning) return;
-                
-                isScanning = true;
-                devices = [];
-                updateDeviceList();
-                spinner.style.display = 'inline-block';
-                scanBtn.disabled = true;
-                statusDiv.textContent = 'Scanning for Bluetooth devices...';
-                statusDiv.className = 'status-scanning';
-                
-                // Request Bluetooth devices with specific filters
-                navigator.bluetooth.requestDevice({
-                    acceptAllDevices: true,
-                    optionalServices: ['battery_service', 'device_information'] // Common services
-                })
-                .then(device => {
-                    // Add the device to our list
-                    if (!devices.some(d => d.id === device.id)) {
-                        devices.push(device);
-                        updateDeviceList();
-                    }
-                    
-                    // Automatically select the first device found
-                    if (devices.length === 1) {
-                        selectDevice(device);
-                    }
-                    
-                    stopScan();
-                })
-                .catch(error => {
-                    console.error('Error scanning for devices:', error);
-                    statusDiv.textContent = `Scan failed: ${error.message}`;
-                    statusDiv.className = 'status-disconnected';
-                    stopScan();
-                });
+            // Close modal and reset
+            confirmationModal.style.display = 'none';
+            filenameInput.value = '';
+            alert('Document saved successfully!');
+        });
+
+        // Close modals when clicking outside
+        window.addEventListener('click', function(event) {
+            if (event.target === documentNameModal) {
+                closeNameModalFunc();
             }
-            
-            function stopScan() {
-                isScanning = false;
-                spinner.style.display = 'none';
-                scanBtn.disabled = false;
-                
-                if (devices.length === 0) {
-                    statusDiv.textContent = 'No devices found. Try scanning again.';
-                    statusDiv.className = 'status-disconnected';
-                } else {
-                    statusDiv.textContent = `Found ${devices.length} device(s). Select a device to connect.`;
-                    statusDiv.className = 'status-disconnected';
-                }
+            if (event.target === confirmationModal) {
+                closeConfirmModalFunc();
             }
+        });
+
+        // Auto-append selected extension if no extension is present
+        extensionSelect.addEventListener('change', function() {
+            const currentValue = filenameInput.value.trim();
+            const hasExtension = /\.\w+$/.test(currentValue);
             
-            function updateDeviceList() {
-                if (devices.length === 0) {
-                    deviceList.innerHTML = '<div class="no-devices">No devices found. Click "Scan for Devices" to start scanning.</div>';
-                    return;
-                }
-                
-                deviceList.innerHTML = '';
-                devices.forEach(device => {
-                    const deviceElement = document.createElement('div');
-                    deviceElement.className = 'device-item';
-                    if (selectedDevice && selectedDevice.id === device.id) {
-                        deviceElement.classList.add('active');
-                    }
-                    
-                    const name = device.name || 'Unknown Device';
-                    const rssi = device.rssi || -100; // Default to weak signal if not available
-                    
-                    deviceElement.innerHTML = `
-                        <div class="device-name">${name}</div>
-                        <div class="device-id">${device.id}</div>
-                        <div class="device-rssi">
-                            Signal: 
-                            <div class="signal-bar">
-                                <div class="signal-strength" style="width: ${calculateSignalStrength(rssi)}%"></div>
-                            </div>
-                            (${rssi} dBm)
-                        </div>
-                    `;
-                    
-                    deviceElement.addEventListener('click', () => selectDevice(device));
-                    deviceList.appendChild(deviceElement);
-                });
-            }
-            
-            function calculateSignalStrength(rssi) {
-                // Convert RSSI to a percentage (0-100)
-                // RSSI typically ranges from -100 (weak) to -30 (strong)
-                if (rssi >= -30) return 100;
-                if (rssi <= -100) return 0;
-                return Math.round(((rssi + 100) / 70) * 100);
-            }
-            
-            function selectDevice(device) {
-                selectedDevice = device;
-                updateDeviceList();
-                updateDeviceInfo();
-                connectBtn.disabled = false;
-                
-                statusDiv.textContent = `Selected: ${device.name || 'Unknown Device'}`;
-                statusDiv.className = 'status-disconnected';
-            }
-            
-            function updateDeviceInfo() {
-                if (!selectedDevice) {
-                    deviceInfo.classList.remove('active');
-                    return;
-                }
-                
-                deviceInfo.classList.add('active');
-                infoName.textContent = selectedDevice.name || 'Unknown';
-                infoId.textContent = selectedDevice.id;
-                infoConnected.textContent = connectedDevice ? 'Yes' : 'No';
-                infoRSSI.textContent = selectedDevice.rssi ? `${selectedDevice.rssi} dBm` : 'Unknown';
-            }
-            
-            function connectToDevice() {
-                if (!selectedDevice) return;
-                
-                statusDiv.textContent = 'Connecting to device...';
-                statusDiv.className = 'status-scanning';
-                connectBtn.disabled = true;
-                
-                // Connect to the GATT server
-                selectedDevice.gatt.connect()
-                .then(server => {
-                    connectedDevice = server;
-                    statusDiv.textContent = `Connected to: ${selectedDevice.name || 'Unknown Device'}`;
-                    statusDiv.className = 'status-connected';
-                    disconnectBtn.disabled = false;
-                    updateDeviceInfo();
-                    
-                    // Try to read device information if available
-                    return server.getPrimaryService('device_information');
-                })
-                .then(service => {
-                    // If device information service is available, try to read characteristics
-                    return service.getCharacteristics();
-                })
-                .then(characteristics => {
-                    // Process characteristics if needed
-                    console.log('Device characteristics:', characteristics);
-                })
-                .catch(error => {
-                    console.error('Connection failed:', error);
-                    statusDiv.textContent = `Connection failed: ${error.message}`;
-                    statusDiv.className = 'status-disconnected';
-                    connectBtn.disabled = false;
-                });
-            }
-            
-            function disconnectDevice() {
-                if (!connectedDevice) return;
-                
-                statusDiv.textContent = 'Disconnecting...';
-                statusDiv.className = 'status-scanning';
-                
-                if (connectedDevice.connected) {
-                    connectedDevice.disconnect();
-                }
-                
-                connectedDevice = null;
-                statusDiv.textContent = 'Disconnected';
-                statusDiv.className = 'status-disconnected';
-                disconnectBtn.disabled = true;
-                connectBtn.disabled = false;
-                updateDeviceInfo();
-            }
-            
-            function resetScanner() {
-                if (connectedDevice) {
-                    disconnectDevice();
-                }
-                
-                selectedDevice = null;
-                devices = [];
-                isScanning = false;
-                spinner.style.display = 'none';
-                scanBtn.disabled = false;
-                connectBtn.disabled = true;
-                disconnectBtn.disabled = true;
-                statusDiv.textContent = 'Disconnected - Ready to scan';
-                statusDiv.className = 'status-disconnected';
-                updateDeviceList();
-                deviceInfo.classList.remove('active');
+            if (!hasExtension && currentValue !== '') {
+                filenameInput.value = currentValue + this.value;
             }
         });
     </script>
