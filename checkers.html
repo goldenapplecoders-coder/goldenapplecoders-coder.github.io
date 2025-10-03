@@ -4,302 +4,664 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document Creator</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <style>
-        /* Basic styling for the editor */
+        :root {
+            --primary-pink: #f06292;
+            --secondary-pink: #f8bbd9;
+            --dark-pink: #d81b60;
+            --light-pink: #ffeef5;
+            --accent-pink: #ec407a;
+        }
+        
         body {
-            font-family: Arial, sans-serif;
-            margin: 40px;
-            line-height: 1.6;
+            background-color: var(--light-pink);
+            height: 100vh;
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        #editor {
-            width: 100%;
-            height: 300px;
-            padding: 15px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            font-family: inherit;
-            resize: vertical;
+        
+        .toolbar {
+            background: linear-gradient(135deg, var(--primary-pink), var(--dark-pink));
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+            padding: 8px 15px;
         }
-        button {
-            background-color: #4CAF50;
+        
+        .toolbar button {
             color: white;
-            padding: 12px 24px;
             border: none;
+            background: rgba(255, 255, 255, 0.2);
+            margin: 0 2px;
             border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
+            transition: all 0.2s;
         }
-        button:hover {
-            background-color: #45a049;
+        
+        .toolbar button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px);
         }
-
-        /* Modal styles - based on W3Schools example [citation:2] */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.4);
+        
+        .toolbar button.active {
+            background: rgba(255, 255, 255, 0.4);
         }
-        .modal-content {
-            background-color: #fefefe;
-            margin: 10% auto;
-            padding: 0;
-            border: 1px solid #888;
-            width: 90%;
-            max-width: 500px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-            animation-name: animatetop;
-            animation-duration: 0.4s;
-        }
-        @keyframes animatetop {
-            from {top: -300px; opacity: 0}
-            to {top: 0; opacity: 1}
-        }
-        .modal-header {
-            padding: 16px;
-            background-color: #5cb85c;
+        
+        .toolbar select {
+            background: rgba(255, 255, 255, 0.2);
             color: white;
-            border-top-left-radius: 8px;
-            border-top-right-radius: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
         }
-        .modal-header h2 {
-            margin: 0;
-        }
-        .close {
+        
+        .toolbar select option {
+            background: var(--primary-pink);
             color: white;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-            line-height: 1;
         }
-        .close:hover {
-            color: #eee;
-        }
-        .modal-body {
+        
+        #editor {
+            height: calc(100vh - 120px);
+            border: none;
             padding: 20px;
+            background: white;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+            line-height: 1.6;
+            overflow-y: auto;
+            outline: none;
         }
-        .modal-footer {
-            padding: 16px;
-            background-color: #f5f5f5;
-            border-bottom-left-radius: 8px;
-            border-bottom-right-radius: 8px;
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
+        
+        .zoom-controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 50px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
+            padding: 5px;
+            z-index: 100;
         }
-        .form-group {
-            margin-bottom: 20px;
+        
+        .zoom-controls button {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            background: var(--primary-pink);
+            color: white;
+            margin: 0 5px;
         }
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
+        
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary-pink), var(--dark-pink));
+            color: white;
         }
-        input[type="text"], select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-sizing: border-box;
-            font-size: 16px;
+        
+        .btn-pink {
+            background-color: var(--primary-pink);
+            color: white;
+            border: none;
         }
-        .input-with-dropdown {
-            display: flex;
-            gap: 10px;
+        
+        .btn-pink:hover {
+            background-color: var(--dark-pink);
+            color: white;
         }
-        .input-with-dropdown input {
-            flex: 1;
+        
+        .form-control:focus {
+            border-color: var(--secondary-pink);
+            box-shadow: 0 0 0 0.25rem rgba(240, 98, 146, 0.25);
         }
-        .input-with-dropdown select {
-            width: auto;
-            min-width: 120px;
-        }
-        .warning {
-            color: #d9534f;
-            font-size: 14px;
-            margin-top: 5px;
-            display: none;
-        }
-        .btn-secondary {
-            background-color: #6c757d;
-        }
-        .btn-secondary:hover {
-            background-color: #5a6268;
-        }
+        
         .filename-preview {
             font-weight: bold;
-            color: #2c3e50;
-            word-break: break-all;
-            margin: 15px 0;
+            color: var(--dark-pink);
+        }
+        
+        .warning-message {
+            color: #dc3545;
+            font-size: 0.875rem;
+            display: none;
+        }
+        
+        .status-bar {
+            background-color: white;
+            border-top: 1px solid #dee2e6;
+            padding: 5px 15px;
+            font-size: 0.875rem;
+            color: #6c757d;
+        }
+        
+        .insert-menu {
+            min-width: 200px;
+        }
+        
+        .insert-btn {
+            background: var(--primary-pink);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            z-index: 100;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
+            font-size: 24px;
+        }
+        
+        .insert-btn:hover {
+            background: var(--dark-pink);
+            transform: scale(1.1);
+        }
+        
+        .element-placeholder {
+            border: 1px dashed #ccc;
             padding: 10px;
-            background-color: #f8f9fa;
-            border-radius: 4px;
+            margin: 10px 0;
+            text-align: center;
+            background-color: #f9f9f9;
+        }
+        
+        .custom-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .custom-table td, .custom-table th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        
+        .custom-table th {
+            background-color: #f2f2f2;
         }
     </style>
 </head>
 <body>
-    <!-- Main Editor -->
-    <h1>Document Creator</h1>
-    <textarea id="editor" placeholder="Start typing your document here..."></textarea>
-    <button id="saveBtn">Save Document</button>
-
-    <!-- Document Name Modal -->
-    <div id="documentNameModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Save Document</h2>
-                <span class="close" id="closeNameModal">&times;</span>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="filename">File Name:</label>
-                    <div class="input-with-dropdown">
-                        <input type="text" id="filename" placeholder="Enter file name">
-                        <select id="extension">
-                            <option value=".txt">.txt</option>
-                            <option value=".pdf">.pdf</option>
-                            <option value=".docx">.docx</option>
-                            <option value=".html">.html</option>
+    <!-- Fixed Toolbar -->
+    <div class="toolbar sticky-top">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-md-12">
+                    <div class="d-flex flex-wrap align-items-center">
+                        <!-- Font Options -->
+                        <select class="form-select form-select-sm me-2" id="fontFamily" style="width: auto;">
+                            <option value="Arial">Arial</option>
+                            <option value="Georgia">Georgia</option>
+                            <option value="Times New Roman">Times New Roman</option>
+                            <option value="Courier New">Courier New</option>
+                            <option value="Verdana">Verdana</option>
                         </select>
-                    </div>
-                    <div id="extensionWarning" class="warning">
-                        Please select a file extension from the dropdown.
+                        
+                        <select class="form-select form-select-sm me-2" id="fontSize" style="width: auto;">
+                            <option value="1">Small</option>
+                            <option value="3" selected>Normal</option>
+                            <option value="5">Large</option>
+                            <option value="7">Huge</option>
+                        </select>
+                        
+                        <!-- Text Formatting -->
+                        <button class="btn btn-sm" id="boldBtn" title="Bold"><i class="bi bi-type-bold"></i></button>
+                        <button class="btn btn-sm" id="italicBtn" title="Italic"><i class="bi bi-type-italic"></i></button>
+                        <button class="btn btn-sm" id="underlineBtn" title="Underline"><i class="bi bi-type-underline"></i></button>
+                        
+                        <div class="vr mx-2 bg-light"></div>
+                        
+                        <!-- Alignment -->
+                        <button class="btn btn-sm" id="justifyLeftBtn" title="Align Left"><i class="bi bi-text-left"></i></button>
+                        <button class="btn btn-sm" id="justifyCenterBtn" title="Center"><i class="bi bi-text-center"></i></button>
+                        <button class="btn btn-sm" id="justifyRightBtn" title="Align Right"><i class="bi bi-text-right"></i></button>
+                        <button class="btn btn-sm" id="justifyFullBtn" title="Justify"><i class="bi bi-justify"></i></button>
+                        
+                        <div class="vr mx-2 bg-light"></div>
+                        
+                        <!-- Lists -->
+                        <button class="btn btn-sm" id="insertUnorderedListBtn" title="Bullet List"><i class="bi bi-list-ul"></i></button>
+                        <button class="btn btn-sm" id="insertOrderedListBtn" title="Numbered List"><i class="bi bi-list-ol"></i></button>
+                        
+                        <div class="vr mx-2 bg-light"></div>
+                        
+                        <!-- Text Color -->
+                        <div class="dropdown me-2">
+                            <button class="btn btn-sm dropdown-toggle" type="button" id="textColorDropdown" data-bs-toggle="dropdown">
+                                <i class="bi bi-palette"></i>
+                            </button>
+                            <div class="dropdown-menu p-2">
+                                <div class="d-flex flex-wrap" style="width: 150px;">
+                                    <div class="color-option m-1" data-color="#000000" style="width: 20px; height: 20px; background-color: #000000; border-radius: 50%; cursor: pointer;"></div>
+                                    <div class="color-option m-1" data-color="#ff0000" style="width: 20px; height: 20px; background-color: #ff0000; border-radius: 50%; cursor: pointer;"></div>
+                                    <div class="color-option m-1" data-color="#0000ff" style="width: 20px; height: 20px; background-color: #0000ff; border-radius: 50%; cursor: pointer;"></div>
+                                    <div class="color-option m-1" data-color="#008000" style="width: 20px; height: 20px; background-color: #008000; border-radius: 50%; cursor: pointer;"></div>
+                                    <div class="color-option m-1" data-color="#ffff00" style="width: 20px; height: 20px; background-color: #ffff00; border-radius: 50%; cursor: pointer;"></div>
+                                    <div class="color-option m-1" data-color="#ff00ff" style="width: 20px; height: 20px; background-color: #ff00ff; border-radius: 50%; cursor: pointer;"></div>
+                                    <div class="color-option m-1" data-color="#d81b60" style="width: 20px; height: 20px; background-color: #d81b60; border-radius: 50%; cursor: pointer;"></div>
+                                    <div class="color-option m-1" data-color="#f06292" style="width: 20px; height: 20px; background-color: #f06292; border-radius: 50%; cursor: pointer;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Save Button -->
+                        <button class="btn btn-sm ms-auto" id="saveBtn" title="Save Document">
+                            <i class="bi bi-save"></i> Save
+                        </button>
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button id="cancelNameBtn" class="btn-secondary">Cancel</button>
-                <button id="proceedToConfirmBtn">Next</button>
+        </div>
+    </div>
+    
+    <!-- Editor Area -->
+    <div class="container-fluid h-100 px-0">
+        <div id="editor" contenteditable="true">
+            <h1>Welcome to Golden Word</h1>
+            <p>Start typing your document here. Use the toolbar above to format your text or the + button to insert elements.</p>
+            <p>When you're ready to save, click the Save button in the top right corner.</p>
+        </div>
+    </div>
+    
+    <!-- Insert Button -->
+    <button class="insert-btn" id="insertBtn" title="Insert Elements">
+        <i class="bi bi-plus-lg"></i>
+    </button>
+    
+    <!-- Status Bar -->
+    <div class="status-bar d-flex justify-content-between">
+        <div>Words: <span id="wordCount">0</span></div>
+        <div>Zoom: <span id="zoomLevel">100%</span></div>
+    </div>
+    
+    <!-- Zoom Controls -->
+    <div class="zoom-controls">
+        <button id="zoomOutBtn"><i class="bi bi-dash-lg"></i></button>
+        <button id="zoomInBtn"><i class="bi bi-plus-lg"></i></button>
+    </div>
+    
+    <!-- Document Name Modal -->
+    <div class="modal fade" id="documentNameModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Save Document</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="filename" class="form-label">File Name:</label>
+                        <input type="text" class="form-control" id="filename" placeholder="Enter file name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="extensionSelect" class="form-label">File Extension:</label>
+                        <select class="form-select" id="extensionSelect">
+                            <optgroup label="Word Processing">
+                                <option value=".docx">.docx - Microsoft Word (Modern)</option>
+                                <option value=".doc">.doc - Microsoft Word (Legacy)</option>
+                                <option value=".pdf">.pdf - Portable Document Format</option>
+                                <option value=".txt">.txt - Plain Text File</option>
+                                <option value=".rtf">.rtf - Rich Text Format</option>
+                                <option value=".odt">.odt - OpenDocument Text</option>
+                                <option value=".pages">.pages - Apple Pages</option>
+                                <option value=".wpd">.wpd - WordPerfect</option>
+                                <option value=".tex">.tex - LaTeX Document</option>
+                                <option value=".html">.html - Web Page</option>
+                            </optgroup>
+                            <optgroup label="Spreadsheets">
+                                <option value=".xlsx">.xlsx - Microsoft Excel (Modern)</option>
+                                <option value=".xls">.xls - Microsoft Excel (Legacy)</option>
+                                <option value=".ods">.ods - OpenDocument Spreadsheet</option>
+                                <option value=".csv">.csv - Comma-Separated Values</option>
+                                <option value=".numbers">.numbers - Apple Numbers</option>
+                            </optgroup>
+                            <optgroup label="Presentations">
+                                <option value=".pptx">.pptx - Microsoft PowerPoint (Modern)</option>
+                                <option value=".ppt">.ppt - Microsoft PowerPoint (Legacy)</option>
+                                <option value=".odp">.odp - OpenDocument Presentation</option>
+                                <option value=".key">.key - Apple Keynote</option>
+                            </optgroup>
+                            <optgroup label="Publishing & Layout">
+                                <option value=".indd">.indd - Adobe InDesign</option>
+                                <option value=".pub">.pub - Microsoft Publisher</option>
+                                <option value=".ai">.ai - Adobe Illustrator</option>
+                                <option value=".eps">.eps - Encapsulated PostScript</option>
+                            </optgroup>
+                            <optgroup label="eBooks">
+                                <option value=".epub">.epub - eBook Format</option>
+                                <option value=".mobi">.mobi - Kindle Format (Legacy)</option>
+                                <option value=".azw3">.azw3 - Amazon Kindle</option>
+                            </optgroup>
+                            <optgroup label="Data & Config">
+                                <option value=".xml">.xml - eXtensible Markup Language</option>
+                                <option value=".json">.json - JavaScript Object Notation</option>
+                                <option value=".ini">.ini - Initialization File</option>
+                                <option value=".config">.config - Configuration File</option>
+                                <option value=".log">.log - Log File</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    <div class="warning-message" id="extensionWarning">
+                        Please add a file extension to your file name.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-pink" id="proceedToConfirmBtn">Next</button>
+                </div>
             </div>
         </div>
     </div>
-
+    
     <!-- Confirmation Modal -->
-    <div id="confirmationModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Confirm Save</h2>
-                <span class="close" id="closeConfirmModal">&times;</span>
-            </div>
-            <div class="modal-body">
-                <p>You are saving this file as <span id="filenamePreview" class="filename-preview"></span> on your device storage in Downloads.</p>
-                <p>Click Save to continue or Discard to cancel.</p>
-            </div>
-            <div class="modal-footer">
-                <button id="discardBtn" class="btn-secondary">Discard</button>
-                <button id="finalSaveBtn">Save</button>
+    <div class="modal fade" id="confirmationModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirm Save</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>You are saving this file as <span id="filenamePreview" class="filename-preview"></span> on your device storage in Downloads.</p>
+                    <p>Click Save to continue or Discard to cancel.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Discard</button>
+                    <button type="button" class="btn btn-pink" id="finalSaveBtn">Save</button>
+                </div>
             </div>
         </div>
     </div>
+    
+    <!-- Insert Menu -->
+    <div class="dropdown-menu insert-menu" id="insertMenu">
+        <h6 class="dropdown-header">Insert Elements</h6>
+        <button class="dropdown-item" type="button" data-element="image"><i class="bi bi-image me-2"></i>Image</button>
+        <button class="dropdown-item" type="button" data-element="table"><i class="bi bi-table me-2"></i>Table</button>
+        <button class="dropdown-item" type="button" data-element="shape"><i class="bi bi-square me-2"></i>Shape</button>
+        <button class="dropdown-item" type="button" data-element="textbox"><i class="bi bi-text-paragraph me-2"></i>Text Box</button>
+        <button class="dropdown-item" type="button" data-element="line"><i class="bi bi-dash-lg me-2"></i>Line</button>
+        <button class="dropdown-item" type="button" data-element="chart"><i class="bi bi-bar-chart me-2"></i>Chart</button>
+        <button class="dropdown-item" type="button" data-element="link"><i class="bi bi-link me-2"></i>Hyperlink</button>
+        <button class="dropdown-item" type="button" data-element="symbol"><i class="bi bi-asterisk me-2"></i>Special Character</button>
+    </div>
 
+    <!-- Bootstrap & jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
     <script>
-        // DOM Elements
-        const saveBtn = document.getElementById('saveBtn');
-        const documentNameModal = document.getElementById('documentNameModal');
-        const confirmationModal = document.getElementById('confirmationModal');
-        const closeNameModal = document.getElementById('closeNameModal');
-        const closeConfirmModal = document.getElementById('closeConfirmModal');
-        const cancelNameBtn = document.getElementById('cancelNameBtn');
-        const proceedToConfirmBtn = document.getElementById('proceedToConfirmBtn');
-        const discardBtn = document.getElementById('discardBtn');
-        const finalSaveBtn = document.getElementById('finalSaveBtn');
-        const filenameInput = document.getElementById('filename');
-        const extensionSelect = document.getElementById('extension');
-        const extensionWarning = document.getElementById('extensionWarning');
-        const filenamePreview = document.getElementById('filenamePreview');
-
-        // Open document name modal when Save button is clicked
-        saveBtn.addEventListener('click', function() {
-            documentNameModal.style.display = 'block';
-        });
-
-        // Close document name modal
-        closeNameModal.addEventListener('click', closeNameModalFunc);
-        cancelNameBtn.addEventListener('click', closeNameModalFunc);
-
-        function closeNameModalFunc() {
-            documentNameModal.style.display = 'none';
-            // Reset form
-            filenameInput.value = '';
-            extensionWarning.style.display = 'none';
-        }
-
-        // Close confirmation modal
-        closeConfirmModal.addEventListener('click', closeConfirmModalFunc);
-        discardBtn.addEventListener('click', closeConfirmModalFunc);
-
-        function closeConfirmModalFunc() {
-            confirmationModal.style.display = 'none';
-        }
-
-        // Proceed to confirmation modal
-        proceedToConfirmBtn.addEventListener('click', function() {
-            const fileName = filenameInput.value.trim();
+        $(document).ready(function() {
+            // Editor elements
+            const editor = document.getElementById('editor');
+            const wordCountElement = document.getElementById('wordCount');
             
-            // File extension validation using regex [citation:1][citation:4]
-            const hasExtension = /\.\w+$/.test(fileName);
+            // Modal elements
+            const documentNameModal = new bootstrap.Modal(document.getElementById('documentNameModal'));
+            const confirmationModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
             
-            if (hasExtension) {
-                extensionWarning.style.display = 'none';
+            // Insert menu
+            const insertBtn = document.getElementById('insertBtn');
+            const insertMenu = document.getElementById('insertMenu');
+            let insertMenuVisible = false;
+            
+            // Zoom functionality
+            let currentZoom = 100;
+            const zoomLevelElement = document.getElementById('zoomLevel');
+            
+            $('#zoomInBtn').click(function() {
+                if (currentZoom < 200) {
+                    currentZoom += 10;
+                    updateZoom();
+                }
+            });
+            
+            $('#zoomOutBtn').click(function() {
+                if (currentZoom > 50) {
+                    currentZoom -= 10;
+                    updateZoom();
+                }
+            });
+            
+            function updateZoom() {
+                editor.style.transform = `scale(${currentZoom / 100})`;
+                editor.style.transformOrigin = '0 0';
+                zoomLevelElement.textContent = `${currentZoom}%`;
+            }
+            
+            // Word count functionality
+            function updateWordCount() {
+                const text = editor.innerText || '';
+                const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+                wordCountElement.textContent = words;
+            }
+            
+            editor.addEventListener('input', updateWordCount);
+            updateWordCount();
+            
+            // Text formatting functions
+            function formatText(command, value = null) {
+                document.execCommand(command, false, value);
+                editor.focus();
+            }
+            
+            // Formatting button event handlers
+            $('#boldBtn').click(function() { formatText('bold'); toggleActiveState(this); });
+            $('#italicBtn').click(function() { formatText('italic'); toggleActiveState(this); });
+            $('#underlineBtn').click(function() { formatText('underline'); toggleActiveState(this); });
+            $('#justifyLeftBtn').click(function() { formatText('justifyLeft'); toggleActiveState(this, [$('#justifyCenterBtn'), $('#justifyRightBtn'), $('#justifyFullBtn')]); });
+            $('#justifyCenterBtn').click(function() { formatText('justifyCenter'); toggleActiveState(this, [$('#justifyLeftBtn'), $('#justifyRightBtn'), $('#justifyFullBtn')]); });
+            $('#justifyRightBtn').click(function() { formatText('justifyRight'); toggleActiveState(this, [$('#justifyLeftBtn'), $('#justifyCenterBtn'), $('#justifyFullBtn')]); });
+            $('#justifyFullBtn').click(function() { formatText('justifyFull'); toggleActiveState(this, [$('#justifyLeftBtn'), $('#justifyCenterBtn'), $('#justifyRightBtn')]); });
+            $('#insertUnorderedListBtn').click(function() { formatText('insertUnorderedList'); toggleActiveState(this, [$('#insertOrderedListBtn')]); });
+            $('#insertOrderedListBtn').click(function() { formatText('insertOrderedList'); toggleActiveState(this, [$('#insertUnorderedListBtn')]); });
+            
+            // Font family and size
+            $('#fontFamily').change(function() {
+                formatText('fontName', this.value);
+            });
+            
+            $('#fontSize').change(function() {
+                formatText('fontSize', this.value);
+            });
+            
+            // Text color
+            $('.color-option').click(function() {
+                const color = $(this).data('color');
+                formatText('foreColor', color);
+            });
+            
+            // Toggle active state for buttons
+            function toggleActiveState(activeBtn, otherBtns = []) {
+                $(activeBtn).toggleClass('active');
+                otherBtns.forEach(btn => {
+                    $(btn).removeClass('active');
+                });
+            }
+            
+            // Insert button functionality
+            insertBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                if (!insertMenuVisible) {
+                    // Position and show the menu
+                    const rect = insertBtn.getBoundingClientRect();
+                    insertMenu.style.position = 'fixed';
+                    insertMenu.style.bottom = (window.innerHeight - rect.top + 10) + 'px';
+                    insertMenu.style.right = (window.innerWidth - rect.right) + 'px';
+                    insertMenu.style.display = 'block';
+                    insertMenuVisible = true;
+                } else {
+                    insertMenu.style.display = 'none';
+                    insertMenuVisible = false;
+                }
+            });
+            
+            // Close insert menu when clicking elsewhere
+            document.addEventListener('click', function() {
+                if (insertMenuVisible) {
+                    insertMenu.style.display = 'none';
+                    insertMenuVisible = false;
+                }
+            });
+            
+            // Insert menu item handlers
+            $('#insertMenu .dropdown-item').click(function() {
+                const elementType = $(this).data('element');
+                insertElement(elementType);
+                insertMenu.style.display = 'none';
+                insertMenuVisible = false;
+            });
+            
+            // Element insertion functions
+            function insertElement(type) {
+                const sel = window.getSelection();
+                if (sel.rangeCount) {
+                    const range = sel.getRangeAt(0);
+                    const elementPlaceholder = document.createElement('div');
+                    elementPlaceholder.className = 'element-placeholder';
+                    elementPlaceholder.contentEditable = 'false';
+                    
+                    switch(type) {
+                        case 'image':
+                            elementPlaceholder.innerHTML = '<i class="bi bi-image me-2"></i>Image Placeholder - Double click to upload image';
+                            elementPlaceholder.style.cursor = 'pointer';
+                            elementPlaceholder.addEventListener('dblclick', function() {
+                                const input = document.createElement('input');
+                                input.type = 'file';
+                                input.accept = 'image/*';
+                                input.onchange = function(e) {
+                                    const file = e.target.files[0];
+                                    if (file) {
+                                        const reader = new FileReader();
+                                        reader.onload = function(e) {
+                                            const img = document.createElement('img');
+                                            img.src = e.target.result;
+                                            img.style.maxWidth = '100%';
+                                            elementPlaceholder.parentNode.replaceChild(img, elementPlaceholder);
+                                        };
+                                        reader.readAsDataURL(file);
+                                    }
+                                };
+                                input.click();
+                            });
+                            break;
+                        case 'table':
+                            elementPlaceholder.innerHTML = '<i class="bi bi-table me-2"></i>Table - 3x3';
+                            const table = document.createElement('table');
+                            table.className = 'custom-table';
+                            for (let i = 0; i < 3; i++) {
+                                const row = document.createElement('tr');
+                                for (let j = 0; j < 3; j++) {
+                                    const cell = document.createElement(i === 0 ? 'th' : 'td');
+                                    cell.textContent = i === 0 ? `Header ${j+1}` : `Cell ${j+1}`;
+                                    row.appendChild(cell);
+                                }
+                                table.appendChild(row);
+                            }
+                            elementPlaceholder.appendChild(table);
+                            break;
+                        case 'shape':
+                            elementPlaceholder.innerHTML = '<i class="bi bi-square me-2"></i>Shape - Rectangle';
+                            elementPlaceholder.style.width = '100px';
+                            elementPlaceholder.style.height = '100px';
+                            elementPlaceholder.style.backgroundColor = '#f06292';
+                            elementPlaceholder.style.borderRadius = '4px';
+                            elementPlaceholder.style.display = 'inline-block';
+                            break;
+                        case 'textbox':
+                            elementPlaceholder.innerHTML = '<i class="bi bi-text-paragraph me-2"></i>Text Box - Click to edit';
+                            elementPlaceholder.style.minHeight = '50px';
+                            elementPlaceholder.style.textAlign = 'left';
+                            elementPlaceholder.contentEditable = 'true';
+                            break;
+                        case 'line':
+                            elementPlaceholder.innerHTML = '<hr style="border-top: 2px solid #f06292; margin: 10px 0;">';
+                            break;
+                        case 'chart':
+                            elementPlaceholder.innerHTML = '<i class="bi bi-bar-chart me-2"></i>Chart Placeholder';
+                            // In a real implementation, you would use a charting library here
+                            break;
+                        case 'link':
+                            const url = prompt('Enter URL:');
+                            if (url) {
+                                formatText('createLink', url);
+                                return;
+                            }
+                            break;
+                        case 'symbol':
+                            const symbol = prompt('Enter special character:');
+                            if (symbol) {
+                                range.insertNode(document.createTextNode(symbol));
+                                return;
+                            }
+                            break;
+                    }
+                    
+                    range.insertNode(elementPlaceholder);
+                    // Add a space after the element for better editing
+                    range.insertNode(document.createTextNode('\u00A0'));
+                    range.collapse(false);
+                    sel.removeAllRanges();
+                    sel.addRange(range);
+                }
+                editor.focus();
+            }
+            
+            // Save functionality
+            $('#saveBtn').click(function() {
+                documentNameModal.show();
+            });
+            
+            $('#proceedToConfirmBtn').click(function() {
+                const fileName = $('#filename').val().trim();
+                
+                if (fileName === '') {
+                    $('#extensionWarning').text('Please enter a file name.').show();
+                    return;
+                }
+                
+                // Hide warning if shown
+                $('#extensionWarning').hide();
+                
+                // Get selected extension
+                const extension = $('#extensionSelect').val();
+                const fullFileName = fileName + extension;
+                
                 // Show confirmation modal
-                documentNameModal.style.display = 'none';
-                filenamePreview.textContent = fileName;
-                confirmationModal.style.display = 'block';
-            } else {
-                extensionWarning.style.display = 'block';
-            }
-        });
-
-        // Final save functionality
-        finalSaveBtn.addEventListener('click', function() {
-            const content = document.getElementById('editor').value;
-            const fileName = filenameInput.value.trim();
+                documentNameModal.hide();
+                $('#filenamePreview').text(fullFileName);
+                confirmationModal.show();
+            });
             
-            // Create a blob and download the file [citation:8]
-            const blob = new Blob([content], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = fileName;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
+            $('#finalSaveBtn').click(function() {
+                const fileName = $('#filename').val().trim();
+                const extension = $('#extensionSelect').val();
+                const fullFileName = fileName + extension;
+                const content = editor.innerHTML;
+                
+                // Create and download the file
+                const blob = new Blob([content], { type: 'text/html' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = fullFileName;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                // Close modal and reset
+                confirmationModal.hide();
+                $('#filename').val('');
+                
+                // Show success message
+                alert(`Document "${fullFileName}" saved successfully!`);
+            });
             
-            // Close modal and reset
-            confirmationModal.style.display = 'none';
-            filenameInput.value = '';
-            alert('Document saved successfully!');
-        });
-
-        // Close modals when clicking outside
-        window.addEventListener('click', function(event) {
-            if (event.target === documentNameModal) {
-                closeNameModalFunc();
-            }
-            if (event.target === confirmationModal) {
-                closeConfirmModalFunc();
-            }
-        });
-
-        // Auto-append selected extension if no extension is present
-        extensionSelect.addEventListener('change', function() {
-            const currentValue = filenameInput.value.trim();
-            const hasExtension = /\.\w+$/.test(currentValue);
-            
-            if (!hasExtension && currentValue !== '') {
-                filenameInput.value = currentValue + this.value;
-            }
+            // Reset filename input when modal is closed
+            $('#documentNameModal').on('hidden.bs.modal', function() {
+                $('#filename').val('');
+                $('#extensionWarning').hide();
+            });
         });
     </script>
 </body>
