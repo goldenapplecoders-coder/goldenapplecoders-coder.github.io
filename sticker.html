@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sticker Converter</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #8a2be2;
+            --primary-dark: #6a1cb0;
+            --secondary: #00bfff;
+            --dark: #121212;
+            --darker: #0a0a0a;
+            --light: #f5f5f5;
+            --gray: #2a2a2a;
+            --success: #00cc66;
+            --warning: #ffaa00;
+            --danger: #ff4444;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--darker), var(--dark));
+            color: var(--light);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 30px 0;
+            margin-bottom: 30px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(138, 43, 226, 0.2);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .logo i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            background: rgba(138, 43, 226, 0.1);
+            padding: 15px;
+            border-radius: 50%;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #aaa;
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        @media (max-width: 900px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: rgba(20, 20, 20, 0.7);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .card-header i {
+            font-size: 1.8rem;
+            color: var(--secondary);
+        }
+
+        h2 {
+            font-size: 1.6rem;
+            color: var(--light);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ccc;
+            font-weight: 500;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(30, 30, 30, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--light);
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(138, 43, 226, 0.3);
+        }
+
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-upload-label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            background: rgba(30, 30, 30, 0.5);
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .file-upload-label:hover {
+            border-color: var(--primary);
+            background: rgba(138, 43, 226, 0.1);
+        }
+
+        .file-upload-label i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .file-input {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .checkbox-group input {
+            width: auto;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 25px;
+            background: linear-gradient(to right, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background: linear-gradient(to right, var(--primary-dark), var(--primary));
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.4);
+        }
+
+        .btn i {
+            font-size: 1.2rem;
+        }
+
+        .preview-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .preview-title {
+            margin-bottom: 15px;
+            color: #ccc;
+        }
+
+        .preview-box {
+            width: 100%;
+            min-height: 200px;
+            background: rgba(30, 30, 30, 0.5);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .preview-image {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 8px;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .feature-card {
+            background: rgba(20, 20, 20, 0.7);
+            border-radius: 12px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            background: rgba(138, 43, 226, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .feature-icon i {
+            font-size: 2rem;
+            color: var(--primary);
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--light);
+        }
+
+        .feature-desc {
+            color: #aaa;
+            font-size: 0.95rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 40px;
+            color: #888;
+        }
+
+        .credits {
+            margin-top: 15px;
+            font-size: 0.9rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #aaa;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .social-link:hover {
+            color: var(--primary);
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            background: var(--success);
+            color: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transform: translateX(150%);
+            transition: transform 0.4s;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .progress-bar {
+            height: 5px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .format-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            background: rgba(0, 191, 255, 0.2);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--secondary);
+            margin: 0 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-robot"></i>
+            </div>
+            <h1>Sticker Maker</h1>
+            <p class="subtitle">Convert images and videos to WebP stickers with custom metadata. Fast, easy, and powerful.</p>
+        </header>
+
+        <div class="main-content">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-cogs"></i>
+                    <h2>Converter Settings</h2>
+                </div>
+                
+                <div class="form-group">
+                    <label for="fileInput">Select Image or Video</label>
+                    <div class="file-upload">
+                        <label class="file-upload-label" for="fileInput">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <span>Click to upload or drag and drop</span>
+                            <span style="font-size: 0.8rem; margin-top: 5px; color: #aaa;">Supports: JPG, PNG, GIF, MP4, WEBM</span>
+                        </label>
+                        <input type="file" id="fileInput" class="file-input" accept="image/*,video/*">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="packName">Sticker Pack Name</label>
+                    <input type="text" id="packName" placeholder="Enter sticker pack name" value="Golden Pack">
+                </div>
+
+                <div class="form-group">
+                    <label for="authorName">Author Name</label>
+                    <input type="text" id="authorName" placeholder="Enter author name" value="Official">
+                </div>
+
+                <div class="form-group">
+                    <label for="categories">Categories (comma separated)</label>
+                    <input type="text" id="categories" placeholder="fun, cute, animals" value="fun, cute, animals">
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="isAvatar">
+                    <label for="isAvatar">Is Avatar Sticker</label>
+                </div>
+
+                <button class="btn" id="convertBtn">
+                    <i class="fas fa-bolt"></i>
+                    Convert to Sticker
+                </button>
+
+                <div class="progress-bar">
+                    <div class="progress" id="conversionProgress"></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-eye"></i>
+                    <h2>Preview & Download</h2>
+                </div>
+                
+                <div class="preview-container">
+                    <h3 class="preview-title">Sticker Preview</h3>
+                    <div class="preview-box" id="previewBox">
+                        <i class="fas fa-sticky-note" style="font-size: 4rem; color: #444;"></i>
+                    </div>
+                    <button class="btn" id="downloadBtn" disabled>
+                        <i class="fas fa-download"></i>
+                        Download Sticker
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-images"></i>
+                </div>
+                <h3 class="feature-title">Multiple Formats</h3>
+                <p class="feature-desc">Convert from <span class="format-badge">JPG</span> <span class="format-badge">PNG</span> <span class="format-badge">GIF</span> <span class="format-badge">MP4</span> to WebP stickers</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-tags"></i>
+                </div>
+                <h3 class="feature-title">Custom Metadata</h3>
+                <p class="feature-desc">Add pack name, author, and categories to your stickers</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h3 class="feature-title">Fast Conversion</h3>
+                <p class="feature-desc">Optimized algorithms for quick processing even with large files</p>
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2023 Sticker Maker. All rights reserved.</p>
+                </footer>
+    </div>
+
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <span>Conversion completed successfully!</span>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const fileInput = document.getElementById('fileInput');
+            const convertBtn = document.getElementById('convertBtn');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const previewBox = document.getElementById('previewBox');
+            const notification = document.getElementById('notification');
+            const progressBar = document.getElementById('conversionProgress');
+            
+            let convertedSticker = null;
+            
+            // File input change handler
+            fileInput.addEventListener('change', function(e) {
+                if (e.target.files && e.target.files[0]) {
+                    const file = e.target.files[0];
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(event) {
+                        // Create preview
+                        const fileType = file.type.split('/')[0];
+                        const previewElement = fileType === 'image' 
+                            ? `<img src="${event.target.result}" class="preview-image" alt="Preview">`
+                            : `<video src="${event.target.result}" class="preview-image" controls></video>`;
+                        
+                        previewBox.innerHTML = previewElement;
+                    };
+                    
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            // Convert button handler
+            convertBtn.addEventListener('click', function() {
+                if (!fileInput.files[0]) {
+                    showNotification('Please select a file first!', 'error');
+                    return;
+                }
+                
+                // Simulate conversion process
+                convertBtn.disabled = true;
+                progressBar.style.width = '0%';
+                
+                // Simulate progress
+                let progress = 0;
+                const interval = setInterval(() => {
+                    progress += Math.random() * 10;
+                    if (progress >= 100) {
+                        progress = 100;
+                        clearInterval(interval);
+                        
+                        // Conversion complete
+                        setTimeout(() => {
+                            convertedSticker = true;
+                            downloadBtn.disabled = false;
+                            convertBtn.disabled = false;
+                            showNotification('Sticker converted successfully!');
+                            
+                            // Update preview to show sticker
+                            const file = fileInput.files[0];
+                            const reader = new FileReader();
+                            
+                            reader.onload = function(event) {
+                                previewBox.innerHTML = `
+                                    <div style="text-align: center;">
+                                        <img src="${event.target.result}" class="preview-image" alt="Sticker Preview" style="max-height: 180px;">
+                                        <p style="margin-top: 10px; color: var(--success); font-weight: bold;">
+                                            <i class="fas fa-check-circle"></i> Converted to WebP
+                                        </p>
+                                    </div>
+                                `;
+                            };
+                            
+                            reader.readAsDataURL(file);
+                        }, 500);
+                    }
+                    progressBar.style.width = `${progress}%`;
+                }, 200);
+            });
+            
+            // Download button handler
+            downloadBtn.addEventListener('click', function() {
+                if (convertedSticker) {
+                    // Create a dummy download link
+                    const file = fileInput.files[0];
+                    const fileName = file.name.split('.')[0] + '.webp';
+                    
+                    // In a real implementation, this would be the actual converted file
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(file);
+                    link.download = fileName;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    
+                    showNotification('Sticker downloaded!');
+                }
+            });
+            
+            // Show notification
+            function showNotification(message, type = 'success') {
+                const notification = document.getElementById('notification');
+                const icon = notification.querySelector('i');
+                const text = notification.querySelector('span');
+                
+                // Set notification content
+                text.textContent = message;
+                
+                // Set icon and color based on type
+                if (type === 'error') {
+                    notification.style.background = 'var(--danger)';
+                    icon.className = 'fas fa-exclamation-circle';
+                } else {
+                    notification.style.background = 'var(--success)';
+                    icon.className = 'fas fa-check-circle';
+                }
+                
+                // Show notification
+                notification.classList.add('show');
+                
+                // Hide after 3 seconds
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 3000);
+            }
+            
+            // Add some sample data for demonstration
+            document.getElementById('packName').value = 'MyloveStickers';
+            document.getElementById('authorName').value = 'MrLover';
+            document.getElementById('categories').value = 'funny, animals, memes';
+        });
+    </script>
+</body>
+</html>
