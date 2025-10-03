@@ -3,33 +3,50 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Rusty - Golden Apple Copilot</title>
+  <title>Nexus - Professional AI Assistant</title>
   <style>
     :root {
-      --primary: #10a37f;
-      --primary-dark: #0d8c6d;
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --primary-light: #dbeafe;
+      --secondary: #475569;
+      --secondary-light: #f1f5f9;
+      --accent: #7c3aed;
+      --success: #059669;
+      --warning: #d97706;
+      --error: #dc2626;
       --bg-primary: #ffffff;
-      --bg-secondary: #f7f7f8;
-      --bg-tertiary: #ececf1;
-      --text-primary: #343541;
-      --text-secondary: #6e6e80;
-      --border-light: #e5e5e5;
-      --user-msg-bg: #f0f7f4;
-      --bot-msg-bg: #ffffff;
-      --shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      --bg-secondary: #f8fafc;
+      --bg-tertiary: #f1f5f9;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-tertiary: #64748b;
+      --border-light: #e2e8f0;
+      --border-medium: #cbd5e1;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --radius-sm: 4px;
+      --radius: 6px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
     }
 
     @media (prefers-color-scheme: dark) {
       :root {
-        --bg-primary: #343541;
-        --bg-secondary: #444654;
-        --bg-tertiary: #40414f;
-        --text-primary: #ececf1;
-        --text-secondary: #acacbe;
-        --border-light: #565869;
-        --user-msg-bg: #1a4731;
-        --bot-msg-bg: #444654;
-        --shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        --primary: #3b82f6;
+        --primary-dark: #2563eb;
+        --primary-light: #1e3a8a;
+        --secondary: #94a3b8;
+        --secondary-light: #1e293b;
+        --bg-primary: #0f172a;
+        --bg-secondary: #1e293b;
+        --bg-tertiary: #334155;
+        --text-primary: #f1f5f9;
+        --text-secondary: #cbd5e1;
+        --text-tertiary: #94a3b8;
+        --border-light: #334155;
+        --border-medium: #475569;
       }
     }
 
@@ -40,49 +57,51 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
       background: var(--bg-primary);
       color: var(--text-primary);
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      line-height: 1.5;
+      line-height: 1.6;
     }
 
     .chat-wrapper {
       width: 100%;
-      max-width: 800px;
+      max-width: 900px;
       height: 95vh;
       background: var(--bg-primary);
       display: flex;
       flex-direction: column;
-      border-radius: 12px;
+      border-radius: var(--radius-lg);
       overflow: hidden;
-      box-shadow: var(--shadow);
+      box-shadow: var(--shadow-md);
       border: 1px solid var(--border-light);
     }
 
     .chat-header {
       background: var(--bg-secondary);
       color: var(--text-primary);
-      padding: 16px 20px;
+      padding: 18px 24px;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
       border-bottom: 1px solid var(--border-light);
     }
 
     .logo {
-      width: 32px;
-      height: 32px;
-      background: var(--primary);
-      border-radius: 6px;
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-radius: var(--radius-md);
       display: flex;
       align-items: center;
       justify-content: center;
       color: white;
-      font-weight: bold;
+      font-weight: 700;
+      font-size: 1.2em;
+      box-shadow: var(--shadow-sm);
     }
 
     .header-text {
@@ -90,13 +109,29 @@
     }
 
     .header-text h1 {
-      font-size: 1.1em;
-      font-weight: 600;
+      font-size: 1.3em;
+      font-weight: 700;
+      margin-bottom: 2px;
     }
 
     .header-text p {
-      font-size: 0.8em;
+      font-size: 0.85em;
       color: var(--text-secondary);
+    }
+
+    .status-indicator {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8em;
+      color: var(--text-tertiary);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--success);
     }
 
     .chat-body {
@@ -109,7 +144,7 @@
     }
 
     .message-group {
-      padding: 24px 20px;
+      padding: 24px;
       border-bottom: 1px solid var(--border-light);
     }
 
@@ -124,15 +159,16 @@
     }
 
     .avatar {
-      width: 30px;
-      height: 30px;
-      border-radius: 4px;
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-md);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.8em;
+      font-size: 0.9em;
       font-weight: 600;
       flex-shrink: 0;
+      box-shadow: var(--shadow-sm);
     }
 
     .user-avatar {
@@ -142,7 +178,7 @@
 
     .bot-avatar {
       background: var(--bg-tertiary);
-      color: var(--text-secondary);
+      color: var(--text-primary);
     }
 
     .message-content {
@@ -151,7 +187,7 @@
     }
 
     .message {
-      line-height: 1.6;
+      line-height: 1.7;
       white-space: pre-wrap;
       word-wrap: break-word;
     }
@@ -162,6 +198,91 @@
 
     .bot-message {
       color: var(--text-primary);
+    }
+
+    /* Markdown Styling */
+    .bot-message h1, .bot-message h2, .bot-message h3 {
+      margin-top: 1.2em;
+      margin-bottom: 0.6em;
+      font-weight: 600;
+    }
+
+    .bot-message h1 {
+      font-size: 1.5em;
+      border-bottom: 1px solid var(--border-light);
+      padding-bottom: 0.3em;
+    }
+
+    .bot-message h2 {
+      font-size: 1.3em;
+    }
+
+    .bot-message h3 {
+      font-size: 1.1em;
+    }
+
+    .bot-message p {
+      margin-bottom: 1em;
+    }
+
+    .bot-message ul, .bot-message ol {
+      margin-bottom: 1em;
+      padding-left: 1.5em;
+    }
+
+    .bot-message li {
+      margin-bottom: 0.3em;
+    }
+
+    .bot-message blockquote {
+      border-left: 4px solid var(--primary);
+      padding-left: 1em;
+      margin: 1em 0;
+      color: var(--text-secondary);
+      font-style: italic;
+    }
+
+    .bot-message code {
+      background: var(--bg-tertiary);
+      padding: 0.2em 0.4em;
+      border-radius: var(--radius-sm);
+      font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+      font-size: 0.9em;
+      color: var(--text-primary);
+    }
+
+    .bot-message pre {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius);
+      padding: 1em;
+      margin: 1em 0;
+      overflow-x: auto;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .bot-message pre code {
+      background: transparent;
+      padding: 0;
+      border-radius: 0;
+      color: var(--text-primary);
+    }
+
+    .bot-message table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1em 0;
+    }
+
+    .bot-message th, .bot-message td {
+      border: 1px solid var(--border-light);
+      padding: 0.5em 0.75em;
+      text-align: left;
+    }
+
+    .bot-message th {
+      background: var(--bg-tertiary);
+      font-weight: 600;
     }
 
     .message-actions {
@@ -177,25 +298,27 @@
     }
 
     .action-btn {
-      background: none;
-      border: none;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-light);
       color: var(--text-secondary);
       cursor: pointer;
-      padding: 4px 8px;
-      border-radius: 4px;
+      padding: 6px 12px;
+      border-radius: var(--radius);
       font-size: 0.85em;
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 6px;
+      transition: all 0.2s;
     }
 
     .action-btn:hover {
-      background: var(--bg-tertiary);
+      background: var(--bg-secondary);
       color: var(--text-primary);
+      border-color: var(--border-medium);
     }
 
     .chat-input-area {
-      padding: 16px 20px;
+      padding: 20px 24px;
       border-top: 1px solid var(--border-light);
       background: var(--bg-primary);
     }
@@ -204,43 +327,46 @@
       position: relative;
       display: flex;
       border: 1px solid var(--border-light);
-      border-radius: 12px;
+      border-radius: var(--radius-lg);
       background: var(--bg-primary);
       transition: all 0.2s;
+      box-shadow: var(--shadow-sm);
     }
 
     .input-container:focus-within {
       border-color: var(--primary);
-      box-shadow: 0 0 0 2px rgba(16, 163, 127, 0.2);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
     }
 
     .chat-input {
       flex: 1;
-      padding: 12px 16px;
+      padding: 14px 18px;
       font-size: 1em;
       border: none;
       background: transparent;
       color: var(--text-primary);
       resize: none;
       outline: none;
-      max-height: 120px;
+      max-height: 150px;
       min-height: 24px;
+      font-family: inherit;
     }
 
     .send-button {
       background: var(--primary);
       color: white;
       border: none;
-      border-radius: 6px;
-      width: 36px;
-      height: 36px;
-      margin: 6px;
+      border-radius: var(--radius-md);
+      width: 40px;
+      height: 40px;
+      margin: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       transition: background 0.2s;
       flex-shrink: 0;
+      box-shadow: var(--shadow-sm);
     }
 
     .send-button:hover {
@@ -249,7 +375,7 @@
 
     .send-button:disabled {
       background: var(--bg-tertiary);
-      color: var(--text-secondary);
+      color: var(--text-tertiary);
       cursor: not-allowed;
     }
 
@@ -257,7 +383,7 @@
       display: flex;
       align-items: center;
       gap: 16px;
-      padding: 24px 20px;
+      padding: 24px;
       border-bottom: 1px solid var(--border-light);
     }
 
@@ -283,25 +409,33 @@
     }
 
     .welcome-message {
-      padding: 40px 20px;
+      padding: 50px 24px;
       text-align: center;
       color: var(--text-secondary);
     }
 
     .welcome-icon {
-      font-size: 2em;
-      margin-bottom: 16px;
+      font-size: 3em;
+      margin-bottom: 20px;
+      opacity: 0.8;
     }
 
     .welcome-message h2 {
-      font-size: 1.5em;
-      margin-bottom: 8px;
+      font-size: 1.8em;
+      margin-bottom: 12px;
       color: var(--text-primary);
+      font-weight: 700;
+    }
+
+    .welcome-message p {
+      max-width: 500px;
+      margin: 0 auto;
+      font-size: 1.05em;
     }
 
     /* Scrollbar styling */
     .chat-body::-webkit-scrollbar {
-      width: 6px;
+      width: 8px;
     }
 
     .chat-body::-webkit-scrollbar-track {
@@ -309,27 +443,42 @@
     }
 
     .chat-body::-webkit-scrollbar-thumb {
-      background: var(--border-light);
-      border-radius: 3px;
+      background: var(--border-medium);
+      border-radius: 4px;
     }
 
     .chat-body::-webkit-scrollbar-thumb:hover {
-      background: var(--text-secondary);
+      background: var(--text-tertiary);
     }
 
     /* Responsive adjustments */
-    @media (max-width: 640px) {
+    @media (max-width: 768px) {
       .chat-wrapper {
         height: 100vh;
         border-radius: 0;
       }
-      
+
       .message-group {
-        padding: 16px 12px;
+        padding: 18px 16px;
+      }
+
+      .chat-input-area {
+        padding: 16px;
+      }
+
+      .chat-header {
+        padding: 16px 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .message-container {
+        gap: 12px;
       }
       
-      .chat-input-area {
-        padding: 12px;
+      .avatar {
+        width: 32px;
+        height: 32px;
       }
     }
   </style>
@@ -337,31 +486,35 @@
 <body>
   <div class="chat-wrapper">
     <div class="chat-header">
-      <div class="logo">R</div>
+      <div class="logo">N</div>
       <div class="header-text">
-        <h1>Rusty</h1>
-        <p>Golden Apple Copilot</p>
+        <h1>Nexus</h1>
+        <p>Professional AI Assistant</p>
+      </div>
+      <div class="status-indicator">
+        <div class="status-dot"></div>
+        <span>Online</span>
       </div>
     </div>
-    
+
     <div class="chat-body" id="chatBody">
       <div class="welcome-message">
-        <div class="welcome-icon">🤖</div>
-        <h2>Hey! I'm Rusty</h2>
-        <p>Your Golden Apple Copilot. How can I help you today?</p>
+        <div class="welcome-icon">✨</div>
+        <h2>Welcome to Nexus</h2>
+        <p>Your professional AI assistant. I'm here to help with technical questions, code examples, and anything related to Golden Apple Technologies.</p>
       </div>
     </div>
-    
+
     <div class="chat-input-area">
       <div class="input-container">
         <textarea 
           id="userInput" 
           class="chat-input" 
           rows="1" 
-          placeholder="Message Rusty..."
+          placeholder="Ask me anything..."
         ></textarea>
         <button id="sendBtn" class="send-button" disabled>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
@@ -412,10 +565,10 @@
       avatar.classList.add('avatar');
       if (sender === 'user') {
         avatar.classList.add('user-avatar');
-        avatar.textContent = 'U';
+        avatar.textContent = 'You';
       } else {
         avatar.classList.add('bot-avatar');
-        avatar.textContent = 'R';
+        avatar.textContent = 'AI';
       }
 
       const messageContent = document.createElement('div');
@@ -425,10 +578,11 @@
       message.classList.add('message');
       if (sender === 'user') {
         message.classList.add('user-message');
+        message.textContent = text;
       } else {
         message.classList.add('bot-message');
+        message.innerHTML = formatBotMessage(text);
       }
-      message.textContent = text;
 
       const messageActions = document.createElement('div');
       messageActions.classList.add('message-actions');
@@ -443,7 +597,7 @@
           </svg>
           Copy
         `;
-        
+
         copyBtn.onclick = () => {
           navigator.clipboard.writeText(text).then(() => {
             copyBtn.innerHTML = `
@@ -463,7 +617,7 @@
             }, 2000);
           });
         };
-        
+
         messageActions.appendChild(copyBtn);
       }
 
@@ -473,29 +627,59 @@
       messageContainer.appendChild(messageContent);
       messageGroup.appendChild(messageContainer);
       chatBody.appendChild(messageGroup);
-      
+
       // Scroll to bottom
       chatBody.scrollTop = chatBody.scrollHeight;
+    }
+
+    function formatBotMessage(text) {
+      // Simple markdown-like formatting
+      let formatted = text;
+      
+      // Headers
+      formatted = formatted.replace(/^### (.*$)/gim, '<h3>$1</h3>');
+      formatted = formatted.replace(/^## (.*$)/gim, '<h2>$1</h2>');
+      formatted = formatted.replace(/^# (.*$)/gim, '<h1>$1</h1>');
+      
+      // Bold and italic
+      formatted = formatted.replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>');
+      formatted = formatted.replace(/\*(.*?)\*/gim, '<em>$1</em>');
+      
+      // Code blocks
+      formatted = formatted.replace(/```([\s\S]*?)```/gim, '<pre><code>$1</code></pre>');
+      formatted = formatted.replace(/`(.*?)`/gim, '<code>$1</code>');
+      
+      // Blockquotes
+      formatted = formatted.replace(/^> (.*$)/gim, '<blockquote>$1</blockquote>');
+      
+      // Lists
+      formatted = formatted.replace(/^\s*-\s(.*$)/gim, '<li>$1</li>');
+      formatted = formatted.replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>');
+      
+      // Line breaks
+      formatted = formatted.replace(/\n/g, '<br>');
+      
+      return formatted;
     }
 
     function showTypingIndicator() {
       const typingIndicator = document.createElement('div');
       typingIndicator.classList.add('typing-indicator');
       typingIndicator.id = 'typingIndicator';
-      
+
       const avatar = document.createElement('div');
       avatar.classList.add('avatar', 'bot-avatar');
-      avatar.textContent = 'R';
-      
+      avatar.textContent = 'AI';
+
       const typingDots = document.createElement('div');
       typingDots.classList.add('typing-dots');
-      
+
       for (let i = 0; i < 3; i++) {
         const dot = document.createElement('div');
         dot.classList.add('typing-dot');
         typingDots.appendChild(dot);
       }
-      
+
       typingIndicator.appendChild(avatar);
       typingIndicator.appendChild(typingDots);
       chatBody.appendChild(typingIndicator);
@@ -519,7 +703,7 @@
       showTypingIndicator();
 
       const systemPrompt = `
-You are Rusty, a Golden Apple Copilot. You only discuss about Golden Apple Technologies and coding. 
+You are Nexus, a Professional AI Assistant focused on technical topics and Golden Apple Technologies. You only discuss about Golden Apple Technologies and coding. 
 Never discuss personal matters, entertainment, politics, or unrelated trivia. 
 If asked something offensive, reply with: "I'm unable to find you the information, please contact Golden Apple Technologies at +256791728084 or goldenapplecoders@gmail.com"
  This is all you have to say about Golden Apple Technologies:
@@ -548,7 +732,7 @@ Golden Apple Technologies 🎉
 - Dynamic Teamwork: Collaboration at its finest among skilled developers!
 - Leadership Excellence: Icii White and Co-Directors lead with vision and passion! 💯.
 
-If don't use asterisks for bolding any text, Instead, use this alphabet for bold texts "🅰 🅱 🅲 🅳 🅴 🅵 🅶 🅷 🅸 🅹 🅺 🅻 🅼 🅽 🅾 🅿 🆀 🆁 🆂 🆃 🆄 🆅 🆆 🆇 🆈 🆉" for uppercase bold, and "ᴀ ʙ ᴄ ᴅ ᴇ ғ ɢ ʜ ɪ ᴊ ᴋ ʟ ᴍ ɴ ᴏ ᴘ ϙ ʀ s ᴛ ᴜ ᴠ ᴡ x ʏ ᴢ " for lowercase bolds.
+When providing code examples, use proper markdown formatting with code blocks and syntax highlighting where appropriate.
 
 If anyone asks you for who programmed you, respond kindly "AM NOT ALLOWED TO SHARE DEEP INFORMATION ABOUT ME, CONTACT ANY OF THE GOLDEN APPLE TECHNOLOGIES ADMINS FOR MORE ASSISTANCE" and reply with another independent kind message`;
 
