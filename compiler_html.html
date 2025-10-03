@@ -3,258 +3,1176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <title>Golden Apple Compilers | Html</title>
+    <title>Professional HTML Compiler</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* CSS for editor */
+        :root {
+            --dark-bg: #1e1e1e;
+            --dark-text: #d4d4d4;
+            --dark-line: #333;
+            --light-bg: #ffffff;
+            --light-text: #000000;
+            --light-line: #e0e0e0;
+            --accent: #007acc;
+        }
+        
         body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
             margin: 0;
             padding: 0;
-            overflow: hidden;
-            height: 100vh;
-            width: 100vw;
+            background-color: var(--dark-bg);
+            color: var(--dark-text);
+            transition: background-color 0.3s, color 0.3s;
         }
-
-        #inputSection {
-            height: 100vh;
-            width: 100vw;
+        
+        body.light-theme {
+            background-color: var(--light-bg);
+            color: var(--light-text);
         }
-
-        #highlight {
-            position: absolute;
-            width: 100%;
-            height: calc(100vh - 100px);
-            padding: 10px;
-            font-size: 16px;
-            font-family: cursive;
-            white-space: pre-wrap;
-            overflow-wrap: break-word;
-            pointer-events: none;
-        }
-
-        #htmlCode {
-            position: relative;
-            width: 100%;
-            height: calc(1000vh - 100px);
-            padding: 10px;
-            font-size: 16px;
-            font-family: monospace;
-            background-color: black;    color: cyan;
-            caret-color: white;
-            font-weight: bolder;
-        }
-
-        #outputSection {
-            display: none;
-        }
-
-        iframe {
-            width: 100vw;
-            height: calc(1000vh - 50px);
-            border: none;
-        }
-
-#i, #un, #backButton{
-    width: 65px;
-    height: 30px;
-    font-size: 16px;
-    cursor: pointer;
-    background: #146c76a0;
-    position: fixed;
-    top: 10px;
-        border-radius: 10px;
-    z-index: 1000;
-}
-#i, #backButton{right: 10px;
-}
-        .fas{font-size: 30px; color: #fff100cb; margin-left: 1px;
-}
-        #un{right: 90px;
-}
-        #myModal {
-            display: none;
+        
+        #editor-container {
             position: fixed;
-            z-index: 1;
-            padding-top: 50px;
+            top: 60px;
             left: 0;
+            width: 100%;
+            height: calc(100vh - 60px);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        #code-editor {
+            flex: 1;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            font-weight: bold;
+            line-height: 1.5;
+            border: none;
+            padding: 20px;
+            resize: none;
+            background-color: var(--dark-bg);
+            color: var(--dark-text);
+            transition: background-color 0.3s, color 0.3s;
+            outline: none;
+            white-space: pre;
+            position: fixed;
             top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
+            z-index: 1050;
+            border: none;
             overflow: auto;
-            background-color: #ffffff1b;
+            tab-size: 4;
         }
-        .modal-content {
-            background-color: #ff2bf1;
-                    margin: auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 96%;
+        
+        .light-theme #code-editor {
+            background-color: var(--light-bg);
+            color: var(--light-text);
         }
-        .buy, .close{background: #ffffff5a; color: #5cff40; font-size: 20px; height: 5%; font-weight: bolder; width: 40%; border-radius: 3px;  position: fixed; top: 460px;}
-        .buy{right: 200px;}
-        .close{right: 30px;}
-        #pkg{background: #eaeaff28; border: 1px solid #eaeaff57; text-align: center; font-weight: bolder; border-radius: 10px;
-          box-shadow: 0px 0px 10px black; margin-top: 1px;}
-        #crn{position: fixed;
-  right: 150px;
-  top: 115px;
-  font-size: 100px;
-}
-li{font-weight: bolder;}
-        </style>
+        
+        #output-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1050;
+            background-color: white;
+            border: none;
+        }
+        
+        #output-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .navbar {
+            background-color: #343a40;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+        
+        .light-theme .navbar {
+            background-color: #f8f9fa;
+            color: #212529;
+        }
+        
+        .light-theme .navbar .nav-link {
+            color: #212529 !important;
+        }
+        
+        .light-theme .navbar .dropdown-menu {
+            background-color: #f8f9fa;
+            color: #212529;
+        }
+        
+        .light-theme .navbar .dropdown-item {
+            color: #212529;
+        }
+        
+        .btn-toolbar {
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+        
+        .status-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--accent);
+            color: white;
+            padding: 5px 15px;
+            font-size: 12px;
+            z-index: 1000;
+        }
+        
+        .light-theme .status-bar {
+            background-color: #0056b3;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1060;
+            min-width: 250px;
+        }
+        
+        #editor-wrapper {
+            position: relative;
+            flex: 1;
+            overflow: auto;
+        }
+        
+        .highlighted {
+            background-color: yellow;
+            color: black;
+        }
+        
+        .suggestion-box {
+            position: absolute;
+            background: #2d2d2d;
+            border: 1px solid #454545;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 100;
+            width: 300px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .light-theme .suggestion-box {
+            background: #ffffff;
+            border: 1px solid #ddd;
+        }
+        
+        .suggestion-item {
+            padding: 8px 12px;
+            cursor: pointer;
+            border-bottom: 1px solid #3d3d3d;
+        }
+        
+        .light-theme .suggestion-item {
+            border-bottom: 1px solid #eee;
+        }
+        
+        .suggestion-item:hover, .suggestion-item.selected {
+            background-color: #007acc;
+            color: white;
+        }
+    </style>
 </head>
 <body>
-<div id="inputSection">
-<button id="un" onclick="document.getElementById('myModal').style.display='block'"><i class="fas fa-globe"></i></button> 
-<button id="i" onclick="runCode()"><i class="fas fa-play"></i></button>
-    <div id="myModal" class="modal">
-        <div class="modal-content">
-<i id="crn" class="fas fa-crown"></i>
-<h1 style="font-size: 40px; text-align: center; color: cyan;">𝖈𝖔𝖒𝖕𝖑𝖎𝖊𝖗 𝖕𝖗𝖊𝖒𝖎𝖚𝖒</h1> <br><br><br> <br>
-<blockquote style="font-weight: bolder: text-align: center;">UPGRADE TO COMPLIER PRO TO ACCES VIEW FROM WEB</blockquote><ul>
-<h2 style="color: red;">ᵒᵗʰᵉʳ ᵖʳᵉᵐⁱᵘᵐ ᶠᵉᵃᵗᵘʳᵉˢ</h2>
-<li>Save file-Html file creator</li>
-<li>Assistant-AI code helper</li>
-<li>Console-Error Check</li>
-</ul><br>
-<div id="pkg">Annual Plan-$5
-<br><sup>5USD</sup></div><br>
-<div id="pkg">Lifetime Plan-$10<br><sup>10USD</sup></div><br>
-<button class="buy" onclick="alert('Service will be available soon')">BUY PLAN</button>
-            <button onclick="document.getElementById('myModal').style.display='none'" class="close">CONTINUE FREE</button>
-</div>
-    </div>
-    <div style="position: relative;">
-        <textarea id="htmlCode" oninput="highlightCode()" value=""></textarea>
-        <div id="highlight"></div>
-    </div>
-</div>
-<div id="outputSection" style="display: none;"><button id="backButton" onclick="goBack()"><i class="fas fa-edit"></i></button>
+    <!-- Fixed Top Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-code me-2"></i>HTML Compiler Pro
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="fileDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-file me-1"></i>File
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" id="new-file"><i class="fas fa-file me-2"></i>New</a></li>
+                            <li><a class="dropdown-item" href="#" id="open-file"><i class="fas fa-folder-open me-2"></i>Open</a></li>
+                            <li><a class="dropdown-item" href="#" id="save-file"><i class="fas fa-save me-2"></i>Save</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" id="export-html"><i class="fas fa-download me-2"></i>Export as HTML</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="editDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-edit me-1"></i>Edit
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" id="undo"><i class="fas fa-undo me-2"></i>Undo</a></li>
+                            <li><a class="dropdown-item" href="#" id="redo"><i class="fas fa-redo me-2"></i>Redo</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" id="find"><i class="fas fa-search me-2"></i>Find</a></li>
+                            <li><a class="dropdown-item" href="#" id="replace"><i class="fas fa-exchange-alt me-2"></i>Replace</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" id="select-all"><i class="fas fa-mouse-pointer me-2"></i>Select All</a></li>
+                            <li><a class="dropdown-item" href="#" id="duplicate-line"><i class="fas fa-copy me-2"></i>Duplicate Line</a></li>
+                            <li><a class="dropdown-item" href="#" id="delete-line"><i class="fas fa-trash me-2"></i>Delete Line</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="viewDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-eye me-1"></i>View
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" id="toggle-word-wrap"><i class="fas fa-text-width me-2"></i>Toggle Word Wrap</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" id="zoom-in"><i class="fas fa-search-plus me-2"></i>Zoom In</a></li>
+                            <li><a class="dropdown-item" href="#" id="zoom-out"><i class="fas fa-search-minus me-2"></i>Zoom Out</a></li>
+                            <li><a class="dropdown-item" href="#" id="reset-zoom"><i class="fas fa-search me-2"></i>Reset Zoom</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="toolsDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-tools me-1"></i>Tools
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" id="format-code"><i class="fas fa-indent me-2"></i>Format Code</a></li>
+                            <li><a class="dropdown-item" href="#" id="minify-code"><i class="fas fa-compress-alt me-2"></i>Minify Code</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" id="validate-html"><i class="fas fa-check-circle me-2"></i>Validate HTML</a></li>
+                            <li><a class="dropdown-item" href="#" id="lint-code"><i class="fas fa-broom me-2"></i>Lint Code</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" id="toggle-autocomplete"><i class="fas fa-code me-2"></i>Toggle Autocomplete</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <button class="btn btn-success me-2" id="run-code">
+                        <i class="fas fa-play me-1"></i> Run
+                    </button>
+                    <button class="btn btn-outline-light" id="toggle-theme">
+                        <i class="fas fa-moon me-1"></i> Theme
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-    <iframe id="output"></iframe>
-</div>
-<script>
- #include <iostream>
-#include <algorithm>
-
-int main() {
-    int n, key;
-    std::cout << "Enter array size: ";
-    std::cin >> n;
-    int arr[100];
-    std::cout << "Enter sorted elements: ";
-    for (int i = 0; i < n; i++) {
-        std::cin >> arr[i];
-    }
-    std::cout << "Enter key to search: ";
-    std::cin >> key;
-    int left = 0, right = n - 1, mid, pos = -1;
-    while (left <= right) {
-        mid = (left + right) / 2;
-        if (arr[mid] == key) {
-            pos = mid;
-            break;
-        } else if (arr[mid] < key)
-            left = mid + 1;
-        else
-            right = mid - 1;
-    }
-    if (pos != -1)
-        std::cout << "Found at position: " << pos << std::endl;
-    else
-        std::cout << "Not found" << std::endl;
-    return 0;
-}
-</script>
-    <script>
-     function runCode() {
-    const htmlCode = document.getElementById('htmlCode').value;
-    const output = document.getElementById('output');
-    const inputSection = document.getElementById('inputSection');
-    const outputSection = document.getElementById('outputSection');
-    inputSection.style.display = 'none';
-    outputSection.style.display = 'block';
-    output.srcdoc = htmlCode;
-}
-
-function goBack() {
-    const output = document.getElementById('output');
-    const inputSection = document.getElementById('inputSection');
-    const outputSection = document.getElementById('outputSection');
-    outputSection.style.display = 'none';
-    inputSection.style.display = 'block';
-}
-
-function highlightCode() {
-    const code = document.getElementById('htmlCode').value;
-    const highlight = document.getElementById('highlight');
-    let highlightedCode = '';
-    const regex = /<(\w+)[^>]*>|<\/(\w+)>/g;
-    let match;
-    let lastIndex = 0;
-    while ((match = regex.exec(code)) !== null) {
-        highlightedCode += code.substring(lastIndex, match.index);
-        highlightedCode += `<span style="color: orange"><${match[1] || match[2]}</span>`;
-        if (match[0].includes('/')) {
-            highlightedCode += '</span>';
-        } else {
-            highlightedCode += match[0].substring(match[1].length + 1).replace('>', '></span>');
+    <!-- Editor Container -->
+    <div id="editor-container">
+        <div id="editor-wrapper">
+            <textarea id="code-editor" spellcheck="false">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;My Page&lt;/title&gt;
+    &lt;style&gt;
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
         }
-        lastIndex = match.index + match[0].length;
-    }
-    highlightedCode += code.substring(lastIndex);
-    highlight.innerHTML = highlightedCode;
-}
+        h1 {
+            color: #333;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Welcome to My Page&lt;/h1&gt;
+    &lt;p&gt;This is a sample HTML page.&lt;/p&gt;
+    &lt;button onclick="alert('Hello!')"&gt;Click Me&lt;/button&gt;
+&lt;/body&gt;
+&lt;/html&gt;</textarea>
+        </div>
+    </div>
 
-document.addEventListener('DOMContentLoaded', function() {
-    const initialCode = `<!DOCTYPE HTML>
-<Html lang="en">
-<Head>
-<Meta charset="UTF-8">
-<Title> Hello World </Title>
-</Head>
-<Body>
-<H1>HELLO WORLD</H1>
-<!-- Delete whole text and paste yours or test your code from here -->
+    <!-- Status Bar -->
+    <div class="status-bar">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-4">
+                    <span id="cursor-position">Line 1, Column 1</span>
+                </div>
+                <div class="col-md-4 text-center">
+                    <span id="file-info">HTML | UTF-8</span>
+                </div>
+                <div class="col-md-4 text-end">
+                    <span id="editor-info">Plain Text</span>
+                </div>
+            </div>
+        </div>
+    </div>
 
-</Body>
-</Html>`;
-    document.getElementById('htmlCode').value = initialCode;
-    highlightCode();
-    document.getElementById('htmlCode').focus();
-    document.getElementById('htmlCode').setSelectionRange(initialCode.length - 15, initialCode.length - 15);
-});
+    <!-- Output Container -->
+    <div id="output-container">
+        <div class="d-flex justify-content-between align-items-center bg-dark text-white p-2">
+            <h5 class="m-0">Output Preview</h5>
+            <button class="btn btn-sm btn-outline-light" id="close-output">
+                <i class="fas fa-times me-1"></i> Close
+            </button>
+        </div>
+        <iframe id="output-frame"></iframe>
+    </div>
 
-const buttons = document.querySelectorAll('button');
+    <!-- Modals -->
+    <div class="modal fade" id="findModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Find</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="find-text" class="form-label">Find:</label>
+                        <input type="text" class="form-control" id="find-text">
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="match-case">
+                        <label class="form-check-label" for="match-case">Match case</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="whole-word">
+                        <label class="form-check-label" for="whole-word">Whole word</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="find-next">Find Next</button>
+                    <button type="button" class="btn btn-info" id="find-prev">Find Previous</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-buttons.forEach(button => {
-    let offsetX, offsetY;
+    <div class="modal fade" id="replaceModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Find and Replace</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="replace-find" class="form-label">Find:</label>
+                        <input type="text" class="form-control" id="replace-find">
+                    </div>
+                    <div class="mb-3">
+                        <label for="replace-with" class="form-label">Replace with:</label>
+                        <input type="text" class="form-control" id="replace-with">
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="replace-match-case">
+                        <label class="form-check-label" for="replace-match-case">Match case</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="replace-whole-word">
+                        <label class="form-check-label" for="replace-whole-word">Whole word</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="replace-next">Replace Next</button>
+                    <button type="button" class="btn btn-success" id="replace-all">Replace All</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    button.addEventListener('mousedown', (e) => {
-        const rect = button.getBoundingClientRect();
-        offsetX = e.clientX - rect.left;
-        offsetY = e.clientY - rect.top;
+    <div class="modal fade" id="settingsModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Editor Settings</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="font-size" class="form-label">Font Size: <span id="font-size-value">14</span>px</label>
+                        <input type="range" class="form-range" id="font-size" min="8" max="24" value="14">
+                    </div>
+                    <div class="mb-3">
+                        <label for="tab-size" class="form-label">Tab Size: <span id="tab-size-value">4</span> spaces</label>
+                        <input type="range" class="form-range" id="tab-size" min="2" max="8" value="4">
+                    </div>
+                    <div class="form-check form-switch mb-3">
+                        <input class="form-check-input" type="checkbox" id="auto-save">
+                        <label class="form-check-label" for="auto-save">Auto Save</label>
+                    </div>
+                    <div class="form-check form-switch mb-3">
+                        <input class="form-check-input" type="checkbox" id="auto-close-tags">
+                        <label class="form-check-label" for="auto-close-tags">Auto Close Tags</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="apply-settings">Apply</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        button.style.position = 'fixed';
-        button.style.left = `${e.clientX - offsetX}px`;
-        button.style.top = `${e.clientY - offsetY}px`;
-
-        document.addEventListener('mousemove', moveHandler);
-        document.addEventListener('mouseup', upHandler);
-    });
-
-    const moveHandler = (e) => {
-        button.style.left = `${e.clientX - offsetX}px`;
-                button.style.top = `${e.clientY - offsetY}px`;
-    };
-
-    const upHandler = () => {
-        document.removeEventListener('mousemove', moveHandler);
-        document.removeEventListener('mouseup', upHandler);
-    };
-});
-</script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elements
+            const codeEditor = document.getElementById('code-editor');
+            const outputContainer = document.getElementById('output-container');
+            const outputFrame = document.getElementById('output-frame');
+            const runButton = document.getElementById('run-code');
+            const closeOutput = document.getElementById('close-output');
+            const cursorPosition = document.getElementById('cursor-position');
+            const body = document.body;
+            
+            // State variables
+            let isLightTheme = false;
+            let undoStack = [];
+            let redoStack = [];
+            let currentState = '';
+            let fontSize = 14;
+            let wordWrap = false;
+            let lastFindIndex = 0;
+            let autoSaveEnabled = true;
+            let autoCloseTags = true;
+            let tabSize = 4;
+            let autocompleteEnabled = true;
+            
+            // Feature 1: Update cursor position
+            function updateCursorPosition() {
+                const cursorPos = codeEditor.selectionStart;
+                const textBeforeCursor = codeEditor.value.substring(0, cursorPos);
+                const lines = textBeforeCursor.split('\n');
+                const line = lines.length;
+                const column = lines[lines.length - 1].length + 1;
+                cursorPosition.textContent = `Line ${line}, Column ${column}`;
+            }
+            
+            // Feature 2: Run code and show output
+            runButton.addEventListener('click', function() {
+                const code = codeEditor.value;
+                const blob = new Blob([code], { type: 'text/html' });
+                const url = URL.createObjectURL(blob);
+                outputFrame.src = url;
+                outputContainer.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            });
+            
+            // Feature 3: Close output and return to editor
+            closeOutput.addEventListener('click', function() {
+                outputContainer.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            });
+            
+            // Feature 4: Auto-indentation
+            function handleIndentation(e) {
+                if (e.key === 'Tab') {
+                    e.preventDefault();
+                    const start = codeEditor.selectionStart;
+                    const end = codeEditor.selectionEnd;
+                    
+                    // Insert tab at cursor position
+                    const tabSpaces = ' '.repeat(tabSize);
+                    codeEditor.value = codeEditor.value.substring(0, start) + tabSpaces + codeEditor.value.substring(end);
+                    
+                    // Move cursor to after the inserted tab
+                    codeEditor.selectionStart = codeEditor.selectionEnd = start + tabSize;
+                }
+                
+                // Auto-close tags
+                if (autoCloseTags && e.key === '>') {
+                    const start = codeEditor.selectionStart;
+                    const textBeforeCursor = codeEditor.value.substring(0, start);
+                    
+                    // Check if we're inside an HTML tag
+                    const lastOpenBracket = textBeforeCursor.lastIndexOf('<');
+                    if (lastOpenBracket !== -1 && lastOpenBracket > textBeforeCursor.lastIndexOf('>')) {
+                        const tagContent = textBeforeCursor.substring(lastOpenBracket + 1);
+                        const tagMatch = tagContent.match(/^(\w+)/);
+                        
+                        if (tagMatch && !tagContent.includes('/')) {
+                            const tagName = tagMatch[1];
+                            const closingTag = `</${tagName}>`;
+                            
+                            // Insert closing tag
+                            setTimeout(() => {
+                                const end = codeEditor.selectionStart;
+                                codeEditor.value = codeEditor.value.substring(0, end) + closingTag + codeEditor.value.substring(end);
+                                codeEditor.selectionStart = codeEditor.selectionEnd = end;
+                            }, 10);
+                        }
+                    }
+                }
+            }
+            
+            // Feature 5: Keyboard shortcuts
+            function handleKeyboardShortcuts(e) {
+                // Ctrl+S to save
+                if (e.ctrlKey && e.key === 's') {
+                    e.preventDefault();
+                    saveToLocalStorage();
+                }
+                
+                // Ctrl+F to find
+                if (e.ctrlKey && e.key === 'f') {
+                    e.preventDefault();
+                    new bootstrap.Modal(document.getElementById('findModal')).show();
+                }
+                
+                // Ctrl+H to replace
+                if (e.ctrlKey && e.key === 'h') {
+                    e.preventDefault();
+                    new bootstrap.Modal(document.getElementById('replaceModal')).show();
+                }
+                
+                // Ctrl+/ to toggle comment
+                if (e.ctrlKey && e.key === '/') {
+                    e.preventDefault();
+                    toggleComment();
+                }
+                
+                // Ctrl+Z for undo
+                if (e.ctrlKey && e.key === 'z') {
+                    e.preventDefault();
+                    undo();
+                }
+                
+                // Ctrl+Y for redo
+                if (e.ctrlKey && e.key === 'y') {
+                    e.preventDefault();
+                    redo();
+                }
+                
+                // Ctrl+D to duplicate line
+                if (e.ctrlKey && e.key === 'd') {
+                    e.preventDefault();
+                    duplicateLine();
+                }
+                
+                // Ctrl+L to delete line
+                if (e.ctrlKey && e.key === 'l') {
+                    e.preventDefault();
+                    deleteLine();
+                }
+            }
+            
+            // Feature 6: Save to localStorage
+            function saveToLocalStorage() {
+                const code = codeEditor.value;
+                localStorage.setItem('htmlCompilerCode', code);
+                localStorage.setItem('compilerSettings', JSON.stringify({
+                    fontSize: fontSize,
+                    tabSize: tabSize,
+                    autoSave: autoSaveEnabled,
+                    autoCloseTags: autoCloseTags,
+                    theme: isLightTheme ? 'light' : 'dark'
+                }));
+                showNotification('Code saved successfully!', 'success');
+            }
+            
+            // Feature 7: Load from localStorage
+            function loadFromLocalStorage() {
+                const savedCode = localStorage.getItem('htmlCompilerCode');
+                if (savedCode) {
+                    codeEditor.value = savedCode;
+                    showNotification('Code loaded successfully!', 'info');
+                }
+                
+                const savedSettings = localStorage.getItem('compilerSettings');
+                if (savedSettings) {
+                    const settings = JSON.parse(savedSettings);
+                    fontSize = settings.fontSize || 14;
+                    tabSize = settings.tabSize || 4;
+                    autoSaveEnabled = settings.autoSave !== false;
+                    autoCloseTags = settings.autoCloseTags !== false;
+                    
+                    if (settings.theme === 'light') {
+                        toggleTheme();
+                    }
+                    
+                    updateEditorSettings();
+                }
+            }
+            
+            // Feature 8: Export as HTML file
+            document.getElementById('export-html').addEventListener('click', function() {
+                const code = codeEditor.value;
+                const blob = new Blob([code], { type: 'text/html' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'code.html';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
+            
+            // Feature 9: Toggle word wrap
+            document.getElementById('toggle-word-wrap').addEventListener('click', function() {
+                wordWrap = !wordWrap;
+                codeEditor.style.whiteSpace = wordWrap ? 'pre-wrap' : 'pre';
+                showNotification(`Word wrap ${wordWrap ? 'enabled' : 'disabled'}`, 'info');
+            });
+            
+            // Feature 10: Format code
+            document.getElementById('format-code').addEventListener('click', function() {
+                let code = codeEditor.value;
+                
+                // Simple formatting - in a real implementation, you'd use a proper formatter
+                code = code.replace(/(>)(<)(\/*)/g, '$1\n$2$3');
+                code = code.replace(/(\s*)\<\/(\w+)\>/g, '\n$1</$2>');
+                
+                codeEditor.value = code;
+                showNotification('Code formatted!', 'success');
+            });
+            
+            // Feature 11: Minify code
+            document.getElementById('minify-code').addEventListener('click', function() {
+                let code = codeEditor.value;
+                
+                // Remove comments
+                code = code.replace(/<!--[\s\S]*?-->/g, '');
+                
+                // Remove extra whitespace
+                code = code.replace(/\s+/g, ' ');
+                code = code.replace(/> </g, '><');
+                
+                codeEditor.value = code.trim();
+                showNotification('Code minified!', 'success');
+            });
+            
+            // Feature 12: Find and Replace functionality
+            document.getElementById('find-next').addEventListener('click', function() {
+                const findText = document.getElementById('find-text').value;
+                const matchCase = document.getElementById('match-case').checked;
+                const wholeWord = document.getElementById('whole-word').checked;
+                
+                if (!findText) return;
+                
+                let searchText = codeEditor.value;
+                let findValue = findText;
+                
+                if (!matchCase) {
+                    searchText = searchText.toLowerCase();
+                    findValue = findValue.toLowerCase();
+                }
+                
+                if (wholeWord) {
+                    findValue = '\\b' + findValue + '\\b';
+                }
+                
+                const regex = new RegExp(findValue, matchCase ? 'g' : 'gi');
+                const matches = [...searchText.matchAll(regex)];
+                
+                if (matches.length > 0) {
+                    let nextMatch = null;
+                    for (const match of matches) {
+                        if (match.index > lastFindIndex) {
+                            nextMatch = match;
+                            break;
+                        }
+                    }
+                    
+                    if (!nextMatch && matches.length > 0) {
+                        nextMatch = matches[0];
+                    }
+                    
+                    if (nextMatch) {
+                        codeEditor.focus();
+                        codeEditor.setSelectionRange(nextMatch.index, nextMatch.index + findText.length);
+                        lastFindIndex = nextMatch.index + 1;
+                        
+                        // Scroll to the found text
+                        const lineHeight = parseInt(window.getComputedStyle(codeEditor).lineHeight);
+                        const linesBefore = codeEditor.value.substring(0, nextMatch.index).split('\n').length;
+                        codeEditor.scrollTop = (linesBefore - 1) * lineHeight;
+                    } else {
+                        showNotification('No more matches found!', 'warning');
+                        lastFindIndex = 0;
+                    }
+                } else {
+                    showNotification('Text not found!', 'warning');
+                    lastFindIndex = 0;
+                }
+            });
+            
+            document.getElementById('find-prev').addEventListener('click', function() {
+                const findText = document.getElementById('find-text').value;
+                const matchCase = document.getElementById('match-case').checked;
+                const wholeWord = document.getElementById('whole-word').checked;
+                
+                if (!findText) return;
+                
+                let searchText = codeEditor.value;
+                let findValue = findText;
+                
+                if (!matchCase) {
+                    searchText = searchText.toLowerCase();
+                    findValue = findValue.toLowerCase();
+                }
+                
+                if (wholeWord) {
+                    findValue = '\\b' + findValue + '\\b';
+                }
+                
+                const regex = new RegExp(findValue, matchCase ? 'g' : 'gi');
+                const matches = [...searchText.matchAll(regex)];
+                
+                if (matches.length > 0) {
+                    let prevMatch = null;
+                    for (let i = matches.length - 1; i >= 0; i--) {
+                        if (matches[i].index < lastFindIndex - 1) {
+                            prevMatch = matches[i];
+                            break;
+                        }
+                    }
+                    
+                    if (!prevMatch && matches.length > 0) {
+                        prevMatch = matches[matches.length - 1];
+                    }
+                    
+                    if (prevMatch) {
+                        codeEditor.focus();
+                        codeEditor.setSelectionRange(prevMatch.index, prevMatch.index + findText.length);
+                        lastFindIndex = prevMatch.index;
+                        
+                        // Scroll to the found text
+                        const lineHeight = parseInt(window.getComputedStyle(codeEditor).lineHeight);
+                        const linesBefore = codeEditor.value.substring(0, prevMatch.index).split('\n').length;
+                        codeEditor.scrollTop = (linesBefore - 1) * lineHeight;
+                    } else {
+                        showNotification('No previous matches found!', 'warning');
+                        lastFindIndex = codeEditor.value.length;
+                    }
+                } else {
+                    showNotification('Text not found!', 'warning');
+                    lastFindIndex = 0;
+                }
+            });
+            
+            document.getElementById('replace-next').addEventListener('click', function() {
+                const findText = document.getElementById('replace-find').value;
+                const replaceText = document.getElementById('replace-with').value;
+                const matchCase = document.getElementById('replace-match-case').checked;
+                const wholeWord = document.getElementById('replace-whole-word').checked;
+                
+                if (!findText) return;
+                
+                let searchText = codeEditor.value;
+                let findValue = findText;
+                
+                if (!matchCase) {
+                    searchText = searchText.toLowerCase();
+                    findValue = findValue.toLowerCase();
+                }
+                
+                if (wholeWord) {
+                    findValue = '\\b' + findValue + '\\b';
+                }
+                
+                const regex = new RegExp(findValue, matchCase ? 'g' : 'gi');
+                const matches = [...searchText.matchAll(regex)];
+                
+                if (matches.length > 0) {
+                    let nextMatch = null;
+                    for (const match of matches) {
+                        if (match.index >= codeEditor.selectionStart) {
+                            nextMatch = match;
+                            break;
+                        }
+                    }
+                    
+                    if (!nextMatch && matches.length > 0) {
+                        nextMatch = matches[0];
+                    }
+                    
+                    if (nextMatch) {
+                        codeEditor.value = codeEditor.value.substring(0, nextMatch.index) + 
+                                          replaceText + 
+                                          codeEditor.value.substring(nextMatch.index + findText.length);
+                        
+                        codeEditor.focus();
+                        codeEditor.setSelectionRange(nextMatch.index, nextMatch.index + replaceText.length);
+                    } else {
+                        showNotification('Text not found!', 'warning');
+                    }
+                } else {
+                    showNotification('Text not found!', 'warning');
+                }
+            });
+            
+            document.getElementById('replace-all').addEventListener('click', function() {
+                const findText = document.getElementById('replace-find').value;
+                const replaceText = document.getElementById('replace-with').value;
+                const matchCase = document.getElementById('replace-match-case').checked;
+                const wholeWord = document.getElementById('replace-whole-word').checked;
+                
+                if (!findText) return;
+                
+                let code = codeEditor.value;
+                
+                let regex;
+                if (wholeWord) {
+                    regex = new RegExp('\\b' + findText + '\\b', matchCase ? 'g' : 'gi');
+                } else {
+                    regex = new RegExp(findText, matchCase ? 'g' : 'gi');
+                }
+                
+                codeEditor.value = code.replace(regex, replaceText);
+                showNotification('All occurrences replaced!', 'success');
+            });
+            
+            // Feature 13: Toggle theme
+            function toggleTheme() {
+                isLightTheme = !isLightTheme;
+                
+                if (isLightTheme) {
+                    body.classList.add('light-theme');
+                    document.querySelector('.navbar').classList.remove('navbar-dark');
+                    document.querySelector('.navbar').classList.add('navbar-light');
+                    document.querySelector('.navbar').classList.add('bg-light');
+                } else {
+                    body.classList.remove('light-theme');
+                    document.querySelector('.navbar').classList.remove('navbar-light');
+                    document.querySelector('.navbar').classList.remove('bg-light');
+                    document.querySelector('.navbar').classList.add('navbar-dark');
+                }
+            }
+            
+            document.getElementById('toggle-theme').addEventListener('click', toggleTheme);
+            
+            // Feature 14: Undo functionality
+            function saveState() {
+                const currentCode = codeEditor.value;
+                if (currentCode !== currentState) {
+                    undoStack.push(currentState);
+                    currentState = currentCode;
+                    redoStack = [];
+                    
+                    // Limit undo stack size
+                    if (undoStack.length > 50) {
+                        undoStack.shift();
+                    }
+                }
+            }
+            
+            function undo() {
+                if (undoStack.length > 0) {
+                    redoStack.push(currentState);
+                    currentState = undoStack.pop();
+                    codeEditor.value = currentState;
+                }
+            }
+            
+            function redo() {
+                if (redoStack.length > 0) {
+                    undoStack.push(currentState);
+                    currentState = redoStack.pop();
+                    codeEditor.value = currentState;
+                }
+            }
+            
+            document.getElementById('undo').addEventListener('click', undo);
+            document.getElementById('redo').addEventListener('click', redo);
+            
+            // Feature 15: Select all text
+            document.getElementById('select-all').addEventListener('click', function() {
+                codeEditor.select();
+            });
+            
+            // Feature 16: New file
+            document.getElementById('new-file').addEventListener('click', function() {
+                const currentCode = codeEditor.value;
+                if (currentCode && !confirm('Are you sure you want to create a new file? Unsaved changes will be lost.')) {
+                    return;
+                }
+                codeEditor.value = '<!DOCTYPE html>\n<html>\n<head>\n    <title>New Document</title>\n</head>\n<body>\n    \n</body>\n</html>';
+                showNotification('New file created!', 'info');
+            });
+            
+            // Feature 17: Open file
+            document.getElementById('open-file').addEventListener('click', function() {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = '.html,.htm,.txt,.css,.js';
+                
+                input.onchange = function(e) {
+                    const file = e.target.files[0];
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        codeEditor.value = e.target.result;
+                        showNotification('File opened successfully!', 'success');
+                    };
+                    
+                    reader.readAsText(file);
+                };
+                
+                input.click();
+            });
+            
+            // Feature 18: Save file
+            document.getElementById('save-file').addEventListener('click', function() {
+                saveToLocalStorage();
+            });
+            
+            // Feature 19: Zoom in/out
+            document.getElementById('zoom-in').addEventListener('click', function() {
+                fontSize += 1;
+                codeEditor.style.fontSize = fontSize + 'px';
+            });
+            
+            document.getElementById('zoom-out').addEventListener('click', function() {
+                if (fontSize > 8) {
+                    fontSize -= 1;
+                    codeEditor.style.fontSize = fontSize + 'px';
+                }
+            });
+            
+            document.getElementById('reset-zoom').addEventListener('click', function() {
+                fontSize = 14;
+                codeEditor.style.fontSize = fontSize + 'px';
+            });
+            
+            // Feature 20: Toggle comment
+            function toggleComment() {
+                const start = codeEditor.selectionStart;
+                const end = codeEditor.selectionEnd;
+                const selectedText = codeEditor.value.substring(start, end);
+                
+                if (selectedText.startsWith('<!--') && selectedText.endsWith('-->')) {
+                    // Uncomment
+                    const uncommentedText = selectedText.substring(4, selectedText.length - 3);
+                    codeEditor.value = codeEditor.value.substring(0, start) + uncommentedText + codeEditor.value.substring(end);
+                    codeEditor.setSelectionRange(start, start + uncommentedText.length);
+                } else {
+                    // Comment
+                    const commentedText = '<!--' + selectedText + '-->';
+                    codeEditor.value = codeEditor.value.substring(0, start) + commentedText + codeEditor.value.substring(end);
+                    codeEditor.setSelectionRange(start, start + commentedText.length);
+                }
+            }
+            
+            // Feature 21: Show notification
+            function showNotification(message, type) {
+                // Create notification element
+                const notification = document.createElement('div');
+                notification.className = `alert alert-${type} alert-dismissible fade show notification`;
+                notification.innerHTML = `
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                `;
+                
+                document.body.appendChild(notification);
+                
+                // Auto remove after 3 seconds
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 3000);
+            }
+            
+            // Feature 22: Code validation (basic)
+            document.getElementById('validate-html').addEventListener('click', function() {
+                const code = codeEditor.value;
+                
+                // Check for basic HTML structure
+                const hasDoctype = code.includes('<!DOCTYPE html>');
+                const hasHtmlTag = code.includes('<html>');
+                const hasHeadTag = code.includes('<head>');
+                const hasBodyTag = code.includes('<body>');
+                
+                if (hasDoctype && hasHtmlTag && hasHeadTag && hasBodyTag) {
+                    showNotification('HTML validation passed!', 'success');
+                } else {
+                    showNotification('HTML validation failed! Missing required tags.', 'danger');
+                }
+            });
+            
+            // Feature 23: Code linting (basic)
+            document.getElementById('lint-code').addEventListener('click', function() {
+                let issues = [];
+                const code = codeEditor.value;
+                
+                // Check for common issues
+                if (code.includes('<br>')) {
+                    issues.push('Consider using self-closing tag &lt;br /&gt; instead of &lt;br&gt;');
+                }
+                
+                if ((code.match(/<div>/g) || []).length > 10) {
+                    issues.push('Too many &lt;div&gt; elements. Consider using semantic HTML tags.');
+                }
+                
+                if (code.includes('style="')) {
+                    issues.push('Inline styles detected. Consider using CSS classes instead.');
+                }
+                
+                if (code.includes('onclick="')) {
+                    issues.push('Inline JavaScript detected. Consider using event listeners instead.');
+                }
+                
+                if (issues.length === 0) {
+                    showNotification('No linting issues found!', 'success');
+                } else {
+                    alert('Linting Issues:\n\n' + issues.join('\n'));
+                }
+            });
+            
+            // Feature 24: Auto-save (every 30 seconds)
+            setInterval(function() {
+                if (autoSaveEnabled) {
+                    saveToLocalStorage();
+                }
+            }, 30000);
+            
+            // Feature 25: Update editor settings
+            function updateEditorSettings() {
+                codeEditor.style.fontSize = fontSize + 'px';
+                document.getElementById('font-size').value = fontSize;
+                document.getElementById('font-size-value').textContent = fontSize;
+                document.getElementById('tab-size').value = tabSize;
+                document.getElementById('tab-size-value').textContent = tabSize;
+                document.getElementById('auto-save').checked = autoSaveEnabled;
+                document.getElementById('auto-close-tags').checked = autoCloseTags;
+            }
+            
+            // Feature 26: Duplicate line
+            function duplicateLine() {
+                const start = codeEditor.selectionStart;
+                const end = codeEditor.selectionEnd;
+                
+                // Get the current line
+                const text = codeEditor.value;
+                const lines = text.split('\n');
+                let lineStart = 0;
+                let lineIndex = 0;
+                
+                for (let i = 0; i < lines.length; i++) {
+                    lineStart += lines[i].length + 1; // +1 for the newline character
+                    if (lineStart > start) {
+                        lineIndex = i;
+                        break;
+                    }
+                }
+                
+                // Duplicate the line
+                const lineToDuplicate = lines[lineIndex];
+                lines.splice(lineIndex + 1, 0, lineToDuplicate);
+                
+                // Update the editor
+                codeEditor.value = lines.join('\n');
+                
+                // Set cursor to the beginning of the duplicated line
+                let newCursorPos = 0;
+                for (let i = 0; i <= lineIndex; i++) {
+                    newCursorPos += lines[i].length + 1;
+                }
+                codeEditor.setSelectionRange(newCursorPos, newCursorPos);
+            }
+            
+            document.getElementById('duplicate-line').addEventListener('click', duplicateLine);
+            
+            // Feature 27: Delete line
+            function deleteLine() {
+                const start = codeEditor.selectionStart;
+                const text = codeEditor.value;
+                const lines = text.split('\n');
+                let lineStart = 0;
+                let lineIndex = 0;
+                
+                for (let i = 0; i < lines.length; i++) {
+                    lineStart += lines[i].length + 1; // +1 for the newline character
+                    if (lineStart > start) {
+                        lineIndex = i;
+                        break;
+                    }
+                }
+                
+                // Delete the line
+                lines.splice(lineIndex, 1);
+                
+                // Update the editor
+                codeEditor.value = lines.join('\n');
+                
+                // Set cursor to the beginning of the next line or end of document
+                let newCursorPos = 0;
+                for (let i = 0; i < Math.min(lineIndex, lines.length); i++) {
+                    newCursorPos += lines[i].length + 1;
+                }
+                codeEditor.setSelectionRange(newCursorPos, newCursorPos);
+            }
+            
+            document.getElementById('delete-line').addEventListener('click', deleteLine);
+            
+            // Feature 28: Toggle autocomplete
+            document.getElementById('toggle-autocomplete').addEventListener('click', function() {
+                autocompleteEnabled = !autocompleteEnabled;
+                showNotification(`Autocomplete ${autocompleteEnabled ? 'enabled' : 'disabled'}`, 'info');
+            });
+            
+            // Feature 29: Settings modal
+            document.getElementById('apply-settings').addEventListener('click', function() {
+                fontSize = parseInt(document.getElementById('font-size').value);
+                tabSize = parseInt(document.getElementById('tab-size').value);
+                autoSaveEnabled = document.getElementById('auto-save').checked;
+                autoCloseTags = document.getElementById('auto-close-tags').checked;
+                
+                updateEditorSettings();
+                saveToLocalStorage();
+                
+                bootstrap.Modal.getInstance(document.getElementById('settingsModal')).hide();
+                showNotification('Settings applied successfully!', 'success');
+            });
+            
+            // Feature 30: Initialize
+            loadFromLocalStorage();
+            currentState = codeEditor.value;
+            updateEditorSettings();
+            
+            // Event listeners
+            codeEditor.addEventListener('click', updateCursorPosition);
+            codeEditor.addEventListener('keyup', updateCursorPosition);
+            codeEditor.addEventListener('keydown', handleIndentation);
+            codeEditor.addEventListener('keydown', handleKeyboardShortcuts);
+            codeEditor.addEventListener('input', function() {
+                saveState();
+                updateCursorPosition();
+            });
+            
+            // Initialize modals
+            document.getElementById('find').addEventListener('click', function() {
+                new bootstrap.Modal(document.getElementById('findModal')).show();
+            });
+            
+            document.getElementById('replace').addEventListener('click', function() {
+                new bootstrap.Modal(document.getElementById('replaceModal')).show();
+            });
+            
+            // Reset find index when modal is opened
+            document.getElementById('findModal').addEventListener('show.bs.modal', function() {
+                lastFindIndex = 0;
+            });
+            
+            document.getElementById('replaceModal').addEventListener('show.bs.modal', function() {
+                lastFindIndex = 0;
+            });
+            
+            // Settings modal
+            document.addEventListener('keydown', function(e) {
+                if (e.ctrlKey && e.key === ',') {
+                    e.preventDefault();
+                    new bootstrap.Modal(document.getElementById('settingsModal')).show();
+                }
+            });
+        });
+    </script>
 </body>
 </html>
