@@ -483,6 +483,7 @@ body {
 }
 
 .message-input {
+margin-top: 1px;
   flex: 1;
   border: none;
   background: #f7fafc;
