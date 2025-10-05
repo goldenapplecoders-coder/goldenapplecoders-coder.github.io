@@ -278,6 +278,9 @@ body {
   flex: 1;
   padding: 25px;
   overflow-y: auto;
+position: fixed;
+bottom: 0px;
+width: 100%;
   background: #f7fafc;
 }
 
