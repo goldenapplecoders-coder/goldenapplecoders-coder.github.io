@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Web Design Notes</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #3498db;
+            --secondary: #2c3e50;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --success: #2ecc71;
+            --code-bg: #1a1a1a;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2px;
+        }
+
+        header {
+            background: var(--secondary);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            border-radius: 0 0 10px 10px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .logo {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .section {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+            width: 100%;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+        }
+
+        .section h2 {
+            color: var(--secondary);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section h2 i {
+            color: var(--primary);
+        }
+
+        .note-content {
+            margin-bottom: 1.5rem;
+        }
+
+        .note-content p {
+            margin-bottom: 1rem;
+        }
+
+        .code-block {
+            background: var(--code-bg);
+            color: #f8f8f2;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        .code-title {
+            background: var(--primary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 5px 5px 0 0;
+            margin-bottom: 1rem;
+            display: inline-block;
+            text-align: center;
+            width: 100%;
+            font-weight: bold;
+        }
+
+        .code-block code {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Code syntax highlighting */
+        .keyword { color: #ff79c6; }
+        .tag { color: #ff5555; }
+        .attribute { color: #50fa7b; }
+        .value { color: #f1fa8c; }
+        .comment { color: #6272a4; }
+        .selector { color: #8be9fd; }
+        .property { color: #66d9ef; }
+
+        .tip-box {
+            background: #e8f4fc;
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .tip-box h4 {
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tip-box h4 i {
+            color: var(--primary);
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        footer {
+            background: var(--secondary);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 2rem;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .toc {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .toc h3 {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+
+        .toc ul {
+            list-style-type: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 10px;
+        }
+
+        .toc li {
+            margin-bottom: 0.5rem;
+        }
+
+        .toc a {
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.3s;
+        }
+
+        .toc a:hover {
+            color: var(--accent);
+        }
+
+        .toc a i {
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .section {
+                padding: 1.5rem;
+            }
+            
+            .toc ul {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.7rem;
+            }
+            
+            .section {
+                padding: 1rem;
+            }
+            
+            .code-block {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-laptop-code"></i>
+            </div>
+            <h1>Responsive Web Design Notes</h1>
+            <p>Making websites compatible with every browser and device</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="toc">
+            <h3><i class="fas fa-list"></i> Table of Contents</h3>
+            <ul>
+                <li><a href="#viewport"><i class="fas fa-chevron-right"></i> Understanding the Viewport</a></li>
+                <li><a href="#css-styling"><i class="fas fa-chevron-right"></i> CSS Stylings for Compatibility</a></li>
+                <li><a href="#frameworks"><i class="fas fa-chevron-right"></i> Using External CSS Frameworks</a></li>
+                <li><a href="#cross-browser"><i class="fas fa-chevron-right"></i> Cross-Browser Compatibility</a></li>
+                <li><a href="#responsive"><i class="fas fa-chevron-right"></i> Responsive Design Techniques</a></li>
+                <li><a href="#testing"><i class="fas fa-chevron-right"></i> Testing and Best Practices</a></li>
+            </ul>
+        </div>
+
+        <div class="section" id="viewport">
+            <h2><i class="fas fa-desktop"></i> Understanding the Viewport</h2>
+            <div class="note-content">
+                <p>The viewport is the user's visible area of a web page. It varies with the device - smaller on mobile phones, larger on desktop monitors. The viewport meta tag controls how a webpage is displayed on mobile devices.</p>
+                
+                <div class="code-block">
+                    <div class="code-title">HTML Viewport Meta Tag</div>
+                    <br><code>
+                        <span class="tag">&lt;!DOCTYPE html&gt;</span><br>
+                        <span class="tag">&lt;html&gt;</span><br>
+                        <span class="tag">&lt;head&gt;</span><br>
+                        &nbsp;&nbsp;<span class="tag">&lt;meta</span> <span class="attribute">name</span>=<span class="value">"viewport"</span> <span class="attribute">content</span>=<span class="value">"width=device-width, initial-scale=1.0"</span><span class="tag">&gt;</span><br>
+                        &nbsp;&nbsp;<span class="tag">&lt;title&gt;</span>Responsive Website<span class="tag">&lt;/title&gt;</span><br>
+                        <span class="tag">&lt;/head&gt;</span><br>
+                        <span class="tag">&lt;/html&gt;</span>
+                    </code>
+                </div>
+                
+                <div class="tip-box">
+                    <h4><i class="fas fa-lightbulb"></i> Pro Tip</h4>
+                    <p>Always include the viewport meta tag in the head of your HTML documents. Without it, mobile browsers will default to rendering the page at a desktop screen width.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" id="css-styling">
+            <h2><i class="fab fa-css3-alt"></i> CSS Stylings for Compatibility</h2>
+            <div class="note-content">
+                <p>Using proper CSS techniques ensures your website looks good on all devices. Key approaches include using flexible units, CSS reset, and modern layout methods like Flexbox and Grid.</p>
+                
+                <div class="code-block">
+                    <div class="code-title">CSS Reset & Flexible Units</div>
+                    <br><code>
+                        <span class="comment">/* Simple CSS Reset */</span><br>
+                        <span class="selector">*</span> {<br>
+                        &nbsp;&nbsp;<span class="property">margin</span>: <span class="value">0</span>;<br>
+                        &nbsp;&nbsp;<span class="property">padding</span>: <span class="value">0</span>;<br>
+                        &nbsp;&nbsp;<span class="property">box-sizing</span>: <span class="value">border-box</span>;<br>
+                        }<br><br>
+                        
+                        <span class="selector">.container</span> {<br>
+                        &nbsp;&nbsp;<span class="property">width</span>: <span class="value">90%</span>; <span class="comment">/* Percentage-based width */</span><br>
+                        &nbsp;&nbsp;<span class="property">max-width</span>: <span class="value">1200px</span>; <span class="comment">/* Maximum width */</span><br>
+                        &nbsp;&nbsp;<span class="property">margin</span>: <span class="value">0 auto</span>; <span class="comment">/* Center container */</span><br>
+                        }<br><br>
+                        
+                        <span class="selector">.text-element</span> {<br>
+                        &nbsp;&nbsp;<span class="property">font-size</span>: <span class="value">1rem</span>; <span class="comment">/* Relative to root */</span><br>
+                        &nbsp;&nbsp;<span class="property">line-height</span>: <span class="value">1.5</span>; <span class="comment">/* Unitless for scalability */</span><br>
+                        &nbsp;&nbsp;<span class="property">padding</span>: <span class="value">1em</span>; <span class="comment">/* Relative to font-size */</span><br>
+                        }
+                    </code>
+                </div>
+                
+                <div class="code-block">
+                    <div class="code-title">Flexbox Layout Example</div>
+                    <br><code>
+                        <span class="selector">.flex-container</span> {<br>
+                        &nbsp;&nbsp;<span class="property">display</span>: <span class="value">flex</span>;<br>
+                        &nbsp;&nbsp;<span class="property">flex-wrap</span>: <span class="value">wrap</span>;<br>
+                        &nbsp;&nbsp;<span class="property">gap</span>: <span class="value">20px</span>;<br>
+                        &nbsp;&nbsp;<span class="property">justify-content</span>: <span class="value">space-between</span>;<br>
+                        }<br><br>
+                        
+                        <span class="selector">.flex-item</span> {<br>
+                        &nbsp;&nbsp;<span class="property">flex</span>: <span class="value">1 1 300px</span>; <span class="comment">/* flex-grow, flex-shrink, flex-basis */</span><br>
+                        &nbsp;&nbsp;<span class="property">min-width</span>: <span class="value">0</span>; <span class="comment">/* Prevents overflow */</span><br>
+                        }
+                    </code>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" id="frameworks">
+            <h2><i class="fas fa-cubes"></i> Using External CSS Frameworks</h2>
+            <div class="note-content">
+                <p>CSS frameworks like Bootstrap provide pre-built components and a responsive grid system that work across all devices and browsers, speeding up development.</p>
+                
+                <div class="code-block">
+                    <div class="code-title">Bootstrap 5 Example</div>
+                    <br><code>
+                        <span class="tag">&lt;!DOCTYPE html&gt;</span><br>
+                        <span class="tag">&lt;html</span> <span class="attribute">lang</span>=<span class="value">"en"</span><span class="tag">&gt;</span><br>
+                        <span class="tag">&lt;head&gt;</span><br>
+                        &nbsp;&nbsp;<span class="tag">&lt;meta</span> <span class="attribute">charset</span>=<span class="value">"UTF-8"</span><span class="tag">&gt;</span><br>
+                        &nbsp;&nbsp;<span class="tag">&lt;meta</span> <span class="attribute">name</span>=<span class="value">"viewport"</span> <span class="attribute">content</span>=<span class="value">"width=device-width, initial-scale=1.0"</span><span class="tag">&gt;</span><br>
+                        &nbsp;&nbsp;<span class="tag">&lt;title&gt;</span>Bootstrap Example<span class="tag">&lt;/title&gt;</span><br>
+                        &nbsp;&nbsp;<span class="comment">&lt;!-- Bootstrap CSS --&gt;</span><br>
+                        &nbsp;&nbsp;<span class="tag">&lt;link</span> <span class="attribute">href</span>=<span class="value">"https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"</span> <span class="attribute">rel</span>=<span class="value">"stylesheet"</span><span class="tag">&gt;</span><br>
+                        <span class="tag">&lt;/head&gt;</span><br>
+                        <span class="tag">&lt;body&gt;</span><br>
+                        &nbsp;&nbsp;<span class="tag">&lt;div</span> <span class="attribute">class</span>=<span class="value">"container mt-4"</span><span class="tag">&gt;</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;div</span> <span class="attribute">class</span>=<span class="value">"row"</span><span class="tag">&gt;</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;div</span> <span class="attribute">class</span>=<span class="value">"col-md-4 col-sm-6 mb-3"</span><span class="tag">&gt;</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;div</span> <span class="attribute">class</span>=<span class="value">"card"</span><span class="tag">&gt;</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;div</span> <span class="attribute">class</span>=<span class="value">"card-body"</span><span class="tag">&gt;</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;h5</span> <span class="attribute">class</span>=<span class="value">"card-title"</span><span class="tag">&gt;</span>Responsive Card<span class="tag">&lt;/h5&gt;</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;p</span> <span class="attribute">class</span>=<span class="value">"card-text"</span><span class="tag">&gt;</span>Works on all devices<span class="tag">&lt;/p&gt;</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;/div&gt;</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;/div&gt;</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;/div&gt;</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;/div&gt;</span><br>
+                        &nbsp;&nbsp;<span class="tag">&lt;/div&gt;</span><br>
+                        <span class="tag">&lt;/body&gt;</span><br>
+                        <span class="tag">&lt;/html&gt;</span>
+                    </code>
+                </div>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Framework</th>
+                                <th>Pros</th>
+                                <th>Best For</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Bootstrap</td>
+                                <td>Most popular, extensive components</td>
+                                <td>Rapid prototyping, enterprise sites</td>
+                            </tr>
+                            <tr>
+                                <td>Tailwind CSS</td>
+                                <td>Utility-first, highly customizable</td>
+                                <td>Custom designs, component-based apps</td>
+                            </tr>
+                            <tr>
+                                <td>Foundation</td>
+                                <td>Advanced responsive features</td>
+                                <td>Complex, content-heavy sites</td>
+                            </tr>
+                            <tr>
+                                <td>Bulma</td>
+                                <td>Pure CSS, no JavaScript</td>
+                                <td>Lightweight projects, learning</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" id="cross-browser">
+            <h2><i class="fas fa-window-restore"></i> Cross-Browser Compatibility</h2>
+            <div class="note-content">
+                <p>Different browsers may interpret CSS and JavaScript differently. Using feature detection, vendor prefixes, and progressive enhancement ensures your site works across all major browsers.</p>
+                
+                <div class="code-block">
+                    <div class="code-title">CSS Vendor Prefixes</div>
+                    <br><code>
+                        <span class="selector">.button</span> {<br>
+                        &nbsp;&nbsp;<span class="property">background</span>: <span class="value">linear-gradient(to bottom, #3498db, #2980b9)</span>;<br>
+                        &nbsp;&nbsp;<span class="comment">/* Cross-browser gradient */</span><br>
+                        &nbsp;&nbsp;<span class="property">background</span>: <span class="value">-webkit-linear-gradient(top, #3498db, #2980b9)</span>;<br>
+                        &nbsp;&nbsp;<span class="property">background</span>: <span class="value">-moz-linear-gradient(top, #3498db, #2980b9)</span>;<br>
+                        &nbsp;&nbsp;<span class="property">background</span>: <span class="value">-ms-linear-gradient(top, #3498db, #2980b9)</span>;<br>
+                        &nbsp;&nbsp;<span class="property">background</span>: <span class="value">-o-linear-gradient(top, #3498db, #2980b9)</span>;<br>
+                        &nbsp;&nbsp;<br>
+                        &nbsp;&nbsp;<span class="property">border-radius</span>: <span class="value">5px</span>;<br>
+                        &nbsp;&nbsp;<span class="property">-webkit-border-radius</span>: <span class="value">5px</span>;<br>
+                        &nbsp;&nbsp;<span class="property">-moz-border-radius</span>: <span class="value">5px</span>;<br>
+                        }
+                    </code>
+                </div>
+                
+                <div class="code-block">
+                    <div class="code-title">Feature Detection with @supports</div>
+                    <br><code>
+                        <span class="keyword">@supports</span> (<span class="property">display</span>: <span class="value">grid</span>) {<br>
+                        &nbsp;&nbsp;<span class="selector">.container</span> {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="property">display</span>: <span class="value">grid</span>;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="property">grid-template-columns</span>: <span class="value">1fr 1fr</span>;<br>
+                        &nbsp;&nbsp;}<br>
+                        }<br><br>
+                        
+                        <span class="keyword">@supports not</span> (<span class="property">display</span>: <span class="value">grid</span>) {<br>
+                        &nbsp;&nbsp;<span class="selector">.container</span> {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="property">display</span>: <span class="value">flex</span>;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="property">flex-wrap</span>: <span class="value">wrap</span>;<br>
+                        &nbsp;&nbsp;}<br>
+                        }
+                    </code>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" id="responsive">
+            <h2><i class="fas fa-mobile-alt"></i> Responsive Design Techniques</h2>
+            <div class="note-content">
+                <p>Responsive design uses fluid grids, flexible images, and media queries to adapt the layout to the viewing environment. The mobile-first approach is recommended.</p>
+                
+                <div class="code-block">
+                    <div class="code-title">Media Queries (Mobile-First)</div>
+                    <br><code>
+                        <span class="comment">/* Mobile First Approach */</span><br>
+                        <span class="selector">.container</span> { <br>
+                        &nbsp;&nbsp;<span class="property">padding</span>: <span class="value">10px</span>; <br>
+                        }<br><br>
+                        
+                        <span class="comment">/* Tablet */</span><br>
+                        <span class="keyword">@media</span> (<span class="property">min-width</span>: <span class="value">768px</span>) {<br>
+                        &nbsp;&nbsp;<span class="selector">.container</span> {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="property">padding</span>: <span class="value">20px</span>;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="property">max-width</span>: <span class="value">720px</span>;<br>
+                        &nbsp;&nbsp;}<br>
+                        }<br><br>
+                        
+                        <span class="comment">/* Desktop */</span><br>
+                        <span class="keyword">@media</span> (<span class="property">min-width</span>: <span class="value">1024px</span>) {<br>
+                        &nbsp;&nbsp;<span class="selector">.container</span> {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="property">max-width</span>: <span class="value">1200px</span>;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="property">margin</span>: <span class="value">0 auto</span>;<br>
+                        &nbsp;&nbsp;}<br>
+                        }
+                    </code>
+                </div>
+                
+                <div class="code-block">
+                    <div class="code-title">Responsive Images</div>
+                    <br><code>
+                        <span class="comment">&lt;!-- Basic responsive image --&gt;</span><br>
+                        <span class="tag">&lt;img</span> <span class="attribute">src</span>=<span class="value">"image.jpg"</span> <span class="attribute">alt</span>=<span class="value">"Description"</span> <span class="attribute">style</span>=<span class="value">"max-width: 100%; height: auto;"</span><span class="tag">&gt;</span><br><br>
+                        
+                        <span class="comment">&lt;!-- Picture element for art direction --&gt;</span><br>
+                        <span class="tag">&lt;picture&gt;</span><br>
+                        &nbsp;&nbsp;<span class="tag">&lt;source</span> <span class="attribute">media</span>=<span class="value">"(min-width: 1200px)"</span> <span class="attribute">srcset</span>=<span class="value">"large.jpg"</span><span class="tag">&gt;</span><br>
+                        &nbsp;&nbsp;<span class="tag">&lt;source</span> <span class="attribute">media</span>=<span class="value">"(min-width: 768px)"</span> <span class="attribute">srcset</span>=<span class="value">"medium.jpg"</span><span class="tag">&gt;</span><br>
+                        &nbsp;&nbsp;<span class="tag">&lt;img</span> <span class="attribute">src</span>=<span class="value">"small.jpg"</span> <span class="attribute">alt</span>=<span class="value">"Description"</span> <span class="attribute">style</span>=<span class="value">"max-width: 100%; height: auto;"</span><span class="tag">&gt;</span><br>
+                        <span class="tag">&lt;/picture&gt;</span>
+                    </code>
+                </div>
+                
+                <div class="tip-box">
+                    <h4><i class="fas fa-lightbulb"></i> Pro Tip</h4>
+                    <p>Use the clamp() function for fluid typography that scales between minimum and maximum values based on the viewport width: <br><code>font-size: clamp(1rem, 2.5vw, 2rem);</code></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" id="testing">
+            <h2><i class="fas fa-check-circle"></i> Testing and Best Practices</h2>
+            <div class="note-content">
+                <p>Thorough testing across devices and browsers is essential. Use both automated tools and manual testing to ensure compatibility.</p>
+                
+                <div class="code-block">
+                    <div class="code-title">Progressive Enhancement</div>
+                    <br><code>
+                        <span class="comment">&lt;!-- Basic HTML structure --&gt;</span><br>
+                        <span class="tag">&lt;nav</span> <span class="attribute">id</span>=<span class="value">"main-nav"</span><span class="tag">&gt;</span><br>
+                        &nbsp;&nbsp;<span class="tag">&lt;ul&gt;</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;li&gt;&lt;a</span> <span class="attribute">href</span>=<span class="value">"#home"</span><span class="tag">&gt;</span>Home<span class="tag">&lt;/a&gt;&lt;/li&gt;</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;li&gt;&lt;a</span> <span class="attribute">href</span>=<span class="value">"#about"</span><span class="tag">&gt;</span>About<span class="tag">&lt;/a&gt;&lt;/li&gt;</span><br>
+                        &nbsp;&nbsp;<span class="tag">&lt;/ul&gt;</span><br>
+                        <span class="tag">&lt;/nav&gt;</span><br><br>
+                        
+                        <span class="comment">&lt;!-- Enhanced with JavaScript --&gt;</span><br>
+                        <span class="tag">&lt;script&gt;</span><br>
+                        <span class="keyword">if</span> (<span class="value">'querySelector'</span> <span class="keyword">in</span> document) {<br>
+                        &nbsp;&nbsp;<span class="comment">// Modern browser features</span><br>
+                        &nbsp;&nbsp;<span class="keyword">const</span> nav = document.<span class="property">querySelector</span>(<span class="value">'#main-nav'</span>);<br>
+                        &nbsp;&nbsp;<span class="comment">// Add interactive features</span><br>
+                        }<br>
+                        <span class="tag">&lt;/script&gt;</span>
+                    </code>
+                </div>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Testing Tool</th>
+                                <th>Purpose</th>
+                                <th>Type</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Browser DevTools</td>
+                                <td>Responsive design mode</td>
+                                <td>Built-in</td>
+                            </tr>
+                            <tr>
+                                <td>CrossBrowserTesting</td>
+                                <td>Multi-browser testing</td>
+                                <td>Online Service</td>
+                            </tr>
+                            <tr>
+                                <td>BrowserStack</td>
+                                <td>Real device testing</td>
+                                <td>Online Service</td>
+                            </tr>
+                            <tr>
+                                <td>Google Mobile-Friendly Test</td>
+                                <td>SEO optimization</td>
+                                <td>Online Tool</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="tip-box">
+                    <h4><i class="fas fa-lightbulb"></i> Key Takeaways</h4>
+                    <ul>
+                        <li>Always use the viewport meta tag</li>
+                        <li>Start with mobile-first design</li>
+                        <li>Use relative units (%, em, rem, vw/vh)</li>
+                        <li>Implement CSS Grid and Flexbox for layouts</li>
+                        <li>Test on multiple browsers and devices</li>
+                        <li>Use frameworks like Bootstrap for rapid development</li>
+                        <li>Optimize images and media for different screens</li>
+                        <li>Consider performance and accessibility</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p><strong>Next Lesson Preview:</strong> Advanced responsive techniques, CSS Container Queries, and modern layout methods!</p>
+            <p>Stay tuned for updates and more! Don't forget to react! 👍</p>
+            <p>© 2025 Golden Apple Technologies. All Rights Reserved</p>
+        </div>
+    </footer>
+</body>
+</html>
