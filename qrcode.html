@@ -1,126 +1,390 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Golden Apple Technologies QR Code Generator</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Google Fonts for Modern Look -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
-  <style>
-    body {
-      background: #f4f8fc;
-      font-family: 'Montserrat', Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-      margin: 0;
-    }
-    .container {
-      background: #fff;
-      margin-top: 60px;
-      padding: 32px 40px 36px 40px;
-      border-radius: 16px;
-      box-shadow: 0 2px 18px rgba(0,0,0,0.11);
-      width: 100%;
-      max-width: 400px;
-      text-align: center;
-    }
-    h1 {
-      color: #c9a245;
-      font-size: 2rem;
-      margin-bottom: 18px;
-    }
-    label {
-      font-size: 1.1rem;
-      color: #333;
-      margin-bottom: 8px;
-      display: block;
-      font-weight: 600;
-    }
-    input[type="text"] {
-      padding: 10px;
-      width: 85%;
-      border: 1px solid #c7c7c7;
-      border-radius: 8px;
-      font-size: 1rem;
-      margin-bottom: 18px;
-      outline: none;
-      transition: border 0.2s;
-    }
-    input[type="text"]:focus {
-      border: 1.5px solid #c9a245;
-    }
-    button {
-      background: #c9a245;
-      color: #fff;
-      border: none;
-      padding: 10px 28px;
-      font-size: 1rem;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 600;
-      margin-bottom: 16px;
-      transition: background 0.2s;
-    }
-    button:hover {
-      background: #a58732;
-    }
-    #qrcode {
-      margin: 22px auto 16px auto;
-      background: #f3f3f3;
-      padding: 12px;
-      border-radius: 8px;
-      display: inline-block;
-      min-height: 130px;
-      min-width: 130px;
-    }
-    .home-btn {
-      display: inline-block;
-      margin-top: 16px;
-      background: #2d7d46;
-      color: #fff;
-      padding: 8px 22px;
-      border-radius: 8px;
-      font-weight: 600;
-      text-decoration: none;
-      box-shadow: 0 1px 6px rgba(0,0,0,0.10);
-      transition: background 0.2s;
-    }
-    .home-btn:hover {
-      background: #226135;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator | Create Downloadable QR Codes | Golden Apple Coders</title>
+    <meta name="description" content="Free professional QR code generator by Golden Apple Coders. Create downloadable QR codes from text or URLs instantly. No registration required.">
+    <meta name="keywords" content="QR code generator, QR code, create QR code, download QR code, Golden Apple Coders">
+    <meta name="author" content="Golden Apple Coders">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://goldenapplecoders-coder.github.io/qrcode.html">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="QR Code Generator | Golden Apple Coders">
+    <meta property="og:description" content="Create professional, downloadable QR codes instantly with our free tool by Golden Apple Coders.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://goldenapplecoders-coder.github.io/qrcode.html">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="QR Code Generator | Golden Apple Coders">
+    <meta name="twitter:description" content="Create professional, downloadable QR codes instantly with our free tool.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍎</text></svg>">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            justify-content: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .logo i {
+            font-size: 2.5rem;
+            color: #fff;
+        }
+
+        .logo h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .tagline {
+            color: #ccc;
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+        }
+
+        .input-group {
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+        }
+
+        #qr-input {
+            width: 100%;
+            padding: 15px 15px 15px 45px;
+            background-color: #111;
+            border: 2px solid #333;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        #qr-input:focus {
+            border-color: #fff;
+        }
+
+        #generate-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: #fff;
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        #generate-btn:hover {
+            background-color: #e0e0e0;
+        }
+
+        .qr-preview {
+            margin: 30px 0;
+            padding: 20px;
+            background-color: #111;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .qr-container {
+            width: 300px;
+            height: 300px;
+        margin: 0 auto;
+            background-color: #fff;
+            padding: 0px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #qr-code {
+            width: 260px;
+            height: 260px;
+            display: block;
+        }
+
+        .download-section {
+            margin-top: 20px;
+            display: none;
+        }
+
+        #download-btn {
+            padding: 12px 25px;
+            background-color: #fff;
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 0 auto;
+        }
+
+        #download-btn:hover {
+            background-color: #e0e0e0;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 40px;
+        }
+
+        .feature {
+            background-color: #111;
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .feature i {
+            font-size: 1.5rem;
+            color: #fff;
+        }
+
+        .feature p {
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+
+        footer {
+            margin-top: 50px;
+            color: #666;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .logo h1 {
+                font-size: 1.7rem;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+            }
+            
+            .qr-container {
+                width: 280px;
+                height: 280px;
+            }
+            
+            #qr-code {
+                width: 240px;
+                height: 240px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1>QR Code Generator</h1>
-    <form id="qrForm" onsubmit="generateQRCode(); return false;">
-      <label for="qrInput">Enter Text or URL:</label>
-      <input type="text" id="qrInput" placeholder="e.g. https://goldenapple.tech" required>
-      <br>
-      <button type="submit">Generate</button>
-    </form>
-    <div id="qrcode"></div>
-<br>    <a href="Golden.html" class="home-btn">Home</a>
-  </div>
+    <div class="container">
+        <div class="logo">
+            <i class="fas fa-qrcode"></i>
+            <h1>QR Generator</h1>
+        </div>
+        
+        <p class="tagline">Create professional QR codes instantly</p>
+        <div class="input-group">
+            <i class="fas fa-font"></i>
+            <input type="text" id="qr-input" placeholder="Enter text or URL to generate QR code" autocomplete="off">
+        </div>
+        
+        <button id="generate-btn">
+            <i class="fas fa-bolt"></i>
+            Generate QR Code
+        </button>
+        
+        <div class="qr-preview" id="qr-preview">
+            <div class="qr-container">
+                <canvas id="qr-code"></canvas>
+            </div>
+            <div class="download-section" id="download-section">
+                <button id="download-btn">
+                    <i class="fas fa-download"></i>
+                    Download PNG
+                </button>
+        </div>
+        
 
-  <!-- QRCode.js CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
-  <script>
-    function generateQRCode() {
-      var container = document.getElementById("qrcode");
-      container.innerHTML = ""; // Clear previous QR code
-      var value = document.getElementById("qrInput").value;
-      new QRCode(container, {
-        text: value,
-        width: 130,
-        height: 130,
-        colorDark: "#2d7d46",
-        colorLight: "#fff",
-        correctLevel: QRCode.CorrectLevel.H
-      });
-    }
-  </script>
+        </div>
+        
+        <footer>
+            <p>&copy; 2023 Golden Apple Coders. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <!-- QR Code Generation Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const qrInput = document.getElementById('qr-input');
+            const generateBtn = document.getElementById('generate-btn');
+            const qrPreview = document.getElementById('qr-preview');
+            const qrCodeCanvas = document.getElementById('qr-code');
+            const downloadSection = document.getElementById('download-section');
+            const downloadBtn = document.getElementById('download-btn');
+            
+            // Set fixed canvas dimensions
+            qrCodeCanvas.width = 260;
+            qrCodeCanvas.height = 260;
+            
+            // Generate QR code function
+            function generateQRCode() {
+                const inputText = qrInput.value.trim();
+                
+                if (!inputText) {
+                    alert('Please enter some text or a URL to generate a QR code.');
+                    return;
+                }
+                
+                // Clear previous QR code
+                const ctx = qrCodeCanvas.getContext('2d');
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(0, 0, qrCodeCanvas.width, qrCodeCanvas.height);
+                
+                // Generate QR code
+                const qr = qrcode(0, 'M');
+                qr.addData(inputText);
+                qr.make();
+                
+                const moduleCount = qr.getModuleCount();
+                const cellSize = Math.min(
+                    (qrCodeCanvas.width - 0.8) / moduleCount,
+                    (qrCodeCanvas.height - 0.8) / moduleCount
+                );
+                
+                // Calculate offset to center the QR code
+                const offsetX = (qrCodeCanvas.width - moduleCount * cellSize) / 2;
+                const offsetY = (qrCodeCanvas.height - moduleCount * cellSize) / 2;
+                
+                // Draw QR code with 0.4px padding on all sides
+                ctx.fillStyle = '#000000';
+                for (let row = 0; row < moduleCount; row++) {
+                    for (let col = 0; col < moduleCount; col++) {
+                        if (qr.isDark(row, col)) {
+                            ctx.fillRect(
+                                offsetX + col * cellSize,
+                                offsetY + row * cellSize,
+                                cellSize,
+                                cellSize
+                            );
+                        }
+                    }
+                }
+                
+                // Show preview and download section
+                qrPreview.style.display = 'block';
+                downloadSection.style.display = 'block';
+                
+                // Set up download functionality
+                setupDownload(inputText);
+            }
+            
+            // Set up download functionality
+            function setupDownload(inputText) {
+                downloadBtn.onclick = function() {
+                    // Create a temporary canvas that includes the white padding
+                    const downloadCanvas = document.createElement('canvas');
+                    downloadCanvas.width = 300;
+                    downloadCanvas.height = 300;
+                    const dCtx = downloadCanvas.getContext('2d');
+                    
+                    // Fill with white background
+                    dCtx.fillStyle = '#ffffff';
+                    dCtx.fillRect(0, 0, downloadCanvas.width, downloadCanvas.height);
+                    
+                    // Draw the QR code with the same padding as preview
+                    dCtx.drawImage(qrCodeCanvas, 20, 20);
+                    
+                    // Create a temporary link for downloading
+                    const link = document.createElement('a');
+                    // Create filename with "qr_" prefix and sanitized input text
+                    const filename = `qr_${inputText.substring(0, 30).replace(/[^a-z0-9]/gi, '_').toLowerCase()}.png`;
+                    link.download = filename;
+                    link.href = downloadCanvas.toDataURL('image/png');
+                    link.click();
+                };
+            }
+            
+            // Event listeners
+            generateBtn.addEventListener('click', generateQRCode);
+            
+            qrInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    generateQRCode();
+                }
+            });
+            
+            // Generate a sample QR code on page load
+            window.addEventListener('load', function() {
+                qrInput.value = 'https://goldenapplecoders-coder.github.io';
+                generateQRCode();
+            });
+        });
+    </script>
 </body>
 </html>
