@@ -1,84 +1,1004 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Golden Apple Technologies</title>
-<link rel="icon" type="image/ico" href="favicon.ico">
-<meta name="description" content="Golden Apple Technologies offers a comprehensive range of services including custom software development, IT consulting, digital transformation, cybersecurity, and cloud services, leveraging agile methodologies and a client-centric approach to deliver high-quality solutions that meet the unique needs of businesses and individuals, while our team of experts in software development, UX/UI design, quality assurance, and project management work together to drive innovation and growth, supported by a knowledge base, community forum, resource library, FAQ section, contact form, user profile management, password recovery, search functionality, and feedback mechanism that enhance user experience and provide valuable information.">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="index.css">
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coddit Gen1 - AI Code Assistant</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        
+    <style>
+        :root {
+            --bg-color: #1a1a1a;
+            --text-color: #f0f0f0;
+            --border-color: #333;
+            --sidebar-bg: #222;
+            --message-user-bg: #2a2a2a;
+            --message-ai-bg: #333;
+            --button-bg: #4a4a4a;
+            --button-text: #ffffff;
+            --hover-bg: #3a3a3a;
+            --accent-color: #6c63ff;
+            --secondary-bg: #2d2d2d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .fas, .fab{color: inherit;
+        font-size: inherit;}
+        body {
+            background-color: black;
+            color: var(--text-color);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .header {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px dotted white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: black;
+            z-index: 10;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .header-btn {
+            padding: 0.5rem 1rem;
+            background-color: black;
+            color: white;
+            border: 1px solid white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 900;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+        }
+
+        .header-btn:hover {
+            background-color: white;
+            color: black;
+        }
+
+        .container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Chat History Overlay */
+        .chat-history-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            z-index: 20;
+            display: none;
+            flex-direction: column;
+            padding: 1.5rem;
+        }
+
+        .chat-history-overlay.active {
+            display: flex;
+        }
+
+        .overlay-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .overlay-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .close-overlay {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.25rem;
+        }
+
+        .history-list {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .history-item {
+            padding: 1rem;
+            border-radius: 8px;
+            background-color: black;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border: 1px dotted white;
+        }
+
+        .history-item:hover {
+            background-color: black;
+            border: 1px solid white;
+        }
+
+        .history-item.active {
+            background-color: white;
+            color: black;
+        }
+
+        .history-title {
+            font-weight: 900;
+            margin-bottom: 0.25rem;
+        }
+
+        .history-date {
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+
+        .empty-history {
+            text-align: center;
+            padding: 2rem;
+            opacity: 0.7;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .chat-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem 1rem 5rem 1rem;            
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            width: 100%
+            padding-bottom: 200px; /* Space for fixed input */
+        }
+
+        .message {
+            width: 100%;
+            padding: 1rem 1rem;
+        }
+
+        .user-message {
+            align-self: center;
+            background: black;
+            border: 1px solid white;
+            border-radius: 1.5em 1.5em 0 1.5em;
+            
+        }
+
+        .ai-message {
+            align-self: center;
+            background-color: black;
+            border: 2px dotted white;
+            max-width: 100%;
+            border-radius: 1.5em 1.5em 1.5em 0;
+        }
+
+        .message-header {
+            font-size: 0.8rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.7;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .message-content {
+            line-height: 1.6;
+        }
+
+        .code-block-wrapper {
+            position: relative;
+            margin: 0.75rem 0;
+        }
+
+        .code-block {
+            background-color: #1c2138;
+            border: 1px solid white;
+            border-radius: 6px;
+            padding: 0.75rem;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            max-width: 100%;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: 1px solid white;
+            border-radius: 4px;
+            padding: 0.35rem 0.7rem;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .copy-btn:hover {
+            background-color: white;
+            color: black;
+        }
+
+        .input-area {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1rem;
+            background-color: black;
+            border-top: 1px dotted white;
+            display: flex;
+            gap: 0;
+            z-index: 5;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .file-input {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-btn {                
+            border: 1px solid white;
+            border-right: none;
+            border-radius: 8px 0 0 8px;
+            background-color: black;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 30px;
+            transition: background-color 0.2s;
+            height: 2.5rem;
+            min-height: 2.5rem;
+            max-height: 2.5rem;
+            font-size: 1.5em;
+        }
+
+        .file-btn:hover {
+            background-color: white;
+            color: black;
+        }
+
+        .message-input {
+            flex: 1;
+            padding: 0.5rem 0.3rem;
+            border: 1px solid white;
+            border-left: none;
+            border-right: none;
+            border-radius: 0;
+            resize: none;
+            font-family: inherit;
+            background-color: black;
+            color: white;
+            font-size: 0.8em;
+            line-height: 1.5;
+            height: 2.5rem;
+            min-height: 2.5rem;
+            max-height: 2.5rem;
+        }
+
+        .message-input:focus {
+            outline: none;
+            max-height: 2.5rem;
+            min-height: 2.5rem;
+            height: 2.5rem;
+        }
+
+        .send-btn {
+            padding: 0.75rem 1em;
+            background-color: black;
+            color: white;
+            border: 1px solid white;
+            border-radius: 0 8px 8px 0;
+            border-left: none;
+            cursor: pointer;
+            font-weight: 900;
+            transition: background-color 0.2s;
+            height: 2.5rem;
+            min-height: 2.5rem;
+            max-height: 2.5rem;
+        }
+
+        .send-btn:hover {
+            background: black;
+            color: white;
+        }
+
+        .file-attachment {
+            position: fixed;
+            display: flex;
+            align-items: center;
+            bottom: 7em;
+            left: 5px;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+            padding: 0.75rem;
+            background-color: black;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            border: 1px solid white;
+        }
+
+        .remove-file {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            color: var(--text-color);
+            font-size: 1.2rem;
+            margin-left: auto;
+        }
+
+        .typing-indicator {
+            display: inline-block;
+            margin-left: 5px;
+        }
+
+        .typing-dot {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: var(--text-color);
+            margin-right: 3px;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes typing {
+            0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .message {
+                max-width: 100%;
+            }
+            
+            .header {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
 <body>
-  <header class="header">
-    <a href="#" class="logo"><i class="fas fa-apple-alt"></i> GOLDEN APPLE</a>
-    <div class="nav-actions">
-      <button class="menu-btn" onclick="showModal()"><i class="fas fa-bars"></i></button>
+    <div class="header">
+        <div class="header-left">
+            <h1>Coddit Gen1</h1><br>
+            <div id="current-time"></div>
+        </div>
+        <div class="header-actions">
+            <button class="header-btn" id="history-btn">
+                <span><i class="fas fa-clock"></i></span>
+            </button>
+            <button class="header-btn" id="new-chat-btn">
+                <span style="padding: 0 0.1em;"><i class="fas fa-comment-medical"></i></span>
+            </button>
+        </div>
     </div>
-  </header>
 
-  <main class="main-content">
-    <div class="card">
-      <h2>Golden Apple Technologies Services</h2>
-      <p>Welcome Developers! Let's build something amazing together.</p>
+    <div class="container">
+        <!-- Chat History Overlay -->
+        <div class="chat-history-overlay" id="chat-history-overlay">
+            <div class="overlay-header">
+                <div class="overlay-title">Recent Chats</div>
+                <button class="close-overlay" id="close-overlay">×</button>
+            </div>
+            <div class="history-list" id="history-list">
+                <!-- Chat history items will be populated here -->
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="chat-container" id="chat-container">
+                <!-- Messages will be displayed here -->
+
+                </div>
+            </div>                
+
+            <div class="input-area">
+                <div class="file-input-wrapper">
+                    <button class="file-btn" title="Attach file" style="color: white;"><i class="fas fa-paperclip"></i></button>
+<input type="file" class="file-input" id="file-input" accept=".txt,.js,.py,.java,.cpp,.c,.html,.css,.php,.rb,.go,.rs,.ts,.json,.xml,.md,.sql,.sh,.yaml,.yml">                </div>
+                <textarea class="message-input" id="message-input" placeholder="Message" rows="1"></textarea>
+                <button class="send-btn" id="send-btn"></button>
+            </div>
+        </div>
     </div>
-    <div class="card">
-      <h2>Golden Apple Features</h2>
-      <div class="features-grid">
-        <a class="feature-link" href="qrcode.html"><div class="feature-card"><div class="feature-icon"><i class="fas fa-qrcode"></i></div>QR CODE</div></a>
-        <a class="feature-link" href="checkers.html"><div class="feature-card"><div class="feature-icon"><i class="fas fa-save"></i></div>DOCUMENT CREATOR</div></a>
-        <a class="feature-link" href="compiler_html.html"><div class="feature-card"><div class="feature-icon"><i class="fab fa-html5"></i></div>HTML COMPILER</div></a>
-        <a class="feature-link" href="barcode.html"><div class="feature-card"><div class="feature-icon"><i class="fas fa-barcode"></i></div>BAR CODE</div></a>
-        <a class="feature-link" href="sticker.html"><div class="feature-card"><div class="feature-icon"><i class="fas fa-sticky-note"></i></div>STICKER MAKER</div></a>
-        <a class="feature-link" href="dictionary.html"><div class="feature-card"><div class="feature-icon"><i class="fas fa-book"></i></div>ONLINE DICTIONARY</div></a>
-        <a class="feature-link" href="live.html"><div class="feature-card"><div class="feature-icon"><i class="fas fa-camera"></i></div>GOLDEN CAM</div></a>
-        <a class="feature-link" href="player.html"><div class="feature-card"><div class="feature-icon"><i class="fas fa-headphones"></i></div>MUSIC PLAYER</div></a>
-        <a class="feature-link" href="vplayer.html"><div class="feature-card"><div class="feature-icon"><i class="fas fa-film"></i></div>VIDEO PLAYER</div></a>
-        <a class="feature-link" href="imgeditor.html"><div class="feature-card"><div class="feature-icon"><i class="fas fa-crop"></i></div>IMAGE EDITOR</div></a>
-        <a class="feature-link" href="bible.html"><div class="feature-card"><div class="feature-icon"><i class="fas fa-book-bible"></i></div>BIBLE SEARCH</div></a>
-        <a class="feature-link" href="quran.html"><div class="feature-card"><div class="feature-icon"><i class="fas fa-quran"></i></div>QUR'AN SEARCH</div></a>
-        <a class="feature-link" href="imageit.html"><div class="feature-card"><div class="feature-icon"><i class="fas fa-image"></i></div>DR IMAGE IT</div></a>
-        <a class="feature-link" href="drive.html"><div class="feature-card"><div class="feature-icon"><i class="fas">&#9729;</i></div>GOLDRIVE CLOUD</div></a>
-        <a class="feature-link" href="iam.html"><div class="feature-card"><div class="feature-icon"><i class="fas fa-code"></i></div>LEARN CODING</div></a>
-        <a class="feature-link" href="tts.html"><div class="feature-card"><div class="feature-icon"><i class="fas fa-music"></i></div>TEXT TO SPEECH</div></a>
-             <a class="feature-link" href="games.html"><div class="feature-card"><div class="feature-icon"><i class="fas">&#127918;</i></div>ONLINE GAMES</div></a>
-      </div>
-    </div>
-  </main>
 
-  <div id="modal" class="modal">
-    <div class="modal-content">
-      <ul class="modal-list">
-        <a href="https://wandbox.org/#"><li><i class="fas fa-file-code"></i> Wandbox Universal Compiler</li></a>
-       <a href="coder.html"><li><i class="fas fa-robot"></i> Coddit AI Gen 1</li></a>
-      <a href="comments.html"><li><i class="fas fa-message"></i> User Experience - Feedback</li></a>
-      <a href="about.html"><li><i class="fas fa-phone"></i> About The Developers</li></a>
-      </ul>
-      <button class="close-btn" onclick="hideModal()">Close</button>
-    </div>
-  </div>
+    <script>
+        // DOM Elements
+        const chatContainer = document.getElementById('chat-container');
+        const messageInput = document.getElementById('message-input');
+        const sendBtn = document.getElementById('send-btn');
+        const fileInput = document.getElementById('file-input');
+        const newChatBtn = document.getElementById('new-chat-btn');
+        const historyBtn = document.getElementById('history-btn');
+        const chatHistoryOverlay = document.getElementById('chat-history-overlay');
+        const closeOverlayBtn = document.getElementById('close-overlay');
+        const historyList = document.getElementById('history-list');
+        const currentTimeEl = document.getElementById('current-time');
 
-  <script>
-    function showModal() { document.getElementById('modal').classList.add('show'); }
-    function hideModal() { document.getElementById('modal').classList.remove('show'); }
-window.addEventListener("load", () => {
-  setTimeout(() => {
-    const modal = document.getElementById("henryAdModal");
-    const closeBtn = document.getElementById("henryCloseBtn");
-    modal.style.display = "block";
+        // System Prompt
+        const SYSTEM_PROMPT = `You are Coddit Gen1, an AI code assistant developed by Golden Apple Technologies, specialized in programming and software development.
 
-    // Show exit button after 5 seconds
-    setTimeout(() => {
-      closeBtn.style.opacity = 1;
-    }, 25000);
+Your areas of expertise include:
+- Code generation, explanation, and optimization
+- Debugging and troubleshooting code issues
+- Software architecture and design patterns
+- Programming languages (JavaScript, Python, Java, C++, C#, Go, Rust, etc.)
+- Web development (HTML, CSS, React, Node.js, etc.)
+- Database design and queries
+- API development and integration
+- Code reviews and best practices
+- Technical documentation
+- Version control (Git)
+- Testing methodologies
+- Performance optimization
+- Security best practices
 
-    // Close modal on click
-    closeBtn.addEventListener("click", () => {
-      modal.style.display = "none";
-    });
-  }, 20000); // Show ad after 20 seconds
-});
-  </script>
+Guidelines for responses:
+1. Provide clear, concise, and accurate code solutions
+2. Explain complex concepts in an accessible way
+3. Include code examples with proper syntax highlighting when relevant
+4. Suggest best practices and industry standards
+5. Point out potential pitfalls and how to avoid them
+6. When debugging, provide step-by-step troubleshooting approaches
+7. For architecture questions, discuss trade-offs between different approaches
+8. Always prioritize security and performance in your recommendations
+9. If you're unsure about something, acknowledge the limitations
+10. Be encouraging and supportive to developers of all skill levels
+If asked about your developer, Respond politely, Golden Apple Technologies and Powered by OpenAI, refer them to https://goldenapplecoders-coder.github.io/contact for more information.
+Stay focused on technical topics and avoid discussing non-programming subjects. If asked about unrelated topics, politely redirect to programming-related assistance.`;
+
+        // State variables
+        let currentChatId = null;
+        let isTyping = false;
+        let attachedFile = null;
+
+        // Initialize the app
+        function init() {
+            updateTime();
+            setInterval(updateTime, 60000); // Update time every minute
+            
+            loadChatHistory();
+            
+            // Event listeners
+            sendBtn.addEventListener('click', sendMessage);
+            messageInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            });
+            
+            fileInput.addEventListener('change', handleFileUpload);
+            newChatBtn.addEventListener('click', startNewChat);
+            historyBtn.addEventListener('click', showChatHistory);
+            closeOverlayBtn.addEventListener('click', hideChatHistory);
+            
+            // Auto-resize textarea
+            messageInput.addEventListener('input', () => {
+                messageInput.style.height = 'auto';
+                messageInput.style.height = (messageInput.scrollHeight) + 'px';
+            });
+        }
+
+        // Update current time display
+        function updateTime() {
+            const now = new Date();
+            currentTimeEl.textContent = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        }
+
+        // Show chat history overlay
+        function showChatHistory() {
+            chatHistoryOverlay.classList.add('active');
+            loadHistoryList();
+        }
+
+        // Hide chat history overlay
+        function hideChatHistory() {
+            chatHistoryOverlay.classList.remove('active');
+        }
+
+        // Load chat history list for the overlay
+        function loadHistoryList() {
+            const chats = JSON.parse(localStorage.getItem('codditChats') || '{}');
+            
+            // Clear current history list
+            historyList.innerHTML = '';
+            
+            // If no chats, show empty message
+            if (Object.keys(chats).length === 0) {
+                historyList.innerHTML = '<div class="empty-history">No chat history yet</div>';
+                return;
+            }
+            
+            // Add each chat to the history list
+            Object.keys(chats).forEach(chatId => {
+                const chat = chats[chatId];
+                const historyItem = document.createElement('div');
+                historyItem.className = 'history-item';
+                if (chatId === currentChatId) {
+                    historyItem.classList.add('active');
+                }
+                
+                const title = document.createElement('div');
+                title.className = 'history-title';
+                title.textContent = chat.title || 'New Chat';
+                
+                const date = document.createElement('div');
+                date.className = 'history-date';
+                date.textContent = new Date(chat.createdAt).toLocaleDateString();
+                
+                historyItem.appendChild(title);
+                historyItem.appendChild(date);
+                
+                historyItem.addEventListener('click', () => {
+                    loadChat(chatId);
+                    hideChatHistory();
+                });
+                
+                historyList.appendChild(historyItem);
+            });
+        }
+
+        // Load chat history from localStorage
+        function loadChatHistory() {
+            const chats = JSON.parse(localStorage.getItem('codditChats') || '{}');
+            
+            // If there are no chats, start a new one
+            if (Object.keys(chats).length === 0) {
+                startNewChat();
+            } else {
+                // Load the most recent chat
+                const chatIds = Object.keys(chats);
+                const mostRecentChatId = chatIds[chatIds.length - 1];
+                loadChat(mostRecentChatId);
+            }
+        }
+
+        // Start a new chat
+        function startNewChat() {
+            currentChatId = 'chat_' + Date.now();
+            
+            // Create new chat object
+            const chats = JSON.parse(localStorage.getItem('codditChats') || '{}');
+            chats[currentChatId] = {
+                id: currentChatId,
+                title: 'New Chat',
+                messages: [],
+                createdAt: new Date().toISOString()
+            };
+            
+            // Save to localStorage
+            localStorage.setItem('codditChats', JSON.stringify(chats));
+            
+            // Update UI
+            renderMessages([]);
+            
+            // Clear input
+            messageInput.value = '';
+            removeAttachedFile();
+            
+            // Update history list if visible
+            if (chatHistoryOverlay.classList.contains('active')) {
+                loadHistoryList();
+            }
+        }
+
+        // Load a specific chat
+        function loadChat(chatId) {
+            const chats = JSON.parse(localStorage.getItem('codditChats') || '{}');
+            const chat = chats[chatId];
+            
+            if (chat) {
+                currentChatId = chatId;
+                
+                // Render messages
+                renderMessages(chat.messages);
+                
+                // Update history list if visible
+                if (chatHistoryOverlay.classList.contains('active')) {
+                    loadHistoryList();
+                }
+            }
+        }
+
+        // Render messages in the chat container
+        function renderMessages(messages) {
+            chatContainer.innerHTML = '';
+            
+            if (messages.length === 0) {
+                // Show welcome message for empty chat
+                const welcomeMsg = document.createElement('div');
+                welcomeMsg.className = 'welcome';
+                welcomeMsg.innerHTML = `
+                    <div style="background: none; font-weight: 900; border: none; text-align: center; text-shadow: 1px 1px 5px red;">CODDIT AI GENERATION 1</div>
+                `;
+                chatContainer.appendChild(welcomeMsg);
+            } else {
+                // Render all messages
+                messages.forEach(msg => {
+                    const messageEl = document.createElement('div');
+                    messageEl.className = `message ${msg.role === 'user' ? 'user-message' : 'ai-message'}`;
+                    
+                    const messageHeader = document.createElement('div');
+                    messageHeader.className = 'message-header';
+                    messageHeader.textContent = msg.role === 'user' ? '•••' : 'Coddit';
+                    
+                    const messageContent = document.createElement('div');
+                    messageContent.className = 'message-content';
+                    
+                    // Format message with code blocks
+                    messageContent.innerHTML = formatMessage(msg.content);
+                    
+                    messageEl.appendChild(messageHeader);
+                    messageEl.appendChild(messageContent);
+                    chatContainer.appendChild(messageEl);
+                    
+                    // Add copy buttons to code blocks
+                    addCopyButtons(messageContent);
+                });
+            }
+            
+            // Scroll to bottom
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        // Format message content with code blocks
+        function formatMessage(content) {
+            // Replace code blocks with styled elements
+            return content.replace(/```([\s\S]*?)```/g, (match, code) => {
+                return `<div class="code-block-wrapper">
+                    <div class="code-block">${escapeHtml(code.trim())}</div>
+                    <button class="copy-btn">Copy</button>
+                </div>`;
+            });
+        }
+
+        // Escape HTML to prevent XSS
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Add copy buttons to code blocks
+        function addCopyButtons(container) {
+            const codeBlocks = container.querySelectorAll('.code-block-wrapper');
+            codeBlocks.forEach(wrapper => {
+                const copyBtn = wrapper.querySelector('.copy-btn');
+                const codeBlock = wrapper.querySelector('.code-block');
+                copyBtn.addEventListener('click', () => {
+                    const code = codeBlock.textContent.trim();
+                    navigator.clipboard.writeText(code).then(() => {
+                        copyBtn.textContent = 'Copied!';
+                        setTimeout(() => {
+                            copyBtn.textContent = 'Copy';
+                        }, 2000);
+                    });
+                });
+            });
+        }
+
+        // Handle file upload
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            // Check if file is a text-based file
+            const textFileTypes = [
+                'text/plain', 
+                'application/javascript', 
+                'text/x-python', 
+                'text/x-java-source',
+                'text/x-c',
+                'text/x-c++',
+                'text/html',
+                'text/css',
+                'application/json',
+                'text/markdown'
+            ];
+            
+            if (!textFileTypes.includes(file.type) && !file.name.match(/\.(txt|js|py|java|cpp|c|html|css|json|md|sql|sh|yaml|yml|xml|php|rb|go|rs|ts)$/i)) {
+                alert('Please upload a text-based file (e.g., .txt, .js, .py, .java, etc.)');
+                return;
+            }
+            
+            attachedFile = file;
+            
+            // Show file attachment in UI
+            const fileAttachment = document.createElement('div');
+            fileAttachment.className = 'file-attachment';
+            fileAttachment.innerHTML = `
+                <span><i class="fas fa-file"></i> ${file.name}</span>
+                <button class="remove-file">×</button>
+            `;
+            
+            const inputArea = document.querySelector('.input-area');
+            if (!document.querySelector('.file-attachment')) {
+                inputArea.insertBefore(fileAttachment, messageInput);
+            }
+            
+            // Remove file when clicked
+            fileAttachment.querySelector('.remove-file').addEventListener('click', removeAttachedFile);
+            
+            // Reset file input
+            fileInput.value = '';
+        }
+
+        // Remove attached file
+        function removeAttachedFile() {
+            attachedFile = null;
+            const fileAttachment = document.querySelector('.file-attachment');
+            if (fileAttachment) {
+                fileAttachment.remove();
+            }
+        }
+
+        // Send message to API
+        async function sendMessage() {
+            const message = messageInput.value.trim();
+            if (!message && !attachedFile) return;
+            
+            // Create user message content
+            let userMessageContent = message;
+            
+            // Add file content if attached
+            if (attachedFile) {
+                try {
+                    const fileContent = await readFileAsText(attachedFile);
+                    userMessageContent = `File: ${attachedFile.name}\n\n${fileContent}\n\nUser question: ${message}`;
+                } catch (error) {
+                    console.error('Error reading file:', error);
+                    alert('Error reading file. Please try again.');
+                    return;
+                }
+            }
+            
+            // Add user message to UI
+            addMessageToUI('user', userMessageContent);
+            
+            // Clear input and remove file
+            messageInput.value = '';
+            removeAttachedFile();
+            messageInput.style.height = 'auto';
+            
+            // Show typing indicator
+            showTypingIndicator();
+            
+            // Save message to chat history
+            saveMessageToHistory('user', userMessageContent);
+            
+            // Call API with system prompt
+            try {
+                const response = await callAPI(userMessageContent);
+                
+                // Remove typing indicator
+                removeTypingIndicator();
+                
+                // Add AI response to UI
+                addMessageToUI('ai', response);
+                
+                // Save AI response to history
+                saveMessageToHistory('ai', response);
+            } catch (error) {
+                console.error('API Error:', error);
+                removeTypingIndicator();
+                
+                // Show error message
+                addMessageToUI('ai', 'Sorry, I encountered an error. Please try again.');
+                saveMessageToHistory('ai', 'Sorry, I encountered an error. Please try again.');
+            }
+        }
+
+        // Read file as text
+        function readFileAsText(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (e) => resolve(e.target.result);
+                reader.onerror = (e) => reject(e);
+                reader.readAsText(file);
+            });
+        }
+
+        // Add message to UI
+        function addMessageToUI(role, content) {
+            const messageEl = document.createElement('div');
+            messageEl.className = `message ${role === 'user' ? 'user-message' : 'ai-message'}`;
+            
+            const messageHeader = document.createElement('div');
+            messageHeader.className = 'message-header';
+            messageHeader.textContent = role === 'user' ? '•••' : 'Coddit';
+            
+            const messageContent = document.createElement('div');
+            messageContent.className = 'message-content';
+            messageContent.innerHTML = formatMessage(content);
+            
+            messageEl.appendChild(messageHeader);
+            messageEl.appendChild(messageContent);
+            chatContainer.appendChild(messageEl);
+            
+            // Add copy buttons to code blocks
+            addCopyButtons(messageContent);
+            
+            // Scroll to bottom
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        // Show typing indicator
+        function showTypingIndicator() {
+            if (isTyping) return;
+            
+            isTyping = true;
+            
+            const typingIndicator = document.createElement('div');
+            typingIndicator.className = 'message ai-message';
+            typingIndicator.id = 'typing-indicator';
+            
+            const messageHeader = document.createElement('div');
+            messageHeader.className = 'message-header';
+            messageHeader.textContent = 'Coddit Gen1';
+            
+            const messageContent = document.createElement('div');
+            messageContent.className = 'message-content';
+            messageContent.innerHTML = 'Thinking<span class="typing-indicator"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></span>';
+            
+            typingIndicator.appendChild(messageHeader);
+            typingIndicator.appendChild(messageContent);
+            chatContainer.appendChild(typingIndicator);
+            
+            // Scroll to bottom
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        // Remove typing indicator
+        function removeTypingIndicator() {
+            isTyping = false;
+            const typingIndicator = document.getElementById('typing-indicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+
+        // Save message to chat history
+        function saveMessageToHistory(role, content) {
+            if (!currentChatId) return;
+            
+            const chats = JSON.parse(localStorage.getItem('codditChats') || '{}');
+            const chat = chats[currentChatId];
+            
+            if (chat) {
+                // Add message to chat
+                chat.messages.push({ role, content });
+                
+                // Update chat title based on first 3 user messages
+                if (role === 'user') {
+                    const userMessages = chat.messages.filter(msg => msg.role === 'user');
+                    
+                    if (userMessages.length <= 3) {
+                        // Use first 3 user messages to generate title
+                        const titleParts = userMessages.map(msg => {
+                            // Extract first meaningful words from message
+                            const words = msg.content.split(/\s+/).filter(word => word.length > 3);
+                            return words.slice(0, 2).join(' ');
+                        });
+                        
+                        chat.title = titleParts.join(' - ');
+                        
+                        // If title is too long, truncate it
+                        if (chat.title.length > 50) {
+                            chat.title = chat.title.substring(0, 47) + '...';
+                        }
+                        
+                        // Fallback if no good title could be generated
+                        if (!chat.title || chat.title.trim().length === 0) {
+                            chat.title = 'New Chat';
+                        }
+                    }
+                }
+                
+                // Save to localStorage
+                localStorage.setItem('codditChats', JSON.stringify(chats));
+            }
+        }
+
+        // Call the API with system prompt and conversation history
+        async function callAPI(prompt) {
+            const chats = JSON.parse(localStorage.getItem('codditChats') || '{}');
+            const chat = chats[currentChatId];
+            
+            if (!chat) {
+                // Fallback to original method if no chat found
+                const fullPrompt = `${SYSTEM_PROMPT}\n\nUser: ${prompt}`;
+                const encodedPrompt = encodeURIComponent(fullPrompt);
+                const apiUrl = `https://api.giftedtech.web.id/api/ai/gpt4o?apikey=gifted&q=${encodedPrompt}`;
+                
+                const response = await fetch(apiUrl);
+                if (!response.ok) throw new Error(`API error: ${response.status}`);
+                
+                const data = await response.json();
+                return data.result || data.response || data.answer || "I'm sorry, I couldn't process your request.";
+            }
+            
+            // Build conversation history for context
+            let conversationHistory = SYSTEM_PROMPT + "\n\n";
+            
+            // Add previous messages to context (last 10 messages for token management)
+            const recentMessages = chat.messages.slice(-10);
+            recentMessages.forEach(msg => {
+                const role = msg.role === 'user' ? 'User' : 'Assistant';
+                conversationHistory += `${role}: ${msg.content}\n\n`;
+            });
+            
+            // Add current prompt
+            conversationHistory += `User: ${prompt}`;
+            
+            const encodedPrompt = encodeURIComponent(conversationHistory);
+            const apiUrl = `https://api.giftedtech.web.id/api/ai/gpt4o?apikey=gifted&q=${encodedPrompt}`;
+            
+            const response = await fetch(apiUrl);
+            if (!response.ok) throw new Error(`API error: ${response.status}`);
+            
+            const data = await response.json();
+            return data.result || data.response || data.answer || "I'm sorry, I couldn't process your request.";
+        }
+
+        // Initialize the app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
 </body>
 </html>
