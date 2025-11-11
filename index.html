@@ -1,3 +1,327 @@
-<p>404</p>
-<br>
-<h1>Page Currently Offline, We apologize for the Interruption</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Golden Apple Technologies - Programmer's Hub & Developer Tools</title>
+    <meta name="description" content="Golden Apple Technologies - A comprehensive developer hub with QR generators, code compilers, AI coding assistants, document tools, and more. Inspire your development journey.">
+    <meta name="keywords" content="programmer tools, QR code generator, barcode generator, HTML compiler, AI coding assistant, developer resources, coding inspiration, Golden Apple Technologies">
+    <meta name="author" content="Golden Apple Technologies">
+    <meta name="robots" content="index, follow">
+    <meta name="googlebot" content="index, follow">
+    <meta property="og:title" content="Golden Apple Technologies - Programmer's Hub & Developer Tools">
+    <meta property="og:description" content="A comprehensive developer hub with QR generators, code compilers, AI coding assistants, document tools, and more.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://goldenapplecoders-coder.github.io">
+    <meta property="og:image" content="https://goldenapplecoders-coder.github.io/favicon.ico">
+    <meta property="og:site_name" content="Golden Apple Technologies">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Golden Apple Technologies - Programmer's Hub & Developer Tools">
+    <meta name="twitter:description" content="A comprehensive developer hub with QR generators, code compilers, AI coding assistants, document tools, and more.">
+    <meta name="twitter:image" content="https://goldenapplecoders-coder.github.io/favicon.ico">
+    <link rel="icon" href="https://goldenapplecoders-coder.github.io/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="https://goldenapplecoders-coder.github.io/favicon.ico" type="image/x-icon">
+    <link rel="canonical" href="https://goldenapplecoders-coder.github.io">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Golden Apple Technologies",
+      "url": "https://goldenapplecoders-coder.github.io",
+      "logo": "https://goldenapplecoders-coder.github.io/favicon.ico",
+      "description": "A comprehensive developer hub with tools and resources for programmers",
+      "sameAs": [
+        "https://goldenapplecoders-coder.github.io"
+      ]
+    }
+    </script>
+    <style>
+        body{background: black;
+        color: white;
+        font-family: 'Roboto Condensed', sans-serif;}
+        .fas, .fab{font-size: inherit;
+        color: inherit;}
+  .dropdown-container {
+  position: fixed;
+  top: 2px;
+  right: 5px;
+  display: inline-block;
+}
+
+.dropdown-toggle {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  cursor: pointer;
+  font-size: 2.7em;
+  color: white;
+  transition: .4s;
+}
+
+.dropdown-toggle:hover {
+  transition: .6s;
+  color: cyan;
+  font-size: 2.7em;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: black;
+  border: 1px dotted white;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  min-width: 150px;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+}
+
+.dropdown-menu.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dropdown-item {
+  display: block;
+  padding: 10px 15px;
+  text-decoration: none;
+  color: white;
+  border-bottom: 1px dotted white;
+  transition: background 0.2s;
+}
+
+.dropdown-item:hover {
+  background: black;
+}
+
+.dropdown-item:last-child {
+  border-bottom: none;
+}
+ #header{background: black;
+    border-bottom: 1px dotted white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    }
+    #logo{
+        font-size: 1.6em;
+        padding: 0.5em;
+    }
+    fieldset{max-height: 15rem;
+     overflow-y: auto;
+     line-height: 3;
+     padding: 0 10px;
+     border: 1px dotted white;
+    }
+    .tool{width: 100%; 
+    box-sizing: border-box;
+    text-align: start;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 1.5em;
+    padding: 0.1em;
+    background: black;
+    color: white;
+    border: 1px dotted white;
+    border-radius: 0.3rem;
+    }
+    .tool .fas, .fab{
+    padding: 0 1rem;}
+    .tool:hover{
+    border: 1px solid white;
+    }
+    #tools{background: black;
+    width: 100%;
+    padding: 0;
+    margin-top: 0;
+    }
+    #brother{width: 100%;
+    text-align: center;}
+    #brotherImg{width: 100%;
+    height: auto;}
+    
+    /* Footer Styles */
+    footer {
+        background: black;
+        border-top: 1px dotted white;
+        padding: 20px 10px;
+        text-align: center;
+        margin-top: 20px;
+    }
+    
+    .social-links {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-bottom: 15px;
+        flex-wrap: wrap;
+    }
+    
+    .social-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: black;
+        border: 1px dotted white;
+        color: white;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-size: 1.5em;
+    }
+    
+    .social-link:hover {
+        background: white;
+        color: black;
+        border: 1px solid white;
+        transform: scale(1.1);
+    }
+    
+    .copyright {
+        font-size: 0.9em;
+        color: white;
+        margin-top: 10px;
+    }
+    
+    </style>
+    </head>
+    <body>
+<div id="header">
+  <div id="logo">
+      Golden Apple Technologies
+  </div>
+    <div class="dropdown-container">
+<button class="dropdown-toggle" id="dropdownToggle">
+    <span class="fas fa-bars"></span>
+  </button>
+  <div class="dropdown-menu" id="dropdownMenu">
+    <a href="https://goldenapplecoders-coder.github.io/about.html" class="dropdown-item">Contact</a>
+    <a href="https://goldenapplecoders-coder.github.io/services.html" class="dropdown-item">Services</a>
+    <a href="https://tum-code.github.io" class="dropdown-item">TumCode</a>
+    <a href="https://ga-techupdates.github.io" class="dropdown-item">Tech Updates</a>
+    <a href="#" class="dropdown-item">Item 5</a>
+  </div>
+</div>
+</div>
+<h1 style="visibility: none;">This world</h1>
+<fieldset>
+  <legend>User Tools</legend>
+<div id="tools">
+    <button class="tool" onclick="location.href='qrcode.html'">
+    <i class="fas fa-qrcode"></i>  QR CODE GENERATOR</button>
+      <button class="tool" onclick="location.href='barcode.html'">
+    <i class="fas fa-barcode"></i>  BARCODE GENERATOR</button>
+      <button class="tool" onclick="location.href='compiler_html.html'">
+    <i class="fab fa-html5"></i>  HTML COMPILER</button>
+      <button class="tool" onclick="location.href='https://tum-code.github.io/univ.html'">
+    <i class="fas fa-file-text"></i>  DOCUMENT CREATOR</button>
+      <button class="tool" onclick="location.href='drive.html'">
+    <i class="fas fa-cloud"></i>  GOLDRIVE CLOUD</button>
+      <button class="tool" onclick="location.href='bible.html'">
+    <i class="fas fa-bible"></i>  ONLINE BIBLE</button>
+      <button class="tool" onclick="location.href='quran.html'">
+    <i class="fas fa-quran"></i>  ONLINE QURAN</button>
+      <button class="tool" onclick="location.href='dictionary.html'">
+    <i class="fas fa-book"></i>  ONLINE DICTIONARY</button>
+    <button class="tool" onclick="location.href='tts.html'">
+    <i class="fas fa-volume-up"></i> TEXT TO SPEECH</button>
+      <button class="tool" onclick="location.href='vplayer.html'">
+    <i class="fas fa-film"></i>  VIDEO PLAYER 1</button>
+          <button class="tool">
+    <i class="fas fa-film" ></i>  VIDEO PLAYER 2</button>
+          <button class="tool" onclick="location.href='player.html'">
+    <i class="fas fa-headphones"></i>  MUSIC PLAYER</button>
+      <button class="tool" onclick="location.href='sticker.html'">
+    <i class="fas fa-sticky-note"></i>  STICKER MAKER</button>
+      <button class="tool" onclick="location.href='vcall.html'">
+    <i class="fas fa-camera"></i>  GOLDEN CAMERA</button>
+      <button class="tool" onclick="location.href='imageit.html'">
+    <i class="fas fa-robot"></i>  IMAGE MAKER AI</button>
+      <button class="tool" onclick="location.href='imgeditor.html'">
+    <i class="fas fa-image"></i>  IMAGE EDITOR</button>
+      <button class="tool" onclick="location.href='coder.html'">
+    <i class="fas fa-robot"></i>  CODDIT AI</button>
+      <button class="tool" onclick="location.href='https://tum-code.github.io/github_downloader.html'">
+    <i class="fab fa-github"></i>  GH REPO DOWNLOADER</button>
+      <button class="tool">
+    <i class="fab fa-tiktok"></i>  MEDIA PLAYER</button>
+
+    </div>
+  </fieldset>
+  <br>
+  <div id="about">
+<div id="brother">
+<img id="brotherImg"src="tumcode.png" alt="TumCode">
+<p id="brotherDesc">
+    
+</p>
+</div>
+</div>
+
+<!-- Footer Section -->
+<footer>
+    <div class="social-links">
+        <a href="https://wa.me/256791728084" class="social-link" target="_blank" aria-label="WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+        <a href="https://github.com/goldenapplecoders-coder" class="social-link" target="_blank" aria-label="GitHub">
+            <i class="fab fa-github"></i>
+        </a>
+        <a href="https://www.tiktok.com/@goldenappletech" class="social-link" target="_blank" aria-label="TikTok">
+            <i class="fab fa-tiktok"></i>
+        </a>
+        <a href="#" class="social-link" aria-label="Instagram">
+            <i class="fab fa-instagram"></i>
+        </a>
+        <a href="#" class="social-link" aria-label="LinkedIn">
+            <i class="fab fa-linkedin-in"></i>
+        </a>
+        <a href="#" class="social-link" aria-label="Facebook">
+            <i class="fab fa-facebook-f"></i>
+        </a>
+    </div>
+    <div class="copyright">
+        &copy; 2025 Golden Apple Technologies. All rights reserved.
+    </div>
+</footer>
+
+<script>
+            document.addEventListener('DOMContentLoaded', function() {
+  const dropdownToggle = document.getElementById('dropdownToggle');
+  const dropdownMenu = document.getElementById('dropdownMenu');
+    dropdownToggle.addEventListener('click', function(e) {
+    e.stopPropagation();
+    dropdownMenu.classList.toggle('show');
+  });
+  
+  dropdownMenu.addEventListener('click', function(e) {
+    if (e.target.classList.contains('dropdown-item')) {
+      dropdownMenu.classList.remove('show');
+    }
+  });
+  
+ document.addEventListener('click', function() {
+    dropdownMenu.classList.remove('show');
+  });
+  
+  dropdownMenu.addEventListener('click', function(e) {
+    e.stopPropagation();
+  });
+});
+
+    </script>
+    </body>
+    </html>
